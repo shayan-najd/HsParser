@@ -43,7 +43,7 @@ module U.Outputable (
         -- * Converting 'SDoc' into strings and outputing it
         printForC, printForAsm, printForUser, printForUserPartWay,
         pprCode, mkCodeStyle,
-        showSDoc, showSDocUnsafe, showSDocOneLine,
+        showSDoc,  showSDocOneLine,
         showSDocForUser, showSDocDebug, showSDocDump, showSDocDumpOneLine,
         showSDocUnqual, showPpr,
         renderWithStyle,
@@ -76,24 +76,21 @@ module U.Outputable (
 
         -- * Error handling and debugging utilities
         pprPanic, pprSorry, assertPprPanic, pprPgmError,
-        pprTrace, pprTraceIt, warnPprTrace, pprSTrace,
         trace, pgmError, panic, sorry, assertPanic,
-        pprDebugAndThen,
+        pprDebugAndThen, showSDocUnsafe
     ) where
 
-import {-# SOURCE #-}   DynFlags( DynFlags,
+import {-# SOURCE #-}   DynFlags( DynFlags,defaultDynFlag,
                                   targetPlatform, pprUserLength, pprCols,
-                                  useUnicode, useUnicodeSyntax,
-                                  unsafeGlobalDynFlags )
+                                  useUnicode, useUnicodeSyntax)
 import {-# SOURCE #-}   Module( UnitId, Module, ModuleName, moduleName )
 import {-# SOURCE #-}   OccName( OccName )
-import {-# SOURCE #-}   StaticFlags( opt_PprStyle_Debug, opt_NoDebugOutput )
 
 import U.FastString
-import qualified Pretty
+import qualified U.Pretty
 import U.Util
 import Platform
-import Pretty           ( Doc, Mode(..) )
+import U.Pretty           ( Doc, Mode(..) )
 import Panic
 import GHC.Serialized
 import GHC.LanguageExtensions (Extension)
@@ -234,12 +231,10 @@ defaultUserStyle, defaultDumpStyle :: PprStyle
 defaultUserStyle = mkUserStyle neverQualify AllTheWay
  -- Print without qualifiers to reduce verbosity, unless -dppr-debug
 
-defaultDumpStyle |  opt_PprStyle_Debug = PprDebug
-                 |  otherwise          = PprDump neverQualify
+defaultDumpStyle = PprDump neverQualify
 
 mkDumpStyle :: PrintUnqualified -> PprStyle
-mkDumpStyle print_unqual | opt_PprStyle_Debug = PprDebug
-                         | otherwise          = PprDump print_unqual
+mkDumpStyle print_unqual = PprDump print_unqual
 
 defaultErrStyle :: DynFlags -> PprStyle
 -- Default style for error messages, when we don't know PrintUnqualified
@@ -256,9 +251,7 @@ cmdlineParserStyle :: PprStyle
 cmdlineParserStyle = mkUserStyle alwaysQualify AllTheWay
 
 mkUserStyle :: PrintUnqualified -> Depth -> PprStyle
-mkUserStyle unqual depth
-   | opt_PprStyle_Debug = PprDebug
-   | otherwise          = PprUser unqual depth
+mkUserStyle unqual depth = PprUser unqual depth
 
 instance Outputable PprStyle where
   ppr (PprUser {})  = text "user-style"
@@ -309,7 +302,7 @@ withPprStyleDoc dflags sty d = runSDoc d (initSDocContext dflags sty)
 
 pprDeeper :: SDoc -> SDoc
 pprDeeper d = SDoc $ \ctx -> case ctx of
-  SDC{sdocStyle=PprUser _ (PartWay 0)} -> Pretty.text "..."
+  SDC{sdocStyle=PprUser _ (PartWay 0)} -> U.Pretty.text "..."
   SDC{sdocStyle=PprUser q (PartWay n)} ->
     runSDoc d ctx{sdocStyle = PprUser q (PartWay (n-1))}
   _ -> runSDoc d ctx
@@ -321,7 +314,7 @@ pprDeeperList f ds
   | otherwise = SDoc work
  where
   work ctx@SDC{sdocStyle=PprUser q (PartWay n)}
-   | n==0      = Pretty.text "..."
+   | n==0      = U.Pretty.text "..."
    | otherwise =
       runSDoc (f (go 0 ds)) ctx{sdocStyle = PprUser q (PartWay (n-1))}
    where
@@ -391,28 +384,28 @@ ifPprDebug :: SDoc -> SDoc        -- Empty for non-debug style
 ifPprDebug d = SDoc $ \ctx ->
     case ctx of
         SDC{sdocStyle=PprDebug} -> runSDoc d ctx
-        _                       -> Pretty.empty
+        _                       -> U.Pretty.empty
 
 printForUser :: DynFlags -> Handle -> PrintUnqualified -> SDoc -> IO ()
 printForUser dflags handle unqual doc
-  = Pretty.printDoc PageMode (pprCols dflags) handle
+  = U.Pretty.printDoc PageMode (pprCols dflags) handle
       (runSDoc doc (initSDocContext dflags (mkUserStyle unqual AllTheWay)))
 
 printForUserPartWay :: DynFlags -> Handle -> Int -> PrintUnqualified -> SDoc
                     -> IO ()
 printForUserPartWay dflags handle d unqual doc
-  = Pretty.printDoc PageMode (pprCols dflags) handle
+  = U.Pretty.printDoc PageMode (pprCols dflags) handle
       (runSDoc doc (initSDocContext dflags (mkUserStyle unqual (PartWay d))))
 
 -- printForC, printForAsm do what they sound like
 printForC :: DynFlags -> Handle -> SDoc -> IO ()
 printForC dflags handle doc =
-  Pretty.printDoc LeftMode (pprCols dflags) handle
+  U.Pretty.printDoc LeftMode (pprCols dflags) handle
     (runSDoc doc (initSDocContext dflags (PprCode CStyle)))
 
 printForAsm :: DynFlags -> Handle -> SDoc -> IO ()
 printForAsm dflags handle doc =
-  Pretty.printDoc LeftMode (pprCols dflags) handle
+  U.Pretty.printDoc LeftMode (pprCols dflags) handle
     (runSDoc doc (initSDocContext dflags (PprCode AsmStyle)))
 
 pprCode :: CodeStyle -> SDoc -> SDoc
@@ -426,11 +419,6 @@ mkCodeStyle = PprCode
 -- showSDoc just blasts it out as a string
 showSDoc :: DynFlags -> SDoc -> String
 showSDoc dflags sdoc = renderWithStyle dflags sdoc defaultUserStyle
-
--- showSDocUnsafe is unsafe, because `unsafeGlobalDynFlags` might not be
--- initialised yet.
-showSDocUnsafe :: SDoc -> String
-showSDocUnsafe sdoc = showSDoc unsafeGlobalDynFlags sdoc
 
 showPpr :: Outputable a => DynFlags -> a -> String
 showPpr dflags thing = showSDoc dflags (ppr thing)
@@ -452,31 +440,31 @@ showSDocDebug dflags d = renderWithStyle dflags d PprDebug
 
 renderWithStyle :: DynFlags -> SDoc -> PprStyle -> String
 renderWithStyle dflags sdoc sty
-  = let s = Pretty.style{ Pretty.mode = PageMode,
-                          Pretty.lineLength = pprCols dflags }
-    in Pretty.renderStyle s $ runSDoc sdoc (initSDocContext dflags sty)
+  = let s = U.Pretty.style{ U.Pretty.mode = PageMode,
+                          U.Pretty.lineLength = pprCols dflags }
+    in U.Pretty.renderStyle s $ runSDoc sdoc (initSDocContext dflags sty)
 
 -- This shows an SDoc, but on one line only. It's cheaper than a full
 -- showSDoc, designed for when we're getting results like "Foo.bar"
 -- and "foo{uniq strictness}" so we don't want fancy layout anyway.
 showSDocOneLine :: DynFlags -> SDoc -> String
 showSDocOneLine dflags d
- = let s = Pretty.style{ Pretty.mode = OneLineMode,
-                         Pretty.lineLength = pprCols dflags } in
-   Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultUserStyle)
+ = let s = U.Pretty.style{ U.Pretty.mode = OneLineMode,
+                         U.Pretty.lineLength = pprCols dflags } in
+   U.Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultUserStyle)
 
 showSDocDumpOneLine :: DynFlags -> SDoc -> String
 showSDocDumpOneLine dflags d
- = let s = Pretty.style{ Pretty.mode = OneLineMode,
-                         Pretty.lineLength = irrelevantNCols } in
-   Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultDumpStyle)
+ = let s = U.Pretty.style{ U.Pretty.mode = OneLineMode,
+                         U.Pretty.lineLength = irrelevantNCols } in
+   U.Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultDumpStyle)
 
 irrelevantNCols :: Int
 -- Used for OneLineMode and LeftMode when number of cols isn't used
 irrelevantNCols = 1
 
 isEmpty :: DynFlags -> SDoc -> Bool
-isEmpty dflags sdoc = Pretty.isEmpty $ runSDoc sdoc dummySDocContext
+isEmpty dflags sdoc = U.Pretty.isEmpty $ runSDoc sdoc dummySDocContext
    where dummySDocContext = initSDocContext dflags PprDebug
 
 docToSDoc :: Doc -> SDoc
@@ -494,20 +482,20 @@ float    :: Float      -> SDoc
 double   :: Double     -> SDoc
 rational :: Rational   -> SDoc
 
-empty       = docToSDoc $ Pretty.empty
-char c      = docToSDoc $ Pretty.char c
+empty       = docToSDoc $ U.Pretty.empty
+char c      = docToSDoc $ U.Pretty.char c
 
-text s      = docToSDoc $ Pretty.text s
-{-# INLINE text #-}   -- Inline so that the RULE Pretty.text will fire
+text s      = docToSDoc $ U.Pretty.text s
+{-# INLINE text #-}   -- Inline so that the RULE U.Pretty.text will fire
 
-ftext s     = docToSDoc $ Pretty.ftext s
-ptext s     = docToSDoc $ Pretty.ptext s
-ztext s     = docToSDoc $ Pretty.ztext s
-int n       = docToSDoc $ Pretty.int n
-integer n   = docToSDoc $ Pretty.integer n
-float n     = docToSDoc $ Pretty.float n
-double n    = docToSDoc $ Pretty.double n
-rational n  = docToSDoc $ Pretty.rational n
+ftext s     = docToSDoc $ U.Pretty.ftext s
+ptext s     = docToSDoc $ U.Pretty.ptext s
+ztext s     = docToSDoc $ U.Pretty.ztext s
+int n       = docToSDoc $ U.Pretty.int n
+integer n   = docToSDoc $ U.Pretty.integer n
+float n     = docToSDoc $ U.Pretty.float n
+double n    = docToSDoc $ U.Pretty.double n
+rational n  = docToSDoc $ U.Pretty.rational n
 
 -- | @doublePrec p n@ shows a floating point number @n@ with @p@
 -- digits of precision after the decimal point.
@@ -517,16 +505,16 @@ doublePrec p n = text (showFFloat (Just p) n "")
 parens, braces, brackets, quotes, quote,
         paBrackets, doubleQuotes, angleBrackets :: SDoc -> SDoc
 
-parens d        = SDoc $ Pretty.parens . runSDoc d
-braces d        = SDoc $ Pretty.braces . runSDoc d
-brackets d      = SDoc $ Pretty.brackets . runSDoc d
-quote d         = SDoc $ Pretty.quote . runSDoc d
-doubleQuotes d  = SDoc $ Pretty.doubleQuotes . runSDoc d
+parens d        = SDoc $ U.Pretty.parens . runSDoc d
+braces d        = SDoc $ U.Pretty.braces . runSDoc d
+brackets d      = SDoc $ U.Pretty.brackets . runSDoc d
+quote d         = SDoc $ U.Pretty.quote . runSDoc d
+doubleQuotes d  = SDoc $ U.Pretty.doubleQuotes . runSDoc d
 angleBrackets d = char '<' <> d <> char '>'
 paBrackets d    = text "[:" <> d <> text ":]"
 
 cparen :: Bool -> SDoc -> SDoc
-cparen b d = SDoc $ Pretty.maybeParens b . runSDoc d
+cparen b d = SDoc $ U.Pretty.maybeParens b . runSDoc d
 
 -- 'quotes' encloses something in single quotes...
 -- but it omits them if the thing begins or ends in a single quote
@@ -541,35 +529,35 @@ quotes d =
            in case (str, snocView str) of
              (_, Just (_, '\'')) -> pp_d
              ('\'' : _, _)       -> pp_d
-             _other              -> Pretty.quotes pp_d
+             _other              -> U.Pretty.quotes pp_d
 
 semi, comma, colon, equals, space, dcolon, underscore, dot, vbar :: SDoc
 arrow, larrow, darrow, arrowt, larrowt, arrowtt, larrowtt :: SDoc
 lparen, rparen, lbrack, rbrack, lbrace, rbrace, blankLine :: SDoc
 
-blankLine  = docToSDoc $ Pretty.text ""
-dcolon     = unicodeSyntax (char '∷') (docToSDoc $ Pretty.text "::")
-arrow      = unicodeSyntax (char '→') (docToSDoc $ Pretty.text "->")
-larrow     = unicodeSyntax (char '←') (docToSDoc $ Pretty.text "<-")
-darrow     = unicodeSyntax (char '⇒') (docToSDoc $ Pretty.text "=>")
-arrowt     = unicodeSyntax (char '⤚') (docToSDoc $ Pretty.text ">-")
-larrowt    = unicodeSyntax (char '⤙') (docToSDoc $ Pretty.text "-<")
-arrowtt    = unicodeSyntax (char '⤜') (docToSDoc $ Pretty.text ">>-")
-larrowtt   = unicodeSyntax (char '⤛') (docToSDoc $ Pretty.text "-<<")
-semi       = docToSDoc $ Pretty.semi
-comma      = docToSDoc $ Pretty.comma
-colon      = docToSDoc $ Pretty.colon
-equals     = docToSDoc $ Pretty.equals
-space      = docToSDoc $ Pretty.space
+blankLine  = docToSDoc $ U.Pretty.text ""
+dcolon     = unicodeSyntax (char '∷') (docToSDoc $ U.Pretty.text "::")
+arrow      = unicodeSyntax (char '→') (docToSDoc $ U.Pretty.text "->")
+larrow     = unicodeSyntax (char '←') (docToSDoc $ U.Pretty.text "<-")
+darrow     = unicodeSyntax (char '⇒') (docToSDoc $ U.Pretty.text "=>")
+arrowt     = unicodeSyntax (char '⤚') (docToSDoc $ U.Pretty.text ">-")
+larrowt    = unicodeSyntax (char '⤙') (docToSDoc $ U.Pretty.text "-<")
+arrowtt    = unicodeSyntax (char '⤜') (docToSDoc $ U.Pretty.text ">>-")
+larrowtt   = unicodeSyntax (char '⤛') (docToSDoc $ U.Pretty.text "-<<")
+semi       = docToSDoc $ U.Pretty.semi
+comma      = docToSDoc $ U.Pretty.comma
+colon      = docToSDoc $ U.Pretty.colon
+equals     = docToSDoc $ U.Pretty.equals
+space      = docToSDoc $ U.Pretty.space
 underscore = char '_'
 dot        = char '.'
 vbar       = char '|'
-lparen     = docToSDoc $ Pretty.lparen
-rparen     = docToSDoc $ Pretty.rparen
-lbrack     = docToSDoc $ Pretty.lbrack
-rbrack     = docToSDoc $ Pretty.rbrack
-lbrace     = docToSDoc $ Pretty.lbrace
-rbrace     = docToSDoc $ Pretty.rbrace
+lparen     = docToSDoc $ U.Pretty.lparen
+rparen     = docToSDoc $ U.Pretty.rparen
+lbrack     = docToSDoc $ U.Pretty.lbrack
+rbrack     = docToSDoc $ U.Pretty.rbrack
+lbrace     = docToSDoc $ U.Pretty.lbrace
+rbrace     = docToSDoc $ U.Pretty.rbrace
 
 forAllLit :: SDoc
 forAllLit = unicodeSyntax (char '∀') (text "forall")
@@ -592,11 +580,11 @@ nest :: Int -> SDoc -> SDoc
 ($+$) :: SDoc -> SDoc -> SDoc
 -- ^ Join two 'SDoc' together vertically
 
-nest n d    = SDoc $ Pretty.nest n . runSDoc d
-(<>) d1 d2  = SDoc $ \sty -> (Pretty.<>)  (runSDoc d1 sty) (runSDoc d2 sty)
-(<+>) d1 d2 = SDoc $ \sty -> (Pretty.<+>) (runSDoc d1 sty) (runSDoc d2 sty)
-($$) d1 d2  = SDoc $ \sty -> (Pretty.$$)  (runSDoc d1 sty) (runSDoc d2 sty)
-($+$) d1 d2 = SDoc $ \sty -> (Pretty.$+$) (runSDoc d1 sty) (runSDoc d2 sty)
+nest n d    = SDoc $ U.Pretty.nest n . runSDoc d
+(<>) d1 d2  = SDoc $ \sty -> (U.Pretty.<>)  (runSDoc d1 sty) (runSDoc d2 sty)
+(<+>) d1 d2 = SDoc $ \sty -> (U.Pretty.<+>) (runSDoc d1 sty) (runSDoc d2 sty)
+($$) d1 d2  = SDoc $ \sty -> (U.Pretty.$$)  (runSDoc d1 sty) (runSDoc d2 sty)
+($+$) d1 d2 = SDoc $ \sty -> (U.Pretty.$+$) (runSDoc d1 sty) (runSDoc d2 sty)
 
 hcat :: [SDoc] -> SDoc
 -- ^ Concatenate 'SDoc' horizontally
@@ -615,25 +603,25 @@ fcat :: [SDoc] -> SDoc
 -- ^ This behaves like 'fsep', but it uses '<>' for horizontal conposition rather than '<+>'
 
 
-hcat ds = SDoc $ \sty -> Pretty.hcat [runSDoc d sty | d <- ds]
-hsep ds = SDoc $ \sty -> Pretty.hsep [runSDoc d sty | d <- ds]
-vcat ds = SDoc $ \sty -> Pretty.vcat [runSDoc d sty | d <- ds]
-sep ds  = SDoc $ \sty -> Pretty.sep  [runSDoc d sty | d <- ds]
-cat ds  = SDoc $ \sty -> Pretty.cat  [runSDoc d sty | d <- ds]
-fsep ds = SDoc $ \sty -> Pretty.fsep [runSDoc d sty | d <- ds]
-fcat ds = SDoc $ \sty -> Pretty.fcat [runSDoc d sty | d <- ds]
+hcat ds = SDoc $ \sty -> U.Pretty.hcat [runSDoc d sty | d <- ds]
+hsep ds = SDoc $ \sty -> U.Pretty.hsep [runSDoc d sty | d <- ds]
+vcat ds = SDoc $ \sty -> U.Pretty.vcat [runSDoc d sty | d <- ds]
+sep ds  = SDoc $ \sty -> U.Pretty.sep  [runSDoc d sty | d <- ds]
+cat ds  = SDoc $ \sty -> U.Pretty.cat  [runSDoc d sty | d <- ds]
+fsep ds = SDoc $ \sty -> U.Pretty.fsep [runSDoc d sty | d <- ds]
+fcat ds = SDoc $ \sty -> U.Pretty.fcat [runSDoc d sty | d <- ds]
 
 hang :: SDoc  -- ^ The header
       -> Int  -- ^ Amount to indent the hung body
       -> SDoc -- ^ The hung body, indented and placed below the header
       -> SDoc
-hang d1 n d2   = SDoc $ \sty -> Pretty.hang (runSDoc d1 sty) n (runSDoc d2 sty)
+hang d1 n d2   = SDoc $ \sty -> U.Pretty.hang (runSDoc d1 sty) n (runSDoc d2 sty)
 
 -- | This behaves like 'hang', but does not indent the second document
 -- when the header is empty.
 hangNotEmpty :: SDoc -> Int -> SDoc -> SDoc
 hangNotEmpty d1 n d2 =
-    SDoc $ \sty -> Pretty.hangNotEmpty (runSDoc d1 sty) n (runSDoc d2 sty)
+    SDoc $ \sty -> U.Pretty.hangNotEmpty (runSDoc d1 sty) n (runSDoc d2 sty)
 
 punctuate :: SDoc   -- ^ The punctuation
           -> [SDoc] -- ^ The list that will have punctuation added between every adjacent pair of elements
@@ -682,7 +670,7 @@ coloured :: PprColour -> SDoc -> SDoc
 coloured col@(PprColour c) sdoc =
   SDoc $ \ctx@SDC{ sdocLastColour = PprColour lc } ->
     let ctx' = ctx{ sdocLastColour = col } in
-    Pretty.zeroWidthText c Pretty.<> runSDoc sdoc ctx' Pretty.<> Pretty.zeroWidthText lc
+    U.Pretty.zeroWidthText c U.Pretty.<> runSDoc sdoc ctx' U.Pretty.<> U.Pretty.zeroWidthText lc
 
 bold :: SDoc -> SDoc
 bold = coloured colBold
@@ -1080,38 +1068,6 @@ pprPgmError :: String -> SDoc -> a
 pprPgmError = pgmErrorDoc
 
 
-pprTrace :: String -> SDoc -> a -> a
--- ^ If debug output is on, show some 'SDoc' on the screen
-pprTrace str doc x
-   | opt_NoDebugOutput = x
-   | otherwise         = pprDebugAndThen unsafeGlobalDynFlags trace (text str) doc x
-
--- | @pprTraceIt desc x@ is equivalent to @pprTrace desc (ppr x) x@
-pprTraceIt :: Outputable a => String -> a -> a
-pprTraceIt desc x = pprTrace desc (ppr x) x
-
-
--- | If debug output is on, show some 'SDoc' on the screen along
--- with a call stack when available.
-#if __GLASGOW_HASKELL__ > 710
-pprSTrace :: (?callStack :: CallStack) => SDoc -> a -> a
-pprSTrace = pprTrace (prettyCallStack ?callStack)
-#else
-pprSTrace :: SDoc -> a -> a
-pprSTrace = pprTrace "no callstack info"
-#endif
-
-warnPprTrace :: Bool -> String -> Int -> SDoc -> a -> a
--- ^ Just warn about an assertion failure, recording the given file and line number.
--- Should typically be accessed with the WARN macros
-warnPprTrace _     _     _     _    x | not debugIsOn     = x
-warnPprTrace _     _file _line _msg x | opt_NoDebugOutput = x
-warnPprTrace False _file _line _msg x = x
-warnPprTrace True   file  line  msg x
-  = pprDebugAndThen unsafeGlobalDynFlags trace heading msg x
-  where
-    heading = hsep [text "WARNING: file", text file <> comma, text "line", int line]
-
 -- | Panic with an assertation failure, recording the given file and
 -- line number. Should typically be accessed with the ASSERT family of macros
 #if __GLASGOW_HASKELL__ > 710
@@ -1136,3 +1092,6 @@ pprDebugAndThen dflags cont heading pretty_msg
  = cont (showSDocDump dflags doc)
  where
      doc = sep [heading, nest 2 pretty_msg]
+
+showSDocUnsafe :: SDoc -> String
+showSDocUnsafe = showSDoc defaultDynFlag

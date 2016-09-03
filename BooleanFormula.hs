@@ -19,7 +19,7 @@ module BooleanFormula (
 import Data.List ( nub, intersperse )
 import Data.Data
 
-import MonadUtils
+import U.MonadUtils
 import U.Outputable
 import Binary
 import SrcLoc

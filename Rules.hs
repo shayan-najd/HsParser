@@ -51,12 +51,11 @@ import NameEnv
 import U.UniqFM
 import Unify            ( ruleMatchTyX )
 import U.BasicTypes       ( Activation, CompilerPhase, isActive, pprRuleName )
-import StaticFlags      ( opt_PprStyle_Debug )
 import DynFlags         ( DynFlags )
 import U.Outputable
 import U.FastString
 import U.Maybes
-import Bag
+import U.Bag
 import U.Util
 import Data.List
 import Control.Monad    ( guard )
@@ -398,19 +397,6 @@ findBest _      (rule,ans)   [] = (rule,ans)
 findBest target (rule1,ans1) ((rule2,ans2):prs)
   | rule1 `isMoreSpecific` rule2 = findBest target (rule1,ans1) prs
   | rule2 `isMoreSpecific` rule1 = findBest target (rule2,ans2) prs
-  | debugIsOn = let pp_rule rule
-                        | opt_PprStyle_Debug = ppr rule
-                        | otherwise          = doubleQuotes (ftext (ru_name rule))
-                in pprTrace "Rules.findBest: rule overlap (Rule 1 wins)"
-                         (vcat [if opt_PprStyle_Debug then
-                                   text "Expression to match:" <+> ppr fn <+> sep (map ppr args)
-                                else empty,
-                                text "Rule 1:" <+> pp_rule rule1,
-                                text "Rule 2:" <+> pp_rule rule2]) $
-                findBest target (rule1,ans1) prs
-  | otherwise = findBest target (rule1,ans1) prs
-  where
-    (fn,args) = target
 
 isMoreSpecific :: CoreRule -> CoreRule -> Bool
 -- This tests if one rule is more specific than another
@@ -805,7 +791,6 @@ match_cos renv subst (co1:cos1) (co2:cos2) =
   do { subst' <- match_co renv subst co1 co2
      ; match_cos renv subst' cos1 cos2 }
 match_cos _ subst [] [] = Just subst
-match_cos _ _ cos1 cos2 = pprTrace "match_cos: not same length" (ppr cos1 $$ ppr cos2) Nothing
 
 -------------
 rnMatchBndr2 :: RuleMatchEnv -> RuleSubst -> Var -> Var -> RuleMatchEnv

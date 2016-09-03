@@ -45,7 +45,6 @@ import Type
 import Coercion
 -- import MkCore
 import CoreUtils        (mkCast )
-import CoreUnfold
 import TyCon
 import Class
 import Name
@@ -60,6 +59,10 @@ import U.Util
 import U.Outputable
 import U.FastString
 import ListSetOps
+
+mkCompulsoryUnfolding = error "TODO: SHAYAN!"
+mkInlineUnfolding = error "TODO: SHAYAN!"
+exprIsConApp_maybe = error "TODO: SHAYAN!"
 
 mkDictSelId :: Name          -- Name of one of the *value* selectors
                              -- (dictionary superclass or method)

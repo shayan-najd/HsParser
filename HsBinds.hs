@@ -27,7 +27,7 @@ import HsTypes
 import U.BasicTypes
 import U.Outputable
 import SrcLoc
-import Bag
+import U.Bag
 import U.FastString
 import BooleanFormula (LBooleanFormula)
 

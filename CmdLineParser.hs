@@ -26,7 +26,7 @@ module CmdLineParser
 import U.Util
 import U.Outputable
 import Panic
-import Bag
+import U.Bag
 import SrcLoc
 
 import Data.Function

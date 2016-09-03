@@ -43,7 +43,7 @@ module StringBuffer
 
 #include "HsVersions.h"
 
-import Encoding
+import U.Encoding
 import U.FastString
 import U.FastFunctions
 import U.Outputable

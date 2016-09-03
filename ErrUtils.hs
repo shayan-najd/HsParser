@@ -50,7 +50,7 @@ module ErrUtils (
 
 #include "HsVersions.h"
 
-import Bag
+import U.Bag
 import Exception
 import U.Outputable
 import Panic

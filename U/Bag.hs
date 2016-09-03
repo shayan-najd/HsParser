@@ -8,7 +8,7 @@ Bag: an unordered collection with duplicates
 
 {-# LANGUAGE ScopedTypeVariables, CPP #-}
 
-module Bag (
+module U.Bag (
         Bag, -- abstract type
 
         emptyBag, unitBag, unionBags, unionManyBags,
@@ -27,7 +27,7 @@ module Bag (
 import U.Outputable
 import U.Util
 
-import MonadUtils
+import U.MonadUtils
 import Control.Monad
 import Data.Data
 import Data.List ( partition, mapAccumL )

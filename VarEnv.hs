@@ -79,7 +79,7 @@ import U.Unique
 import U.Util
 import U.Maybes
 import U.Outputable
-import StaticFlags
+-- import StaticFlags ()
 
 {-
 ************************************************************************
@@ -178,10 +178,8 @@ uniqAway' (InScope set n) var
     try k
           | debugIsOn && (k > 1000)
           = pprPanic "uniqAway loop:" (ppr k <+> text "tries" <+> ppr var <+> int n)
-          | uniq `elemVarSetByKey` set = try (k + 1)
-          | debugIsOn && opt_PprStyle_Debug && (k > 3)
-          = pprTrace "uniqAway:" (ppr k <+> text "tries" <+> ppr var <+> int n)
-            setVarUnique var uniq
+          | uniq `elemVarSetByKey` set
+          = try (k + 1)
           | otherwise = setVarUnique var uniq
           where
             uniq = deriveUnique orig_unique (n * k)

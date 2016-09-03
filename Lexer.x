@@ -99,7 +99,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 
 -- compiler/utils
-import Bag
+import U.Bag
 import U.Outputable
 import StringBuffer
 import U.FastString

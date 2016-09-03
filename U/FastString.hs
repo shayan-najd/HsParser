@@ -92,7 +92,7 @@ module U.FastString
 
 #include "HsVersions.h"
 
-import Encoding
+import U.Encoding
 import U.FastFunctions
 import Panic
 import U.Util

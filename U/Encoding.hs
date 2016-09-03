@@ -11,7 +11,7 @@
 --
 -- -----------------------------------------------------------------------------
 
-module Encoding (
+module U.Encoding (
         -- * UTF-8
         utf8DecodeChar#,
         utf8PrevChar,

@@ -212,7 +212,7 @@ import TysWiredIn( coercibleClass, unitTyCon, unitTyConKey
                  , listTyCon, constraintKind )
 import U.BasicTypes
 import U.Util
-import Bag
+import U.Bag
 import U.Maybes
 import Pair( pFst )
 import U.Outputable

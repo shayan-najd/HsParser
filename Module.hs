@@ -87,7 +87,6 @@ import U.UniqDFM
 import U.FastString
 import Binary
 import U.Util
-import {-# SOURCE #-} Packages
 import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
 import Data.Data
@@ -408,15 +407,11 @@ stableUnitIdCmp :: UnitId -> UnitId -> Ordering
 -- ^ Compares package ids lexically, rather than by their 'Unique's
 stableUnitIdCmp p1 p2 = unitIdFS p1 `compare` unitIdFS p2
 
+
+
 instance Outputable UnitId where
-   ppr pk = getPprStyle $ \sty -> sdocWithDynFlags $ \dflags ->
-    case unitIdPackageIdString dflags pk of
-      Nothing -> ftext (unitIdFS pk)
-      Just pkg -> text pkg
-           -- Don't bother qualifying if it's wired in!
-           <> (if qualPackage sty pk && not (pk `elem` wiredInUnitIds)
-                then char '@' <> ftext (unitIdFS pk)
-                else empty)
+   ppr pk = ftext (unitIdFS pk)
+
 
 instance Binary UnitId where
   put_ bh pid = put_ bh (unitIdFS pid)

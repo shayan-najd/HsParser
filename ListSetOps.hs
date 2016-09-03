@@ -49,8 +49,7 @@ insertList x xs | isIn "insert" x xs = xs
 unionLists :: (Outputable a, Eq a) => [a] -> [a] -> [a]
 -- Assumes that the arguments contain no duplicates
 unionLists xs ys
-  = WARN(length xs > 100 || length ys > 100, ppr xs $$ ppr ys)
-    [x | x <- xs, isn'tIn "unionLists" x ys] ++ ys
+  = [x | x <- xs, isn'tIn "unionLists" x ys] ++ ys
 
 minusList :: (Eq a) => [a] -> [a] -> [a]
 -- Everything in the first list that is not in the second list:

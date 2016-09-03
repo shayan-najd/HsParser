@@ -155,7 +155,7 @@ Relative to John's original paper, there are the following new features:
 
 {-# LANGUAGE BangPatterns, CPP, MagicHash #-}
 
-module Pretty (
+module U.Pretty (
         -- * The document type
         Doc, TextDetails(..),
 
@@ -202,7 +202,7 @@ module Pretty (
 
   ) where
 
-import BufWrite
+import U.BufWrite
 import U.FastString
 import Panic
 import System.IO

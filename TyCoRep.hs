@@ -153,7 +153,6 @@ import PrelNames
 import Binary
 import U.Outputable
 import DynFlags
-import StaticFlags ( opt_PprStyle_Debug )
 import U.FastString
 import Pair
 import U.UniqSupply
@@ -1880,24 +1879,15 @@ mkTyCoInScopeSet tys cos
 -- | Generates the in-scope set for the 'TCvSubst' from the types in the incoming
 -- environment. No CoVars, please!
 zipTvSubst :: [TyVar] -> [Type] -> TCvSubst
-zipTvSubst tvs tys
-  | debugIsOn
-  , not (all isTyVar tvs) || length tvs /= length tys
-  = pprTrace "zipTvSubst" (ppr tvs $$ ppr tys) emptyTCvSubst
-  | otherwise
-  = mkTvSubst (mkInScopeSet (tyCoVarsOfTypes tys)) tenv
+zipTvSubst tvs tys = mkTvSubst (mkInScopeSet (tyCoVarsOfTypes tys)) tenv
   where
     tenv = zipTyEnv tvs tys
 
 -- | Generates the in-scope set for the 'TCvSubst' from the types in the incoming
 -- environment.  No TyVars, please!
 zipCvSubst :: [CoVar] -> [Coercion] -> TCvSubst
-zipCvSubst cvs cos
-  | debugIsOn
-  , not (all isCoVar cvs) || length cvs /= length cos
-  = pprTrace "zipCvSubst" (ppr cvs $$ ppr cos) emptyTCvSubst
-  | otherwise
-  = TCvSubst (mkInScopeSet (tyCoVarsOfCos cos)) emptyTvSubstEnv cenv
+zipCvSubst cvs cos =
+  TCvSubst (mkInScopeSet (tyCoVarsOfCos cos)) emptyTvSubstEnv cenv
   where
     cenv = zipCoEnv cvs cos
 
@@ -2902,8 +2892,7 @@ pprTyTcApp p tc tys
     if gopt Opt_PrintExplicitKinds dflags then ppr_deflt
                                           else pprTyList p ty1 ty2
 
-  | not opt_PprStyle_Debug
-  , tc `hasKey` errorMessageTypeErrorFamKey
+  | tc `hasKey` errorMessageTypeErrorFamKey
   = text "(TypeError ...)"   -- Suppress detail unles you _really_ want to see
 
   | tc `hasKey` tYPETyConKey
@@ -2968,9 +2957,8 @@ pprTupleApp :: TyPrec -> (TyPrec -> a -> SDoc)
 pprTupleApp p pp tc sort tys
   | null tys
   , ConstraintTuple <- sort
-  = if opt_PprStyle_Debug then text "(%%)"
-                          else maybeParen p FunPrec $
-                               text "() :: Constraint"
+  = maybeParen p FunPrec $
+    text "() :: Constraint"
   | otherwise
   = pprPromotionQuote tc <>
     tupleParens sort (pprWithCommas (pp TopPrec) tys)

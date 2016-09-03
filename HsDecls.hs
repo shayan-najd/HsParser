@@ -102,7 +102,7 @@ import ForeignCall
 import U.Outputable
 import SrcLoc
 
-import Bag
+import U.Bag
 import U.Maybes
 import U.FastString
 import Data.Data        hiding (TyCon,Fixity)

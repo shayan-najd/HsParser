@@ -40,7 +40,7 @@ module Digraph(
 import U.Util        ( minWith, count )
 import U.Outputable
 import U.Maybes      ( expectJust )
-import MonadUtils  ( allM )
+import U.MonadUtils  ( allM )
 
 -- Extensions
 import Control.Monad    ( filterM, liftM, liftM2 )

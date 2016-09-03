@@ -9,7 +9,7 @@ import HsExpr
 import U.FastString
 import StringBuffer
 import U.Outputable
-import Pretty
+import U.Pretty
 import Platform
 
 pExp :: String -> String

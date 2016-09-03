@@ -32,7 +32,6 @@ module CoreSubst (
         cloneBndr, cloneBndrs, cloneIdBndr, cloneIdBndrs, cloneRecIdBndrs,
 
         -- ** Simple expression optimiser
-        simpleOptPgm, simpleOptExpr, simpleOptExprWith,
         exprIsConApp_maybe, exprIsLiteral_maybe, exprIsLambda_maybe,
     ) where
 
@@ -57,7 +56,6 @@ import Coercion hiding ( substCo, substCoVarBndr )
 import TyCon       ( tyConArity )
 import DataCon
 import PrelNames
-import OptCoercion ( optCoercion )
 import PprCore     ( pprCoreBindings, pprRules )
 import Module      ( Module )
 import VarSet
@@ -716,17 +714,7 @@ substRule subst subst_ru_fn rule@(Rule { ru_bndrs = bndrs, ru_args = args
     doc = text "subst-rule" <+> ppr fn_name
     (subst', bndrs') = substBndrs subst bndrs
 
-------------------
-substVects :: Subst -> [CoreVect] -> [CoreVect]
-substVects subst = map (substVect subst)
 
-------------------
-substVect :: Subst -> CoreVect -> CoreVect
-substVect subst  (Vect v rhs)        = Vect v (simpleOptExprWith subst rhs)
-substVect _subst vd@(NoVect _)       = vd
-substVect _subst vd@(VectType _ _ _) = vd
-substVect _subst vd@(VectClass _)    = vd
-substVect _subst vd@(VectInst _)     = vd
 
 ------------------
 substDVarSet :: Subst -> DVarSet -> DVarSet
@@ -855,56 +843,6 @@ a good cause. And it won't hurt other RULES and such that it comes across.
 
 -}
 
-simpleOptExpr :: CoreExpr -> CoreExpr
--- Do simple optimisation on an expression
--- The optimisation is very straightforward: just
--- inline non-recursive bindings that are used only once,
--- or where the RHS is trivial
---
--- We also inline bindings that bind a Eq# box: see
--- See Note [Getting the map/coerce RULE to work].
---
--- The result is NOT guaranteed occurrence-analysed, because
--- in  (let x = y in ....) we substitute for x; so y's occ-info
--- may change radically
-
-simpleOptExpr expr
-  = -- pprTrace "simpleOptExpr" (ppr init_subst $$ ppr expr)
-    simpleOptExprWith init_subst expr
-  where
-    init_subst = mkEmptySubst (mkInScopeSet (exprFreeVars expr))
-        -- It's potentially important to make a proper in-scope set
-        -- Consider  let x = ..y.. in \y. ...x...
-        -- Then we should remember to clone y before substituting
-        -- for x.  It's very unlikely to occur, because we probably
-        -- won't *be* substituting for x if it occurs inside a
-        -- lambda.
-        --
-        -- It's a bit painful to call exprFreeVars, because it makes
-        -- three passes instead of two (occ-anal, and go)
-
-simpleOptExprWith :: Subst -> InExpr -> OutExpr
-simpleOptExprWith subst expr = simple_opt_expr subst (occurAnalyseExpr expr)
-
-----------------------
-simpleOptPgm :: DynFlags -> Module
-             -> CoreProgram -> [CoreRule] -> [CoreVect]
-             -> IO (CoreProgram, [CoreRule], [CoreVect])
-simpleOptPgm dflags this_mod binds rules vects
-  = do { dumpIfSet_dyn dflags Opt_D_dump_occur_anal "Occurrence analysis"
-                       (pprCoreBindings occ_anald_binds $$ pprRules rules );
-
-       ; return (reverse binds', substRulesForImportedIds subst' rules, substVects subst' vects) }
-  where
-    occ_anald_binds  = occurAnalysePgm this_mod (\_ -> False) {- No rules active -}
-                                       rules vects emptyVarEnv binds
-    (subst', binds') = foldl do_one (emptySubst, []) occ_anald_binds
-
-    do_one (subst, binds') bind
-      = case simple_opt_bind subst bind of
-          (subst', Nothing)    -> (subst', binds')
-          (subst', Just bind') -> (subst', bind':binds')
-
 ----------------------
 type InVar   = Var
 type OutVar  = Var
@@ -915,120 +853,6 @@ type OutExpr = CoreExpr
 
 -- In these functions the substitution maps InVar -> OutExpr
 
-----------------------
-simple_opt_expr :: Subst -> InExpr -> OutExpr
-simple_opt_expr subst expr
-  = go expr
-  where
-    in_scope_env = (substInScope subst, simpleUnfoldingFun)
-
-    go (Var v)          = lookupIdSubst (text "simpleOptExpr") subst v
-    go (App e1 e2)      = simple_app subst e1 [go e2]
-    go (Type ty)        = Type     (substTy subst ty)
-    go (Coercion co)    = Coercion (optCoercion (getTCvSubst subst) co)
-    go (Lit lit)        = Lit lit
-    go (Tick tickish e) = mkTick (substTickish subst tickish) (go e)
-    go (Cast e co)      | isReflCo co' = go e
-                        | otherwise    = Cast (go e) co'
-                        where
-                          co' = optCoercion (getTCvSubst subst) co
-
-    go (Let bind body) = case simple_opt_bind subst bind of
-                           (subst', Nothing)   -> simple_opt_expr subst' body
-                           (subst', Just bind) -> Let bind (simple_opt_expr subst' body)
-
-    go lam@(Lam {})     = go_lam [] subst lam
-    go (Case e b ty as)
-       -- See Note [Getting the map/coerce RULE to work]
-      | isDeadBinder b
-      , Just (con, _tys, es) <- exprIsConApp_maybe in_scope_env e'
-      , Just (altcon, bs, rhs) <- findAlt (DataAlt con) as
-      = case altcon of
-          DEFAULT -> go rhs
-          _       -> mkLets (catMaybes mb_binds) $ simple_opt_expr subst' rhs
-            where (subst', mb_binds) = mapAccumL simple_opt_out_bind subst
-                                                 (zipEqual "simpleOptExpr" bs es)
-
-         -- Note [Getting the map/coerce RULE to work]
-      | isDeadBinder b
-      , [(DEFAULT, _, rhs)] <- as
-      , isCoercionType (varType b)
-      , (Var fun, _args) <- collectArgs e
-      , fun `hasKey` coercibleSCSelIdKey
-         -- without this last check, we get #11230
-      = go rhs
-
-      | otherwise
-      = Case e' b' (substTy subst ty)
-                   (map (go_alt subst') as)
-        where
-          e' = go e
-          (subst', b') = subst_opt_bndr subst b
-
-    ----------------------
-    go_alt subst (con, bndrs, rhs)
-      = (con, bndrs', simple_opt_expr subst' rhs)
-      where
-        (subst', bndrs') = subst_opt_bndrs subst bndrs
-
-    ----------------------
-    -- go_lam tries eta reduction
-    go_lam bs' subst (Lam b e)
-       = go_lam (b':bs') subst' e
-       where
-         (subst', b') = subst_opt_bndr subst b
-    go_lam bs' subst e
-       | Just etad_e <- tryEtaReduce bs e' = etad_e
-       | otherwise                         = mkLams bs e'
-       where
-         bs = reverse bs'
-         e' = simple_opt_expr subst e
-
-----------------------
--- simple_app collects arguments for beta reduction
-simple_app :: Subst -> InExpr -> [OutExpr] -> CoreExpr
-simple_app subst (App e1 e2) as
-  = simple_app subst e1 (simple_opt_expr subst e2 : as)
-simple_app subst (Lam b e) (a:as)
-  = case maybe_substitute subst b a of
-      Just ext_subst -> simple_app ext_subst e as
-      Nothing        -> Let (NonRec b2 a) (simple_app subst' e as)
-  where
-    (subst', b') = subst_opt_bndr subst b
-    b2 = add_info subst' b b'
-simple_app subst (Var v) as
-  | isCompulsoryUnfolding (idUnfolding v)
-  , isAlwaysActive (idInlineActivation v)
-  -- See Note [Unfold compulsory unfoldings in LHSs]
-  =  simple_app subst (unfoldingTemplate (idUnfolding v)) as
-simple_app subst (Tick t e) as
-  -- Okay to do "(Tick t e) x ==> Tick t (e x)"?
-  | t `tickishScopesLike` SoftScope
-  = mkTick t $ simple_app subst e as
-simple_app subst e as
-  = foldl App (simple_opt_expr subst e) as
-
-----------------------
-simple_opt_bind,simple_opt_bind' :: Subst -> CoreBind -> (Subst, Maybe CoreBind)
-simple_opt_bind s b               -- Can add trace stuff here
-  = simple_opt_bind' s b
-
-simple_opt_bind' subst (Rec prs)
-  = (subst'', res_bind)
-  where
-    res_bind            = Just (Rec (reverse rev_prs'))
-    (subst', bndrs')    = subst_opt_bndrs subst (map fst prs)
-    (subst'', rev_prs') = foldl do_pr (subst', []) (prs `zip` bndrs')
-    do_pr (subst, prs) ((b,r), b')
-       = case maybe_substitute subst b r2 of
-           Just subst' -> (subst', prs)
-           Nothing     -> (subst,  (b2,r2):prs)
-       where
-         b2 = add_info subst b b'
-         r2 = simple_opt_expr subst r
-
-simple_opt_bind' subst (NonRec b r)
-  = simple_opt_out_bind subst (b, simple_opt_expr subst r)
 
 ----------------------
 simple_opt_out_bind :: Subst -> (InVar, OutExpr) -> (Subst, Maybe CoreBind)
@@ -1429,25 +1253,6 @@ exprIsLambda_maybe (in_scope_set, id_unf) (Cast casted_e co)
     = --pprTrace "exprIsLambda_maybe:Cast" (vcat [ppr casted_e,ppr co,ppr res)])
       res
 
--- Another attempt: See if we find a partial unfolding
-exprIsLambda_maybe (in_scope_set, id_unf) e
-    | (Var f, as, ts) <- collectArgsTicks tickishFloatable e
-    , idArity f > length (filter isValArg as)
-    -- Make sure there is hope to get a lambda
-    , Just rhs <- expandUnfolding_maybe (id_unf f)
-    -- Optimize, for beta-reduction
-    , let e' =  simpleOptExprWith (mkEmptySubst in_scope_set) (rhs `mkApps` as)
-    -- Recurse, because of possible casts
-    , Just (x', e'', ts') <- exprIsLambda_maybe (in_scope_set, id_unf) e'
-    , let res = Just (x', e'', ts++ts')
-    = -- pprTrace "exprIsLambda_maybe:Unfold" (vcat [ppr e, ppr (x',e'')])
-      res
-
-exprIsLambda_maybe _ _e
-    = -- pprTrace "exprIsLambda_maybe:Fail" (vcat [ppr _e])
-      Nothing
-
-
 pushCoercionIntoLambda
     :: InScopeSet -> Var -> CoreExpr -> Coercion -> Maybe (Var, CoreExpr)
 pushCoercionIntoLambda in_scope x e co
@@ -1466,6 +1271,3 @@ pushCoercionIntoLambda in_scope x e co
                                 x
                                 (mkCast (Var x') co1)
       in Just (x', subst_expr (text "pushCoercionIntoLambda") subst e `mkCast` co2)
-    | otherwise
-    = pprTrace "exprIsLambda_maybe: Unexpected lambda in case" (ppr (Lam x e))
-      Nothing

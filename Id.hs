@@ -136,7 +136,6 @@ import U.Unique
 import U.UniqSupply
 import U.FastString
 import U.Util
-import StaticFlags
 
 -- infixl so you can say (id `set` a `set` b)
 infixl  1 `setIdUnfoldingLazily`,
@@ -721,11 +720,7 @@ typeOneShot ty
    | otherwise          = NoOneShotInfo
 
 isStateHackType :: Type -> Bool
-isStateHackType ty
-  | opt_NoStateHack
-  = False
-  | otherwise
-  = case tyConAppTyCon_maybe ty of
+isStateHackType ty = case tyConAppTyCon_maybe ty of
         Just tycon -> tycon == statePrimTyCon
         _          -> False
         -- This is a gross hack.  It claims that

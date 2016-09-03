@@ -68,7 +68,6 @@ import Coercion
 import TyCon
 import U.Unique
 import U.Outputable
-import TysPrim
 import DynFlags
 import U.FastString
 import U.Maybes
@@ -107,8 +106,6 @@ exprType (Lam binder expr)   = mkPiType binder (exprType expr)
 exprType e@(App _ _)
   = case collectArgs e of
         (fun, args) -> applyTypeToArgs e (exprType fun) args
-
-exprType other = pprTrace "exprType" (pprCoreExpr other) alphaTy
 
 coreAltType :: CoreAlt -> Type
 -- ^ Returns the type of the alternatives right hand side

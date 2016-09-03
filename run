@@ -7,4 +7,9 @@ rm *.hi-boot
 rm *.o
 rm *.o-boot
 rm *~
+rm ./U/*.hi
+rm ./U/*.hi-boot
+rm ./U/*.o
+rm ./U/*.o-boot
+rm ./U/*~
 ghci Parser.hs -fobject-code -fwarn-unused-imports

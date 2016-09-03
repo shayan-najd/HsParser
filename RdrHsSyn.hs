@@ -83,7 +83,7 @@ import PrelNames        ( forall_tv_RDR, eqTyCon_RDR, allNameStrings )
 import SrcLoc
 import U.Unique           ( hasKey )
 import OrdList          ( OrdList, fromOL )
-import Bag              ( emptyBag, consBag )
+import U.Bag              ( emptyBag, consBag )
 import U.Outputable
 import U.FastString
 import U.Maybes
@@ -91,7 +91,7 @@ import U.Util
 import ApiAnnotation
 import Data.List
 import qualified GHC.LanguageExtensions as LangExt
-import MonadUtils
+import U.MonadUtils
 
 import Control.Monad
 import Text.ParserCombinators.ReadP as ReadP

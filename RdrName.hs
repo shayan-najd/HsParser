@@ -76,7 +76,7 @@ import U.Outputable
 import U.Unique
 import U.UniqFM
 import U.Util
-import StaticFlags( opt_PprStyle_Debug )
+
 
 import Data.Data
 import Data.List( sortBy )
@@ -641,7 +641,6 @@ greUsedRdrName :: GlobalRdrElt -> RdrName
 greUsedRdrName gre@GRE{ gre_name = name, gre_lcl = lcl, gre_imp = iss }
   | lcl, Just mod <- nameModule_maybe name = Qual (moduleName mod)     occ
   | not (null iss), is <- bestImport iss   = Qual (is_as (is_decl is)) occ
-  | otherwise                              = pprTrace "greUsedRdrName" (ppr gre) (Unqual occ)
   where
     occ = greOccName gre
 
@@ -1115,8 +1114,7 @@ pprNameProvenance :: GlobalRdrElt -> SDoc
 -- ^ Print out one place where the name was define/imported
 -- (With -dppr-debug, print them all)
 pprNameProvenance (GRE { gre_name = name, gre_lcl = lcl, gre_imp = iss })
-  | opt_PprStyle_Debug = vcat pp_provs
-  | otherwise          = head pp_provs
+  = head pp_provs
   where
     pp_provs = pp_lcl ++ map pp_is iss
     pp_lcl = if lcl then [text "defined at" <+> ppr (nameSrcLoc name)]

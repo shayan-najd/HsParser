@@ -12,7 +12,7 @@
 --
 -----------------------------------------------------------------------------
 
-module BufWrite (
+module U.BufWrite (
         BufHandle(..),
         newBufHandle,
         bPutChar,

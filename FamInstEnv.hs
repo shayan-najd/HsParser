@@ -58,7 +58,7 @@ import Var
 import Pair
 import SrcLoc
 import U.FastString
-import MonadUtils
+import U.MonadUtils
 import Control.Monad
 import Data.Function ( on )
 import Data.List( mapAccumL )
