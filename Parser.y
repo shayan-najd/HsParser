@@ -38,9 +38,6 @@ import Control.Applicative ((<$))
 -- compiler/hsSyn
 import HsSyn
 
--- compiler/main
-import HscTypes         ( IsBootInterface, WarningTxt(..) )
-
 -- compiler/utils
 import OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
@@ -78,6 +75,7 @@ import Util             ( looksLikePackageName )
 import Prelude
 
 import qualified GHC.LanguageExtensions as LangExt
+
 }
 
 %expect 36 -- shift/reduce conflicts

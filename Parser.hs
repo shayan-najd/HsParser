@@ -30,9 +30,6 @@ import Control.Applicative ((<$))
 -- compiler/hsSyn
 import HsSyn
 
--- compiler/main
-import HscTypes         ( IsBootInterface, WarningTxt(..) )
-
 -- compiler/utils
 import OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )

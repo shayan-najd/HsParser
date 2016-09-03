@@ -27,7 +27,7 @@ module HsSyn (
         module HsUtils,
         module HsDoc,
         Fixity,
-
+        IsBootInterface,
         HsModule(..)
 ) where
 
@@ -139,3 +139,5 @@ pp_mb Nothing  = empty
 pp_nonnull :: Outputable t => [t] -> SDoc
 pp_nonnull [] = empty
 pp_nonnull xs = vcat (map ppr xs)
+
+type IsBootInterface = Bool

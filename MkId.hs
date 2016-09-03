@@ -14,10 +14,9 @@ have a standard form, namely:
 
 {-# LANGUAGE CPP #-}
 
-module MkId (
+module MkId (DataConBoxer,mkDataConWorkId,mkDictSelId,magicDictId) where {-
         mkDictFunId, mkDictFunTy, mkDictSelId, mkDictSelRhs,
-
-        mkPrimOpId, mkFCallId,
+        mkFCallId,
 
         wrapNewTypeBody, unwrapNewTypeBody,
         wrapFamInstBody, unwrapFamInstScrut,
@@ -30,24 +29,23 @@ module MkId (
         unsafeCoerceName, unsafeCoerceId, realWorldPrimId,
         voidPrimId, voidArgId,
         nullAddrId, seqId, lazyId, lazyIdKey, runRWId,
-        coercionTokenId, magicDictId, coerceId,
+        coercionTokenId, magicDictId,
         proxyHashId,
 
         -- Re-export error Ids
-        module PrelRules
-    ) where
+    ) where -}
 
 #include "HsVersions.h"
 
 import Rules
 import TysPrim
 import TysWiredIn
-import PrelRules
+-- import PrelRules
 import Type
 import FamInstEnv
 import Coercion
 import TcType
-import MkCore
+-- import MkCore
 import CoreUtils        ( exprType, mkCast )
 import CoreUnfold
 import Literal
@@ -57,7 +55,6 @@ import Class
 import NameSet
 import VarSet
 import Name
-import PrimOp
 import ForeignCall
 import DataCon
 import Id
@@ -75,8 +72,6 @@ import Outputable
 import FastString
 import ListSetOps
 import qualified GHC.LanguageExtensions as LangExt
-
-import Data.Maybe       ( maybeToList )
 
 {-
 ************************************************************************
@@ -121,7 +116,6 @@ is right here.
 wiredInIds :: [Id]
 wiredInIds
   =  [lazyId, dollarId, oneShotId, runRWId]
-  ++ errorIds           -- Defined in MkCore
   ++ ghcPrimIds
 
 -- These Ids are exported from GHC.Prim
@@ -135,7 +129,6 @@ ghcPrimIds
     nullAddrId,
     seqId,
     magicDictId,
-    coerceId,
     proxyHashId
     ]
 
@@ -924,36 +917,6 @@ unwrapTypeUnbranchedFamInstScrut axiom
 ************************************************************************
 -}
 
-mkPrimOpId :: PrimOp -> Id
-mkPrimOpId prim_op
-  = id
-  where
-    (tyvars,arg_tys,res_ty, arity, strict_sig) = primOpSig prim_op
-    ty   = mkSpecForAllTys tyvars (mkFunTys arg_tys res_ty)
-    name = mkWiredInName gHC_PRIM (primOpOcc prim_op)
-                         (mkPrimOpIdUnique (primOpTag prim_op))
-                         (AnId id) UserSyntax
-    id   = mkGlobalId (PrimOpId prim_op) name ty info
-
-    info = noCafIdInfo
-           `setRuleInfo`          mkRuleInfo (maybeToList $ primOpRules name prim_op)
-           `setArityInfo`         arity
-           `setStrictnessInfo`    strict_sig
-           `setInlinePragInfo`    neverInlinePragma
-               -- We give PrimOps a NOINLINE pragma so that we don't
-               -- get silly warnings from Desugar.dsRule (the inline_shadows_rule
-               -- test) about a RULE conflicting with a possible inlining
-               -- cf Trac #7287
-
--- For each ccall we manufacture a separate CCallOpId, giving it
--- a fresh unique, a type that is correct for this particular ccall,
--- and a CCall structure that gives the correct details about calling
--- convention etc.
---
--- The *name* of this Id is a local name whose OccName gives the full
--- details of the ccall, type and all.  This means that the interface
--- file reader can reconstruct a suitable Id
-
 mkFCallId :: DynFlags -> Unique -> ForeignCall -> Type -> Id
 mkFCallId dflags uniq fcall ty
   = ASSERT( isEmptyVarSet (tyCoVarsOfType ty) )
@@ -1040,7 +1003,7 @@ another gun with which to shoot yourself in the foot.
 
 lazyIdName, unsafeCoerceName, nullAddrName, seqName,
    realWorldName, voidPrimIdName, coercionTokenName,
-   magicDictName, coerceName, proxyName, dollarName, oneShotName,
+   magicDictName, proxyName, dollarName, oneShotName,
    runRWName :: Name
 unsafeCoerceName  = mkWiredInIdName gHC_PRIM  (fsLit "unsafeCoerce#")  unsafeCoerceIdKey  unsafeCoerceId
 nullAddrName      = mkWiredInIdName gHC_PRIM  (fsLit "nullAddr#")      nullAddrIdKey      nullAddrId
@@ -1050,7 +1013,6 @@ voidPrimIdName    = mkWiredInIdName gHC_PRIM  (fsLit "void#")          voidPrimI
 lazyIdName        = mkWiredInIdName gHC_MAGIC (fsLit "lazy")           lazyIdKey          lazyId
 coercionTokenName = mkWiredInIdName gHC_PRIM  (fsLit "coercionToken#") coercionTokenIdKey coercionTokenId
 magicDictName     = mkWiredInIdName gHC_PRIM  (fsLit "magicDict")      magicDictKey       magicDictId
-coerceName        = mkWiredInIdName gHC_PRIM  (fsLit "coerce")         coerceKey          coerceId
 proxyName         = mkWiredInIdName gHC_PRIM  (fsLit "proxy#")         proxyHashKey       proxyHashId
 dollarName        = mkWiredInIdName gHC_BASE  (fsLit "$")              dollarIdKey        dollarId
 oneShotName       = mkWiredInIdName gHC_MAGIC (fsLit "oneShot")        oneShotKey         oneShotId
@@ -1206,25 +1168,6 @@ magicDictId = pcMiscPrelId magicDictName ty info
   info = noCafIdInfo `setInlinePragInfo` neverInlinePragma
   ty   = mkSpecForAllTys [alphaTyVar] alphaTy
 
---------------------------------------------------------------------------------
-
-coerceId :: Id
-coerceId = pcMiscPrelId coerceName ty info
-  where
-    info = noCafIdInfo `setInlinePragInfo` alwaysInlinePragma
-                       `setUnfoldingInfo`  mkCompulsoryUnfolding rhs
-    eqRTy     = mkTyConApp coercibleTyCon [ liftedTypeKind
-                                          , alphaTy, betaTy ]
-    eqRPrimTy = mkTyConApp eqReprPrimTyCon [ liftedTypeKind
-                                           , liftedTypeKind
-                                           , alphaTy, betaTy ]
-    ty        = mkSpecForAllTys [alphaTyVar, betaTyVar] $
-                mkFunTys [eqRTy, alphaTy] betaTy
-
-    [eqR,x,eq] = mkTemplateLocals [eqRTy, alphaTy, eqRPrimTy]
-    rhs = mkLams [alphaTyVar, betaTyVar, eqR, x] $
-          mkWildCase (Var eqR) eqRTy betaTy $
-          [(DataAlt coercibleDataCon, [eq], Cast (Var x) (mkCoVarCo eq))]
 
 {-
 Note [dollarId magic]
