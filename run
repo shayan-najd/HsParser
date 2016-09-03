@@ -1,0 +1,10 @@
+rm Lexer.hs
+alex Lexer.x
+rm Parser.hs
+happy -agc --strict Parser.y -idetailed-info
+rm *.hi
+rm *.hi-boot
+rm *.o
+rm *.o-boot
+rm *~
+ghci Parser.hs -fobject-code -fwarn-unused-imports
