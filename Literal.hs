@@ -26,7 +26,7 @@ module Literal
 
         -- ** Predicates on Literals and their contents
         , litIsDupable, litIsTrivial, litIsLifted
-        , inIntRange, inWordRange, tARGET_MAX_INT, inCharRange
+        , inIntRange, inWordRange, tARGET_MAX_INT
         , isZeroLit
         , litFitsInChar
         , litValue
@@ -50,7 +50,7 @@ import Outputable
 import FastString
 import BasicTypes
 import Binary
-import Constants
+-- import Constants
 import DynFlags
 import UniqFM
 import Util
@@ -254,10 +254,10 @@ mkLitInteger = LitInteger
 inIntRange, inWordRange :: DynFlags -> Integer -> Bool
 inIntRange  dflags x = x >= tARGET_MIN_INT dflags && x <= tARGET_MAX_INT dflags
 inWordRange dflags x = x >= 0                     && x <= tARGET_MAX_WORD dflags
-
+{-
 inCharRange :: Char -> Bool
 inCharRange c =  c >= '\0' && c <= chr tARGET_MAX_CHAR
-
+-}
 -- | Tests whether the literal represents a zero of whatever type it is
 isZeroLit :: Literal -> Bool
 isZeroLit (MachInt    0) = True

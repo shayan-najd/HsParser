@@ -160,14 +160,13 @@ import {-# SOURCE #-} Packages (PackageState, emptyPackageState)
 import DriverPhases     ( Phase(..), phaseInputExt )
 import Config
 import CmdLineParser
-import Constants
+-- import Constants
 import Panic
 import Util
 import Maybes
 import MonadUtils
 import qualified Pretty
 import SrcLoc
-import BasicTypes       ( IntWithInf, treatZeroAsInf )
 import FastString
 import Outputable
 import Foreign.C        ( CInt(..) )
@@ -680,9 +679,6 @@ data DynFlags = DynFlags {
   importPaths           :: [FilePath],
   mainModIs             :: Module,
   mainFunIs             :: Maybe String,
-  reductionDepth        :: IntWithInf,   -- ^ Typechecker maximum stack depth
-  solverIterations      :: IntWithInf,   -- ^ Number of iterations in the constraints solver
-                                         --   Typically only 1 is needed
 
   thisPackage           :: UnitId,   -- ^ key of package currently being compiled
 
@@ -1466,8 +1462,6 @@ defaultDynFlags mySettings =
         importPaths             = ["."],
         mainModIs               = mAIN,
         mainFunIs               = Nothing,
-        reductionDepth          = treatZeroAsInf mAX_REDUCTION_DEPTH,
-        solverIterations        = treatZeroAsInf mAX_SOLVER_ITERATIONS,
 
         thisPackage             = mainUnitId,
 
@@ -2862,18 +2856,6 @@ dynamic_flags_deps = [
       (noArg (\d -> d { liberateCaseThreshold = Nothing }))
   , make_ord_flag defFlag "frule-check"
       (sepArg (\s d -> d { ruleCheck = Just s }))
-  , make_ord_flag defFlag "freduction-depth"
-      (intSuffix (\n d -> d { reductionDepth = treatZeroAsInf n }))
-  , make_ord_flag defFlag "fconstraint-solver-iterations"
-      (intSuffix (\n d -> d { solverIterations = treatZeroAsInf n }))
-  , (Deprecated, defFlag "fcontext-stack"
-      (intSuffixM (\n d ->
-       do { deprecate $ "use -freduction-depth=" ++ show n ++ " instead"
-          ; return $ d { reductionDepth = treatZeroAsInf n } })))
-  , (Deprecated, defFlag "ftype-function-depth"
-      (intSuffixM (\n d ->
-       do { deprecate $ "use -freduction-depth=" ++ show n ++ " instead"
-          ; return $ d { reductionDepth = treatZeroAsInf n } })))
   , make_ord_flag defFlag "fstrictness-before"
       (intSuffix (\n d -> d { strictnessBefore = n : strictnessBefore d }))
   , make_ord_flag defFlag "ffloat-lam-args"

@@ -112,7 +112,8 @@ import BasicTypes
 import SrcLoc
 import FastString
 import Outputable
-import Constants
+
+mAX_TUPLE_SIZE = 62
 
 {-
 ************************************************************************

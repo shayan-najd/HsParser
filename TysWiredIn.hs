@@ -124,7 +124,7 @@ import TysPrim
 -- others:
 import CoAxiom
 import Id
-import Constants        ( mAX_TUPLE_SIZE, mAX_CTUPLE_SIZE )
+-- import Constants        ( mAX_TUPLE_SIZE, mAX_CTUPLE_SIZE )
 import Module           ( Module )
 import Type
 import DataCon
@@ -145,6 +145,14 @@ import FastString
 import Outputable
 import Util
 import BooleanFormula   ( mkAnd )
+
+mAX_TUPLE_SIZE :: Int
+mAX_TUPLE_SIZE = 62 -- Should really match the number
+                    -- of decls in Data.Tuple
+
+mAX_CTUPLE_SIZE :: Int   -- Constraint tuples
+mAX_CTUPLE_SIZE = 62     -- Should match the number of decls in GHC.Classes
+
 
 alpha_tyvar :: [TyVar]
 alpha_tyvar = [alphaTyVar]

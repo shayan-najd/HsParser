@@ -101,7 +101,7 @@ module TyCon(
         -- * Primitive representations of Types
         PrimRep(..), PrimElemRep(..),
         isVoidRep, isGcPtrRep,
-        primRepSizeW, primElemRepSizeB,
+        primElemRepSizeB,
         primRepIsFloat,
 
         -- * Recursion breaking
@@ -120,7 +120,6 @@ import Binary
 import Var
 import Class
 import BasicTypes
-import DynFlags
 import ForeignCall
 import Name
 import NameEnv
@@ -130,7 +129,7 @@ import Maybes
 import Outputable
 import FastStringEnv
 import FieldLabel
-import Constants
+-- import Constants
 import Util
 import Unique( tyConRepNameUnique, dataConRepNameUnique )
 import UniqSet
@@ -1150,6 +1149,7 @@ isVoidRep _other  = False
 isGcPtrRep :: PrimRep -> Bool
 isGcPtrRep PtrRep = True
 isGcPtrRep _      = False
+{-
 
 -- | Find the size of a 'PrimRep', in words
 primRepSizeW :: DynFlags -> PrimRep -> Int
@@ -1163,7 +1163,7 @@ primRepSizeW _      AddrRep          = 1
 primRepSizeW _      PtrRep           = 1
 primRepSizeW _      VoidRep          = 0
 primRepSizeW dflags (VecRep len rep) = len * primElemRepSizeB rep `quot` wORD_SIZE dflags
-
+-}
 primElemRepSizeB :: PrimElemRep -> Int
 primElemRepSizeB Int8ElemRep   = 1
 primElemRepSizeB Int16ElemRep  = 2
