@@ -30,7 +30,7 @@ module PrimOp (
 #include "HsVersions.h"
 
 import TysPrim
-import TysWiredIn
+import TysWiredIn2
 
 import CmmType
 import Demand

@@ -7,7 +7,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE BangPatterns #-}
 
-module ErrUtils (
+module U.ErrUtils (
         -- * Basic types
         Validity(..), andValid, allValid, isValid, getInvalids,
         Severity(..),
@@ -32,10 +32,6 @@ module ErrUtils (
         -- * Utilities
         doIfSet, doIfSet_dyn,
 
-        -- * Dump files
-        dumpIfSet, dumpIfSet_dyn, dumpIfSet_dyn_printer,
-        mkDumpDoc, dumpSDoc,
-
         -- * Issuing messages during compilation
         putMsg, printInfoForUser, printOutputForUser,
         logInfo, logOutput,
@@ -44,7 +40,6 @@ module ErrUtils (
         compilationProgressMsg,
         showPass, withTiming,
         debugTraceMsg,
-        ghcExit,
         prettyPrintGhcErrors,
     ) where
 
@@ -57,18 +52,10 @@ import Panic
 import SrcLoc
 import DynFlags
 
-import System.Directory
-import System.Exit      ( ExitCode(..), exitWith )
-import System.FilePath  ( takeDirectory, (</>) )
 import Data.List
-import qualified Data.Set as Set
-import Data.IORef
 import Data.Maybe       ( fromMaybe )
 import Data.Ord
-import Data.Time
-import Control.Monad
 import Control.Monad.IO.Class
-import System.IO
 import GHC.Conc         ( getAllocationCounter )
 import System.CPUTime
 
@@ -277,11 +264,6 @@ sortMsgBag dflags = sortBy (maybeFlip $ comparing errMsgSpan) . bagToList
           | fromMaybe False (fmap reverseErrors dflags) = flip
           | otherwise                                   = id
 
-ghcExit :: DynFlags -> Int -> IO ()
-ghcExit dflags val
-  | val == 0  = exitWith ExitSuccess
-  | otherwise = do errorMsg dflags (text "\nCompilation had errors\n\n")
-                   exitWith (ExitFailure val)
 
 doIfSet :: Bool -> IO () -> IO ()
 doIfSet flag action | flag      = action
@@ -290,136 +272,6 @@ doIfSet flag action | flag      = action
 doIfSet_dyn :: DynFlags -> GeneralFlag -> IO () -> IO()
 doIfSet_dyn dflags flag action | gopt flag dflags = action
                                | otherwise        = return ()
-
--- -----------------------------------------------------------------------------
--- Dumping
-
-dumpIfSet :: DynFlags -> Bool -> String -> SDoc -> IO ()
-dumpIfSet dflags flag hdr doc
-  | not flag   = return ()
-  | otherwise  = log_action dflags
-                            dflags
-                            NoReason
-                            SevDump
-                            noSrcSpan
-                            defaultDumpStyle
-                            (mkDumpDoc hdr doc)
-
--- | a wrapper around 'dumpSDoc'.
--- First check whether the dump flag is set
--- Do nothing if it is unset
-dumpIfSet_dyn :: DynFlags -> DumpFlag -> String -> SDoc -> IO ()
-dumpIfSet_dyn dflags flag hdr doc
-  = when (dopt flag dflags) $ dumpSDoc dflags alwaysQualify flag hdr doc
-
--- | a wrapper around 'dumpSDoc'.
--- First check whether the dump flag is set
--- Do nothing if it is unset
---
--- Unlike 'dumpIfSet_dyn',
--- has a printer argument but no header argument
-dumpIfSet_dyn_printer :: PrintUnqualified
-                      -> DynFlags -> DumpFlag -> SDoc -> IO ()
-dumpIfSet_dyn_printer printer dflags flag doc
-  = when (dopt flag dflags) $ dumpSDoc dflags printer flag "" doc
-
-mkDumpDoc :: String -> SDoc -> SDoc
-mkDumpDoc hdr doc
-   = vcat [blankLine,
-           line <+> text hdr <+> line,
-           doc,
-           blankLine]
-     where
-        line = text (replicate 20 '=')
-
-
--- | Write out a dump.
--- If --dump-to-file is set then this goes to a file.
--- otherwise emit to stdout.
---
--- When @hdr@ is empty, we print in a more compact format (no separators and
--- blank lines)
---
--- The 'DumpFlag' is used only to choose the filename to use if @--dump-to-file@
--- is used; it is not used to decide whether to dump the output
-dumpSDoc :: DynFlags -> PrintUnqualified -> DumpFlag -> String -> SDoc -> IO ()
-dumpSDoc dflags print_unqual flag hdr doc
- = do let mFile = chooseDumpFile dflags flag
-          dump_style = mkDumpStyle print_unqual
-      case mFile of
-            Just fileName
-                 -> do
-                        let gdref = generatedDumps dflags
-                        gd <- readIORef gdref
-                        let append = Set.member fileName gd
-                            mode = if append then AppendMode else WriteMode
-                        when (not append) $
-                            writeIORef gdref (Set.insert fileName gd)
-                        createDirectoryIfMissing True (takeDirectory fileName)
-                        handle <- openFile fileName mode
-
-                        -- We do not want the dump file to be affected by
-                        -- environment variables, but instead to always use
-                        -- UTF8. See:
-                        -- https://ghc.haskell.org/trac/ghc/ticket/10762
-                        hSetEncoding handle utf8
-
-                        doc' <- if null hdr
-                                then return doc
-                                else do t <- getCurrentTime
-                                        let d = text (show t)
-                                             $$ blankLine
-                                             $$ doc
-                                        return $ mkDumpDoc hdr d
-                        defaultLogActionHPrintDoc dflags handle doc' dump_style
-                        hClose handle
-
-            -- write the dump to stdout
-            Nothing -> do
-              let (doc', severity)
-                    | null hdr  = (doc, SevOutput)
-                    | otherwise = (mkDumpDoc hdr doc, SevDump)
-              log_action dflags dflags NoReason severity noSrcSpan dump_style doc'
-
-
--- | Choose where to put a dump file based on DynFlags
---
-chooseDumpFile :: DynFlags -> DumpFlag -> Maybe FilePath
-chooseDumpFile dflags flag
-
-        | gopt Opt_DumpToFile dflags || flag == Opt_D_th_dec_file
-        , Just prefix <- getPrefix
-        = Just $ setDir (prefix ++ (beautifyDumpName flag))
-
-        | otherwise
-        = Nothing
-
-        where getPrefix
-                 -- dump file location is being forced
-                 --      by the --ddump-file-prefix flag.
-               | Just prefix <- dumpPrefixForce dflags
-                  = Just prefix
-                 -- dump file location chosen by DriverPipeline.runPipeline
-               | Just prefix <- dumpPrefix dflags
-                  = Just prefix
-                 -- we haven't got a place to put a dump file.
-               | otherwise
-                  = Nothing
-              setDir f = case dumpDir dflags of
-                         Just d  -> d </> f
-                         Nothing ->       f
-
--- | Build a nice file name from name of a 'DumpFlag' constructor
-beautifyDumpName :: DumpFlag -> String
-beautifyDumpName Opt_D_th_dec_file = "th.hs"
-beautifyDumpName flag
- = let str = show flag
-       suff = case stripPrefix "Opt_D_" str of
-              Just x -> x
-              Nothing -> panic ("Bad flag name: " ++ str)
-       dash = map (\c -> if c == '_' then '-' else c) suff
-   in dash
-
 
 -- -----------------------------------------------------------------------------
 -- Outputting messages from the compiler

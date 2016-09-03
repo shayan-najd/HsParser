@@ -58,7 +58,7 @@ import ApiAnnotation
 import ForeignCall
 import TysPrim          ( eqPrimTyCon )
 import PrelNames        ( eqTyCon_RDR )
-import TysWiredIn       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
+import TysWiredIn2      ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
                           unboxedUnitTyCon, unboxedUnitDataCon,
                           listTyCon_RDR, parrTyCon_RDR, consDataCon_RDR )
 
@@ -2479,28 +2479,28 @@ happy_n_nonterms = 269 :: Int
 
 happyReduce_11 = happySpecReduce_1  0# happyReduction_11
 happyReduction_11 happy_x_1
-	 =  case happyOut258 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut258 happy_x_1 of { happy_var_1 ->
 	happyIn14
 		 (happy_var_1
 	)}
 
 happyReduce_12 = happySpecReduce_1  0# happyReduction_12
 happyReduction_12 happy_x_1
-	 =  case happyOut230 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut230 happy_x_1 of { happy_var_1 ->
 	happyIn14
 		 (happy_var_1
 	)}
 
 happyReduce_13 = happySpecReduce_1  0# happyReduction_13
 happyReduction_13 happy_x_1
-	 =  case happyOut252 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut252 happy_x_1 of { happy_var_1 ->
 	happyIn14
 		 (happy_var_1
 	)}
 
 happyReduce_14 = happySpecReduce_1  0# happyReduction_14
 happyReduction_14 happy_x_1
-	 =  case happyOut237 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut237 happy_x_1 of { happy_var_1 ->
 	happyIn14
 		 (happy_var_1
 	)}
@@ -2510,9 +2510,9 @@ happyReduction_15 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ getRdrName funTyCon)
                                [mj AnnOpenP happy_var_1,mu AnnRarrow happy_var_2,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn14 r))
@@ -2526,13 +2526,13 @@ happyReduction_16 (happy_x_7 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut16 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut274 happy_x_3 of { happy_var_3 -> 
-	case happyOut18 happy_x_4 of { happy_var_4 -> 
-	case happyOut26 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
-	case happyOut19 happy_x_7 of { happy_var_7 -> 
+	 = happyThen (case happyOut16 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut274 happy_x_3 of { happy_var_3 ->
+	case happyOut18 happy_x_4 of { happy_var_4 ->
+	case happyOut26 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
+	case happyOut19 happy_x_7 of { happy_var_7 ->
 	( fileSrcSpan >>= \ loc ->
                 ams (L loc (HsModule (Just happy_var_3) happy_var_5 (fst $ snd happy_var_7)
                               (snd $ snd happy_var_7) happy_var_4 happy_var_1)
@@ -2543,7 +2543,7 @@ happyReduction_16 (happy_x_7 `HappyStk`
 happyReduce_17 = happyMonadReduce 1# 1# happyReduction_17
 happyReduction_17 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut20 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut20 happy_x_1 of { happy_var_1 ->
 	( fileSrcSpan >>= \ loc ->
                    ams (L loc (HsModule Nothing Nothing
                                (fst $ snd happy_var_1) (snd $ snd happy_var_1) Nothing Nothing))
@@ -2552,7 +2552,7 @@ happyReduction_17 (happy_x_1 `HappyStk`
 
 happyReduce_18 = happySpecReduce_1  2# happyReduction_18
 happyReduction_18 happy_x_1
-	 =  case happyOut280 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut280 happy_x_1 of { happy_var_1 ->
 	happyIn16
 		 (happy_var_1
 	)}
@@ -2572,9 +2572,9 @@ happyReduction_21 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut107 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut107 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ajs (Just (sLL happy_var_1 happy_var_3 $ DeprecatedTxt (sL1 happy_var_1 (getDEPRECATED_PRAGs happy_var_1)) (snd $ unLoc happy_var_2)))
                              (mo happy_var_1:mc happy_var_3: (fst $ unLoc happy_var_2)))}}}
 	) (\r -> happyReturn (happyIn18 r))
@@ -2584,9 +2584,9 @@ happyReduction_22 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut107 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut107 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ajs (Just (sLL happy_var_1 happy_var_3 $ WarningTxt (sL1 happy_var_1 (getWARNING_PRAGs happy_var_1)) (snd $ unLoc happy_var_2)))
                                 (mo happy_var_1:mc happy_var_3 : (fst $ unLoc happy_var_2)))}}}
 	) (\r -> happyReturn (happyIn18 r))
@@ -2600,9 +2600,9 @@ happyReduce_24 = happySpecReduce_3  5# happyReduction_24
 happyReduction_24 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut21 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut21 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn19
 		 ((moc happy_var_1:mcc happy_var_3:(fst happy_var_2)
                                          , snd happy_var_2)
@@ -2612,7 +2612,7 @@ happyReduce_25 = happySpecReduce_3  5# happyReduction_25
 happyReduction_25 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut21 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut21 happy_x_2 of { happy_var_2 ->
 	happyIn19
 		 ((fst happy_var_2, snd happy_var_2)
 	)}
@@ -2621,9 +2621,9 @@ happyReduce_26 = happySpecReduce_3  6# happyReduction_26
 happyReduction_26 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut21 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut21 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn20
 		 ((moc happy_var_1:mcc happy_var_3
                                                    :(fst happy_var_2), snd happy_var_2)
@@ -2633,14 +2633,14 @@ happyReduce_27 = happySpecReduce_3  6# happyReduction_27
 happyReduction_27 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut21 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut21 happy_x_2 of { happy_var_2 ->
 	happyIn20
 		 (([],snd happy_var_2)
 	)}
 
 happyReduce_28 = happySpecReduce_1  7# happyReduction_28
 happyReduction_28 happy_x_1
-	 =  case happyOut38 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut38 happy_x_1 of { happy_var_1 ->
 	happyIn21
 		 ((fst happy_var_1
                                           ,(reverse $ snd happy_var_1,[]))
@@ -2651,9 +2651,9 @@ happyReduction_29 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut22 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut22 happy_x_3 of { happy_var_3 ->
 	( if null (snd happy_var_1)
                                              then return ((mj AnnSemi happy_var_2:(fst happy_var_1))
                                                          ,(reverse $ snd happy_var_1,happy_var_3))
@@ -2666,14 +2666,14 @@ happyReduction_29 (happy_x_3 `HappyStk`
 
 happyReduce_30 = happySpecReduce_1  7# happyReduction_30
 happyReduction_30 happy_x_1
-	 =  case happyOut22 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut22 happy_x_1 of { happy_var_1 ->
 	happyIn21
 		 (([],([],happy_var_1))
 	)}
 
 happyReduce_31 = happySpecReduce_1  8# happyReduction_31
 happyReduction_31 happy_x_1
-	 =  case happyOut50 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut50 happy_x_1 of { happy_var_1 ->
 	happyIn22
 		 (cvTopDecls happy_var_1
 	)}
@@ -2687,13 +2687,13 @@ happyReduction_32 (happy_x_7 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut16 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut274 happy_x_3 of { happy_var_3 -> 
-	case happyOut18 happy_x_4 of { happy_var_4 -> 
-	case happyOut26 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
-	case happyOut24 happy_x_7 of { happy_var_7 -> 
+	 = happyThen (case happyOut16 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut274 happy_x_3 of { happy_var_3 ->
+	case happyOut18 happy_x_4 of { happy_var_4 ->
+	case happyOut26 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
+	case happyOut24 happy_x_7 of { happy_var_7 ->
 	( fileSrcSpan >>= \ loc ->
                    ams (L loc (HsModule (Just happy_var_3) happy_var_5 happy_var_7 [] happy_var_4 happy_var_1
                           )) [mj AnnModule happy_var_2,mj AnnWhere happy_var_6])}}}}}}}
@@ -2702,7 +2702,7 @@ happyReduction_32 (happy_x_7 `HappyStk`
 happyReduce_33 = happyMonadReduce 1# 9# happyReduction_33
 happyReduction_33 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut25 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut25 happy_x_1 of { happy_var_1 ->
 	( fileSrcSpan >>= \ loc ->
                    return (L loc (HsModule Nothing Nothing happy_var_1 [] Nothing
                           Nothing)))}
@@ -2711,7 +2711,7 @@ happyReduction_33 (happy_x_1 `HappyStk`
 happyReduce_34 = happySpecReduce_2  10# happyReduction_34
 happyReduction_34 happy_x_2
 	happy_x_1
-	 =  case happyOut38 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut38 happy_x_2 of { happy_var_2 ->
 	happyIn24
 		 (snd happy_var_2
 	)}
@@ -2719,7 +2719,7 @@ happyReduction_34 happy_x_2
 happyReduce_35 = happySpecReduce_2  10# happyReduction_35
 happyReduction_35 happy_x_2
 	happy_x_1
-	 =  case happyOut38 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut38 happy_x_2 of { happy_var_2 ->
 	happyIn24
 		 (snd happy_var_2
 	)}
@@ -2727,7 +2727,7 @@ happyReduction_35 happy_x_2
 happyReduce_36 = happySpecReduce_2  11# happyReduction_36
 happyReduction_36 happy_x_2
 	happy_x_1
-	 =  case happyOut38 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut38 happy_x_2 of { happy_var_2 ->
 	happyIn25
 		 (snd happy_var_2
 	)}
@@ -2735,7 +2735,7 @@ happyReduction_36 happy_x_2
 happyReduce_37 = happySpecReduce_2  11# happyReduction_37
 happyReduction_37 happy_x_2
 	happy_x_1
-	 =  case happyOut38 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut38 happy_x_2 of { happy_var_2 ->
 	happyIn25
 		 (snd happy_var_2
 	)}
@@ -2745,9 +2745,9 @@ happyReduction_38 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut27 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut27 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 ()) [mop happy_var_1,mcp happy_var_3] >>
                                        return (Just (sLL happy_var_1 happy_var_3 (fromOL happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn26 r))
@@ -2762,16 +2762,16 @@ happyReduction_40 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut29 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut29 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut29 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut29 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll happy_var_1) AnnComma (gl happy_var_2)
                                          >> return (happy_var_1 `appOL` happy_var_3))}}}
 	) (\r -> happyReturn (happyIn27 r))
 
 happyReduce_41 = happySpecReduce_1  13# happyReduction_41
 happyReduction_41 happy_x_1
-	 =  case happyOut28 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut28 happy_x_1 of { happy_var_1 ->
 	happyIn27
 		 (happy_var_1
 	)}
@@ -2783,11 +2783,11 @@ happyReduction_42 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut29 happy_x_1 of { happy_var_1 -> 
-	case happyOut31 happy_x_2 of { happy_var_2 -> 
-	case happyOut29 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut28 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut29 happy_x_1 of { happy_var_1 ->
+	case happyOut31 happy_x_2 of { happy_var_2 ->
+	case happyOut29 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut28 happy_x_5 of { happy_var_5 ->
 	( (addAnnotation (oll (happy_var_1 `appOL` happy_var_2 `appOL` happy_var_3))
                                             AnnComma (gl happy_var_4) ) >>
                               return (happy_var_1 `appOL` happy_var_2 `appOL` happy_var_3 `appOL` happy_var_5))}}}}}
@@ -2797,16 +2797,16 @@ happyReduce_43 = happySpecReduce_3  14# happyReduction_43
 happyReduction_43 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut29 happy_x_1 of { happy_var_1 -> 
-	case happyOut31 happy_x_2 of { happy_var_2 -> 
-	case happyOut29 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut29 happy_x_1 of { happy_var_1 ->
+	case happyOut31 happy_x_2 of { happy_var_2 ->
+	case happyOut29 happy_x_3 of { happy_var_3 ->
 	happyIn28
 		 (happy_var_1 `appOL` happy_var_2 `appOL` happy_var_3
 	)}}}
 
 happyReduce_44 = happySpecReduce_1  14# happyReduction_44
 happyReduction_44 happy_x_1
-	 =  case happyOut29 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut29 happy_x_1 of { happy_var_1 ->
 	happyIn28
 		 (happy_var_1
 	)}
@@ -2814,8 +2814,8 @@ happyReduction_44 happy_x_1
 happyReduce_45 = happySpecReduce_2  15# happyReduction_45
 happyReduction_45 happy_x_2
 	happy_x_1
-	 =  case happyOut30 happy_x_1 of { happy_var_1 -> 
-	case happyOut29 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut30 happy_x_1 of { happy_var_1 ->
+	case happyOut29 happy_x_2 of { happy_var_2 ->
 	happyIn29
 		 (happy_var_1 `appOL` happy_var_2
 	)}}
@@ -2827,21 +2827,21 @@ happyReduction_46  =  happyIn29
 
 happyReduce_47 = happySpecReduce_1  16# happyReduction_47
 happyReduction_47 happy_x_1
-	 =  case happyOut279 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut279 happy_x_1 of { happy_var_1 ->
 	happyIn30
 		 (unitOL (sL1 happy_var_1 (case (unLoc happy_var_1) of (n, doc) -> IEGroup n doc))
 	)}
 
 happyReduce_48 = happySpecReduce_1  16# happyReduction_48
 happyReduction_48 happy_x_1
-	 =  case happyOut278 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut278 happy_x_1 of { happy_var_1 ->
 	happyIn30
 		 (unitOL (sL1 happy_var_1 (IEDocNamed ((fst . unLoc) happy_var_1)))
 	)}
 
 happyReduce_49 = happySpecReduce_1  16# happyReduction_49
 happyReduction_49 happy_x_1
-	 =  case happyOut276 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut276 happy_x_1 of { happy_var_1 ->
 	happyIn30
 		 (unitOL (sL1 happy_var_1 (IEDoc (unLoc happy_var_1)))
 	)}
@@ -2850,8 +2850,8 @@ happyReduce_50 = happyMonadReduce 2# 17# happyReduction_50
 happyReduction_50 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut36 happy_x_1 of { happy_var_1 -> 
-	case happyOut32 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut36 happy_x_1 of { happy_var_1 ->
+	case happyOut32 happy_x_2 of { happy_var_2 ->
 	( mkModuleImpExp happy_var_1 (snd $ unLoc happy_var_2)
                                           >>= \ie -> amsu (sLL happy_var_1 happy_var_2 ie) (fst $ unLoc happy_var_2))}}
 	) (\r -> happyReturn (happyIn31 r))
@@ -2860,8 +2860,8 @@ happyReduce_51 = happyMonadReduce 2# 17# happyReduction_51
 happyReduction_51 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut274 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut274 happy_x_2 of { happy_var_2 ->
 	( amsu (sLL happy_var_1 happy_var_2 (IEModuleContents happy_var_2))
                                              [mj AnnModule happy_var_1])}}
 	) (\r -> happyReturn (happyIn31 r))
@@ -2870,8 +2870,8 @@ happyReduce_52 = happyMonadReduce 2# 17# happyReduction_52
 happyReduction_52 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut230 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut230 happy_x_2 of { happy_var_2 ->
 	( amsu (sLL happy_var_1 happy_var_2 (IEVar happy_var_2))
                                              [mj AnnPattern happy_var_1])}}
 	) (\r -> happyReturn (happyIn31 r))
@@ -2886,9 +2886,9 @@ happyReduction_54 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut33 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut33 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( mkImpExpSubSpec (reverse (snd happy_var_2))
                                       >>= \(as,ie) -> return $ sLL happy_var_1 happy_var_3
                                             (as ++ [mop happy_var_1,mcp happy_var_3] ++ fst happy_var_2, ie))}}}
@@ -2901,7 +2901,7 @@ happyReduction_55  =  happyIn33
 
 happyReduce_56 = happySpecReduce_1  19# happyReduction_56
 happyReduction_56 happy_x_1
-	 =  case happyOut34 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut34 happy_x_1 of { happy_var_1 ->
 	happyIn33
 		 (happy_var_1
 	)}
@@ -2911,9 +2911,9 @@ happyReduction_57 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut34 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut35 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut34 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut35 happy_x_3 of { happy_var_3 ->
 	( case (head (snd happy_var_1)) of
                                                     l@(L _ Nothing) ->
                                                        return ([mj AnnComma happy_var_2, mj AnnDotdot l]
@@ -2925,28 +2925,28 @@ happyReduction_57 (happy_x_3 `HappyStk`
 
 happyReduce_58 = happySpecReduce_1  20# happyReduction_58
 happyReduction_58 happy_x_1
-	 =  case happyOut35 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut35 happy_x_1 of { happy_var_1 ->
 	happyIn34
 		 ((fst (unLoc happy_var_1),[snd (unLoc happy_var_1)])
 	)}
 
 happyReduce_59 = happySpecReduce_1  21# happyReduction_59
 happyReduction_59 happy_x_1
-	 =  case happyOut36 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut36 happy_x_1 of { happy_var_1 ->
 	happyIn35
 		 (sL1 happy_var_1 ([],Just `fmap` happy_var_1)
 	)}
 
 happyReduce_60 = happySpecReduce_1  21# happyReduction_60
 happyReduction_60 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn35
 		 (sL1 happy_var_1 ([mj AnnDotdot happy_var_1], sL1 happy_var_1 Nothing)
 	)}
 
 happyReduce_61 = happySpecReduce_1  22# happyReduction_61
 happyReduction_61 happy_x_1
-	 =  case happyOut37 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut37 happy_x_1 of { happy_var_1 ->
 	happyIn36
 		 (happy_var_1
 	)}
@@ -2955,22 +2955,22 @@ happyReduce_62 = happyMonadReduce 2# 22# happyReduction_62
 happyReduction_62 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut240 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut240 happy_x_2 of { happy_var_2 ->
 	( amms (mkTypeImpExp (sLL happy_var_1 happy_var_2 (unLoc happy_var_2)))
                                             [mj AnnType happy_var_1,mj AnnVal happy_var_2])}}
 	) (\r -> happyReturn (happyIn36 r))
 
 happyReduce_63 = happySpecReduce_1  23# happyReduction_63
 happyReduction_63 happy_x_1
-	 =  case happyOut258 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut258 happy_x_1 of { happy_var_1 ->
 	happyIn37
 		 (happy_var_1
 	)}
 
 happyReduce_64 = happySpecReduce_1  23# happyReduction_64
 happyReduction_64 happy_x_1
-	 =  case happyOut241 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut241 happy_x_1 of { happy_var_1 ->
 	happyIn37
 		 (happy_var_1
 	)}
@@ -2980,9 +2980,9 @@ happyReduction_65 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut39 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut39 happy_x_3 of { happy_var_3 ->
 	( if null (snd happy_var_1)
                                      then return (mj AnnSemi happy_var_2:fst happy_var_1,happy_var_3 : snd happy_var_1)
                                      else do
@@ -2995,8 +2995,8 @@ happyReduce_66 = happyMonadReduce 2# 24# happyReduction_66
 happyReduction_66 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut38 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if null (snd happy_var_1)
                                      then return ((mj AnnSemi happy_var_2:fst happy_var_1),snd happy_var_1)
                                      else do
@@ -3007,7 +3007,7 @@ happyReduction_66 (happy_x_2 `HappyStk`
 
 happyReduce_67 = happySpecReduce_1  24# happyReduction_67
 happyReduction_67 happy_x_1
-	 =  case happyOut39 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut39 happy_x_1 of { happy_var_1 ->
 	happyIn38
 		 (([],[happy_var_1])
 	)}
@@ -3027,14 +3027,14 @@ happyReduction_69 (happy_x_8 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut40 happy_x_2 of { happy_var_2 -> 
-	case happyOut41 happy_x_3 of { happy_var_3 -> 
-	case happyOut43 happy_x_4 of { happy_var_4 -> 
-	case happyOut42 happy_x_5 of { happy_var_5 -> 
-	case happyOut274 happy_x_6 of { happy_var_6 -> 
-	case happyOut44 happy_x_7 of { happy_var_7 -> 
-	case happyOut45 happy_x_8 of { happy_var_8 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut40 happy_x_2 of { happy_var_2 ->
+	case happyOut41 happy_x_3 of { happy_var_3 ->
+	case happyOut43 happy_x_4 of { happy_var_4 ->
+	case happyOut42 happy_x_5 of { happy_var_5 ->
+	case happyOut274 happy_x_6 of { happy_var_6 ->
+	case happyOut44 happy_x_7 of { happy_var_7 ->
+	case happyOut45 happy_x_8 of { happy_var_8 ->
 	( ams (L (comb4 happy_var_1 happy_var_6 (snd happy_var_7) happy_var_8) $
                   ImportDecl { ideclSourceSrc = snd $ fst happy_var_2
                              , ideclName = happy_var_6, ideclPkgQual = snd happy_var_5
@@ -3049,8 +3049,8 @@ happyReduction_69 (happy_x_8 `HappyStk`
 happyReduce_70 = happySpecReduce_2  26# happyReduction_70
 happyReduction_70 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn40
 		 ((([mo happy_var_1,mc happy_var_2],Just (getSOURCE_PRAGs happy_var_1))
                                       ,True)
@@ -3063,7 +3063,7 @@ happyReduction_71  =  happyIn40
 
 happyReduce_72 = happySpecReduce_1  27# happyReduction_72
 happyReduction_72 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn41
 		 (([mj AnnSafe happy_var_1],True)
 	)}
@@ -3076,7 +3076,7 @@ happyReduction_73  =  happyIn41
 happyReduce_74 = happyMonadReduce 1# 28# happyReduction_74
 happyReduction_74 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( let pkgFS = getSTRING happy_var_1 in
                      if looksLikePackageName (unpackFS pkgFS)
                         then return ([mj AnnPackageName happy_var_1], Just (StringLiteral (getSTRINGs happy_var_1) pkgFS))
@@ -3093,7 +3093,7 @@ happyReduction_75  =  happyIn42
 
 happyReduce_76 = happySpecReduce_1  29# happyReduction_76
 happyReduction_76 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn43
 		 (([mj AnnQualified happy_var_1],True)
 	)}
@@ -3106,8 +3106,8 @@ happyReduction_77  =  happyIn43
 happyReduce_78 = happySpecReduce_2  30# happyReduction_78
 happyReduction_78 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut274 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut274 happy_x_2 of { happy_var_2 ->
 	happyIn44
 		 (([mj AnnAs happy_var_1,mj AnnVal happy_var_2]
                                                  ,sLL happy_var_1 happy_var_2 (Just (unLoc happy_var_2)))
@@ -3121,7 +3121,7 @@ happyReduction_79  =  happyIn44
 happyReduce_80 = happyMonadReduce 1# 31# happyReduction_80
 happyReduction_80 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut46 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut46 happy_x_1 of { happy_var_1 ->
 	( let (b, ie) = unLoc happy_var_1 in
                                        checkImportSpec ie
                                         >>= \checkedIe ->
@@ -3138,9 +3138,9 @@ happyReduction_82 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut27 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut27 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (False,
                                                       sLL happy_var_1 happy_var_3 $ fromOL happy_var_2))
                                                    [mop happy_var_1,mcp happy_var_3])}}}
@@ -3152,10 +3152,10 @@ happyReduction_83 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut27 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut27 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 (True,
                                                       sLL happy_var_1 happy_var_4 $ fromOL happy_var_3))
                                                [mj AnnHiding happy_var_1,mop happy_var_2,mcp happy_var_4])}}}}
@@ -3169,27 +3169,27 @@ happyReduction_84  =  happyIn47
 happyReduce_85 = happyMonadReduce 1# 33# happyReduction_85
 happyReduction_85 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( checkPrecP (sL1 happy_var_1 (getINTEGERs happy_var_1,fromInteger (getINTEGER happy_var_1))))}
 	) (\r -> happyReturn (happyIn47 r))
 
 happyReduce_86 = happySpecReduce_1  34# happyReduction_86
 happyReduction_86 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn48
 		 (sL1 happy_var_1 InfixN
 	)}
 
 happyReduce_87 = happySpecReduce_1  34# happyReduction_87
 happyReduction_87 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn48
 		 (sL1 happy_var_1 InfixL
 	)}
 
 happyReduce_88 = happySpecReduce_1  34# happyReduction_88
 happyReduction_88 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn48
 		 (sL1 happy_var_1 InfixR
 	)}
@@ -3199,16 +3199,16 @@ happyReduction_89 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut49 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut248 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut49 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut248 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll $ unLoc happy_var_1) AnnComma (gl happy_var_2) >>
                               return (sLL happy_var_1 happy_var_3 ((unLoc happy_var_1) `appOL` unitOL happy_var_3)))}}}
 	) (\r -> happyReturn (happyIn49 r))
 
 happyReduce_90 = happySpecReduce_1  35# happyReduction_90
 happyReduction_90 happy_x_1
-	 =  case happyOut248 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut248 happy_x_1 of { happy_var_1 ->
 	happyIn49
 		 (sL1 happy_var_1 (unitOL happy_var_1)
 	)}
@@ -3218,9 +3218,9 @@ happyReduction_91 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut50 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut51 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut50 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut51 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                          >> return (happy_var_1 `appOL` unitOL happy_var_3))}}}
 	) (\r -> happyReturn (happyIn50 r))
@@ -3229,50 +3229,50 @@ happyReduce_92 = happyMonadReduce 2# 36# happyReduction_92
 happyReduction_92 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut50 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut50 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                          >> return happy_var_1)}}
 	) (\r -> happyReturn (happyIn50 r))
 
 happyReduce_93 = happySpecReduce_1  36# happyReduction_93
 happyReduction_93 happy_x_1
-	 =  case happyOut51 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut51 happy_x_1 of { happy_var_1 ->
 	happyIn50
 		 (unitOL happy_var_1
 	)}
 
 happyReduce_94 = happySpecReduce_1  37# happyReduction_94
 happyReduction_94 happy_x_1
-	 =  case happyOut52 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut52 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sL1 happy_var_1 (TyClD (unLoc happy_var_1))
 	)}
 
 happyReduce_95 = happySpecReduce_1  37# happyReduction_95
 happyReduction_95 happy_x_1
-	 =  case happyOut53 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut53 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sL1 happy_var_1 (TyClD (unLoc happy_var_1))
 	)}
 
 happyReduce_96 = happySpecReduce_1  37# happyReduction_96
 happyReduction_96 happy_x_1
-	 =  case happyOut54 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut54 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sL1 happy_var_1 (InstD (unLoc happy_var_1))
 	)}
 
 happyReduce_97 = happySpecReduce_1  37# happyReduction_97
 happyReduction_97 happy_x_1
-	 =  case happyOut73 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut73 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sLL happy_var_1 happy_var_1 (DerivD (unLoc happy_var_1))
 	)}
 
 happyReduce_98 = happySpecReduce_1  37# happyReduction_98
 happyReduction_98 happy_x_1
-	 =  case happyOut74 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut74 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sL1 happy_var_1 (RoleAnnotD (unLoc happy_var_1))
 	)}
@@ -3283,10 +3283,10 @@ happyReduction_99 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut136 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut136 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 (DefD (DefaultDecl happy_var_3)))
                                                          [mj AnnDefault happy_var_1
                                                          ,mop happy_var_2,mcp happy_var_4])}}}}
@@ -3296,8 +3296,8 @@ happyReduce_100 = happyMonadReduce 2# 37# happyReduction_100
 happyReduction_100 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut110 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut110 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 (snd $ unLoc happy_var_2))
                                            (mj AnnForeign happy_var_1:(fst $ unLoc happy_var_2)))}}
 	) (\r -> happyReturn (happyIn51 r))
@@ -3307,9 +3307,9 @@ happyReduction_101 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut105 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut105 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ WarningD (Warnings (getDEPRECATED_PRAGs happy_var_1) (fromOL happy_var_2)))
                                                        [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn51 r))
@@ -3319,9 +3319,9 @@ happyReduction_102 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut103 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut103 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ WarningD (Warnings (getWARNING_PRAGs happy_var_1) (fromOL happy_var_2)))
                                                        [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn51 r))
@@ -3331,9 +3331,9 @@ happyReduction_103 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut96 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut96 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ RuleD (HsRules (getRULES_PRAGs happy_var_1) (fromOL happy_var_2)))
                                                        [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn51 r))
@@ -3345,11 +3345,11 @@ happyReduction_104 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut258 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut258 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( ams (sLL happy_var_1 happy_var_5 $ VectD (HsVect (getVECT_PRAGs happy_var_1) happy_var_2 happy_var_4))
                                                     [mo happy_var_1,mj AnnEqual happy_var_3
                                                     ,mc happy_var_5])}}}}}
@@ -3360,9 +3360,9 @@ happyReduction_105 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut258 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut258 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ VectD (HsNoVect (getNOVECT_PRAGs happy_var_1) happy_var_2))
                                                      [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn51 r))
@@ -3373,10 +3373,10 @@ happyReduction_106 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut238 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut238 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $
                                     VectD (HsVectTypeIn (getVECT_PRAGs happy_var_1) False happy_var_3 Nothing))
                                     [mo happy_var_1,mj AnnType happy_var_2,mc happy_var_4])}}}}
@@ -3388,10 +3388,10 @@ happyReduction_107 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut238 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut238 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $
                                     VectD (HsVectTypeIn (getVECT_SCALAR_PRAGs happy_var_1) True happy_var_3 Nothing))
                                     [mo happy_var_1,mj AnnType happy_var_2,mc happy_var_4])}}}}
@@ -3405,12 +3405,12 @@ happyReduction_108 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut238 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut238 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut238 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut238 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
 	( ams (sLL happy_var_1 happy_var_6 $
                                     VectD (HsVectTypeIn (getVECT_PRAGs happy_var_1) False happy_var_3 (Just happy_var_5)))
                                     [mo happy_var_1,mj AnnType happy_var_2,mj AnnEqual happy_var_4,mc happy_var_6])}}}}}}
@@ -3424,12 +3424,12 @@ happyReduction_109 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut238 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut238 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut238 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut238 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
 	( ams (sLL happy_var_1 happy_var_6 $
                                     VectD (HsVectTypeIn (getVECT_SCALAR_PRAGs happy_var_1) True happy_var_3 (Just happy_var_5)))
                                     [mo happy_var_1,mj AnnType happy_var_2,mj AnnEqual happy_var_4,mc happy_var_6])}}}}}}
@@ -3441,31 +3441,31 @@ happyReduction_110 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut238 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut238 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4  $ VectD (HsVectClassIn (getVECT_PRAGs happy_var_1) happy_var_3))
                                                  [mo happy_var_1,mj AnnClass happy_var_2,mc happy_var_4])}}}}
 	) (\r -> happyReturn (happyIn51 r))
 
 happyReduce_111 = happySpecReduce_1  37# happyReduction_111
 happyReduction_111 happy_x_1
-	 =  case happyOut109 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut109 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (happy_var_1
 	)}
 
 happyReduce_112 = happySpecReduce_1  37# happyReduction_112
 happyReduction_112 happy_x_1
-	 =  case happyOut160 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut160 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (happy_var_1
 	)}
 
 happyReduce_113 = happySpecReduce_1  37# happyReduction_113
 happyReduction_113 happy_x_1
-	 =  case happyOut170 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut170 happy_x_1 of { happy_var_1 ->
 	happyIn51
 		 (sLL happy_var_1 happy_var_1 $ mkSpliceDecl happy_var_1
 	)}
@@ -3476,10 +3476,10 @@ happyReduction_114 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut71 happy_x_2 of { happy_var_2 -> 
-	case happyOut140 happy_x_3 of { happy_var_3 -> 
-	case happyOut87 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut71 happy_x_2 of { happy_var_2 ->
+	case happyOut140 happy_x_3 of { happy_var_3 ->
+	case happyOut87 happy_x_4 of { happy_var_4 ->
 	( amms (mkClassDecl (comb4 happy_var_1 happy_var_2 happy_var_3 happy_var_4) happy_var_2 happy_var_3 (snd $ unLoc happy_var_4))
                         (mj AnnClass happy_var_1:(fst $ unLoc happy_var_3)++(fst $ unLoc happy_var_4)))}}}}
 	) (\r -> happyReturn (happyIn52 r))
@@ -3490,10 +3490,10 @@ happyReduction_115 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut127 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut124 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut127 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut124 happy_x_4 of { happy_var_4 ->
 	( amms (mkTySynonym (comb2 happy_var_1 happy_var_4) happy_var_2 happy_var_4)
                         [mj AnnType happy_var_1,mj AnnEqual happy_var_3])}}}}
 	) (\r -> happyReturn (happyIn53 r))
@@ -3506,12 +3506,12 @@ happyReduction_116 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
-	case happyOut69 happy_x_4 of { happy_var_4 -> 
-	case happyOut56 happy_x_5 of { happy_var_5 -> 
-	case happyOut59 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
+	case happyOut69 happy_x_4 of { happy_var_4 ->
+	case happyOut56 happy_x_5 of { happy_var_5 ->
+	case happyOut59 happy_x_6 of { happy_var_6 ->
 	( amms (mkFamDecl (comb4 happy_var_1 happy_var_3 happy_var_4 happy_var_5) (snd $ unLoc happy_var_6) happy_var_3
                                    (snd $ unLoc happy_var_4) (snd $ unLoc happy_var_5))
                         (mj AnnType happy_var_1:mj AnnFamily happy_var_2:(fst $ unLoc happy_var_4)
@@ -3525,11 +3525,11 @@ happyReduction_117 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOut72 happy_x_2 of { happy_var_2 -> 
-	case happyOut71 happy_x_3 of { happy_var_3 -> 
-	case happyOut149 happy_x_4 of { happy_var_4 -> 
-	case happyOut157 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOut72 happy_x_2 of { happy_var_2 ->
+	case happyOut71 happy_x_3 of { happy_var_3 ->
+	case happyOut149 happy_x_4 of { happy_var_4 ->
+	case happyOut157 happy_x_5 of { happy_var_5 ->
 	( amms (mkTyData (comb4 happy_var_1 happy_var_3 happy_var_4 happy_var_5) (snd $ unLoc happy_var_1) happy_var_2 happy_var_3
                            Nothing (reverse (snd $ unLoc happy_var_4))
                                    (unLoc happy_var_5))
@@ -3546,12 +3546,12 @@ happyReduction_118 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOut72 happy_x_2 of { happy_var_2 -> 
-	case happyOut71 happy_x_3 of { happy_var_3 -> 
-	case happyOut67 happy_x_4 of { happy_var_4 -> 
-	case happyOut145 happy_x_5 of { happy_var_5 -> 
-	case happyOut157 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOut72 happy_x_2 of { happy_var_2 ->
+	case happyOut71 happy_x_3 of { happy_var_3 ->
+	case happyOut67 happy_x_4 of { happy_var_4 ->
+	case happyOut145 happy_x_5 of { happy_var_5 ->
+	case happyOut157 happy_x_6 of { happy_var_6 ->
 	( amms (mkTyData (comb4 happy_var_1 happy_var_3 happy_var_5 happy_var_6) (snd $ unLoc happy_var_1) happy_var_2 happy_var_3
                             (snd $ unLoc happy_var_4) (snd $ unLoc happy_var_5) (unLoc happy_var_6) )
                                    -- We need the location on tycl_hdr in case
@@ -3565,10 +3565,10 @@ happyReduction_119 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
-	case happyOut68 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
+	case happyOut68 happy_x_4 of { happy_var_4 ->
 	( amms (mkFamDecl (comb3 happy_var_1 happy_var_2 happy_var_4) DataFamily happy_var_3
                                    (snd $ unLoc happy_var_4) Nothing)
                         (mj AnnData happy_var_1:mj AnnFamily happy_var_2:(fst $ unLoc happy_var_4)))}}}}
@@ -3580,10 +3580,10 @@ happyReduction_120 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut55 happy_x_2 of { happy_var_2 -> 
-	case happyOut134 happy_x_3 of { happy_var_3 -> 
-	case happyOut91 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut55 happy_x_2 of { happy_var_2 ->
+	case happyOut134 happy_x_3 of { happy_var_3 ->
+	case happyOut91 happy_x_4 of { happy_var_4 ->
 	( do { (binds, sigs, _, ats, adts, _) <- cvBindsAndSigs (snd $ unLoc happy_var_4)
              ; let cid = ClsInstDecl { cid_poly_ty = happy_var_3, cid_binds = binds
                                      , cid_sigs = mkClassOpSigs sigs
@@ -3599,9 +3599,9 @@ happyReduction_121 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut62 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut62 happy_x_3 of { happy_var_3 ->
 	( ams happy_var_3 (fst $ unLoc happy_var_3)
                 >> amms (mkTyFamInst (comb2 happy_var_1 happy_var_3) (snd $ unLoc happy_var_3))
                     (mj AnnType happy_var_1:mj AnnInstance happy_var_2:(fst $ unLoc happy_var_3)))}}}
@@ -3615,12 +3615,12 @@ happyReduction_122 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut72 happy_x_3 of { happy_var_3 -> 
-	case happyOut71 happy_x_4 of { happy_var_4 -> 
-	case happyOut149 happy_x_5 of { happy_var_5 -> 
-	case happyOut157 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut72 happy_x_3 of { happy_var_3 ->
+	case happyOut71 happy_x_4 of { happy_var_4 ->
+	case happyOut149 happy_x_5 of { happy_var_5 ->
+	case happyOut157 happy_x_6 of { happy_var_6 ->
 	( amms (mkDataFamInst (comb4 happy_var_1 happy_var_4 happy_var_5 happy_var_6) (snd $ unLoc happy_var_1) happy_var_3 happy_var_4
                                       Nothing (reverse (snd  $ unLoc happy_var_5))
                                               (unLoc happy_var_6))
@@ -3636,13 +3636,13 @@ happyReduction_123 (happy_x_7 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut72 happy_x_3 of { happy_var_3 -> 
-	case happyOut71 happy_x_4 of { happy_var_4 -> 
-	case happyOut67 happy_x_5 of { happy_var_5 -> 
-	case happyOut145 happy_x_6 of { happy_var_6 -> 
-	case happyOut157 happy_x_7 of { happy_var_7 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut72 happy_x_3 of { happy_var_3 ->
+	case happyOut71 happy_x_4 of { happy_var_4 ->
+	case happyOut67 happy_x_5 of { happy_var_5 ->
+	case happyOut145 happy_x_6 of { happy_var_6 ->
+	case happyOut157 happy_x_7 of { happy_var_7 ->
 	( amms (mkDataFamInst (comb4 happy_var_1 happy_var_4 happy_var_6 happy_var_7) (snd $ unLoc happy_var_1) happy_var_3 happy_var_4
                                    (snd $ unLoc happy_var_5) (snd $ unLoc happy_var_6) (unLoc happy_var_7))
                     ((fst $ unLoc happy_var_1):mj AnnInstance happy_var_2
@@ -3653,8 +3653,8 @@ happyReduce_124 = happyMonadReduce 2# 41# happyReduction_124
 happyReduction_124 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ajs (Just (sLL happy_var_1 happy_var_2 (Overlappable (getOVERLAPPABLE_PRAGs happy_var_1))))
                                        [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn55 r))
@@ -3663,8 +3663,8 @@ happyReduce_125 = happyMonadReduce 2# 41# happyReduction_125
 happyReduction_125 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ajs (Just (sLL happy_var_1 happy_var_2 (Overlapping (getOVERLAPPING_PRAGs happy_var_1))))
                                        [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn55 r))
@@ -3673,8 +3673,8 @@ happyReduce_126 = happyMonadReduce 2# 41# happyReduction_126
 happyReduction_126 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ajs (Just (sLL happy_var_1 happy_var_2 (Overlaps (getOVERLAPS_PRAGs happy_var_1))))
                                        [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn55 r))
@@ -3683,8 +3683,8 @@ happyReduce_127 = happyMonadReduce 2# 41# happyReduction_127
 happyReduction_127 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ajs (Just (sLL happy_var_1 happy_var_2 (Incoherent (getINCOHERENT_PRAGs happy_var_1))))
                                        [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn55 r))
@@ -3702,8 +3702,8 @@ happyReduction_129  =  happyIn56
 happyReduce_130 = happySpecReduce_2  42# happyReduction_130
 happyReduction_130 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut57 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut57 happy_x_2 of { happy_var_2 ->
 	happyIn56
 		 (sLL happy_var_1 happy_var_2 ([mj AnnVbar happy_var_1]
                                                 , Just (happy_var_2))
@@ -3714,9 +3714,9 @@ happyReduction_131 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut256 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut58 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut256 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut58 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (InjectivityAnn happy_var_1 (reverse (unLoc happy_var_3))))
                   [mu AnnRarrow happy_var_2])}}}
 	) (\r -> happyReturn (happyIn57 r))
@@ -3724,15 +3724,15 @@ happyReduction_131 (happy_x_3 `HappyStk`
 happyReduce_132 = happySpecReduce_2  44# happyReduction_132
 happyReduction_132 happy_x_2
 	happy_x_1
-	 =  case happyOut58 happy_x_1 of { happy_var_1 -> 
-	case happyOut256 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut58 happy_x_1 of { happy_var_1 ->
+	case happyOut256 happy_x_2 of { happy_var_2 ->
 	happyIn58
 		 (sLL happy_var_1 happy_var_2 (happy_var_2 : unLoc happy_var_1)
 	)}}
 
 happyReduce_133 = happySpecReduce_1  44# happyReduction_133
 happyReduction_133 happy_x_1
-	 =  case happyOut256 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut256 happy_x_1 of { happy_var_1 ->
 	happyIn58
 		 (sLL happy_var_1 happy_var_1 [happy_var_1]
 	)}
@@ -3745,8 +3745,8 @@ happyReduction_134  =  happyIn59
 happyReduce_135 = happySpecReduce_2  45# happyReduction_135
 happyReduction_135 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut60 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut60 happy_x_2 of { happy_var_2 ->
 	happyIn59
 		 (sLL happy_var_1 happy_var_2 (mj AnnWhere happy_var_1:(fst $ unLoc happy_var_2)
                     ,ClosedTypeFamily (fmap reverse $ snd $ unLoc happy_var_2))
@@ -3756,9 +3756,9 @@ happyReduce_136 = happySpecReduce_3  46# happyReduction_136
 happyReduction_136 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut61 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut61 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn60
 		 (sLL happy_var_1 happy_var_3 ([moc happy_var_1,mcc happy_var_3]
                                                 ,Just (unLoc happy_var_2))
@@ -3768,7 +3768,7 @@ happyReduce_137 = happySpecReduce_3  46# happyReduction_137
 happyReduction_137 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut61 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut61 happy_x_2 of { happy_var_2 ->
 	happyIn60
 		 (let L loc _ = happy_var_2 in
                                              L loc ([],Just (unLoc happy_var_2))
@@ -3778,9 +3778,9 @@ happyReduce_138 = happySpecReduce_3  46# happyReduction_138
 happyReduction_138 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn60
 		 (sLL happy_var_1 happy_var_3 ([moc happy_var_1,mj AnnDotdot happy_var_2
                                                  ,mcc happy_var_3],Nothing)
@@ -3790,7 +3790,7 @@ happyReduce_139 = happySpecReduce_3  46# happyReduction_139
 happyReduction_139 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn60
 		 (let L loc _ = happy_var_2 in
                                              L loc ([mj AnnDotdot happy_var_2],Nothing)
@@ -3801,9 +3801,9 @@ happyReduction_140 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut61 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut62 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut61 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut62 happy_x_3 of { happy_var_3 ->
 	( asl (unLoc happy_var_1) happy_var_2 (snd $ unLoc happy_var_3)
                                          >> ams happy_var_3 (fst $ unLoc happy_var_3)
                                          >> return (sLL happy_var_1 happy_var_3 ((snd $ unLoc happy_var_3) : unLoc happy_var_1)))}}}
@@ -3813,8 +3813,8 @@ happyReduce_141 = happyMonadReduce 2# 47# happyReduction_141
 happyReduction_141 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut61 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut61 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (gl happy_var_1) AnnSemi (gl happy_var_2)
                                          >> return (sLL happy_var_1 happy_var_2  (unLoc happy_var_1)))}}
 	) (\r -> happyReturn (happyIn61 r))
@@ -3822,7 +3822,7 @@ happyReduction_141 (happy_x_2 `HappyStk`
 happyReduce_142 = happyMonadReduce 1# 47# happyReduction_142
 happyReduction_142 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut62 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut62 happy_x_1 of { happy_var_1 ->
 	( ams happy_var_1 (fst $ unLoc happy_var_1)
                                          >> return (sLL happy_var_1 happy_var_1 [snd $ unLoc happy_var_1]))}
 	) (\r -> happyReturn (happyIn61 r))
@@ -3837,9 +3837,9 @@ happyReduction_144 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut127 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut123 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut127 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut123 happy_x_3 of { happy_var_3 ->
 	( do { (eqn,ann) <- mkTyFamInstEqn happy_var_1 happy_var_3
                     ; return (sLL happy_var_1 happy_var_3 (mj AnnEqual happy_var_2:ann, sLL happy_var_1 happy_var_3 eqn))  })}}}
 	) (\r -> happyReturn (happyIn62 r))
@@ -3850,10 +3850,10 @@ happyReduction_145 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut64 happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
-	case happyOut68 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut64 happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
+	case happyOut68 happy_x_4 of { happy_var_4 ->
 	( amms (liftM mkTyClD (mkFamDecl (comb3 happy_var_1 happy_var_3 happy_var_4) DataFamily happy_var_3
                                                   (snd $ unLoc happy_var_4) Nothing))
                         (mj AnnData happy_var_1:happy_var_2++(fst $ unLoc happy_var_4)))}}}}
@@ -3864,9 +3864,9 @@ happyReduction_146 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut127 happy_x_2 of { happy_var_2 -> 
-	case happyOut70 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut127 happy_x_2 of { happy_var_2 ->
+	case happyOut70 happy_x_3 of { happy_var_3 ->
 	( amms (liftM mkTyClD
                         (mkFamDecl (comb3 happy_var_1 happy_var_2 happy_var_3) OpenTypeFamily happy_var_2
                                    (fst . snd $ unLoc happy_var_3)
@@ -3880,10 +3880,10 @@ happyReduction_147 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
-	case happyOut70 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
+	case happyOut70 happy_x_4 of { happy_var_4 ->
 	( amms (liftM mkTyClD
                         (mkFamDecl (comb3 happy_var_1 happy_var_3 happy_var_4) OpenTypeFamily happy_var_3
                                    (fst . snd $ unLoc happy_var_4)
@@ -3895,8 +3895,8 @@ happyReduce_148 = happyMonadReduce 2# 49# happyReduction_148
 happyReduction_148 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut62 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut62 happy_x_2 of { happy_var_2 ->
 	( ams happy_var_2 (fst $ unLoc happy_var_2) >>
                    amms (liftM mkInstD (mkTyFamInst (comb2 happy_var_1 happy_var_2) (snd $ unLoc happy_var_2)))
                         (mj AnnType happy_var_1:(fst $ unLoc happy_var_2)))}}
@@ -3907,9 +3907,9 @@ happyReduction_149 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut62 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut62 happy_x_3 of { happy_var_3 ->
 	( ams happy_var_3 (fst $ unLoc happy_var_3) >>
                    amms (liftM mkInstD (mkTyFamInst (comb2 happy_var_1 happy_var_3) (snd $ unLoc happy_var_3)))
                         (mj AnnType happy_var_1:mj AnnInstance happy_var_2:(fst $ unLoc happy_var_3)))}}}
@@ -3922,7 +3922,7 @@ happyReduction_150  =  happyIn64
 
 happyReduce_151 = happySpecReduce_1  50# happyReduction_151
 happyReduction_151 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn64
 		 ([mj AnnFamily happy_var_1]
 	)}
@@ -3931,8 +3931,8 @@ happyReduce_152 = happyMonadReduce 2# 51# happyReduction_152
 happyReduction_152 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut62 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut62 happy_x_2 of { happy_var_2 ->
 	( ams happy_var_2 (fst $ unLoc happy_var_2) >>
                    amms (mkTyFamInst (comb2 happy_var_1 happy_var_2) (snd $ unLoc happy_var_2))
                         (mj AnnType happy_var_1:(fst $ unLoc happy_var_2)))}}
@@ -3945,11 +3945,11 @@ happyReduction_153 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOut72 happy_x_2 of { happy_var_2 -> 
-	case happyOut71 happy_x_3 of { happy_var_3 -> 
-	case happyOut149 happy_x_4 of { happy_var_4 -> 
-	case happyOut157 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOut72 happy_x_2 of { happy_var_2 ->
+	case happyOut71 happy_x_3 of { happy_var_3 ->
+	case happyOut149 happy_x_4 of { happy_var_4 ->
+	case happyOut157 happy_x_5 of { happy_var_5 ->
 	( amms (mkDataFamInst (comb4 happy_var_1 happy_var_3 happy_var_4 happy_var_5) (snd $ unLoc happy_var_1) happy_var_2 happy_var_3
                                     Nothing (reverse (snd $ unLoc happy_var_4))
                                             (unLoc happy_var_5))
@@ -3964,12 +3964,12 @@ happyReduction_154 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 -> 
-	case happyOut72 happy_x_2 of { happy_var_2 -> 
-	case happyOut71 happy_x_3 of { happy_var_3 -> 
-	case happyOut67 happy_x_4 of { happy_var_4 -> 
-	case happyOut145 happy_x_5 of { happy_var_5 -> 
-	case happyOut157 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOut66 happy_x_1 of { happy_var_1 ->
+	case happyOut72 happy_x_2 of { happy_var_2 ->
+	case happyOut71 happy_x_3 of { happy_var_3 ->
+	case happyOut67 happy_x_4 of { happy_var_4 ->
+	case happyOut145 happy_x_5 of { happy_var_5 ->
+	case happyOut157 happy_x_6 of { happy_var_6 ->
 	( amms (mkDataFamInst (comb4 happy_var_1 happy_var_3 happy_var_5 happy_var_6) (snd $ unLoc happy_var_1) happy_var_2
                                 happy_var_3 (snd $ unLoc happy_var_4) (snd $ unLoc happy_var_5) (unLoc happy_var_6))
                         ((fst $ unLoc happy_var_1):(fst $ unLoc happy_var_4)++(fst $ unLoc happy_var_5)))}}}}}}
@@ -3977,14 +3977,14 @@ happyReduction_154 (happy_x_6 `HappyStk`
 
 happyReduce_155 = happySpecReduce_1  52# happyReduction_155
 happyReduction_155 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn66
 		 (sL1 happy_var_1 (mj AnnData    happy_var_1,DataType)
 	)}
 
 happyReduce_156 = happySpecReduce_1  52# happyReduction_156
 happyReduction_156 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn66
 		 (sL1 happy_var_1 (mj AnnNewtype happy_var_1,NewType)
 	)}
@@ -3997,8 +3997,8 @@ happyReduction_157  =  happyIn67
 happyReduce_158 = happySpecReduce_2  53# happyReduction_158
 happyReduction_158 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut144 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut144 happy_x_2 of { happy_var_2 ->
 	happyIn67
 		 (sLL happy_var_1 happy_var_2 ([mu AnnDcolon happy_var_1], Just happy_var_2)
 	)}}
@@ -4011,8 +4011,8 @@ happyReduction_159  =  happyIn68
 happyReduce_160 = happySpecReduce_2  54# happyReduction_160
 happyReduction_160 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut144 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut144 happy_x_2 of { happy_var_2 ->
 	happyIn68
 		 (sLL happy_var_1 happy_var_2 ([mu AnnDcolon happy_var_1], sLL happy_var_1 happy_var_2 (KindSig happy_var_2))
 	)}}
@@ -4025,8 +4025,8 @@ happyReduction_161  =  happyIn69
 happyReduce_162 = happySpecReduce_2  55# happyReduction_162
 happyReduction_162 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut144 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut144 happy_x_2 of { happy_var_2 ->
 	happyIn69
 		 (sLL happy_var_1 happy_var_2 ([mu AnnDcolon happy_var_1], sLL happy_var_1 happy_var_2 (KindSig  happy_var_2))
 	)}}
@@ -4034,8 +4034,8 @@ happyReduction_162 happy_x_2
 happyReduce_163 = happySpecReduce_2  55# happyReduction_163
 happyReduction_163 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut139 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut139 happy_x_2 of { happy_var_2 ->
 	happyIn69
 		 (sLL happy_var_1 happy_var_2 ([mj AnnEqual happy_var_1] , sLL happy_var_1 happy_var_2 (TyVarSig happy_var_2))
 	)}}
@@ -4048,8 +4048,8 @@ happyReduction_164  =  happyIn70
 happyReduce_165 = happySpecReduce_2  56# happyReduction_165
 happyReduction_165 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut144 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut144 happy_x_2 of { happy_var_2 ->
 	happyIn70
 		 (sLL happy_var_1 happy_var_2 ( [mu AnnDcolon happy_var_1]
                                  , (sLL happy_var_2 happy_var_2 (KindSig happy_var_2), Nothing))
@@ -4061,10 +4061,10 @@ happyReduction_166 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut139 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut57 happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut139 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut57 happy_x_4 of { happy_var_4 ->
 	happyIn70
 		 (sLL happy_var_1 happy_var_4 ([mj AnnEqual happy_var_1, mj AnnVbar happy_var_3]
                             , (sLL happy_var_1 happy_var_2 (TyVarSig happy_var_2), Just happy_var_4))
@@ -4075,16 +4075,16 @@ happyReduction_167 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) (toUnicodeAnn AnnDarrow happy_var_2) (gl happy_var_2)
                                        >> (return (sLL happy_var_1 happy_var_3 (Just happy_var_1, happy_var_3))))}}}
 	) (\r -> happyReturn (happyIn71 r))
 
 happyReduce_168 = happySpecReduce_1  57# happyReduction_168
 happyReduction_168 happy_x_1
-	 =  case happyOut127 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut127 happy_x_1 of { happy_var_1 ->
 	happyIn71
 		 (sL1 happy_var_1 (Nothing, happy_var_1)
 	)}
@@ -4095,10 +4095,10 @@ happyReduction_169 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ajs (Just (sLL happy_var_1 happy_var_4 (CType (getCTYPEs happy_var_1) (Just (Header (getSTRINGs happy_var_2) (getSTRING happy_var_2)))
                                         (getSTRINGs happy_var_3,getSTRING happy_var_3))))
                               [mo happy_var_1,mj AnnHeader happy_var_2,mj AnnVal happy_var_3,mc happy_var_4])}}}}
@@ -4109,9 +4109,9 @@ happyReduction_170 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ajs (Just (sLL happy_var_1 happy_var_3 (CType (getCTYPEs happy_var_1) Nothing  (getSTRINGs happy_var_2, getSTRING happy_var_2))))
                               [mo happy_var_1,mj AnnVal happy_var_2,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn72 r))
@@ -4127,10 +4127,10 @@ happyReduction_172 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut55 happy_x_3 of { happy_var_3 -> 
-	case happyOut134 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut55 happy_x_3 of { happy_var_3 ->
+	case happyOut134 happy_x_4 of { happy_var_4 ->
 	( do { let { err = text "in the stand-alone deriving instance"
                                              <> colon <+> quotes (ppr happy_var_4) }
                                ; ams (sLL happy_var_1 (hsSigType happy_var_4) (DerivDecl happy_var_4 happy_var_3))
@@ -4143,10 +4143,10 @@ happyReduction_173 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut240 happy_x_3 of { happy_var_3 -> 
-	case happyOut75 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut240 happy_x_3 of { happy_var_3 ->
+	case happyOut75 happy_x_4 of { happy_var_4 ->
 	( amms (mkRoleAnnotDecl (comb3 happy_var_1 happy_var_3 happy_var_4) happy_var_3 (reverse (unLoc happy_var_4)))
                   [mj AnnType happy_var_1,mj AnnRole happy_var_2])}}}}
 	) (\r -> happyReturn (happyIn74 r))
@@ -4158,14 +4158,14 @@ happyReduction_174  =  happyIn75
 
 happyReduce_175 = happySpecReduce_1  61# happyReduction_175
 happyReduction_175 happy_x_1
-	 =  case happyOut76 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut76 happy_x_1 of { happy_var_1 ->
 	happyIn75
 		 (happy_var_1
 	)}
 
 happyReduce_176 = happySpecReduce_1  62# happyReduction_176
 happyReduction_176 happy_x_1
-	 =  case happyOut77 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut77 happy_x_1 of { happy_var_1 ->
 	happyIn76
 		 (sLL happy_var_1 happy_var_1 [happy_var_1]
 	)}
@@ -4173,22 +4173,22 @@ happyReduction_176 happy_x_1
 happyReduce_177 = happySpecReduce_2  62# happyReduction_177
 happyReduction_177 happy_x_2
 	happy_x_1
-	 =  case happyOut76 happy_x_1 of { happy_var_1 -> 
-	case happyOut77 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut76 happy_x_1 of { happy_var_1 ->
+	case happyOut77 happy_x_2 of { happy_var_2 ->
 	happyIn76
 		 (sLL happy_var_1 happy_var_2 $ happy_var_2 : unLoc happy_var_1
 	)}}
 
 happyReduce_178 = happySpecReduce_1  63# happyReduction_178
 happyReduction_178 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn77
 		 (sL1 happy_var_1 $ Just $ getVARID happy_var_1
 	)}
 
 happyReduce_179 = happySpecReduce_1  63# happyReduction_179
 happyReduction_179 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn77
 		 (sL1 happy_var_1 Nothing
 	)}
@@ -4199,10 +4199,10 @@ happyReduction_180 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut79 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut207 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut79 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut207 happy_x_4 of { happy_var_4 ->
 	(      let (name, args,as ) = happy_var_2 in
                  ams (sLL happy_var_1 happy_var_4 . ValD $ mkPatSynBind name args happy_var_4
                                                     ImplicitBidirectional)
@@ -4215,10 +4215,10 @@ happyReduction_181 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut79 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut207 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut79 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut207 happy_x_4 of { happy_var_4 ->
 	(    let (name, args, as) = happy_var_2 in
                ams (sLL happy_var_1 happy_var_4 . ValD $ mkPatSynBind name args happy_var_4 Unidirectional)
                (as ++ [mj AnnPattern happy_var_1,mu AnnLarrow happy_var_3]))}}}}
@@ -4231,11 +4231,11 @@ happyReduction_182 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut79 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut207 happy_x_4 of { happy_var_4 -> 
-	case happyOut82 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut79 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut207 happy_x_4 of { happy_var_4 ->
+	case happyOut82 happy_x_5 of { happy_var_5 ->
 	( do { let (name, args, as) = happy_var_2
                   ; mg <- mkPatSynMatchGroup name (snd $ unLoc happy_var_5)
                   ; ams (sLL happy_var_1 happy_var_5 . ValD $
@@ -4247,8 +4247,8 @@ happyReduction_182 (happy_x_5 `HappyStk`
 happyReduce_183 = happySpecReduce_2  65# happyReduction_183
 happyReduction_183 happy_x_2
 	happy_x_1
-	 =  case happyOut232 happy_x_1 of { happy_var_1 -> 
-	case happyOut80 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut232 happy_x_1 of { happy_var_1 ->
+	case happyOut80 happy_x_2 of { happy_var_2 ->
 	happyIn79
 		 ((happy_var_1, PrefixPatSyn happy_var_2, [])
 	)}}
@@ -4257,9 +4257,9 @@ happyReduce_184 = happySpecReduce_3  65# happyReduction_184
 happyReduction_184 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
-	case happyOut236 happy_x_2 of { happy_var_2 -> 
-	case happyOut260 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
+	case happyOut236 happy_x_2 of { happy_var_2 ->
+	case happyOut260 happy_x_3 of { happy_var_3 ->
 	happyIn79
 		 ((happy_var_2, InfixPatSyn happy_var_1 happy_var_3, [])
 	)}}}
@@ -4270,10 +4270,10 @@ happyReduction_185 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOut232 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut81 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOut232 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut81 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn79
 		 ((happy_var_1, RecordPatSyn happy_var_3, [moc happy_var_2, mcc happy_var_4] )
 	) `HappyStk` happyRest}}}}
@@ -4286,15 +4286,15 @@ happyReduction_186  =  happyIn80
 happyReduce_187 = happySpecReduce_2  66# happyReduction_187
 happyReduction_187 happy_x_2
 	happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
-	case happyOut80 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
+	case happyOut80 happy_x_2 of { happy_var_2 ->
 	happyIn80
 		 (happy_var_1 : happy_var_2
 	)}}
 
 happyReduce_188 = happySpecReduce_1  67# happyReduction_188
 happyReduction_188 happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
 	happyIn81
 		 ([RecordPatSynField happy_var_1 happy_var_1]
 	)}
@@ -4304,9 +4304,9 @@ happyReduction_189 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut260 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut81 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut260 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut81 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (getLoc happy_var_1) AnnComma (getLoc happy_var_2) >>
                                          return ((RecordPatSynField happy_var_1 happy_var_1) : happy_var_3 ))}}}
 	) (\r -> happyReturn (happyIn81 r))
@@ -4317,10 +4317,10 @@ happyReduction_190 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut92 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut92 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn82
 		 (sLL happy_var_1 happy_var_4 ((mj AnnWhere happy_var_1:moc happy_var_2
                                            :mcc happy_var_4:(fst $ unLoc happy_var_3)),sL1 happy_var_3 (snd $ unLoc happy_var_3))
@@ -4332,8 +4332,8 @@ happyReduction_191 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut92 happy_x_3 of { happy_var_3 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut92 happy_x_3 of { happy_var_3 ->
 	happyIn82
 		 (L (comb2 happy_var_1 happy_var_3) ((mj AnnWhere happy_var_1:(fst $ unLoc happy_var_3))
                                           ,sL1 happy_var_3 (snd $ unLoc happy_var_3))
@@ -4345,24 +4345,24 @@ happyReduction_192 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut232 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut116 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut232 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut116 happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ PatSynSig happy_var_2 (mkLHsSigType happy_var_4))
                           [mj AnnPattern happy_var_1, mu AnnDcolon happy_var_3])}}}}
 	) (\r -> happyReturn (happyIn83 r))
 
 happyReduce_193 = happySpecReduce_1  70# happyReduction_193
 happyReduction_193 happy_x_1
-	 =  case happyOut63 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut63 happy_x_1 of { happy_var_1 ->
 	happyIn84
 		 (happy_var_1
 	)}
 
 happyReduce_194 = happySpecReduce_1  70# happyReduction_194
 happyReduction_194 happy_x_1
-	 =  case happyOut161 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut161 happy_x_1 of { happy_var_1 ->
 	happyIn84
 		 (happy_var_1
 	)}
@@ -4373,10 +4373,10 @@ happyReduction_195 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut170 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut117 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut170 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut117 happy_x_4 of { happy_var_4 ->
 	( do { v <- checkValSigLhs happy_var_2
                           ; let err = text "in default signature" <> colon <+>
                                       quotes (ppr happy_var_2)
@@ -4389,9 +4389,9 @@ happyReduction_196 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut85 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut84 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut85 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut84 happy_x_3 of { happy_var_3 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                              then return (sLL happy_var_1 happy_var_3 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                                     , unitOL happy_var_3))
@@ -4404,8 +4404,8 @@ happyReduce_197 = happyMonadReduce 2# 71# happyReduction_197
 happyReduction_197 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut85 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut85 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                              then return (sLL happy_var_1 happy_var_2 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                                                    ,snd $ unLoc happy_var_1))
@@ -4415,7 +4415,7 @@ happyReduction_197 (happy_x_2 `HappyStk`
 
 happyReduce_198 = happySpecReduce_1  71# happyReduction_198
 happyReduction_198 happy_x_1
-	 =  case happyOut84 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut84 happy_x_1 of { happy_var_1 ->
 	happyIn85
 		 (sL1 happy_var_1 ([], unitOL happy_var_1)
 	)}
@@ -4429,9 +4429,9 @@ happyReduce_200 = happySpecReduce_3  72# happyReduction_200
 happyReduction_200 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut85 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut85 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn86
 		 (sLL happy_var_1 happy_var_3 (moc happy_var_1:mcc happy_var_3:(fst $ unLoc happy_var_2)
                                              ,snd $ unLoc happy_var_2)
@@ -4441,7 +4441,7 @@ happyReduce_201 = happySpecReduce_3  72# happyReduction_201
 happyReduction_201 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut85 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut85 happy_x_2 of { happy_var_2 ->
 	happyIn86
 		 (happy_var_2
 	)}
@@ -4449,8 +4449,8 @@ happyReduction_201 happy_x_3
 happyReduce_202 = happySpecReduce_2  73# happyReduction_202
 happyReduction_202 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut86 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut86 happy_x_2 of { happy_var_2 ->
 	happyIn87
 		 (sLL happy_var_1 happy_var_2 (mj AnnWhere happy_var_1:(fst $ unLoc happy_var_2)
                                              ,snd $ unLoc happy_var_2)
@@ -4463,14 +4463,14 @@ happyReduction_203  =  happyIn87
 
 happyReduce_204 = happySpecReduce_1  74# happyReduction_204
 happyReduction_204 happy_x_1
-	 =  case happyOut65 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut65 happy_x_1 of { happy_var_1 ->
 	happyIn88
 		 (sLL happy_var_1 happy_var_1 (unitOL (sL1 happy_var_1 (InstD (unLoc happy_var_1))))
 	)}
 
 happyReduce_205 = happySpecReduce_1  74# happyReduction_205
 happyReduction_205 happy_x_1
-	 =  case happyOut161 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut161 happy_x_1 of { happy_var_1 ->
 	happyIn88
 		 (sLL happy_var_1 happy_var_1 (unitOL happy_var_1)
 	)}
@@ -4480,9 +4480,9 @@ happyReduction_206 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut89 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut88 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut89 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut88 happy_x_3 of { happy_var_3 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                              then return (sLL happy_var_1 happy_var_3 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                                     , unLoc happy_var_3))
@@ -4496,8 +4496,8 @@ happyReduce_207 = happyMonadReduce 2# 75# happyReduction_207
 happyReduction_207 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut89 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut89 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                              then return (sLL happy_var_1 happy_var_2 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                                                    ,snd $ unLoc happy_var_1))
@@ -4507,7 +4507,7 @@ happyReduction_207 (happy_x_2 `HappyStk`
 
 happyReduce_208 = happySpecReduce_1  75# happyReduction_208
 happyReduction_208 happy_x_1
-	 =  case happyOut88 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut88 happy_x_1 of { happy_var_1 ->
 	happyIn89
 		 (sL1 happy_var_1 ([],unLoc happy_var_1)
 	)}
@@ -4521,9 +4521,9 @@ happyReduce_210 = happySpecReduce_3  76# happyReduction_210
 happyReduction_210 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut89 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut89 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn90
 		 (sLL happy_var_1 happy_var_3 (moc happy_var_1:mcc happy_var_3:(fst $ unLoc happy_var_2),snd $ unLoc happy_var_2)
 	)}}}
@@ -4532,7 +4532,7 @@ happyReduce_211 = happySpecReduce_3  76# happyReduction_211
 happyReduction_211 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut89 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut89 happy_x_2 of { happy_var_2 ->
 	happyIn90
 		 (L (gl happy_var_2) (unLoc happy_var_2)
 	)}
@@ -4540,8 +4540,8 @@ happyReduction_211 happy_x_3
 happyReduce_212 = happySpecReduce_2  77# happyReduction_212
 happyReduction_212 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut90 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut90 happy_x_2 of { happy_var_2 ->
 	happyIn91
 		 (sLL happy_var_1 happy_var_2 (mj AnnWhere happy_var_1:(fst $ unLoc happy_var_2)
                                              ,(snd $ unLoc happy_var_2))
@@ -4557,9 +4557,9 @@ happyReduction_214 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut92 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut161 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut92 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut161 happy_x_3 of { happy_var_3 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                  then return (sLL happy_var_1 happy_var_3 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                         , unitOL happy_var_3))
@@ -4576,8 +4576,8 @@ happyReduce_215 = happyMonadReduce 2# 78# happyReduction_215
 happyReduction_215 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut92 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut92 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if isNilOL (snd $ unLoc happy_var_1)
                                   then return (sLL happy_var_1 happy_var_2 ((mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                           ,snd $ unLoc happy_var_1)))
@@ -4587,7 +4587,7 @@ happyReduction_215 (happy_x_2 `HappyStk`
 
 happyReduce_216 = happySpecReduce_1  78# happyReduction_216
 happyReduction_216 happy_x_1
-	 =  case happyOut161 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut161 happy_x_1 of { happy_var_1 ->
 	happyIn92
 		 (sL1 happy_var_1 ([], unitOL happy_var_1)
 	)}
@@ -4601,9 +4601,9 @@ happyReduce_218 = happySpecReduce_3  79# happyReduction_218
 happyReduction_218 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut92 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut92 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn93
 		 (sLL happy_var_1 happy_var_3 (moc happy_var_1:mcc happy_var_3:(fst $ unLoc happy_var_2)
                                                    ,sL1 happy_var_2 $ snd $ unLoc happy_var_2)
@@ -4613,7 +4613,7 @@ happyReduce_219 = happySpecReduce_3  79# happyReduction_219
 happyReduction_219 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut92 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut92 happy_x_2 of { happy_var_2 ->
 	happyIn93
 		 (L (gl happy_var_2) (fst $ unLoc happy_var_2,sL1 happy_var_2 $ snd $ unLoc happy_var_2)
 	)}
@@ -4621,7 +4621,7 @@ happyReduction_219 happy_x_3
 happyReduce_220 = happyMonadReduce 1# 80# happyReduction_220
 happyReduction_220 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut93 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut93 happy_x_1 of { happy_var_1 ->
 	( do { val_binds <- cvBindGroup (unLoc $ snd $ unLoc happy_var_1)
                                   ; return (sL1 happy_var_1 (fst $ unLoc happy_var_1
                                                     ,sL1 happy_var_1 $ HsValBinds val_binds)) })}
@@ -4631,9 +4631,9 @@ happyReduce_221 = happySpecReduce_3  80# happyReduction_221
 happyReduction_221 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut219 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut219 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn94
 		 (sLL happy_var_1 happy_var_3 ([moc happy_var_1,mcc happy_var_3]
                                              ,sL1 happy_var_2 $ HsIPBinds (IPBinds (unLoc happy_var_2)))
@@ -4643,7 +4643,7 @@ happyReduce_222 = happySpecReduce_3  80# happyReduction_222
 happyReduction_222 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut219 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut219 happy_x_2 of { happy_var_2 ->
 	happyIn94
 		 (L (getLoc happy_var_2) ([]
                                             ,sL1 happy_var_2 $ HsIPBinds (IPBinds (unLoc happy_var_2)))
@@ -4652,8 +4652,8 @@ happyReduction_222 happy_x_3
 happyReduce_223 = happySpecReduce_2  81# happyReduction_223
 happyReduction_223 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut94 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut94 happy_x_2 of { happy_var_2 ->
 	happyIn95
 		 (sLL happy_var_1 happy_var_2 (mj AnnWhere happy_var_1 : (fst $ unLoc happy_var_2)
                                              ,snd $ unLoc happy_var_2)
@@ -4669,9 +4669,9 @@ happyReduction_225 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut96 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut97 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut96 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut97 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return (happy_var_1 `snocOL` happy_var_3))}}}
 	) (\r -> happyReturn (happyIn96 r))
@@ -4680,15 +4680,15 @@ happyReduce_226 = happyMonadReduce 2# 82# happyReduction_226
 happyReduction_226 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut96 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut96 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return happy_var_1)}}
 	) (\r -> happyReturn (happyIn96 r))
 
 happyReduce_227 = happySpecReduce_1  82# happyReduction_227
 happyReduction_227 happy_x_1
-	 =  case happyOut97 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut97 happy_x_1 of { happy_var_1 ->
 	happyIn96
 		 (unitOL happy_var_1
 	)}
@@ -4706,12 +4706,12 @@ happyReduction_229 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut98 happy_x_2 of { happy_var_2 -> 
-	case happyOut100 happy_x_3 of { happy_var_3 -> 
-	case happyOut170 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
-	case happyOut169 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut98 happy_x_2 of { happy_var_2 ->
+	case happyOut100 happy_x_3 of { happy_var_3 ->
+	case happyOut170 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
+	case happyOut169 happy_x_6 of { happy_var_6 ->
 	(ams (sLL happy_var_1 happy_var_6 $ (HsRule (L (gl happy_var_1) (getSTRINGs happy_var_1,getSTRING happy_var_1))
                                   ((snd happy_var_2) `orElse` AlwaysActive)
                                   (snd happy_var_3) happy_var_4 happy_var_6))
@@ -4725,7 +4725,7 @@ happyReduction_230  =  happyIn98
 
 happyReduce_231 = happySpecReduce_1  84# happyReduction_231
 happyReduction_231 happy_x_1
-	 =  case happyOut99 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut99 happy_x_1 of { happy_var_1 ->
 	happyIn98
 		 ((fst happy_var_1,Just (snd happy_var_1))
 	)}
@@ -4734,9 +4734,9 @@ happyReduce_232 = happySpecReduce_3  85# happyReduction_232
 happyReduction_232 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn99
 		 (([mos happy_var_1,mj AnnVal happy_var_2,mcs happy_var_3]
                                   ,ActiveAfter  (getINTEGERs happy_var_2) (fromInteger (getINTEGER happy_var_2)))
@@ -4748,10 +4748,10 @@ happyReduction_233 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn99
 		 (([mos happy_var_1,mj AnnTilde happy_var_2,mj AnnVal happy_var_3,mcs happy_var_4]
                                   ,ActiveBefore (getINTEGERs happy_var_3) (fromInteger (getINTEGER happy_var_3)))
@@ -4761,9 +4761,9 @@ happyReduce_234 = happySpecReduce_3  85# happyReduction_234
 happyReduction_234 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn99
 		 (([mos happy_var_1,mj AnnTilde happy_var_2,mcs happy_var_3]
                                   ,NeverActive)
@@ -4773,9 +4773,9 @@ happyReduce_235 = happySpecReduce_3  86# happyReduction_235
 happyReduction_235 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut101 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut101 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn100
 		 (([mu AnnForall happy_var_1,mj AnnDot happy_var_3],happy_var_2)
 	)}}}
@@ -4787,7 +4787,7 @@ happyReduction_236  =  happyIn100
 
 happyReduce_237 = happySpecReduce_1  87# happyReduction_237
 happyReduction_237 happy_x_1
-	 =  case happyOut102 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut102 happy_x_1 of { happy_var_1 ->
 	happyIn101
 		 ([happy_var_1]
 	)}
@@ -4795,15 +4795,15 @@ happyReduction_237 happy_x_1
 happyReduce_238 = happySpecReduce_2  87# happyReduction_238
 happyReduction_238 happy_x_2
 	happy_x_1
-	 =  case happyOut102 happy_x_1 of { happy_var_1 -> 
-	case happyOut101 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut102 happy_x_1 of { happy_var_1 ->
+	case happyOut101 happy_x_2 of { happy_var_2 ->
 	happyIn101
 		 (happy_var_1 : happy_var_2
 	)}}
 
 happyReduce_239 = happySpecReduce_1  88# happyReduction_239
 happyReduction_239 happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
 	happyIn102
 		 (sLL happy_var_1 happy_var_1 (RuleBndr happy_var_1)
 	)}
@@ -4815,11 +4815,11 @@ happyReduction_240 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut260 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut123 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut260 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut123 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( ams (sLL happy_var_1 happy_var_5 (RuleBndrSig happy_var_2
                                                        (mkLHsSigWcType happy_var_4)))
                                                [mop happy_var_1,mu AnnDcolon happy_var_3,mcp happy_var_5])}}}}}
@@ -4830,9 +4830,9 @@ happyReduction_241 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut103 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut104 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut103 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut104 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return (happy_var_1 `appOL` happy_var_3))}}}
 	) (\r -> happyReturn (happyIn103 r))
@@ -4841,15 +4841,15 @@ happyReduce_242 = happyMonadReduce 2# 89# happyReduction_242
 happyReduction_242 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut103 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut103 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return happy_var_1)}}
 	) (\r -> happyReturn (happyIn103 r))
 
 happyReduce_243 = happySpecReduce_1  89# happyReduction_243
 happyReduction_243 happy_x_1
-	 =  case happyOut104 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut104 happy_x_1 of { happy_var_1 ->
 	happyIn103
 		 (happy_var_1
 	)}
@@ -4863,8 +4863,8 @@ happyReduce_245 = happyMonadReduce 2# 90# happyReduction_245
 happyReduction_245 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut227 happy_x_1 of { happy_var_1 -> 
-	case happyOut107 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut227 happy_x_1 of { happy_var_1 ->
+	case happyOut107 happy_x_2 of { happy_var_2 ->
 	( amsu (sLL happy_var_1 happy_var_2 (Warning (unLoc happy_var_1) (WarningTxt (noLoc "") $ snd $ unLoc happy_var_2)))
                      (fst $ unLoc happy_var_2))}}
 	) (\r -> happyReturn (happyIn104 r))
@@ -4874,9 +4874,9 @@ happyReduction_246 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut105 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut106 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut105 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut106 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return (happy_var_1 `appOL` happy_var_3))}}}
 	) (\r -> happyReturn (happyIn105 r))
@@ -4885,15 +4885,15 @@ happyReduce_247 = happyMonadReduce 2# 91# happyReduction_247
 happyReduction_247 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut105 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut105 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (oll happy_var_1) AnnSemi (gl happy_var_2)
                                           >> return happy_var_1)}}
 	) (\r -> happyReturn (happyIn105 r))
 
 happyReduce_248 = happySpecReduce_1  91# happyReduction_248
 happyReduction_248 happy_x_1
-	 =  case happyOut106 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut106 happy_x_1 of { happy_var_1 ->
 	happyIn105
 		 (happy_var_1
 	)}
@@ -4907,15 +4907,15 @@ happyReduce_250 = happyMonadReduce 2# 92# happyReduction_250
 happyReduction_250 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut227 happy_x_1 of { happy_var_1 -> 
-	case happyOut107 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut227 happy_x_1 of { happy_var_1 ->
+	case happyOut107 happy_x_2 of { happy_var_2 ->
 	( amsu (sLL happy_var_1 happy_var_2 $ (Warning (unLoc happy_var_1) (DeprecatedTxt (noLoc "") $ snd $ unLoc happy_var_2)))
                      (fst $ unLoc happy_var_2))}}
 	) (\r -> happyReturn (happyIn106 r))
 
 happyReduce_251 = happySpecReduce_1  93# happyReduction_251
 happyReduction_251 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn107
 		 (sL1 happy_var_1 ([],[L (gl happy_var_1) (getStringLiteral happy_var_1)])
 	)}
@@ -4924,9 +4924,9 @@ happyReduce_252 = happySpecReduce_3  93# happyReduction_252
 happyReduction_252 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut108 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut108 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn107
 		 (sLL happy_var_1 happy_var_3 $ ([mos happy_var_1,mcs happy_var_3],fromOL (unLoc happy_var_2))
 	)}}}
@@ -4936,9 +4936,9 @@ happyReduction_253 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut108 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut108 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( addAnnotation (oll $ unLoc happy_var_1) AnnComma (gl happy_var_2) >>
                                return (sLL happy_var_1 happy_var_3 (unLoc happy_var_1 `snocOL`
                                                   (L (gl happy_var_3) (getStringLiteral happy_var_3)))))}}}
@@ -4946,7 +4946,7 @@ happyReduction_253 (happy_x_3 `HappyStk`
 
 happyReduce_254 = happySpecReduce_1  94# happyReduction_254
 happyReduction_254 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn108
 		 (sLL happy_var_1 happy_var_1 (unitOL (L (gl happy_var_1) (getStringLiteral happy_var_1)))
 	)}
@@ -4962,10 +4962,10 @@ happyReduction_256 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut228 happy_x_2 of { happy_var_2 -> 
-	case happyOut176 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut228 happy_x_2 of { happy_var_2 ->
+	case happyOut176 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 (AnnD $ HsAnnotation
                                             (getANN_PRAGs happy_var_1)
                                             (ValueAnnProvenance happy_var_2) happy_var_3))
@@ -4979,11 +4979,11 @@ happyReduction_257 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut245 happy_x_3 of { happy_var_3 -> 
-	case happyOut176 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut245 happy_x_3 of { happy_var_3 ->
+	case happyOut176 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( ams (sLL happy_var_1 happy_var_5 (AnnD $ HsAnnotation
                                             (getANN_PRAGs happy_var_1)
                                             (TypeAnnProvenance happy_var_3) happy_var_4))
@@ -4996,10 +4996,10 @@ happyReduction_258 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut176 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut176 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 (AnnD $ HsAnnotation
                                                 (getANN_PRAGs happy_var_1)
                                                  ModuleAnnProvenance happy_var_3))
@@ -5012,10 +5012,10 @@ happyReduction_259 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut111 happy_x_2 of { happy_var_2 -> 
-	case happyOut112 happy_x_3 of { happy_var_3 -> 
-	case happyOut113 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut111 happy_x_2 of { happy_var_2 ->
+	case happyOut112 happy_x_3 of { happy_var_3 ->
+	case happyOut113 happy_x_4 of { happy_var_4 ->
 	( mkImport happy_var_2 happy_var_3 (snd $ unLoc happy_var_4) >>= \i ->
                  return (sLL happy_var_1 happy_var_4 (mj AnnImport happy_var_1 : (fst $ unLoc happy_var_4),i)))}}}}
 	) (\r -> happyReturn (happyIn110 r))
@@ -5025,9 +5025,9 @@ happyReduction_260 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut111 happy_x_2 of { happy_var_2 -> 
-	case happyOut113 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut111 happy_x_2 of { happy_var_2 ->
+	case happyOut113 happy_x_3 of { happy_var_3 ->
 	( do { d <- mkImport happy_var_2 (noLoc PlaySafe) (snd $ unLoc happy_var_3);
                     return (sLL happy_var_1 happy_var_3 (mj AnnImport happy_var_1 : (fst $ unLoc happy_var_3),d)) })}}}
 	) (\r -> happyReturn (happyIn110 r))
@@ -5037,65 +5037,65 @@ happyReduction_261 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut111 happy_x_2 of { happy_var_2 -> 
-	case happyOut113 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut111 happy_x_2 of { happy_var_2 ->
+	case happyOut113 happy_x_3 of { happy_var_3 ->
 	( mkExport happy_var_2 (snd $ unLoc happy_var_3) >>= \i ->
                   return (sLL happy_var_1 happy_var_3 (mj AnnExport happy_var_1 : (fst $ unLoc happy_var_3),i) ))}}}
 	) (\r -> happyReturn (happyIn110 r))
 
 happyReduce_262 = happySpecReduce_1  97# happyReduction_262
 happyReduction_262 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn111
 		 (sLL happy_var_1 happy_var_1 StdCallConv
 	)}
 
 happyReduce_263 = happySpecReduce_1  97# happyReduction_263
 happyReduction_263 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn111
 		 (sLL happy_var_1 happy_var_1 CCallConv
 	)}
 
 happyReduce_264 = happySpecReduce_1  97# happyReduction_264
 happyReduction_264 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn111
 		 (sLL happy_var_1 happy_var_1 CApiConv
 	)}
 
 happyReduce_265 = happySpecReduce_1  97# happyReduction_265
 happyReduction_265 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn111
 		 (sLL happy_var_1 happy_var_1 PrimCallConv
 	)}
 
 happyReduce_266 = happySpecReduce_1  97# happyReduction_266
 happyReduction_266 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn111
 		 (sLL happy_var_1 happy_var_1 JavaScriptCallConv
 	)}
 
 happyReduce_267 = happySpecReduce_1  98# happyReduction_267
 happyReduction_267 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn112
 		 (sLL happy_var_1 happy_var_1 PlayRisky
 	)}
 
 happyReduce_268 = happySpecReduce_1  98# happyReduction_268
 happyReduction_268 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn112
 		 (sLL happy_var_1 happy_var_1 PlaySafe
 	)}
 
 happyReduce_269 = happySpecReduce_1  98# happyReduction_269
 happyReduction_269 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn112
 		 (sLL happy_var_1 happy_var_1 PlayInterruptible
 	)}
@@ -5106,10 +5106,10 @@ happyReduction_270 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut257 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut117 happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut257 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut117 happy_x_4 of { happy_var_4 ->
 	happyIn113
 		 (sLL happy_var_1 happy_var_4 ([mu AnnDcolon happy_var_3]
                                              ,(L (getLoc happy_var_1)
@@ -5120,9 +5120,9 @@ happyReduce_271 = happySpecReduce_3  99# happyReduction_271
 happyReduction_271 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut257 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut117 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut257 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut117 happy_x_3 of { happy_var_3 ->
 	happyIn113
 		 (sLL happy_var_1 happy_var_3 ([mu AnnDcolon happy_var_2]
                                              ,(noLoc (StringLiteral "" nilFS), happy_var_1, mkLHsSigType happy_var_3))
@@ -5136,8 +5136,8 @@ happyReduction_272  =  happyIn114
 happyReduce_273 = happySpecReduce_2  100# happyReduction_273
 happyReduction_273 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut116 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut116 happy_x_2 of { happy_var_2 ->
 	happyIn114
 		 (([mu AnnDcolon happy_var_1],Just happy_var_2)
 	)}}
@@ -5150,22 +5150,22 @@ happyReduction_274  =  happyIn115
 happyReduce_275 = happySpecReduce_2  101# happyReduction_275
 happyReduction_275 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut133 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut133 happy_x_2 of { happy_var_2 ->
 	happyIn115
 		 (([mu AnnDcolon happy_var_1],Just happy_var_2)
 	)}}
 
 happyReduce_276 = happySpecReduce_1  102# happyReduction_276
 happyReduction_276 happy_x_1
-	 =  case happyOut123 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut123 happy_x_1 of { happy_var_1 ->
 	happyIn116
 		 (happy_var_1
 	)}
 
 happyReduce_277 = happySpecReduce_1  103# happyReduction_277
 happyReduction_277 happy_x_1
-	 =  case happyOut124 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut124 happy_x_1 of { happy_var_1 ->
 	happyIn117
 		 (happy_var_1
 	)}
@@ -5175,9 +5175,9 @@ happyReduction_278 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut118 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut257 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut118 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut257 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1)
                                                        AnnComma (gl happy_var_2)
                                          >> return (sLL happy_var_1 happy_var_3 (happy_var_3 : unLoc happy_var_1)))}}}
@@ -5185,14 +5185,14 @@ happyReduction_278 (happy_x_3 `HappyStk`
 
 happyReduce_279 = happySpecReduce_1  104# happyReduction_279
 happyReduction_279 happy_x_1
-	 =  case happyOut257 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut257 happy_x_1 of { happy_var_1 ->
 	happyIn118
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
 
 happyReduce_280 = happySpecReduce_1  105# happyReduction_280
 happyReduction_280 happy_x_1
-	 =  case happyOut116 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut116 happy_x_1 of { happy_var_1 ->
 	happyIn119
 		 (unitOL (mkLHsSigType happy_var_1)
 	)}
@@ -5202,23 +5202,23 @@ happyReduction_281 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut116 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut119 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut116 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut119 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2)
                                 >> return (unitOL (mkLHsSigType happy_var_1) `appOL` happy_var_3))}}}
 	) (\r -> happyReturn (happyIn119 r))
 
 happyReduce_282 = happySpecReduce_1  106# happyReduction_282
 happyReduction_282 happy_x_1
-	 =  case happyOut121 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut121 happy_x_1 of { happy_var_1 ->
 	happyIn120
 		 (sL1 happy_var_1 (let (a, str) = unLoc happy_var_1 in (a, HsSrcBang Nothing NoSrcUnpack str))
 	)}
 
 happyReduce_283 = happySpecReduce_1  106# happyReduction_283
 happyReduction_283 happy_x_1
-	 =  case happyOut122 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut122 happy_x_1 of { happy_var_1 ->
 	happyIn120
 		 (sL1 happy_var_1 (let (a, prag, unpk) = unLoc happy_var_1 in (a, HsSrcBang prag unpk NoSrcStrict))
 	)}
@@ -5226,8 +5226,8 @@ happyReduction_283 happy_x_1
 happyReduce_284 = happySpecReduce_2  106# happyReduction_284
 happyReduction_284 happy_x_2
 	happy_x_1
-	 =  case happyOut122 happy_x_1 of { happy_var_1 -> 
-	case happyOut121 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut122 happy_x_1 of { happy_var_1 ->
+	case happyOut121 happy_x_2 of { happy_var_2 ->
 	happyIn120
 		 (sLL happy_var_1 happy_var_2 (let { (a, prag, unpk) = unLoc happy_var_1
                                                    ; (a', str) = unLoc happy_var_2 }
@@ -5236,14 +5236,14 @@ happyReduction_284 happy_x_2
 
 happyReduce_285 = happySpecReduce_1  107# happyReduction_285
 happyReduction_285 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn121
 		 (sL1 happy_var_1 ([mj AnnBang happy_var_1], SrcStrict)
 	)}
 
 happyReduce_286 = happySpecReduce_1  107# happyReduction_286
 happyReduction_286 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn121
 		 (sL1 happy_var_1 ([mj AnnTilde happy_var_1], SrcLazy)
 	)}
@@ -5251,8 +5251,8 @@ happyReduction_286 happy_x_1
 happyReduce_287 = happySpecReduce_2  108# happyReduction_287
 happyReduction_287 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn122
 		 (sLL happy_var_1 happy_var_2 ([mo happy_var_1, mc happy_var_2], Just $ getUNPACK_PRAGs happy_var_1, SrcUnpack)
 	)}}
@@ -5260,8 +5260,8 @@ happyReduction_287 happy_x_2
 happyReduce_288 = happySpecReduce_2  108# happyReduction_288
 happyReduction_288 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn122
 		 (sLL happy_var_1 happy_var_2 ([mo happy_var_1, mc happy_var_2], Just $ getNOUNPACK_PRAGs happy_var_1, SrcNoUnpack)
 	)}}
@@ -5272,10 +5272,10 @@ happyReduction_289 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut138 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut123 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut138 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut123 happy_x_4 of { happy_var_4 ->
 	( hintExplicitForall (getLoc happy_var_1) >>
                                            ams (sLL happy_var_1 happy_var_4 $
                                                 HsForAllTy { hst_bndrs = happy_var_2
@@ -5288,9 +5288,9 @@ happyReduction_290 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut123 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut123 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) (toUnicodeAnn AnnDarrow happy_var_2) (gl happy_var_2)
                                          >> return (sLL happy_var_1 happy_var_3 $
                                             HsQualTy { hst_ctxt = happy_var_1
@@ -5302,16 +5302,16 @@ happyReduction_291 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (HsIParamTy (unLoc happy_var_1) happy_var_3))
                                              [mj AnnVal happy_var_1,mu AnnDcolon happy_var_2])}}}
 	) (\r -> happyReturn (happyIn123 r))
 
 happyReduce_292 = happySpecReduce_1  109# happyReduction_292
 happyReduction_292 happy_x_1
-	 =  case happyOut127 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut127 happy_x_1 of { happy_var_1 ->
 	happyIn123
 		 (happy_var_1
 	)}
@@ -5322,10 +5322,10 @@ happyReduction_293 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut138 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut124 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut138 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut124 happy_x_4 of { happy_var_4 ->
 	( hintExplicitForall (getLoc happy_var_1) >>
                                             ams (sLL happy_var_1 happy_var_4 $
                                                  HsForAllTy { hst_bndrs = happy_var_2
@@ -5338,9 +5338,9 @@ happyReduction_294 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut124 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut125 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut124 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) (toUnicodeAnn AnnDarrow happy_var_2) (gl happy_var_2)
                                          >> return (sLL happy_var_1 happy_var_3 $
                                             HsQualTy { hst_ctxt = happy_var_1
@@ -5352,16 +5352,16 @@ happyReduction_295 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut127 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut127 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (HsIParamTy (unLoc happy_var_1) happy_var_3))
                                              [mj AnnVal happy_var_1,mu AnnDcolon happy_var_2])}}}
 	) (\r -> happyReturn (happyIn124 r))
 
 happyReduce_296 = happySpecReduce_1  110# happyReduction_296
 happyReduction_296 happy_x_1
-	 =  case happyOut128 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut128 happy_x_1 of { happy_var_1 ->
 	happyIn124
 		 (happy_var_1
 	)}
@@ -5369,7 +5369,7 @@ happyReduction_296 happy_x_1
 happyReduce_297 = happyMonadReduce 1# 111# happyReduction_297
 happyReduction_297 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 ->
 	( do { (anns,ctx) <- checkContext happy_var_1
                                                 ; if null (unLoc ctx)
                                                    then addAnnotation (gl happy_var_1) AnnUnit (gl happy_var_1)
@@ -5381,7 +5381,7 @@ happyReduction_297 (happy_x_1 `HappyStk`
 happyReduce_298 = happyMonadReduce 1# 112# happyReduction_298
 happyReduction_298 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 ->
 	( do { ty <- splitTilde happy_var_1
                                              ; (anns,ctx) <- checkContext ty
                                              ; if null (unLoc ctx)
@@ -5393,7 +5393,7 @@ happyReduction_298 (happy_x_1 `HappyStk`
 
 happyReduce_299 = happySpecReduce_1  113# happyReduction_299
 happyReduction_299 happy_x_1
-	 =  case happyOut129 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut129 happy_x_1 of { happy_var_1 ->
 	happyIn127
 		 (happy_var_1
 	)}
@@ -5403,9 +5403,9 @@ happyReduction_300 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut123 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut123 happy_x_3 of { happy_var_3 ->
 	( ams happy_var_1 [mu AnnRarrow happy_var_2] -- See note [GADT decl discards annotations]
                                        >> ams (sLL happy_var_1 happy_var_3 $ HsFunTy happy_var_1 happy_var_3)
                                               [mu AnnRarrow happy_var_2])}}}
@@ -5413,7 +5413,7 @@ happyReduction_300 (happy_x_3 `HappyStk`
 
 happyReduce_301 = happySpecReduce_1  114# happyReduction_301
 happyReduction_301 happy_x_1
-	 =  case happyOut129 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut129 happy_x_1 of { happy_var_1 ->
 	happyIn128
 		 (happy_var_1
 	)}
@@ -5421,8 +5421,8 @@ happyReduction_301 happy_x_1
 happyReduce_302 = happySpecReduce_2  114# happyReduction_302
 happyReduction_302 happy_x_2
 	happy_x_1
-	 =  case happyOut129 happy_x_1 of { happy_var_1 -> 
-	case happyOut277 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut129 happy_x_1 of { happy_var_1 ->
+	case happyOut277 happy_x_2 of { happy_var_2 ->
 	happyIn128
 		 (sLL happy_var_1 happy_var_2 $ HsDocTy happy_var_1 happy_var_2
 	)}}
@@ -5432,9 +5432,9 @@ happyReduction_303 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut124 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut124 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsFunTy happy_var_1 happy_var_3)
                                                 [mu AnnRarrow happy_var_2])}}}
 	) (\r -> happyReturn (happyIn128 r))
@@ -5445,10 +5445,10 @@ happyReduction_304 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 -> 
-	case happyOut277 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut124 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOut129 happy_x_1 of { happy_var_1 ->
+	case happyOut277 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut124 happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $
                                                  HsFunTy (L (comb2 happy_var_1 happy_var_2) (HsDocTy happy_var_1 happy_var_2))
                                                          happy_var_4)
@@ -5458,7 +5458,7 @@ happyReduction_304 (happy_x_4 `HappyStk`
 happyReduce_305 = happyMonadReduce 1# 115# happyReduction_305
 happyReduction_305 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut131 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut131 happy_x_1 of { happy_var_1 ->
 	(  splitTildeApps (reverse (unLoc happy_var_1)) >>=
                                           \ts -> return $ sL1 happy_var_1 $ HsAppsTy ts)}
 	) (\r -> happyReturn (happyIn129 r))
@@ -5466,22 +5466,22 @@ happyReduction_305 (happy_x_1 `HappyStk`
 happyReduce_306 = happySpecReduce_2  116# happyReduction_306
 happyReduction_306 happy_x_2
 	happy_x_1
-	 =  case happyOut130 happy_x_1 of { happy_var_1 -> 
-	case happyOut133 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut130 happy_x_1 of { happy_var_1 ->
+	case happyOut133 happy_x_2 of { happy_var_2 ->
 	happyIn130
 		 (sLL happy_var_1 happy_var_2 $ HsAppTy happy_var_1 happy_var_2
 	)}}
 
 happyReduce_307 = happySpecReduce_1  116# happyReduction_307
 happyReduction_307 happy_x_1
-	 =  case happyOut133 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut133 happy_x_1 of { happy_var_1 ->
 	happyIn130
 		 (happy_var_1
 	)}
 
 happyReduce_308 = happySpecReduce_1  117# happyReduction_308
 happyReduction_308 happy_x_1
-	 =  case happyOut132 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut132 happy_x_1 of { happy_var_1 ->
 	happyIn131
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -5489,29 +5489,29 @@ happyReduction_308 happy_x_1
 happyReduce_309 = happySpecReduce_2  117# happyReduction_309
 happyReduction_309 happy_x_2
 	happy_x_1
-	 =  case happyOut131 happy_x_1 of { happy_var_1 -> 
-	case happyOut132 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut131 happy_x_1 of { happy_var_1 ->
+	case happyOut132 happy_x_2 of { happy_var_2 ->
 	happyIn131
 		 (sLL happy_var_1 happy_var_2 $ happy_var_2 : (unLoc happy_var_1)
 	)}}
 
 happyReduce_310 = happySpecReduce_1  118# happyReduction_310
 happyReduction_310 happy_x_1
-	 =  case happyOut133 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut133 happy_x_1 of { happy_var_1 ->
 	happyIn132
 		 (sL1 happy_var_1 $ HsAppPrefix happy_var_1
 	)}
 
 happyReduce_311 = happySpecReduce_1  118# happyReduction_311
 happyReduction_311 happy_x_1
-	 =  case happyOut242 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut242 happy_x_1 of { happy_var_1 ->
 	happyIn132
 		 (sL1 happy_var_1 $ HsAppInfix happy_var_1
 	)}
 
 happyReduce_312 = happySpecReduce_1  118# happyReduction_312
 happyReduction_312 happy_x_1
-	 =  case happyOut255 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut255 happy_x_1 of { happy_var_1 ->
 	happyIn132
 		 (sL1 happy_var_1 $ HsAppInfix happy_var_1
 	)}
@@ -5520,8 +5520,8 @@ happyReduce_313 = happyMonadReduce 2# 118# happyReduction_313
 happyReduction_313 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut237 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut237 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsAppInfix happy_var_2)
                                                [mj AnnSimpleQuote happy_var_1])}}
 	) (\r -> happyReturn (happyIn132 r))
@@ -5530,22 +5530,22 @@ happyReduce_314 = happyMonadReduce 2# 118# happyReduction_314
 happyReduction_314 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut249 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut249 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsAppInfix happy_var_2)
                                                [mj AnnSimpleQuote happy_var_1])}}
 	) (\r -> happyReturn (happyIn132 r))
 
 happyReduce_315 = happySpecReduce_1  119# happyReduction_315
 happyReduction_315 happy_x_1
-	 =  case happyOut239 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut239 happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sL1 happy_var_1 (HsTyVar happy_var_1)
 	)}
 
 happyReduce_316 = happySpecReduce_1  119# happyReduction_316
 happyReduction_316 happy_x_1
-	 =  case happyOut254 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut254 happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sL1 happy_var_1 (HsTyVar happy_var_1)
 	)}
@@ -5554,8 +5554,8 @@ happyReduce_317 = happyMonadReduce 2# 119# happyReduction_317
 happyReduction_317 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut120 happy_x_1 of { happy_var_1 -> 
-	case happyOut133 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut120 happy_x_1 of { happy_var_1 ->
+	case happyOut133 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 (HsBangTy (snd $ unLoc happy_var_1) happy_var_2))
                                                 (fst $ unLoc happy_var_1))}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5565,9 +5565,9 @@ happyReduction_318 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut154 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut154 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( amms (checkRecordSyntax
                                                     (sLL happy_var_1 happy_var_3 $ HsRecTy happy_var_2))
                                                         -- Constructor sigs only
@@ -5578,8 +5578,8 @@ happyReduce_319 = happyMonadReduce 2# 119# happyReduction_319
 happyReduction_319 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsTupleTy
                                                     HsBoxedOrConstraintTuple [])
                                                 [mop happy_var_1,mcp happy_var_2])}}
@@ -5592,11 +5592,11 @@ happyReduction_320 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut137 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut137 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( addAnnotation (gl happy_var_2) AnnComma
                                                           (gl happy_var_3) >>
                                             ams (sLL happy_var_1 happy_var_5 $ HsTupleTy
@@ -5608,8 +5608,8 @@ happyReduce_321 = happyMonadReduce 2# 119# happyReduction_321
 happyReduction_321 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsTupleTy HsUnboxedTuple [])
                                              [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5619,9 +5619,9 @@ happyReduction_322 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut137 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut137 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsTupleTy HsUnboxedTuple happy_var_2)
                                              [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5631,9 +5631,9 @@ happyReduction_323 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsListTy  happy_var_2) [mos happy_var_1,mcs happy_var_3])}}}
 	) (\r -> happyReturn (happyIn133 r))
 
@@ -5642,9 +5642,9 @@ happyReduction_324 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsPArrTy  happy_var_2) [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn133 r))
 
@@ -5653,9 +5653,9 @@ happyReduction_325 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsParTy   happy_var_2) [mop happy_var_1,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn133 r))
 
@@ -5666,18 +5666,18 @@ happyReduction_326 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut144 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut144 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( ams (sLL happy_var_1 happy_var_5 $ HsKindSig happy_var_2 happy_var_4)
                                              [mop happy_var_1,mu AnnDcolon happy_var_3,mcp happy_var_5])}}}}}
 	) (\r -> happyReturn (happyIn133 r))
 
 happyReduce_327 = happySpecReduce_1  119# happyReduction_327
 happyReduction_327 happy_x_1
-	 =  case happyOut168 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut168 happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sL1 happy_var_1 (HsSpliceTy (unLoc happy_var_1))
 	)}
@@ -5687,9 +5687,9 @@ happyReduction_328 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ mkHsSpliceTy happy_var_2)
                                              [mj AnnOpenPE happy_var_1,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5697,7 +5697,7 @@ happyReduction_328 (happy_x_3 `HappyStk`
 happyReduce_329 = happyMonadReduce 1# 119# happyReduction_329
 happyReduction_329 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	(ams (sLL happy_var_1 happy_var_1 $ mkHsSpliceTy $ sL1 happy_var_1 $ HsVar $
                                              (sL1 happy_var_1 (mkUnqual varName (getTH_ID_SPLICE happy_var_1))))
                                              [mj AnnThIdSplice happy_var_1])}
@@ -5707,8 +5707,8 @@ happyReduce_330 = happyMonadReduce 2# 119# happyReduction_330
 happyReduction_330 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut229 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut229 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsTyVar happy_var_2) [mj AnnSimpleQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn133 r))
 
@@ -5720,12 +5720,12 @@ happyReduction_331 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut123 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut137 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut123 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut137 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
 	( addAnnotation (gl happy_var_3) AnnComma (gl happy_var_4) >>
                                 ams (sLL happy_var_1 happy_var_6 $ HsExplicitTupleTy (happy_var_3 : happy_var_5))
                                     [mj AnnSimpleQuote happy_var_1,mop happy_var_2,mcp happy_var_6])}}}}}}
@@ -5737,10 +5737,10 @@ happyReduction_332 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut136 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut136 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ HsExplicitListTy happy_var_3)
                                                        [mj AnnSimpleQuote happy_var_1,mos happy_var_2,mcs happy_var_4])}}}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5749,8 +5749,8 @@ happyReduce_333 = happyMonadReduce 2# 119# happyReduction_333
 happyReduction_333 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut257 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut257 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsTyVar happy_var_2)
                                                        [mj AnnSimpleQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn133 r))
@@ -5762,11 +5762,11 @@ happyReduction_334 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut137 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut137 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( addAnnotation (gl happy_var_2) AnnComma
                                                            (gl happy_var_3) >>
                                              ams (sLL happy_var_1 happy_var_5 $ HsExplicitListTy
@@ -5776,7 +5776,7 @@ happyReduction_334 (happy_x_5 `HappyStk`
 
 happyReduce_335 = happySpecReduce_1  119# happyReduction_335
 happyReduction_335 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sLL happy_var_1 happy_var_1 $ HsTyLit $ HsNumTy (getINTEGERs happy_var_1)
                                                                (getINTEGER happy_var_1)
@@ -5784,7 +5784,7 @@ happyReduction_335 happy_x_1
 
 happyReduce_336 = happySpecReduce_1  119# happyReduction_336
 happyReduction_336 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sLL happy_var_1 happy_var_1 $ HsTyLit $ HsStrTy (getSTRINGs happy_var_1)
                                                                (getSTRING  happy_var_1)
@@ -5792,21 +5792,21 @@ happyReduction_336 happy_x_1
 
 happyReduce_337 = happySpecReduce_1  119# happyReduction_337
 happyReduction_337 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn133
 		 (sL1 happy_var_1 $ mkAnonWildCardTy
 	)}
 
 happyReduce_338 = happySpecReduce_1  120# happyReduction_338
 happyReduction_338 happy_x_1
-	 =  case happyOut116 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut116 happy_x_1 of { happy_var_1 ->
 	happyIn134
 		 (mkLHsSigType happy_var_1
 	)}
 
 happyReduce_339 = happySpecReduce_1  121# happyReduction_339
 happyReduction_339 happy_x_1
-	 =  case happyOut128 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut128 happy_x_1 of { happy_var_1 ->
 	happyIn135
 		 ([mkLHsSigType happy_var_1]
 	)}
@@ -5816,16 +5816,16 @@ happyReduction_340 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut128 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut135 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut128 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut135 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2)
                                            >> return (mkLHsSigType happy_var_1 : happy_var_3))}}}
 	) (\r -> happyReturn (happyIn135 r))
 
 happyReduce_341 = happySpecReduce_1  122# happyReduction_341
 happyReduction_341 happy_x_1
-	 =  case happyOut137 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut137 happy_x_1 of { happy_var_1 ->
 	happyIn136
 		 (happy_var_1
 	)}
@@ -5837,7 +5837,7 @@ happyReduction_342  =  happyIn136
 
 happyReduce_343 = happySpecReduce_1  123# happyReduction_343
 happyReduction_343 happy_x_1
-	 =  case happyOut123 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut123 happy_x_1 of { happy_var_1 ->
 	happyIn137
 		 ([happy_var_1]
 	)}
@@ -5847,9 +5847,9 @@ happyReduction_344 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut123 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut137 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut123 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut137 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2)
                                           >> return (happy_var_1 : happy_var_3))}}}
 	) (\r -> happyReturn (happyIn137 r))
@@ -5857,8 +5857,8 @@ happyReduction_344 (happy_x_3 `HappyStk`
 happyReduce_345 = happySpecReduce_2  124# happyReduction_345
 happyReduction_345 happy_x_2
 	happy_x_1
-	 =  case happyOut139 happy_x_1 of { happy_var_1 -> 
-	case happyOut138 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut139 happy_x_1 of { happy_var_1 ->
+	case happyOut138 happy_x_2 of { happy_var_2 ->
 	happyIn138
 		 (happy_var_1 : happy_var_2
 	)}}
@@ -5870,7 +5870,7 @@ happyReduction_346  =  happyIn138
 
 happyReduce_347 = happySpecReduce_1  125# happyReduction_347
 happyReduction_347 happy_x_1
-	 =  case happyOut254 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut254 happy_x_1 of { happy_var_1 ->
 	happyIn139
 		 (sL1 happy_var_1 (UserTyVar happy_var_1)
 	)}
@@ -5882,11 +5882,11 @@ happyReduction_348 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut254 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut144 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut254 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut144 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
 	( ams (sLL happy_var_1 happy_var_5  (KindedTyVar happy_var_2 happy_var_4))
                                                [mop happy_var_1,mu AnnDcolon happy_var_3
                                                ,mcp happy_var_5])}}}}}
@@ -5900,8 +5900,8 @@ happyReduction_349  =  happyIn140
 happyReduce_350 = happySpecReduce_2  126# happyReduction_350
 happyReduction_350 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut141 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut141 happy_x_2 of { happy_var_2 ->
 	happyIn140
 		 ((sLL happy_var_1 happy_var_2 ([mj AnnVbar happy_var_1]
                                                  ,reverse (unLoc happy_var_2)))
@@ -5912,16 +5912,16 @@ happyReduction_351 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut141 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut142 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut141 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut142 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnComma (gl happy_var_2)
                            >> return (sLL happy_var_1 happy_var_3 (happy_var_3 : unLoc happy_var_1)))}}}
 	) (\r -> happyReturn (happyIn141 r))
 
 happyReduce_352 = happySpecReduce_1  127# happyReduction_352
 happyReduction_352 happy_x_1
-	 =  case happyOut142 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut142 happy_x_1 of { happy_var_1 ->
 	happyIn141
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -5931,9 +5931,9 @@ happyReduction_353 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut143 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut143 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut143 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut143 happy_x_3 of { happy_var_3 ->
 	( ams (L (comb3 happy_var_1 happy_var_2 happy_var_3)
                                        (reverse (unLoc happy_var_1), reverse (unLoc happy_var_3)))
                                        [mu AnnRarrow happy_var_2])}}}
@@ -5947,15 +5947,15 @@ happyReduction_354  =  happyIn143
 happyReduce_355 = happySpecReduce_2  129# happyReduction_355
 happyReduction_355 happy_x_2
 	happy_x_1
-	 =  case happyOut143 happy_x_1 of { happy_var_1 -> 
-	case happyOut254 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut143 happy_x_1 of { happy_var_1 ->
+	case happyOut254 happy_x_2 of { happy_var_2 ->
 	happyIn143
 		 (sLL happy_var_1 happy_var_2 (happy_var_2 : unLoc happy_var_1)
 	)}}
 
 happyReduce_356 = happySpecReduce_1  130# happyReduction_356
 happyReduction_356 happy_x_1
-	 =  case happyOut123 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut123 happy_x_1 of { happy_var_1 ->
 	happyIn144
 		 (happy_var_1
 	)}
@@ -5966,10 +5966,10 @@ happyReduction_357 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut146 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut146 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn145
 		 (L (comb2 happy_var_1 happy_var_3)
                                                     ([mj AnnWhere happy_var_1
@@ -5984,8 +5984,8 @@ happyReduction_358 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut146 happy_x_3 of { happy_var_3 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut146 happy_x_3 of { happy_var_3 ->
 	happyIn145
 		 (L (comb2 happy_var_1 happy_var_3)
                                                      ([mj AnnWhere happy_var_1]
@@ -6002,16 +6002,16 @@ happyReduction_360 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut147 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut146 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut147 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut146 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnSemi (gl happy_var_2)
                      >> return (L (comb2 happy_var_1 happy_var_3) (happy_var_1 : unLoc happy_var_3)))}}}
 	) (\r -> happyReturn (happyIn146 r))
 
 happyReduce_361 = happySpecReduce_1  132# happyReduction_361
 happyReduction_361 happy_x_1
-	 =  case happyOut147 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut147 happy_x_1 of { happy_var_1 ->
 	happyIn146
 		 (L (gl happy_var_1) [happy_var_1]
 	)}
@@ -6026,15 +6026,15 @@ happyReduction_363 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 -> 
-	case happyOut148 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 ->
+	case happyOut148 happy_x_3 of { happy_var_3 ->
 	( return $ addConDoc happy_var_3 happy_var_1)}}
 	) (\r -> happyReturn (happyIn147 r))
 
 happyReduce_364 = happyMonadReduce 1# 133# happyReduction_364
 happyReduction_364 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut148 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut148 happy_x_1 of { happy_var_1 ->
 	( return happy_var_1)}
 	) (\r -> happyReturn (happyIn147 r))
 
@@ -6043,9 +6043,9 @@ happyReduction_365 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut233 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut116 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut233 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut116 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (mkGadtDecl (unLoc happy_var_1) (mkLHsSigType happy_var_3)))
                        [mu AnnDcolon happy_var_2])}}}
 	) (\r -> happyReturn (happyIn148 r))
@@ -6054,9 +6054,9 @@ happyReduce_366 = happySpecReduce_3  135# happyReduction_366
 happyReduction_366 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut282 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut150 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut282 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut150 happy_x_3 of { happy_var_3 ->
 	happyIn149
 		 (L (comb2 happy_var_2 happy_var_3) ([mj AnnEqual happy_var_2]
                                                      ,addConDocs (unLoc happy_var_3) happy_var_1)
@@ -6069,18 +6069,18 @@ happyReduction_367 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut150 happy_x_1 of { happy_var_1 -> 
-	case happyOut282 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut281 happy_x_4 of { happy_var_4 -> 
-	case happyOut151 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut150 happy_x_1 of { happy_var_1 ->
+	case happyOut282 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut281 happy_x_4 of { happy_var_4 ->
+	case happyOut151 happy_x_5 of { happy_var_5 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnVbar (gl happy_var_3)
                >> return (sLL happy_var_1 happy_var_5 (addConDoc happy_var_5 happy_var_2 : addConDocFirst (unLoc happy_var_1) happy_var_4)))}}}}}
 	) (\r -> happyReturn (happyIn150 r))
 
 happyReduce_368 = happySpecReduce_1  136# happyReduction_368
 happyReduction_368 happy_x_1
-	 =  case happyOut151 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut151 happy_x_1 of { happy_var_1 ->
 	happyIn150
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -6093,12 +6093,12 @@ happyReduction_369 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 -> 
-	case happyOut152 happy_x_2 of { happy_var_2 -> 
-	case happyOut126 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut153 happy_x_5 of { happy_var_5 -> 
-	case happyOut281 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 ->
+	case happyOut152 happy_x_2 of { happy_var_2 ->
+	case happyOut126 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut153 happy_x_5 of { happy_var_5 ->
+	case happyOut281 happy_x_6 of { happy_var_6 ->
 	( ams (let (con,details) = unLoc happy_var_5 in
                   addConDoc (L (comb4 happy_var_2 happy_var_3 happy_var_4 happy_var_5) (mkConDeclH98 con
                                                    (snd $ unLoc happy_var_2) happy_var_3 details))
@@ -6112,10 +6112,10 @@ happyReduction_370 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 -> 
-	case happyOut152 happy_x_2 of { happy_var_2 -> 
-	case happyOut153 happy_x_3 of { happy_var_3 -> 
-	case happyOut281 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 ->
+	case happyOut152 happy_x_2 of { happy_var_2 ->
+	case happyOut153 happy_x_3 of { happy_var_3 ->
+	case happyOut281 happy_x_4 of { happy_var_4 ->
 	( ams ( let (con,details) = unLoc happy_var_3 in
                   addConDoc (L (comb2 happy_var_2 happy_var_3) (mkConDeclH98 con
                                            (snd $ unLoc happy_var_2) (noLoc []) details))
@@ -6127,9 +6127,9 @@ happyReduce_371 = happySpecReduce_3  138# happyReduction_371
 happyReduction_371 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut138 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut138 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn152
 		 (sLL happy_var_1 happy_var_3 ([mu AnnForall happy_var_1,mj AnnDot happy_var_3], Just happy_var_2)
 	)}}}
@@ -6142,7 +6142,7 @@ happyReduction_372  =  happyIn152
 happyReduce_373 = happyMonadReduce 1# 139# happyReduction_373
 happyReduction_373 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 ->
 	( do { c <- splitCon happy_var_1
                                                      ; return $ sLL happy_var_1 happy_var_1 c })}
 	) (\r -> happyReturn (happyIn153 r))
@@ -6152,9 +6152,9 @@ happyReduction_374 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 -> 
-	case happyOut236 happy_x_2 of { happy_var_2 -> 
-	case happyOut130 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut130 happy_x_1 of { happy_var_1 ->
+	case happyOut236 happy_x_2 of { happy_var_2 ->
+	case happyOut130 happy_x_3 of { happy_var_3 ->
 	( do { ty <- splitTilde happy_var_1
                                                      ; return $ sLL happy_var_1 happy_var_3 (happy_var_2, InfixCon ty happy_var_3) })}}}
 	) (\r -> happyReturn (happyIn153 r))
@@ -6166,7 +6166,7 @@ happyReduction_375  =  happyIn154
 
 happyReduce_376 = happySpecReduce_1  140# happyReduction_376
 happyReduction_376 happy_x_1
-	 =  case happyOut155 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut155 happy_x_1 of { happy_var_1 ->
 	happyIn154
 		 (happy_var_1
 	)}
@@ -6178,18 +6178,18 @@ happyReduction_377 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut156 happy_x_1 of { happy_var_1 -> 
-	case happyOut282 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut281 happy_x_4 of { happy_var_4 -> 
-	case happyOut155 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut156 happy_x_1 of { happy_var_1 ->
+	case happyOut282 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut281 happy_x_4 of { happy_var_4 ->
+	case happyOut155 happy_x_5 of { happy_var_5 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_3) >>
                return ((addFieldDoc happy_var_1 happy_var_4) : addFieldDocs happy_var_5 happy_var_2))}}}}}
 	) (\r -> happyReturn (happyIn155 r))
 
 happyReduce_378 = happySpecReduce_1  141# happyReduction_378
 happyReduction_378 happy_x_1
-	 =  case happyOut156 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut156 happy_x_1 of { happy_var_1 ->
 	happyIn155
 		 ([happy_var_1]
 	)}
@@ -6201,11 +6201,11 @@ happyReduction_379 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 -> 
-	case happyOut118 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut123 happy_x_4 of { happy_var_4 -> 
-	case happyOut281 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut282 happy_x_1 of { happy_var_1 ->
+	case happyOut118 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut123 happy_x_4 of { happy_var_4 ->
+	case happyOut281 happy_x_5 of { happy_var_5 ->
 	( ams (L (comb2 happy_var_2 happy_var_4)
                       (ConDeclField (reverse (map (\ln@(L l n) -> L l $ FieldOcc ln) (unLoc happy_var_2))) happy_var_4 (happy_var_1 `mplus` happy_var_5)))
                    [mu AnnDcolon happy_var_3])}}}}}
@@ -6220,8 +6220,8 @@ happyReduce_381 = happyMonadReduce 2# 143# happyReduction_381
 happyReduction_381 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut244 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut244 happy_x_2 of { happy_var_2 ->
 	( let { full_loc = comb2 happy_var_1 happy_var_2 }
                                       in ams (L full_loc $ Just $ L full_loc $
                                                  [mkLHsSigType happy_var_2])
@@ -6233,9 +6233,9 @@ happyReduction_382 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( let { full_loc = comb2 happy_var_1 happy_var_3 }
                                      in ams (L full_loc $ Just $ L full_loc [])
                                             [mj AnnDeriving happy_var_1,mop happy_var_2,mcp happy_var_3])}}}
@@ -6247,10 +6247,10 @@ happyReduction_383 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut135 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut135 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( let { full_loc = comb2 happy_var_1 happy_var_4 }
                                              in ams (L full_loc $ Just $ L full_loc happy_var_3)
                                                     [mj AnnDeriving happy_var_1,mop happy_var_2,mcp happy_var_4])}}}}
@@ -6258,42 +6258,42 @@ happyReduction_383 (happy_x_4 `HappyStk`
 
 happyReduce_384 = happySpecReduce_1  144# happyReduction_384
 happyReduction_384 happy_x_1
-	 =  case happyOut159 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut159 happy_x_1 of { happy_var_1 ->
 	happyIn158
 		 (sL1 happy_var_1 (DocD (unLoc happy_var_1))
 	)}
 
 happyReduce_385 = happySpecReduce_1  145# happyReduction_385
 happyReduction_385 happy_x_1
-	 =  case happyOut276 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut276 happy_x_1 of { happy_var_1 ->
 	happyIn159
 		 (sL1 happy_var_1 (DocCommentNext (unLoc happy_var_1))
 	)}
 
 happyReduce_386 = happySpecReduce_1  145# happyReduction_386
 happyReduction_386 happy_x_1
-	 =  case happyOut277 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut277 happy_x_1 of { happy_var_1 ->
 	happyIn159
 		 (sL1 happy_var_1 (DocCommentPrev (unLoc happy_var_1))
 	)}
 
 happyReduce_387 = happySpecReduce_1  145# happyReduction_387
 happyReduction_387 happy_x_1
-	 =  case happyOut278 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut278 happy_x_1 of { happy_var_1 ->
 	happyIn159
 		 (sL1 happy_var_1 (case (unLoc happy_var_1) of (n, doc) -> DocCommentNamed n doc)
 	)}
 
 happyReduce_388 = happySpecReduce_1  145# happyReduction_388
 happyReduction_388 happy_x_1
-	 =  case happyOut279 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut279 happy_x_1 of { happy_var_1 ->
 	happyIn159
 		 (sL1 happy_var_1 (case (unLoc happy_var_1) of (n, doc) -> DocGroup n doc)
 	)}
 
 happyReduce_389 = happySpecReduce_1  146# happyReduction_389
 happyReduction_389 happy_x_1
-	 =  case happyOut165 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut165 happy_x_1 of { happy_var_1 ->
 	happyIn160
 		 (happy_var_1
 	)}
@@ -6303,9 +6303,9 @@ happyReduction_390 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
-	case happyOut162 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
+	case happyOut162 happy_x_3 of { happy_var_3 ->
 	( do { let { e = sLL happy_var_1 happy_var_2 (SectionR (sL1 happy_var_1 (HsVar (sL1 happy_var_1 bang_RDR))) happy_var_2) };
                                         pat <- checkPattern empty e;
                                         _ <- ams (sLL happy_var_1 happy_var_3 ())
@@ -6319,9 +6319,9 @@ happyReduction_391 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOut114 happy_x_2 of { happy_var_2 -> 
-	case happyOut162 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOut114 happy_x_2 of { happy_var_2 ->
+	case happyOut162 happy_x_3 of { happy_var_3 ->
 	( do { (ann,r) <- checkValDef empty happy_var_1 (snd happy_var_2) happy_var_3;
                                         let { l = comb2 happy_var_1 happy_var_3 };
                                         case r of {
@@ -6335,28 +6335,28 @@ happyReduction_391 (happy_x_3 `HappyStk`
 
 happyReduce_392 = happySpecReduce_1  146# happyReduction_392
 happyReduction_392 happy_x_1
-	 =  case happyOut78 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut78 happy_x_1 of { happy_var_1 ->
 	happyIn160
 		 (happy_var_1
 	)}
 
 happyReduce_393 = happySpecReduce_1  146# happyReduction_393
 happyReduction_393 happy_x_1
-	 =  case happyOut158 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut158 happy_x_1 of { happy_var_1 ->
 	happyIn160
 		 (happy_var_1
 	)}
 
 happyReduce_394 = happySpecReduce_1  147# happyReduction_394
 happyReduction_394 happy_x_1
-	 =  case happyOut160 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut160 happy_x_1 of { happy_var_1 ->
 	happyIn161
 		 (happy_var_1
 	)}
 
 happyReduce_395 = happySpecReduce_1  147# happyReduction_395
 happyReduction_395 happy_x_1
-	 =  case happyOut179 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut179 happy_x_1 of { happy_var_1 ->
 	happyIn161
 		 (sLL happy_var_1 happy_var_1 $ mkSpliceDecl happy_var_1
 	)}
@@ -6365,9 +6365,9 @@ happyReduce_396 = happySpecReduce_3  148# happyReduction_396
 happyReduction_396 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOut95 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOut95 happy_x_3 of { happy_var_3 ->
 	happyIn162
 		 (sL (comb3 happy_var_1 happy_var_2 happy_var_3)
                                     ((mj AnnEqual happy_var_1 : (fst $ unLoc happy_var_3))
@@ -6378,8 +6378,8 @@ happyReduction_396 happy_x_3
 happyReduce_397 = happySpecReduce_2  148# happyReduction_397
 happyReduction_397 happy_x_2
 	happy_x_1
-	 =  case happyOut163 happy_x_1 of { happy_var_1 -> 
-	case happyOut95 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut163 happy_x_1 of { happy_var_1 ->
+	case happyOut95 happy_x_2 of { happy_var_2 ->
 	happyIn162
 		 (sLL happy_var_1 happy_var_2  (fst $ unLoc happy_var_2
                                     ,GRHSs (reverse (unLoc happy_var_1))
@@ -6389,15 +6389,15 @@ happyReduction_397 happy_x_2
 happyReduce_398 = happySpecReduce_2  149# happyReduction_398
 happyReduction_398 happy_x_2
 	happy_x_1
-	 =  case happyOut163 happy_x_1 of { happy_var_1 -> 
-	case happyOut164 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut163 happy_x_1 of { happy_var_1 ->
+	case happyOut164 happy_x_2 of { happy_var_2 ->
 	happyIn163
 		 (sLL happy_var_1 happy_var_2 (happy_var_2 : unLoc happy_var_1)
 	)}}
 
 happyReduce_399 = happySpecReduce_1  149# happyReduction_399
 happyReduction_399 happy_x_1
-	 =  case happyOut164 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut164 happy_x_1 of { happy_var_1 ->
 	happyIn163
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -6408,10 +6408,10 @@ happyReduction_400 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut195 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut195 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	( ams (sL (comb2 happy_var_1 happy_var_4) $ GRHS (unLoc happy_var_2) happy_var_4)
                                          [mj AnnVbar happy_var_1,mj AnnEqual happy_var_3])}}}}
 	) (\r -> happyReturn (happyIn164 r))
@@ -6421,9 +6421,9 @@ happyReduction_401 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut117 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut117 happy_x_3 of { happy_var_3 ->
 	( do v <- checkValSigLhs happy_var_1
                         ; _ <- ams (sLL happy_var_1 happy_var_3 ()) [mu AnnDcolon happy_var_2]
                         ; return (sLL happy_var_1 happy_var_3 $ SigD $
@@ -6437,11 +6437,11 @@ happyReduction_402 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut257 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut118 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut117 happy_x_5 of { happy_var_5 -> 
+	 = happyThen (case happyOut257 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut118 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut117 happy_x_5 of { happy_var_5 ->
 	( do { let sig = TypeSig (happy_var_1 : reverse (unLoc happy_var_3))
                                      (mkLHsSigWcType happy_var_5)
                  ; addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2)
@@ -6454,9 +6454,9 @@ happyReduction_403 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut48 happy_x_1 of { happy_var_1 -> 
-	case happyOut47 happy_x_2 of { happy_var_2 -> 
-	case happyOut49 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut48 happy_x_1 of { happy_var_1 ->
+	case happyOut47 happy_x_2 of { happy_var_2 ->
+	case happyOut49 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ SigD
                         (FixSig (FixitySig (fromOL $ unLoc happy_var_3)
                                 (Fixity (fst $ unLoc happy_var_2) (snd $ unLoc happy_var_2) (unLoc happy_var_1)))))
@@ -6465,7 +6465,7 @@ happyReduction_403 (happy_x_3 `HappyStk`
 
 happyReduce_404 = happySpecReduce_1  151# happyReduction_404
 happyReduction_404 happy_x_1
-	 =  case happyOut83 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut83 happy_x_1 of { happy_var_1 ->
 	happyIn165
 		 (sLL happy_var_1 happy_var_1 . SigD . unLoc $ happy_var_1
 	)}
@@ -6476,10 +6476,10 @@ happyReduction_405 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut166 happy_x_2 of { happy_var_2 -> 
-	case happyOut258 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut166 happy_x_2 of { happy_var_2 ->
+	case happyOut258 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams ((sLL happy_var_1 happy_var_4 $ SigD (InlineSig happy_var_3
                             (mkInlinePragma (getINLINE_PRAGs happy_var_1) (getINLINE happy_var_1)
                                             (snd happy_var_2)))))
@@ -6494,12 +6494,12 @@ happyReduction_406 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut166 happy_x_2 of { happy_var_2 -> 
-	case happyOut258 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut119 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut166 happy_x_2 of { happy_var_2 ->
+	case happyOut258 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut119 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
 	( ams (
                  let inl_prag = mkInlinePragma (getSPEC_PRAGs happy_var_1)
                                              (EmptyInlineSpec, FunLike) (snd happy_var_2)
@@ -6515,12 +6515,12 @@ happyReduction_407 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut166 happy_x_2 of { happy_var_2 -> 
-	case happyOut258 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut119 happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut166 happy_x_2 of { happy_var_2 ->
+	case happyOut258 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut119 happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
 	( ams (sLL happy_var_1 happy_var_6 $ SigD (SpecSig happy_var_3 (fromOL happy_var_5)
                                (mkInlinePragma (getSPEC_INLINE_PRAGs happy_var_1)
                                                (getSPEC_INLINE happy_var_1) (snd happy_var_2))))
@@ -6533,10 +6533,10 @@ happyReduction_408 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut134 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut134 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4
                                   $ SigD (SpecInstSig (getSPEC_PRAGs happy_var_1) happy_var_3))
                        [mo happy_var_1,mj AnnInstance happy_var_2,mc happy_var_4])}}}}
@@ -6547,9 +6547,9 @@ happyReduction_409 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut223 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut223 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ SigD (MinimalSig (getMINIMAL_PRAGs happy_var_1) happy_var_2))
                    [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn165 r))
@@ -6561,7 +6561,7 @@ happyReduction_410  =  happyIn166
 
 happyReduce_411 = happySpecReduce_1  152# happyReduction_411
 happyReduction_411 happy_x_1
-	 =  case happyOut167 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut167 happy_x_1 of { happy_var_1 ->
 	happyIn166
 		 ((fst happy_var_1,Just (snd happy_var_1))
 	)}
@@ -6570,9 +6570,9 @@ happyReduce_412 = happySpecReduce_3  153# happyReduction_412
 happyReduction_412 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn167
 		 (([mj AnnOpenS happy_var_1,mj AnnVal happy_var_2,mj AnnCloseS happy_var_3]
                                   ,ActiveAfter  (getINTEGERs happy_var_2) (fromInteger (getINTEGER happy_var_2)))
@@ -6584,10 +6584,10 @@ happyReduction_413 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn167
 		 (([mj AnnOpenS happy_var_1,mj AnnTilde happy_var_2,mj AnnVal happy_var_3
                                                  ,mj AnnCloseS happy_var_4]
@@ -6596,7 +6596,7 @@ happyReduction_413 (happy_x_4 `HappyStk`
 
 happyReduce_414 = happySpecReduce_1  154# happyReduction_414
 happyReduction_414 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn168
 		 (let { loc = getLoc happy_var_1
                                 ; ITquasiQuote (quoter, quote, quoteSpan) = unLoc happy_var_1
@@ -6606,7 +6606,7 @@ happyReduction_414 happy_x_1
 
 happyReduce_415 = happySpecReduce_1  154# happyReduction_415
 happyReduction_415 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn168
 		 (let { loc = getLoc happy_var_1
                                 ; ITqQuasiQuote (qual, quoter, quote, quoteSpan) = unLoc happy_var_1
@@ -6619,9 +6619,9 @@ happyReduction_416 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut116 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut116 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ ExprWithTySig happy_var_1 (mkLHsSigWcType happy_var_3))
                                        [mu AnnDcolon happy_var_2])}}}
 	) (\r -> happyReturn (happyIn169 r))
@@ -6631,9 +6631,9 @@ happyReduction_417 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsArrApp happy_var_1 happy_var_3
                                                         HsFirstOrderApp True)
                                        [mu Annlarrowtail happy_var_2])}}}
@@ -6644,9 +6644,9 @@ happyReduction_418 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsArrApp happy_var_3 happy_var_1
                                                       HsFirstOrderApp False)
                                        [mu Annrarrowtail happy_var_2])}}}
@@ -6657,9 +6657,9 @@ happyReduction_419 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsArrApp happy_var_1 happy_var_3
                                                       HsHigherOrderApp True)
                                        [mu AnnLarrowtail happy_var_2])}}}
@@ -6670,9 +6670,9 @@ happyReduction_420 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsArrApp happy_var_3 happy_var_1
                                                       HsHigherOrderApp False)
                                        [mu AnnRarrowtail happy_var_2])}}}
@@ -6680,14 +6680,14 @@ happyReduction_420 (happy_x_3 `HappyStk`
 
 happyReduce_421 = happySpecReduce_1  155# happyReduction_421
 happyReduction_421 happy_x_1
-	 =  case happyOut170 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut170 happy_x_1 of { happy_var_1 ->
 	happyIn169
 		 (happy_var_1
 	)}
 
 happyReduce_422 = happySpecReduce_1  156# happyReduction_422
 happyReduction_422 happy_x_1
-	 =  case happyOut171 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut171 happy_x_1 of { happy_var_1 ->
 	happyIn170
 		 (happy_var_1
 	)}
@@ -6697,9 +6697,9 @@ happyReduction_423 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOut250 happy_x_2 of { happy_var_2 -> 
-	case happyOut171 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOut250 happy_x_2 of { happy_var_2 ->
+	case happyOut171 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3
                                              (OpApp happy_var_1 happy_var_2 happy_var_3))
                                          [mj AnnVal happy_var_2])}}}
@@ -6713,12 +6713,12 @@ happyReduction_424 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut209 happy_x_2 of { happy_var_2 -> 
-	case happyOut210 happy_x_3 of { happy_var_3 -> 
-	case happyOut115 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
-	case happyOut169 happy_x_6 of { happy_var_6 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut209 happy_x_2 of { happy_var_2 ->
+	case happyOut210 happy_x_3 of { happy_var_3 ->
+	case happyOut115 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
+	case happyOut169 happy_x_6 of { happy_var_6 ->
 	( ams (sLL happy_var_1 happy_var_6 $ HsLam (mkMatchGroup FromSource
                             [sLL happy_var_1 happy_var_6 $ Match { m_ctxt = LambdaExpr
                                                , m_pats = happy_var_2:happy_var_3
@@ -6733,10 +6733,10 @@ happyReduction_425 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut94 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut94 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ HsLet (snd $ unLoc happy_var_2) happy_var_4)
                                                (mj AnnLet happy_var_1:mj AnnIn happy_var_3
                                                  :(fst $ unLoc happy_var_2)))}}}}
@@ -6747,9 +6747,9 @@ happyReduction_426 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut197 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut197 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsLamCase
                                    (mkMatchGroup FromSource (snd $ unLoc happy_var_3)))
                    (mj AnnLam happy_var_1:mj AnnCase happy_var_2:(fst $ unLoc happy_var_3)))}}}
@@ -6765,14 +6765,14 @@ happyReduction_427 (happy_x_8 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOut172 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut169 happy_x_5 of { happy_var_5 -> 
-	case happyOut172 happy_x_6 of { happy_var_6 -> 
-	case happyOutTok happy_x_7 of { happy_var_7 -> 
-	case happyOut169 happy_x_8 of { happy_var_8 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOut172 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut169 happy_x_5 of { happy_var_5 ->
+	case happyOut172 happy_x_6 of { happy_var_6 ->
+	case happyOutTok happy_x_7 of { happy_var_7 ->
+	case happyOut169 happy_x_8 of { happy_var_8 ->
 	( checkDoAndIfThenElse happy_var_2 (snd happy_var_3) happy_var_5 (snd happy_var_6) happy_var_8 >>
                               ams (sLL happy_var_1 happy_var_8 $ mkHsIf happy_var_2 happy_var_5 happy_var_8)
                                   (mj AnnIf happy_var_1:mj AnnThen happy_var_4
@@ -6785,8 +6785,8 @@ happyReduce_428 = happyMonadReduce 2# 157# happyReduction_428
 happyReduction_428 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut205 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut205 happy_x_2 of { happy_var_2 ->
 	( hintMultiWayIf (getLoc happy_var_1) >>
                                            ams (sLL happy_var_1 happy_var_2 $ HsMultiIf
                                                      (reverse $ snd $ unLoc happy_var_2))
@@ -6799,10 +6799,10 @@ happyReduction_429 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut197 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut197 happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ HsCase happy_var_2 (mkMatchGroup
                                                    FromSource (snd $ unLoc happy_var_4)))
                                                (mj AnnCase happy_var_1:mj AnnOf happy_var_3
@@ -6813,8 +6813,8 @@ happyReduce_430 = happyMonadReduce 2# 157# happyReduction_430
 happyReduction_430 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut175 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut175 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ NegApp happy_var_2)
                                                [mj AnnMinus happy_var_1])}}
 	) (\r -> happyReturn (happyIn171 r))
@@ -6823,8 +6823,8 @@ happyReduce_431 = happyMonadReduce 2# 157# happyReduction_431
 happyReduction_431 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut211 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut211 happy_x_2 of { happy_var_2 ->
 	( ams (L (comb2 happy_var_1 happy_var_2)
                                                (mkHsDo DoExpr (snd $ unLoc happy_var_2)))
                                                (mj AnnDo happy_var_1:(fst $ unLoc happy_var_2)))}}
@@ -6834,8 +6834,8 @@ happyReduce_432 = happyMonadReduce 2# 157# happyReduction_432
 happyReduction_432 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut211 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut211 happy_x_2 of { happy_var_2 ->
 	( ams (L (comb2 happy_var_1 happy_var_2)
                                               (mkHsDo MDoExpr (snd $ unLoc happy_var_2)))
                                            (mj AnnMdo happy_var_1:(fst $ unLoc happy_var_2)))}}
@@ -6845,8 +6845,8 @@ happyReduce_433 = happyMonadReduce 2# 157# happyReduction_433
 happyReduction_433 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut173 happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut173 happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsSCC (snd $ fst $ unLoc happy_var_1) (snd $ unLoc happy_var_1) happy_var_2)
                                       (fst $ fst $ unLoc happy_var_1))}}
 	) (\r -> happyReturn (happyIn171 r))
@@ -6855,8 +6855,8 @@ happyReduce_434 = happyMonadReduce 2# 157# happyReduction_434
 happyReduction_434 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut174 happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut174 happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsTickPragma (snd $ fst $ fst $ unLoc happy_var_1)
                                                                 (snd $ fst $ unLoc happy_var_1) (snd $ unLoc happy_var_1) happy_var_2)
                                       (fst $ fst $ fst $ unLoc happy_var_1))}}
@@ -6868,10 +6868,10 @@ happyReduction_435 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	( checkPattern empty happy_var_2 >>= \ p ->
                            checkCommand happy_var_4 >>= \ cmd ->
                            ams (sLL happy_var_1 happy_var_4 $ HsProc p (sLL happy_var_1 happy_var_4 $ HsCmdTop cmd))
@@ -6885,10 +6885,10 @@ happyReduction_436 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ HsCoreAnn (getCORE_PRAGs happy_var_1) (getStringLiteral happy_var_2) happy_var_4)
                                               [mo happy_var_1,mj AnnVal happy_var_2
                                               ,mc happy_var_3])}}}}
@@ -6896,14 +6896,14 @@ happyReduction_436 (happy_x_4 `HappyStk`
 
 happyReduce_437 = happySpecReduce_1  157# happyReduction_437
 happyReduction_437 happy_x_1
-	 =  case happyOut175 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut175 happy_x_1 of { happy_var_1 ->
 	happyIn171
 		 (happy_var_1
 	)}
 
 happyReduce_438 = happySpecReduce_1  158# happyReduction_438
 happyReduction_438 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn172
 		 (([happy_var_1],True)
 	)}
@@ -6918,9 +6918,9 @@ happyReduction_440 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( do scc <- getSCC happy_var_2
                                             ; return $ sLL happy_var_1 happy_var_3
                                                (([mo happy_var_1,mj AnnValStr happy_var_2
@@ -6931,9 +6931,9 @@ happyReduce_441 = happySpecReduce_3  159# happyReduction_441
 happyReduction_441 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn173
 		 (sLL happy_var_1 happy_var_3 (([mo happy_var_1,mj AnnVal happy_var_2
                                          ,mc happy_var_3],getSCC_PRAGs happy_var_1)
@@ -6952,16 +6952,16 @@ happyReduction_442 (happy_x_10 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
-	case happyOutTok happy_x_6 of { happy_var_6 -> 
-	case happyOutTok happy_x_7 of { happy_var_7 -> 
-	case happyOutTok happy_x_8 of { happy_var_8 -> 
-	case happyOutTok happy_x_9 of { happy_var_9 -> 
-	case happyOutTok happy_x_10 of { happy_var_10 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
+	case happyOutTok happy_x_6 of { happy_var_6 ->
+	case happyOutTok happy_x_7 of { happy_var_7 ->
+	case happyOutTok happy_x_8 of { happy_var_8 ->
+	case happyOutTok happy_x_9 of { happy_var_9 ->
+	case happyOutTok happy_x_10 of { happy_var_10 ->
 	happyIn174
 		 (sLL happy_var_1 happy_var_10 $ ((([mo happy_var_1,mj AnnVal happy_var_2
                                               ,mj AnnVal happy_var_3,mj AnnColon happy_var_4
@@ -6988,8 +6988,8 @@ happyReduction_442 (happy_x_10 `HappyStk`
 happyReduce_443 = happySpecReduce_2  161# happyReduction_443
 happyReduction_443 happy_x_2
 	happy_x_1
-	 =  case happyOut175 happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut175 happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	happyIn175
 		 (sLL happy_var_1 happy_var_2 $ HsApp happy_var_1 happy_var_2
 	)}}
@@ -6999,9 +6999,9 @@ happyReduction_444 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut175 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut133 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut175 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut133 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsAppType happy_var_1 (mkHsWildCardBndrs happy_var_3))
                                             [mj AnnAt happy_var_2])}}}
 	) (\r -> happyReturn (happyIn175 r))
@@ -7010,15 +7010,15 @@ happyReduce_445 = happyMonadReduce 2# 161# happyReduction_445
 happyReduction_445 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsStatic happy_var_2)
                                             [mj AnnStatic happy_var_1])}}
 	) (\r -> happyReturn (happyIn175 r))
 
 happyReduce_446 = happySpecReduce_1  161# happyReduction_446
 happyReduction_446 happy_x_1
-	 =  case happyOut176 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut176 happy_x_1 of { happy_var_1 ->
 	happyIn175
 		 (happy_var_1
 	)}
@@ -7028,9 +7028,9 @@ happyReduction_447 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut258 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut176 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut258 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut176 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ EAsPat happy_var_1 happy_var_3) [mj AnnAt happy_var_2])}}}
 	) (\r -> happyReturn (happyIn176 r))
 
@@ -7038,14 +7038,14 @@ happyReduce_448 = happyMonadReduce 2# 162# happyReduction_448
 happyReduction_448 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ ELazyPat happy_var_2) [mj AnnTilde happy_var_1])}}
 	) (\r -> happyReturn (happyIn176 r))
 
 happyReduce_449 = happySpecReduce_1  162# happyReduction_449
 happyReduction_449 happy_x_1
-	 =  case happyOut177 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut177 happy_x_1 of { happy_var_1 ->
 	happyIn176
 		 (happy_var_1
 	)}
@@ -7056,10 +7056,10 @@ happyReduction_450 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut177 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut216 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOut177 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut216 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( do { r <- mkRecConstrOrUpdate happy_var_1 (comb2 happy_var_2 happy_var_4)
                                                                    (snd happy_var_3)
                                      ; _ <- ams (sLL happy_var_1 happy_var_4 ()) (moc happy_var_2:mcc happy_var_4:(fst happy_var_3))
@@ -7068,49 +7068,49 @@ happyReduction_450 (happy_x_4 `HappyStk`
 
 happyReduce_451 = happySpecReduce_1  163# happyReduction_451
 happyReduction_451 happy_x_1
-	 =  case happyOut178 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut178 happy_x_1 of { happy_var_1 ->
 	happyIn177
 		 (happy_var_1
 	)}
 
 happyReduce_452 = happySpecReduce_1  164# happyReduction_452
 happyReduction_452 happy_x_1
-	 =  case happyOut258 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut258 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsVar   $! happy_var_1)
 	)}
 
 happyReduce_453 = happySpecReduce_1  164# happyReduction_453
 happyReduction_453 happy_x_1
-	 =  case happyOut230 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut230 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsVar   $! happy_var_1)
 	)}
 
 happyReduce_454 = happySpecReduce_1  164# happyReduction_454
 happyReduction_454 happy_x_1
-	 =  case happyOut221 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut221 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsIPVar $! unLoc happy_var_1)
 	)}
 
 happyReduce_455 = happySpecReduce_1  164# happyReduction_455
 happyReduction_455 happy_x_1
-	 =  case happyOut222 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut222 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsOverLabel $! unLoc happy_var_1)
 	)}
 
 happyReduce_456 = happySpecReduce_1  164# happyReduction_456
 happyReduction_456 happy_x_1
-	 =  case happyOut272 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut272 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsLit   $! unLoc happy_var_1)
 	)}
 
 happyReduce_457 = happySpecReduce_1  164# happyReduction_457
 happyReduction_457 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL (getLoc happy_var_1) (HsOverLit $! mkHsIntegral (getINTEGERs happy_var_1)
                                          (getINTEGER happy_var_1))
@@ -7118,7 +7118,7 @@ happyReduction_457 happy_x_1
 
 happyReduce_458 = happySpecReduce_1  164# happyReduction_458
 happyReduction_458 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL (getLoc happy_var_1) (HsOverLit $! mkHsFractional
                                           (getRATIONAL happy_var_1))
@@ -7129,9 +7129,9 @@ happyReduction_459 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut184 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut184 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (HsPar happy_var_2)) [mop happy_var_1,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7140,9 +7140,9 @@ happyReduction_460 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut185 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut185 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (ExplicitTuple happy_var_2 Boxed))
                                                [mop happy_var_1,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn178 r))
@@ -7152,9 +7152,9 @@ happyReduction_461 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut184 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut184 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (ExplicitTuple [L (gl happy_var_2)
                                                          (Present happy_var_2)] Unboxed))
                                                [mo happy_var_1,mc happy_var_3])}}}
@@ -7165,9 +7165,9 @@ happyReduction_462 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut185 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut185 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (ExplicitTuple happy_var_2 Unboxed))
                                                [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn178 r))
@@ -7177,9 +7177,9 @@ happyReduction_463 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut188 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut188 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (snd happy_var_2)) (mos happy_var_1:mcs happy_var_3:(fst happy_var_2)))}}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7188,22 +7188,22 @@ happyReduction_464 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut194 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut194 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (snd happy_var_2)) (mo happy_var_1:mc happy_var_3:(fst happy_var_2)))}}}
 	) (\r -> happyReturn (happyIn178 r))
 
 happyReduce_465 = happySpecReduce_1  164# happyReduction_465
 happyReduction_465 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 EWildPat
 	)}
 
 happyReduce_466 = happySpecReduce_1  164# happyReduction_466
 happyReduction_466 happy_x_1
-	 =  case happyOut179 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut179 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (happy_var_1
 	)}
@@ -7212,8 +7212,8 @@ happyReduce_467 = happyMonadReduce 2# 164# happyReduction_467
 happyReduction_467 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut258 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut258 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsBracket (VarBr True  (unLoc happy_var_2))) [mj AnnSimpleQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7221,8 +7221,8 @@ happyReduce_468 = happyMonadReduce 2# 164# happyReduction_468
 happyReduction_468 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut230 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut230 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsBracket (VarBr True  (unLoc happy_var_2))) [mj AnnSimpleQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7230,8 +7230,8 @@ happyReduce_469 = happyMonadReduce 2# 164# happyReduction_469
 happyReduction_469 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut254 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut254 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsBracket (VarBr False (unLoc happy_var_2))) [mj AnnThTyQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7239,8 +7239,8 @@ happyReduce_470 = happyMonadReduce 2# 164# happyReduction_470
 happyReduction_470 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut238 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut238 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ HsBracket (VarBr False (unLoc happy_var_2))) [mj AnnThTyQuote happy_var_1,mj AnnName happy_var_2])}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7249,9 +7249,9 @@ happyReduction_471 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsBracket (ExpBr happy_var_2))
                                       (if (hasE happy_var_1) then [mj AnnOpenE happy_var_1,mc happy_var_3] else [mo happy_var_1,mc happy_var_3]))}}}
 	) (\r -> happyReturn (happyIn178 r))
@@ -7261,9 +7261,9 @@ happyReduction_472 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsBracket (TExpBr happy_var_2))
                                       (if (hasE happy_var_1) then [mj AnnOpenE happy_var_1,mc happy_var_3] else [mo happy_var_1,mc happy_var_3]))}}}
 	) (\r -> happyReturn (happyIn178 r))
@@ -7273,9 +7273,9 @@ happyReduction_473 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsBracket (NativBr happy_var_2))
                                       ([mo happy_var_1,mc happy_var_3]))}}}
 	) (\r -> happyReturn (happyIn178 r))
@@ -7285,9 +7285,9 @@ happyReduction_474 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut123 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut123 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsBracket (TypBr happy_var_2)) [mo happy_var_1,mc happy_var_3])}}}
 	) (\r -> happyReturn (happyIn178 r))
 
@@ -7296,9 +7296,9 @@ happyReduction_475 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut170 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut170 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( checkPattern empty happy_var_2 >>= \p ->
                                       ams (sLL happy_var_1 happy_var_3 $ HsBracket (PatBr p))
                                           [mo happy_var_1,mc happy_var_3])}}}
@@ -7309,16 +7309,16 @@ happyReduction_476 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut182 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut182 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ HsBracket (DecBrL (snd happy_var_2)))
                                       (mo happy_var_1:mc happy_var_3:fst happy_var_2))}}}
 	) (\r -> happyReturn (happyIn178 r))
 
 happyReduce_477 = happySpecReduce_1  164# happyReduction_477
 happyReduction_477 happy_x_1
-	 =  case happyOut168 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut168 happy_x_1 of { happy_var_1 ->
 	happyIn178
 		 (sL1 happy_var_1 (HsSpliceE (unLoc happy_var_1))
 	)}
@@ -7329,10 +7329,10 @@ happyReduction_478 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut178 happy_x_2 of { happy_var_2 -> 
-	case happyOut180 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut178 happy_x_2 of { happy_var_2 ->
+	case happyOut180 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	( ams (sLL happy_var_1 happy_var_4 $ HsArrForm happy_var_2
                                                            Nothing (reverse happy_var_3))
                                           [mo happy_var_1,mc happy_var_4])}}}}
@@ -7341,7 +7341,7 @@ happyReduction_478 (happy_x_4 `HappyStk`
 happyReduce_479 = happyMonadReduce 1# 165# happyReduction_479
 happyReduction_479 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( ams (sL1 happy_var_1 $ mkHsSpliceE
                                         (sL1 happy_var_1 $ HsVar (sL1 happy_var_1 (mkUnqual varName
                                                            (getTH_ID_SPLICE happy_var_1)))))
@@ -7353,9 +7353,9 @@ happyReduction_480 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ mkHsSpliceE happy_var_2)
                                        [mj AnnOpenPE happy_var_1,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn179 r))
@@ -7363,7 +7363,7 @@ happyReduction_480 (happy_x_3 `HappyStk`
 happyReduce_481 = happyMonadReduce 1# 165# happyReduction_481
 happyReduction_481 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( ams (sL1 happy_var_1 $ mkHsSpliceTE
                                         (sL1 happy_var_1 $ HsVar (sL1 happy_var_1 (mkUnqual varName
                                                         (getTH_ID_TY_SPLICE happy_var_1)))))
@@ -7375,9 +7375,9 @@ happyReduction_482 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ mkHsSpliceTE happy_var_2)
                                        [mj AnnOpenPTE happy_var_1,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn179 r))
@@ -7387,9 +7387,9 @@ happyReduction_483 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ mkHsSpliceNE happy_var_2)
                                        [mj AnnOpenPTE happy_var_1,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn179 r))
@@ -7397,8 +7397,8 @@ happyReduction_483 (happy_x_3 `HappyStk`
 happyReduce_484 = happySpecReduce_2  166# happyReduction_484
 happyReduction_484 happy_x_2
 	happy_x_1
-	 =  case happyOut180 happy_x_1 of { happy_var_1 -> 
-	case happyOut181 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut180 happy_x_1 of { happy_var_1 ->
+	case happyOut181 happy_x_2 of { happy_var_2 ->
 	happyIn180
 		 (happy_var_2 : happy_var_1
 	)}}
@@ -7411,7 +7411,7 @@ happyReduction_485  =  happyIn180
 happyReduce_486 = happyMonadReduce 1# 167# happyReduction_486
 happyReduction_486 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut178 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut178 happy_x_1 of { happy_var_1 ->
 	( checkCommand happy_var_1 >>= \ cmd ->
                                     return (sL1 happy_var_1 $ HsCmdTop cmd))}
 	) (\r -> happyReturn (happyIn181 r))
@@ -7420,9 +7420,9 @@ happyReduce_487 = happySpecReduce_3  168# happyReduction_487
 happyReduction_487 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut183 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut183 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn182
 		 (([mj AnnOpenC happy_var_1
                                                   ,mj AnnCloseC happy_var_3],happy_var_2)
@@ -7432,7 +7432,7 @@ happyReduce_488 = happySpecReduce_3  168# happyReduction_488
 happyReduction_488 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut183 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut183 happy_x_2 of { happy_var_2 ->
 	happyIn182
 		 (([],happy_var_2)
 	)}
@@ -7444,14 +7444,14 @@ happyReduction_489  =  happyIn183
 
 happyReduce_490 = happySpecReduce_1  169# happyReduction_490
 happyReduction_490 happy_x_1
-	 =  case happyOut22 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut22 happy_x_1 of { happy_var_1 ->
 	happyIn183
 		 (happy_var_1
 	)}
 
 happyReduce_491 = happySpecReduce_1  170# happyReduction_491
 happyReduction_491 happy_x_1
-	 =  case happyOut169 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut169 happy_x_1 of { happy_var_1 ->
 	happyIn184
 		 (happy_var_1
 	)}
@@ -7459,8 +7459,8 @@ happyReduction_491 happy_x_1
 happyReduce_492 = happySpecReduce_2  170# happyReduction_492
 happyReduction_492 happy_x_2
 	happy_x_1
-	 =  case happyOut170 happy_x_1 of { happy_var_1 -> 
-	case happyOut250 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut170 happy_x_1 of { happy_var_1 ->
+	case happyOut250 happy_x_2 of { happy_var_2 ->
 	happyIn184
 		 (sLL happy_var_1 happy_var_2 $ SectionL happy_var_1 happy_var_2
 	)}}
@@ -7468,8 +7468,8 @@ happyReduction_492 happy_x_2
 happyReduce_493 = happySpecReduce_2  170# happyReduction_493
 happyReduction_493 happy_x_2
 	happy_x_1
-	 =  case happyOut251 happy_x_1 of { happy_var_1 -> 
-	case happyOut170 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut251 happy_x_1 of { happy_var_1 ->
+	case happyOut170 happy_x_2 of { happy_var_2 ->
 	happyIn184
 		 (sLL happy_var_1 happy_var_2 $ SectionR happy_var_1 happy_var_2
 	)}}
@@ -7479,9 +7479,9 @@ happyReduction_494 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut184 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut184 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ EViewPat happy_var_1 happy_var_3) [mu AnnRarrow happy_var_2])}}}
 	) (\r -> happyReturn (happyIn184 r))
 
@@ -7489,8 +7489,8 @@ happyReduce_495 = happyMonadReduce 2# 171# happyReduction_495
 happyReduction_495 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOut186 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOut186 happy_x_2 of { happy_var_2 ->
 	( do { addAnnotation (gl happy_var_1) AnnComma (fst happy_var_2)
                                 ; return ((sL1 happy_var_1 (Present happy_var_1)) : snd happy_var_2) })}}
 	) (\r -> happyReturn (happyIn185 r))
@@ -7499,8 +7499,8 @@ happyReduce_496 = happyMonadReduce 2# 171# happyReduction_496
 happyReduction_496 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut275 happy_x_1 of { happy_var_1 -> 
-	case happyOut187 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut275 happy_x_1 of { happy_var_1 ->
+	case happyOut187 happy_x_2 of { happy_var_2 ->
 	( do { mapM_ (\ll -> addAnnotation ll AnnComma ll) (fst happy_var_1)
                       ; return
                            (map (\l -> L l missingTupArg) (fst happy_var_1) ++ happy_var_2) })}}
@@ -7510,8 +7510,8 @@ happyReduce_497 = happyMonadReduce 2# 172# happyReduction_497
 happyReduction_497 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut275 happy_x_1 of { happy_var_1 -> 
-	case happyOut187 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut275 happy_x_1 of { happy_var_1 ->
+	case happyOut187 happy_x_2 of { happy_var_2 ->
 	( do { mapM_ (\ll -> addAnnotation ll AnnComma ll) (tail $ fst happy_var_1)
              ; return (
             (head $ fst happy_var_1
@@ -7522,15 +7522,15 @@ happyReduce_498 = happyMonadReduce 2# 173# happyReduction_498
 happyReduction_498 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOut186 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOut186 happy_x_2 of { happy_var_2 ->
 	( addAnnotation (gl happy_var_1) AnnComma (fst happy_var_2) >>
                                     return ((L (gl happy_var_1) (Present happy_var_1)) : snd happy_var_2))}}
 	) (\r -> happyReturn (happyIn187 r))
 
 happyReduce_499 = happySpecReduce_1  173# happyReduction_499
 happyReduction_499 happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
 	happyIn187
 		 ([L (gl happy_var_1) (Present happy_var_1)]
 	)}
@@ -7542,14 +7542,14 @@ happyReduction_500  =  happyIn187
 
 happyReduce_501 = happySpecReduce_1  174# happyReduction_501
 happyReduction_501 happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
 	happyIn188
 		 (([],ExplicitList [happy_var_1])
 	)}
 
 happyReduce_502 = happySpecReduce_1  174# happyReduction_502
 happyReduction_502 happy_x_1
-	 =  case happyOut189 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut189 happy_x_1 of { happy_var_1 ->
 	happyIn188
 		 (([],ExplicitList (reverse (unLoc happy_var_1)))
 	)}
@@ -7557,8 +7557,8 @@ happyReduction_502 happy_x_1
 happyReduce_503 = happySpecReduce_2  174# happyReduction_503
 happyReduction_503 happy_x_2
 	happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn188
 		 (([mj AnnDotdot happy_var_2],
                                       ArithSeq (From happy_var_1))
@@ -7570,10 +7570,10 @@ happyReduction_504 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
+	 = case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
 	happyIn188
 		 (([mj AnnComma happy_var_2,mj AnnDotdot happy_var_4],
                                   ArithSeq (FromThen happy_var_1 happy_var_3))
@@ -7583,9 +7583,9 @@ happyReduce_505 = happySpecReduce_3  174# happyReduction_505
 happyReduction_505 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	happyIn188
 		 (([mj AnnDotdot happy_var_2],
                                    ArithSeq (FromTo happy_var_1 happy_var_3))
@@ -7598,11 +7598,11 @@ happyReduction_506 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut169 happy_x_5 of { happy_var_5 -> 
+	 = case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut169 happy_x_5 of { happy_var_5 ->
 	happyIn188
 		 (([mj AnnComma happy_var_2,mj AnnDotdot happy_var_4],
                                     ArithSeq (FromThenTo happy_var_1 happy_var_3 happy_var_5))
@@ -7613,9 +7613,9 @@ happyReduction_507 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut190 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut190 happy_x_3 of { happy_var_3 ->
 	( checkMonadComp >>= \ ctxt ->
                 return ([mj AnnVbar happy_var_2],
                         mkHsComp ctxt (unLoc happy_var_3) happy_var_1))}}}
@@ -7626,9 +7626,9 @@ happyReduction_508 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut189 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut184 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut189 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut184 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1)
                                                             AnnComma (gl happy_var_2) >>
                                       return (sLL happy_var_1 happy_var_3 (((:) $! happy_var_3) $! unLoc happy_var_1)))}}}
@@ -7639,16 +7639,16 @@ happyReduction_509 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut184 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut184 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2) >>
                                       return (sLL happy_var_1 happy_var_3 [happy_var_3,happy_var_1]))}}}
 	) (\r -> happyReturn (happyIn189 r))
 
 happyReduce_510 = happySpecReduce_1  176# happyReduction_510
 happyReduction_510 happy_x_1
-	 =  case happyOut191 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut191 happy_x_1 of { happy_var_1 ->
 	happyIn190
 		 (case (unLoc happy_var_1) of
                     [qs] -> sL1 happy_var_1 qs
@@ -7667,16 +7667,16 @@ happyReduction_511 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut191 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut191 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnVbar (gl happy_var_2) >>
                         return (sLL happy_var_1 happy_var_3 (reverse (unLoc happy_var_1) : unLoc happy_var_3)))}}}
 	) (\r -> happyReturn (happyIn191 r))
 
 happyReduce_512 = happySpecReduce_1  177# happyReduction_512
 happyReduction_512 happy_x_1
-	 =  case happyOut192 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut192 happy_x_1 of { happy_var_1 ->
 	happyIn191
 		 (L (getLoc happy_var_1) [reverse (unLoc happy_var_1)]
 	)}
@@ -7686,9 +7686,9 @@ happyReduction_513 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut193 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut193 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnComma (gl happy_var_2) >>
                 ams (sLL happy_var_1 happy_var_3 ()) (fst $ unLoc happy_var_3) >>
                 return (sLL happy_var_1 happy_var_3 [sLL happy_var_1 happy_var_3 ((snd $ unLoc happy_var_3) (reverse (unLoc happy_var_1)))]))}}}
@@ -7699,9 +7699,9 @@ happyReduction_514 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut215 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut192 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut215 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnComma (gl happy_var_2) >>
                 return (sLL happy_var_1 happy_var_3 (happy_var_3 : unLoc happy_var_1)))}}}
 	) (\r -> happyReturn (happyIn192 r))
@@ -7709,14 +7709,14 @@ happyReduction_514 (happy_x_3 `HappyStk`
 happyReduce_515 = happyMonadReduce 1# 178# happyReduction_515
 happyReduction_515 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut193 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut193 happy_x_1 of { happy_var_1 ->
 	( ams happy_var_1 (fst $ unLoc happy_var_1) >>
                               return (sLL happy_var_1 happy_var_1 [L (getLoc happy_var_1) ((snd $ unLoc happy_var_1) [])]))}
 	) (\r -> happyReturn (happyIn192 r))
 
 happyReduce_516 = happySpecReduce_1  178# happyReduction_516
 happyReduction_516 happy_x_1
-	 =  case happyOut215 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut215 happy_x_1 of { happy_var_1 ->
 	happyIn192
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -7724,8 +7724,8 @@ happyReduction_516 happy_x_1
 happyReduce_517 = happySpecReduce_2  179# happyReduction_517
 happyReduction_517 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
 	happyIn193
 		 (sLL happy_var_1 happy_var_2 ([mj AnnThen happy_var_1], \ss -> (mkTransformStmt ss happy_var_2))
 	)}}
@@ -7736,10 +7736,10 @@ happyReduction_518 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	happyIn193
 		 (sLL happy_var_1 happy_var_4 ([mj AnnThen happy_var_1,mj AnnBy  happy_var_3],\ss -> (mkTransformByStmt ss happy_var_2 happy_var_4))
 	) `HappyStk` happyRest}}}}
@@ -7750,10 +7750,10 @@ happyReduction_519 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	happyIn193
 		 (sLL happy_var_1 happy_var_4 ([mj AnnThen happy_var_1,mj AnnGroup happy_var_2,mj AnnUsing happy_var_3], \ss -> (mkGroupUsingStmt ss happy_var_4))
 	) `HappyStk` happyRest}}}}
@@ -7766,12 +7766,12 @@ happyReduction_520 (happy_x_6 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
-	case happyOutTok happy_x_5 of { happy_var_5 -> 
-	case happyOut169 happy_x_6 of { happy_var_6 -> 
+	 = case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
+	case happyOutTok happy_x_5 of { happy_var_5 ->
+	case happyOut169 happy_x_6 of { happy_var_6 ->
 	happyIn193
 		 (sLL happy_var_1 happy_var_6 ([mj AnnThen happy_var_1,mj AnnGroup happy_var_2,mj AnnBy happy_var_3,mj AnnUsing happy_var_5], \ss -> (mkGroupByUsingStmt ss happy_var_4 happy_var_6))
 	) `HappyStk` happyRest}}}}}}
@@ -7783,14 +7783,14 @@ happyReduction_521  =  happyIn194
 
 happyReduce_522 = happySpecReduce_1  180# happyReduction_522
 happyReduction_522 happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
 	happyIn194
 		 (([],ExplicitPArr [happy_var_1])
 	)}
 
 happyReduce_523 = happySpecReduce_1  180# happyReduction_523
 happyReduction_523 happy_x_1
-	 =  case happyOut189 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut189 happy_x_1 of { happy_var_1 ->
 	happyIn194
 		 (([],ExplicitPArr (reverse (unLoc happy_var_1)))
 	)}
@@ -7799,9 +7799,9 @@ happyReduce_524 = happySpecReduce_3  180# happyReduction_524
 happyReduction_524 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	happyIn194
 		 (([mj AnnDotdot happy_var_2]
                                  ,PArrSeq (FromTo happy_var_1 happy_var_3))
@@ -7814,11 +7814,11 @@ happyReduction_525 (happy_x_5 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest)
-	 = case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
-	case happyOutTok happy_x_4 of { happy_var_4 -> 
-	case happyOut169 happy_x_5 of { happy_var_5 -> 
+	 = case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
+	case happyOutTok happy_x_4 of { happy_var_4 ->
+	case happyOut169 happy_x_5 of { happy_var_5 ->
 	happyIn194
 		 (([mj AnnComma happy_var_2,mj AnnDotdot happy_var_4]
                           ,PArrSeq (FromThenTo happy_var_1 happy_var_3 happy_var_5))
@@ -7828,16 +7828,16 @@ happyReduce_526 = happySpecReduce_3  180# happyReduction_526
 happyReduction_526 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut184 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut190 happy_x_3 of { happy_var_3 -> 
+	 =  case happyOut184 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut190 happy_x_3 of { happy_var_3 ->
 	happyIn194
 		 (([mj AnnVbar happy_var_2],mkHsComp PArrComp (unLoc happy_var_3) happy_var_1)
 	)}}}
 
 happyReduce_527 = happySpecReduce_1  181# happyReduction_527
 happyReduction_527 happy_x_1
-	 =  case happyOut196 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut196 happy_x_1 of { happy_var_1 ->
 	happyIn195
 		 (L (getLoc happy_var_1) (reverse (unLoc happy_var_1))
 	)}
@@ -7847,9 +7847,9 @@ happyReduction_528 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut196 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut215 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut196 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut215 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ head $ unLoc happy_var_1) AnnComma
                                              (gl happy_var_2) >>
                                return (sLL happy_var_1 happy_var_3 (happy_var_3 : unLoc happy_var_1)))}}}
@@ -7857,7 +7857,7 @@ happyReduction_528 (happy_x_3 `HappyStk`
 
 happyReduce_529 = happySpecReduce_1  182# happyReduction_529
 happyReduction_529 happy_x_1
-	 =  case happyOut215 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut215 happy_x_1 of { happy_var_1 ->
 	happyIn196
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -7866,9 +7866,9 @@ happyReduce_530 = happySpecReduce_3  183# happyReduction_530
 happyReduction_530 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut198 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut198 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn197
 		 (sLL happy_var_1 happy_var_3 ((moc happy_var_1:mcc happy_var_3:(fst $ unLoc happy_var_2))
                                                ,(reverse (snd $ unLoc happy_var_2)))
@@ -7878,7 +7878,7 @@ happyReduce_531 = happySpecReduce_3  183# happyReduction_531
 happyReduction_531 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut198 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut198 happy_x_2 of { happy_var_2 ->
 	happyIn197
 		 (L (getLoc happy_var_2) (fst $ unLoc happy_var_2
                                         ,(reverse (snd $ unLoc happy_var_2)))
@@ -7887,8 +7887,8 @@ happyReduction_531 happy_x_3
 happyReduce_532 = happySpecReduce_2  183# happyReduction_532
 happyReduction_532 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn197
 		 (noLoc ([moc happy_var_1,mcc happy_var_2],[])
 	)}}
@@ -7902,7 +7902,7 @@ happyReduction_533 happy_x_2
 
 happyReduce_534 = happySpecReduce_1  184# happyReduction_534
 happyReduction_534 happy_x_1
-	 =  case happyOut199 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut199 happy_x_1 of { happy_var_1 ->
 	happyIn198
 		 (sL1 happy_var_1 (fst $ unLoc happy_var_1,snd $ unLoc happy_var_1)
 	)}
@@ -7910,8 +7910,8 @@ happyReduction_534 happy_x_1
 happyReduce_535 = happySpecReduce_2  184# happyReduction_535
 happyReduction_535 happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut198 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut198 happy_x_2 of { happy_var_2 ->
 	happyIn198
 		 (sLL happy_var_1 happy_var_2 ((mj AnnSemi happy_var_1:(fst $ unLoc happy_var_2))
                                                ,snd $ unLoc happy_var_2)
@@ -7922,9 +7922,9 @@ happyReduction_536 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut199 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut200 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut199 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut200 happy_x_3 of { happy_var_3 ->
 	( if null (snd $ unLoc happy_var_1)
                                      then return (sLL happy_var_1 happy_var_3 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                   ,[happy_var_3]))
@@ -7937,8 +7937,8 @@ happyReduce_537 = happyMonadReduce 2# 185# happyReduction_537
 happyReduction_537 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut199 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut199 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if null (snd $ unLoc happy_var_1)
                                      then return (sLL happy_var_1 happy_var_2 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                   ,snd $ unLoc happy_var_1))
@@ -7949,7 +7949,7 @@ happyReduction_537 (happy_x_2 `HappyStk`
 
 happyReduce_538 = happySpecReduce_1  185# happyReduction_538
 happyReduction_538 happy_x_1
-	 =  case happyOut200 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut200 happy_x_1 of { happy_var_1 ->
 	happyIn199
 		 (sL1 happy_var_1 ([],[happy_var_1])
 	)}
@@ -7959,9 +7959,9 @@ happyReduction_539 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut207 happy_x_1 of { happy_var_1 -> 
-	case happyOut115 happy_x_2 of { happy_var_2 -> 
-	case happyOut201 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut207 happy_x_1 of { happy_var_1 ->
+	case happyOut115 happy_x_2 of { happy_var_2 ->
+	case happyOut201 happy_x_3 of { happy_var_3 ->
 	(ams (sLL happy_var_1 happy_var_3 (Match { m_ctxt = CaseAlt
                                                         , m_pats = [happy_var_1]
                                                         , m_type = snd happy_var_2
@@ -7972,8 +7972,8 @@ happyReduction_539 (happy_x_3 `HappyStk`
 happyReduce_540 = happySpecReduce_2  187# happyReduction_540
 happyReduction_540 happy_x_2
 	happy_x_1
-	 =  case happyOut202 happy_x_1 of { happy_var_1 -> 
-	case happyOut95 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut202 happy_x_1 of { happy_var_1 ->
+	case happyOut95 happy_x_2 of { happy_var_2 ->
 	happyIn201
 		 (sLL happy_var_1 happy_var_2 (fst $ unLoc happy_var_2,
                                             GRHSs (unLoc happy_var_1) (snd $ unLoc happy_var_2))
@@ -7983,15 +7983,15 @@ happyReduce_541 = happyMonadReduce 2# 188# happyReduction_541
 happyReduction_541 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut169 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut169 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 (unguardedRHS (comb2 happy_var_1 happy_var_2) happy_var_2))
                                      [mu AnnRarrow happy_var_1])}}
 	) (\r -> happyReturn (happyIn202 r))
 
 happyReduce_542 = happySpecReduce_1  188# happyReduction_542
 happyReduction_542 happy_x_1
-	 =  case happyOut203 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut203 happy_x_1 of { happy_var_1 ->
 	happyIn202
 		 (sL1 happy_var_1 (reverse (unLoc happy_var_1))
 	)}
@@ -7999,15 +7999,15 @@ happyReduction_542 happy_x_1
 happyReduce_543 = happySpecReduce_2  189# happyReduction_543
 happyReduction_543 happy_x_2
 	happy_x_1
-	 =  case happyOut203 happy_x_1 of { happy_var_1 -> 
-	case happyOut206 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut203 happy_x_1 of { happy_var_1 ->
+	case happyOut206 happy_x_2 of { happy_var_2 ->
 	happyIn203
 		 (sLL happy_var_1 happy_var_2 (happy_var_2 : unLoc happy_var_1)
 	)}}
 
 happyReduce_544 = happySpecReduce_1  189# happyReduction_544
 happyReduction_544 happy_x_1
-	 =  case happyOut206 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut206 happy_x_1 of { happy_var_1 ->
 	happyIn203
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -8017,9 +8017,9 @@ happyReduction_545 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut204 happy_x_1 of { happy_var_1 -> 
-	case happyOut206 happy_x_2 of { happy_var_2 -> 
-	case happyOut172 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut204 happy_x_1 of { happy_var_1 ->
+	case happyOut206 happy_x_2 of { happy_var_2 ->
+	case happyOut172 happy_x_3 of { happy_var_3 ->
 	( ams (sL (comb2 happy_var_1 happy_var_2) (happy_var_2 : unLoc happy_var_1))
                                            (map (\l -> mj AnnSemi l) $ fst happy_var_3))}}}
 	) (\r -> happyReturn (happyIn204 r))
@@ -8028,8 +8028,8 @@ happyReduce_546 = happyMonadReduce 2# 190# happyReduction_546
 happyReduction_546 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut206 happy_x_1 of { happy_var_1 -> 
-	case happyOut172 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut206 happy_x_1 of { happy_var_1 ->
+	case happyOut172 happy_x_2 of { happy_var_2 ->
 	( ams (sL1 happy_var_1 [happy_var_1])
                                            (map (\l -> mj AnnSemi l) $ fst happy_var_2))}}
 	) (\r -> happyReturn (happyIn204 r))
@@ -8038,9 +8038,9 @@ happyReduce_547 = happySpecReduce_3  191# happyReduction_547
 happyReduction_547 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut204 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut204 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn205
 		 (sLL happy_var_1 happy_var_3 ([moc happy_var_1,mcc happy_var_3],unLoc happy_var_2)
 	)}}}
@@ -8048,7 +8048,7 @@ happyReduction_547 happy_x_3
 happyReduce_548 = happySpecReduce_2  191# happyReduction_548
 happyReduction_548 happy_x_2
 	happy_x_1
-	 =  case happyOut204 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut204 happy_x_1 of { happy_var_1 ->
 	happyIn205
 		 (sL1 happy_var_1 ([],unLoc happy_var_1)
 	)}
@@ -8059,10 +8059,10 @@ happyReduction_549 (happy_x_4 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut195 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	case happyOut169 happy_x_4 of { happy_var_4 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut195 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
+	case happyOut169 happy_x_4 of { happy_var_4 ->
 	( ams (sL (comb2 happy_var_1 happy_var_4) $ GRHS (unLoc happy_var_2) happy_var_4)
                                          [mj AnnVbar happy_var_1,mu AnnRarrow happy_var_3])}}}}
 	) (\r -> happyReturn (happyIn206 r))
@@ -8070,7 +8070,7 @@ happyReduction_549 (happy_x_4 `HappyStk`
 happyReduce_550 = happyMonadReduce 1# 193# happyReduction_550
 happyReduction_550 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 ->
 	( checkPattern empty happy_var_1)}
 	) (\r -> happyReturn (happyIn207 r))
 
@@ -8078,8 +8078,8 @@ happyReduce_551 = happyMonadReduce 2# 193# happyReduction_551
 happyReduction_551 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	( amms (checkPattern empty (sLL happy_var_1 happy_var_2 (SectionR
                                                      (sL1 happy_var_1 (HsVar (sL1 happy_var_1 bang_RDR))) happy_var_2)))
                                 [mj AnnBang happy_var_1])}}
@@ -8088,7 +8088,7 @@ happyReduction_551 (happy_x_2 `HappyStk`
 happyReduce_552 = happyMonadReduce 1# 194# happyReduction_552
 happyReduction_552 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut169 happy_x_1 of { happy_var_1 ->
 	( checkPattern
                                 (text "Possibly caused by a missing 'do'?") happy_var_1)}
 	) (\r -> happyReturn (happyIn208 r))
@@ -8097,8 +8097,8 @@ happyReduce_553 = happyMonadReduce 2# 194# happyReduction_553
 happyReduction_553 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	( amms (checkPattern
                                      (text "Possibly caused by a missing 'do'?")
                                      (sLL happy_var_1 happy_var_2 (SectionR (sL1 happy_var_1 (HsVar (sL1 happy_var_1 bang_RDR))) happy_var_2)))
@@ -8108,7 +8108,7 @@ happyReduction_553 (happy_x_2 `HappyStk`
 happyReduce_554 = happyMonadReduce 1# 195# happyReduction_554
 happyReduction_554 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut176 happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOut176 happy_x_1 of { happy_var_1 ->
 	( checkPattern empty happy_var_1)}
 	) (\r -> happyReturn (happyIn209 r))
 
@@ -8116,8 +8116,8 @@ happyReduce_555 = happyMonadReduce 2# 195# happyReduction_555
 happyReduction_555 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut176 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut176 happy_x_2 of { happy_var_2 ->
 	( amms (checkPattern empty
                                             (sLL happy_var_1 happy_var_2 (SectionR
                                                 (sL1 happy_var_1 (HsVar (sL1 happy_var_1 bang_RDR))) happy_var_2)))
@@ -8127,8 +8127,8 @@ happyReduction_555 (happy_x_2 `HappyStk`
 happyReduce_556 = happySpecReduce_2  196# happyReduction_556
 happyReduction_556 happy_x_2
 	happy_x_1
-	 =  case happyOut209 happy_x_1 of { happy_var_1 -> 
-	case happyOut210 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut209 happy_x_1 of { happy_var_1 ->
+	case happyOut210 happy_x_2 of { happy_var_2 ->
 	happyIn210
 		 (happy_var_1 : happy_var_2
 	)}}
@@ -8142,9 +8142,9 @@ happyReduce_558 = happySpecReduce_3  197# happyReduction_558
 happyReduction_558 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut212 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut212 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	happyIn211
 		 (sLL happy_var_1 happy_var_3 ((moc happy_var_1:mcc happy_var_3:(fst $ unLoc happy_var_2))
                                              ,(reverse $ snd $ unLoc happy_var_2))
@@ -8154,7 +8154,7 @@ happyReduce_559 = happySpecReduce_3  197# happyReduction_559
 happyReduction_559 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut212 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut212 happy_x_2 of { happy_var_2 ->
 	happyIn211
 		 (L (gl happy_var_2) (fst $ unLoc happy_var_2
                                                     ,reverse $ snd $ unLoc happy_var_2)
@@ -8165,9 +8165,9 @@ happyReduction_560 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut212 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut214 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut212 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut214 happy_x_3 of { happy_var_3 ->
 	( if null (snd $ unLoc happy_var_1)
                               then return (sLL happy_var_1 happy_var_3 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1)
                                                      ,happy_var_3 : (snd $ unLoc happy_var_1)))
@@ -8180,8 +8180,8 @@ happyReduce_561 = happyMonadReduce 2# 198# happyReduction_561
 happyReduction_561 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut212 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut212 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( if null (snd $ unLoc happy_var_1)
                              then return (sLL happy_var_1 happy_var_2 (mj AnnSemi happy_var_2:(fst $ unLoc happy_var_1),snd $ unLoc happy_var_1))
                              else do
@@ -8192,7 +8192,7 @@ happyReduction_561 (happy_x_2 `HappyStk`
 
 happyReduce_562 = happySpecReduce_1  198# happyReduction_562
 happyReduction_562 happy_x_1
-	 =  case happyOut214 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut214 happy_x_1 of { happy_var_1 ->
 	happyIn212
 		 (sL1 happy_var_1 ([],[happy_var_1])
 	)}
@@ -8204,7 +8204,7 @@ happyReduction_563  =  happyIn212
 
 happyReduce_564 = happySpecReduce_1  199# happyReduction_564
 happyReduction_564 happy_x_1
-	 =  case happyOut214 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut214 happy_x_1 of { happy_var_1 ->
 	happyIn213
 		 (Just happy_var_1
 	)}
@@ -8216,7 +8216,7 @@ happyReduction_565  =  happyIn213
 
 happyReduce_566 = happySpecReduce_1  200# happyReduction_566
 happyReduction_566 happy_x_1
-	 =  case happyOut215 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut215 happy_x_1 of { happy_var_1 ->
 	happyIn214
 		 (happy_var_1
 	)}
@@ -8225,8 +8225,8 @@ happyReduce_567 = happyMonadReduce 2# 200# happyReduction_567
 happyReduction_567 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut211 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut211 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ mkRecStmt (snd $ unLoc happy_var_2))
                                                (mj AnnRec happy_var_1:(fst $ unLoc happy_var_2)))}}
 	) (\r -> happyReturn (happyIn214 r))
@@ -8236,16 +8236,16 @@ happyReduction_568 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut208 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut208 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ mkBindStmt happy_var_1 happy_var_3)
                                                [mu AnnLarrow happy_var_2])}}}
 	) (\r -> happyReturn (happyIn215 r))
 
 happyReduce_569 = happySpecReduce_1  201# happyReduction_569
 happyReduction_569 happy_x_1
-	 =  case happyOut169 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut169 happy_x_1 of { happy_var_1 ->
 	happyIn215
 		 (sL1 happy_var_1 $ mkBodyStmt happy_var_1
 	)}
@@ -8254,15 +8254,15 @@ happyReduce_570 = happyMonadReduce 2# 201# happyReduction_570
 happyReduction_570 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut94 happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut94 happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2$ LetStmt (snd $ unLoc happy_var_2))
                                                (mj AnnLet happy_var_1:(fst $ unLoc happy_var_2)))}}
 	) (\r -> happyReturn (happyIn215 r))
 
 happyReduce_571 = happySpecReduce_1  202# happyReduction_571
 happyReduction_571 happy_x_1
-	 =  case happyOut217 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut217 happy_x_1 of { happy_var_1 ->
 	happyIn216
 		 (happy_var_1
 	)}
@@ -8277,23 +8277,23 @@ happyReduction_573 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut218 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut217 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut218 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut217 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2) >>
                    return (case happy_var_3 of (ma,(flds, dd)) -> (ma,(happy_var_1 : flds, dd))))}}}
 	) (\r -> happyReturn (happyIn217 r))
 
 happyReduce_574 = happySpecReduce_1  203# happyReduction_574
 happyReduction_574 happy_x_1
-	 =  case happyOut218 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut218 happy_x_1 of { happy_var_1 ->
 	happyIn217
 		 (([],([happy_var_1], False))
 	)}
 
 happyReduce_575 = happySpecReduce_1  203# happyReduction_575
 happyReduction_575 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn217
 		 (([mj AnnDotdot happy_var_1],([],   True))
 	)}
@@ -8303,16 +8303,16 @@ happyReduction_576 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut258 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut184 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut258 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut184 happy_x_3 of { happy_var_3 ->
 	( ams  (sLL happy_var_1 happy_var_3 $ HsRecField (sL1 happy_var_1 $ mkFieldOcc happy_var_1) (Just happy_var_3))
                                 [mj AnnEqual happy_var_2])}}}
 	) (\r -> happyReturn (happyIn218 r))
 
 happyReduce_577 = happySpecReduce_1  204# happyReduction_577
 happyReduction_577 happy_x_1
-	 =  case happyOut258 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut258 happy_x_1 of { happy_var_1 ->
 	happyIn218
 		 (sLL happy_var_1 happy_var_1 $ HsRecField (sL1 happy_var_1 $ mkFieldOcc happy_var_1) Nothing
 	)}
@@ -8322,9 +8322,9 @@ happyReduction_578 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut219 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut220 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut219 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut220 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl $ last $ unLoc happy_var_1) AnnSemi (gl happy_var_2) >>
                          return (let { this = happy_var_3; rest = unLoc happy_var_1 }
                               in rest `seq` this `seq` sLL happy_var_1 happy_var_3 (this : rest)))}}}
@@ -8334,15 +8334,15 @@ happyReduce_579 = happyMonadReduce 2# 205# happyReduction_579
 happyReduction_579 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut219 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOut219 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( addAnnotation (gl $ last $ unLoc happy_var_1) AnnSemi (gl happy_var_2) >>
                          return (sLL happy_var_1 happy_var_2 (unLoc happy_var_1)))}}
 	) (\r -> happyReturn (happyIn219 r))
 
 happyReduce_580 = happySpecReduce_1  205# happyReduction_580
 happyReduction_580 happy_x_1
-	 =  case happyOut220 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut220 happy_x_1 of { happy_var_1 ->
 	happyIn219
 		 (let this = happy_var_1 in this `seq` sL1 happy_var_1 [this]
 	)}
@@ -8352,30 +8352,30 @@ happyReduction_581 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut169 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut221 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut169 happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (IPBind (Left happy_var_1) happy_var_3))
                                               [mj AnnEqual happy_var_2])}}}
 	) (\r -> happyReturn (happyIn220 r))
 
 happyReduce_582 = happySpecReduce_1  207# happyReduction_582
 happyReduction_582 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn221
 		 (sL1 happy_var_1 (HsIPName (getIPDUPVARID happy_var_1))
 	)}
 
 happyReduce_583 = happySpecReduce_1  208# happyReduction_583
 happyReduction_583 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn222
 		 (sL1 happy_var_1 (getLABELVARID happy_var_1)
 	)}
 
 happyReduce_584 = happySpecReduce_1  209# happyReduction_584
 happyReduction_584 happy_x_1
-	 =  case happyOut224 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut224 happy_x_1 of { happy_var_1 ->
 	happyIn223
 		 (happy_var_1
 	)}
@@ -8387,7 +8387,7 @@ happyReduction_585  =  happyIn223
 
 happyReduce_586 = happySpecReduce_1  210# happyReduction_586
 happyReduction_586 happy_x_1
-	 =  case happyOut225 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut225 happy_x_1 of { happy_var_1 ->
 	happyIn224
 		 (happy_var_1
 	)}
@@ -8397,16 +8397,16 @@ happyReduction_587 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut225 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut224 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut225 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut224 happy_x_3 of { happy_var_3 ->
 	( aa happy_var_1 (AnnVbar, happy_var_2)
                               >> return (sLL happy_var_1 happy_var_3 (Or [happy_var_1,happy_var_3])))}}}
 	) (\r -> happyReturn (happyIn224 r))
 
 happyReduce_588 = happySpecReduce_1  211# happyReduction_588
 happyReduction_588 happy_x_1
-	 =  case happyOut226 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut226 happy_x_1 of { happy_var_1 ->
 	happyIn225
 		 (happy_var_1
 	)}
@@ -8416,9 +8416,9 @@ happyReduction_589 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut226 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut225 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut226 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut225 happy_x_3 of { happy_var_3 ->
 	( aa happy_var_1 (AnnComma,happy_var_2) >> return (sLL happy_var_1 happy_var_3 (And [happy_var_1,happy_var_3])))}}}
 	) (\r -> happyReturn (happyIn225 r))
 
@@ -8427,22 +8427,22 @@ happyReduction_590 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut224 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut224 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (Parens happy_var_2)) [mop happy_var_1,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn226 r))
 
 happyReduce_591 = happySpecReduce_1  212# happyReduction_591
 happyReduction_591 happy_x_1
-	 =  case happyOut228 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut228 happy_x_1 of { happy_var_1 ->
 	happyIn226
 		 (sL1 happy_var_1 (Var happy_var_1)
 	)}
 
 happyReduce_592 = happySpecReduce_1  213# happyReduction_592
 happyReduction_592 happy_x_1
-	 =  case happyOut228 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut228 happy_x_1 of { happy_var_1 ->
 	happyIn227
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -8452,58 +8452,58 @@ happyReduction_593 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut228 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut227 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut228 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut227 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2) >>
                                     return (sLL happy_var_1 happy_var_3 (happy_var_1 : unLoc happy_var_3)))}}}
 	) (\r -> happyReturn (happyIn227 r))
 
 happyReduce_594 = happySpecReduce_1  214# happyReduction_594
 happyReduction_594 happy_x_1
-	 =  case happyOut257 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut257 happy_x_1 of { happy_var_1 ->
 	happyIn228
 		 (happy_var_1
 	)}
 
 happyReduce_595 = happySpecReduce_1  214# happyReduction_595
 happyReduction_595 happy_x_1
-	 =  case happyOut232 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut232 happy_x_1 of { happy_var_1 ->
 	happyIn228
 		 (happy_var_1
 	)}
 
 happyReduce_596 = happySpecReduce_1  215# happyReduction_596
 happyReduction_596 happy_x_1
-	 =  case happyOut231 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut231 happy_x_1 of { happy_var_1 ->
 	happyIn229
 		 (happy_var_1
 	)}
 
 happyReduce_597 = happySpecReduce_1  215# happyReduction_597
 happyReduction_597 happy_x_1
-	 =  case happyOut234 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut234 happy_x_1 of { happy_var_1 ->
 	happyIn229
 		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
 	)}
 
 happyReduce_598 = happySpecReduce_1  216# happyReduction_598
 happyReduction_598 happy_x_1
-	 =  case happyOut231 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut231 happy_x_1 of { happy_var_1 ->
 	happyIn230
 		 (happy_var_1
 	)}
 
 happyReduce_599 = happySpecReduce_1  216# happyReduction_599
 happyReduction_599 happy_x_1
-	 =  case happyOut235 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut235 happy_x_1 of { happy_var_1 ->
 	happyIn230
 		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
 	)}
 
 happyReduce_600 = happySpecReduce_1  217# happyReduction_600
 happyReduction_600 happy_x_1
-	 =  case happyOut268 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut268 happy_x_1 of { happy_var_1 ->
 	happyIn231
 		 (happy_var_1
 	)}
@@ -8513,16 +8513,16 @@ happyReduction_601 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut270 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut270 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                    [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn231 r))
 
 happyReduce_602 = happySpecReduce_1  218# happyReduction_602
 happyReduction_602 happy_x_1
-	 =  case happyOut269 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut269 happy_x_1 of { happy_var_1 ->
 	happyIn232
 		 (happy_var_1
 	)}
@@ -8532,23 +8532,23 @@ happyReduction_603 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut271 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut271 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn232 r))
 
 happyReduce_604 = happySpecReduce_1  218# happyReduction_604
 happyReduction_604 happy_x_1
-	 =  case happyOut235 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut235 happy_x_1 of { happy_var_1 ->
 	happyIn232
 		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
 	)}
 
 happyReduce_605 = happySpecReduce_1  219# happyReduction_605
 happyReduction_605 happy_x_1
-	 =  case happyOut232 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut232 happy_x_1 of { happy_var_1 ->
 	happyIn233
 		 (sL1 happy_var_1 [happy_var_1]
 	)}
@@ -8558,9 +8558,9 @@ happyReduction_606 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOut232 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOut233 happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOut232 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOut233 happy_x_3 of { happy_var_3 ->
 	( addAnnotation (gl happy_var_1) AnnComma (gl happy_var_2) >>
                                    return (sLL happy_var_1 happy_var_3 (happy_var_1 : unLoc happy_var_3)))}}}
 	) (\r -> happyReturn (happyIn233 r))
@@ -8569,8 +8569,8 @@ happyReduce_607 = happyMonadReduce 2# 220# happyReduction_607
 happyReduction_607 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 unitDataCon) [mop happy_var_1,mcp happy_var_2])}}
 	) (\r -> happyReturn (happyIn234 r))
 
@@ -8579,9 +8579,9 @@ happyReduction_608 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut275 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut275 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon Boxed (snd happy_var_2 + 1))
                                        (mop happy_var_1:mcp happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn234 r))
@@ -8590,8 +8590,8 @@ happyReduce_609 = happyMonadReduce 2# 220# happyReduction_609
 happyReduction_609 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ unboxedUnitDataCon) [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn234 r))
 
@@ -8600,16 +8600,16 @@ happyReduction_610 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut275 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut275 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon Unboxed (snd happy_var_2 + 1))
                                        (mo happy_var_1:mc happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn234 r))
 
 happyReduce_611 = happySpecReduce_1  221# happyReduction_611
 happyReduction_611 happy_x_1
-	 =  case happyOut234 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut234 happy_x_1 of { happy_var_1 ->
 	happyIn235
 		 (happy_var_1
 	)}
@@ -8618,14 +8618,14 @@ happyReduce_612 = happyMonadReduce 2# 221# happyReduction_612
 happyReduction_612 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 nilDataCon) [mos happy_var_1,mcs happy_var_2])}}
 	) (\r -> happyReturn (happyIn235 r))
 
 happyReduce_613 = happySpecReduce_1  222# happyReduction_613
 happyReduction_613 happy_x_1
-	 =  case happyOut271 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut271 happy_x_1 of { happy_var_1 ->
 	happyIn236
 		 (happy_var_1
 	)}
@@ -8635,9 +8635,9 @@ happyReduction_614 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut269 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut269 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -8645,7 +8645,7 @@ happyReduction_614 (happy_x_3 `HappyStk`
 
 happyReduce_615 = happySpecReduce_1  223# happyReduction_615
 happyReduction_615 happy_x_1
-	 =  case happyOut270 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut270 happy_x_1 of { happy_var_1 ->
 	happyIn237
 		 (happy_var_1
 	)}
@@ -8655,9 +8655,9 @@ happyReduction_616 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut268 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut268 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -8665,7 +8665,7 @@ happyReduction_616 (happy_x_3 `HappyStk`
 
 happyReduce_617 = happySpecReduce_1  224# happyReduction_617
 happyReduction_617 happy_x_1
-	 =  case happyOut239 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut239 happy_x_1 of { happy_var_1 ->
 	happyIn238
 		 (happy_var_1
 	)}
@@ -8674,8 +8674,8 @@ happyReduce_618 = happyMonadReduce 2# 224# happyReduction_618
 happyReduction_618 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ getRdrName unitTyCon)
                                               [mop happy_var_1,mcp happy_var_2])}}
 	) (\r -> happyReturn (happyIn238 r))
@@ -8684,15 +8684,15 @@ happyReduce_619 = happyMonadReduce 2# 224# happyReduction_619
 happyReduction_619 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ getRdrName unboxedUnitTyCon)
                                               [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn238 r))
 
 happyReduce_620 = happySpecReduce_1  225# happyReduction_620
 happyReduction_620 happy_x_1
-	 =  case happyOut240 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut240 happy_x_1 of { happy_var_1 ->
 	happyIn239
 		 (happy_var_1
 	)}
@@ -8702,9 +8702,9 @@ happyReduction_621 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut275 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut275 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ getRdrName (tupleTyCon Boxed
                                                         (snd happy_var_2 + 1)))
                                        (mop happy_var_1:mcp happy_var_3:(mcommas (fst happy_var_2))))}}}
@@ -8715,9 +8715,9 @@ happyReduction_622 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut275 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut275 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ getRdrName (tupleTyCon Unboxed
                                                         (snd happy_var_2 + 1)))
                                        (mo happy_var_1:mc happy_var_3:(mcommas (fst happy_var_2))))}}}
@@ -8728,9 +8728,9 @@ happyReduction_623 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ getRdrName funTyCon)
                                        [mop happy_var_1,mu AnnRarrow happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn239 r))
@@ -8739,8 +8739,8 @@ happyReduce_624 = happyMonadReduce 2# 225# happyReduction_624
 happyReduction_624 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ listTyCon_RDR) [mos happy_var_1,mcs happy_var_2])}}
 	) (\r -> happyReturn (happyIn239 r))
 
@@ -8748,8 +8748,8 @@ happyReduce_625 = happyMonadReduce 2# 225# happyReduction_625
 happyReduction_625 (happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	( ams (sLL happy_var_1 happy_var_2 $ parrTyCon_RDR) [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn239 r))
 
@@ -8758,16 +8758,16 @@ happyReduction_626 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ getRdrName eqPrimTyCon)
                                         [mop happy_var_1,mj AnnTildehsh happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn239 r))
 
 happyReduce_627 = happySpecReduce_1  226# happyReduction_627
 happyReduction_627 happy_x_1
-	 =  case happyOut243 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut243 happy_x_1 of { happy_var_1 ->
 	happyIn240
 		 (happy_var_1
 	)}
@@ -8777,9 +8777,9 @@ happyReduction_628 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut246 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut246 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                                [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn240 r))
@@ -8789,16 +8789,16 @@ happyReduction_629 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ eqTyCon_RDR)
                                                [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn240 r))
 
 happyReduce_630 = happySpecReduce_1  227# happyReduction_630
 happyReduction_630 happy_x_1
-	 =  case happyOut243 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut243 happy_x_1 of { happy_var_1 ->
 	happyIn241
 		 (happy_var_1
 	)}
@@ -8808,9 +8808,9 @@ happyReduction_631 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( let name = sL1 happy_var_2 $! mkQual tcClsName (getQCONSYM happy_var_2)
                                 in ams (sLL happy_var_1 happy_var_3 (unLoc name)) [mop happy_var_1,mj AnnVal name,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn241 r))
@@ -8820,9 +8820,9 @@ happyReduction_632 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( let name = sL1 happy_var_2 $! mkUnqual tcClsName (getCONSYM happy_var_2)
                                 in ams (sLL happy_var_1 happy_var_3 (unLoc name)) [mop happy_var_1,mj AnnVal name,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn241 r))
@@ -8832,9 +8832,9 @@ happyReduction_633 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( let name = sL1 happy_var_2 $! consDataCon_RDR
                                 in ams (sLL happy_var_1 happy_var_3 (unLoc name)) [mop happy_var_1,mj AnnVal name,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn241 r))
@@ -8844,15 +8844,15 @@ happyReduction_634 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 $ eqTyCon_RDR) [mop happy_var_1,mj AnnTilde happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn241 r))
 
 happyReduce_635 = happySpecReduce_1  228# happyReduction_635
 happyReduction_635 happy_x_1
-	 =  case happyOut246 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut246 happy_x_1 of { happy_var_1 ->
 	happyIn242
 		 (happy_var_1
 	)}
@@ -8862,9 +8862,9 @@ happyReduction_636 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut243 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut243 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                                [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                                ,mj AnnBackquote happy_var_3])}}}
@@ -8872,21 +8872,21 @@ happyReduction_636 (happy_x_3 `HappyStk`
 
 happyReduce_637 = happySpecReduce_1  229# happyReduction_637
 happyReduction_637 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn243
 		 (sL1 happy_var_1 $! mkQual tcClsName (getQCONID happy_var_1)
 	)}
 
 happyReduce_638 = happySpecReduce_1  229# happyReduction_638
 happyReduction_638 happy_x_1
-	 =  case happyOut245 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut245 happy_x_1 of { happy_var_1 ->
 	happyIn243
 		 (happy_var_1
 	)}
 
 happyReduce_639 = happySpecReduce_1  230# happyReduction_639
 happyReduction_639 happy_x_1
-	 =  case happyOut243 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut243 happy_x_1 of { happy_var_1 ->
 	happyIn244
 		 (sL1 happy_var_1                     (HsTyVar happy_var_1)
 	)}
@@ -8894,85 +8894,85 @@ happyReduction_639 happy_x_1
 happyReduce_640 = happySpecReduce_2  230# happyReduction_640
 happyReduction_640 happy_x_2
 	happy_x_1
-	 =  case happyOut243 happy_x_1 of { happy_var_1 -> 
-	case happyOut277 happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut243 happy_x_1 of { happy_var_1 ->
+	case happyOut277 happy_x_2 of { happy_var_2 ->
 	happyIn244
 		 (sLL happy_var_1 happy_var_2 (HsDocTy (sL1 happy_var_1 (HsTyVar happy_var_1)) happy_var_2)
 	)}}
 
 happyReduce_641 = happySpecReduce_1  231# happyReduction_641
 happyReduction_641 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn245
 		 (sL1 happy_var_1 $! mkUnqual tcClsName (getCONID happy_var_1)
 	)}
 
 happyReduce_642 = happySpecReduce_1  232# happyReduction_642
 happyReduction_642 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn246
 		 (sL1 happy_var_1 $! mkQual tcClsName (getQCONSYM happy_var_1)
 	)}
 
 happyReduce_643 = happySpecReduce_1  232# happyReduction_643
 happyReduction_643 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn246
 		 (sL1 happy_var_1 $! mkQual tcClsName (getQVARSYM happy_var_1)
 	)}
 
 happyReduce_644 = happySpecReduce_1  232# happyReduction_644
 happyReduction_644 happy_x_1
-	 =  case happyOut247 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut247 happy_x_1 of { happy_var_1 ->
 	happyIn246
 		 (happy_var_1
 	)}
 
 happyReduce_645 = happySpecReduce_1  233# happyReduction_645
 happyReduction_645 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn247
 		 (sL1 happy_var_1 $! mkUnqual tcClsName (getCONSYM happy_var_1)
 	)}
 
 happyReduce_646 = happySpecReduce_1  233# happyReduction_646
 happyReduction_646 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn247
 		 (sL1 happy_var_1 $! mkUnqual tcClsName (getVARSYM happy_var_1)
 	)}
 
 happyReduce_647 = happySpecReduce_1  233# happyReduction_647
 happyReduction_647 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn247
 		 (sL1 happy_var_1 $! consDataCon_RDR
 	)}
 
 happyReduce_648 = happySpecReduce_1  233# happyReduction_648
 happyReduction_648 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn247
 		 (sL1 happy_var_1 $! mkUnqual tcClsName (fsLit "-")
 	)}
 
 happyReduce_649 = happySpecReduce_1  234# happyReduction_649
 happyReduction_649 happy_x_1
-	 =  case happyOut249 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut249 happy_x_1 of { happy_var_1 ->
 	happyIn248
 		 (happy_var_1
 	)}
 
 happyReduce_650 = happySpecReduce_1  234# happyReduction_650
 happyReduction_650 happy_x_1
-	 =  case happyOut236 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut236 happy_x_1 of { happy_var_1 ->
 	happyIn248
 		 (happy_var_1
 	)}
 
 happyReduce_651 = happySpecReduce_1  235# happyReduction_651
 happyReduction_651 happy_x_1
-	 =  case happyOut264 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut264 happy_x_1 of { happy_var_1 ->
 	happyIn249
 		 (happy_var_1
 	)}
@@ -8982,9 +8982,9 @@ happyReduction_652 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut260 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut260 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -8992,35 +8992,35 @@ happyReduction_652 (happy_x_3 `HappyStk`
 
 happyReduce_653 = happySpecReduce_1  236# happyReduction_653
 happyReduction_653 happy_x_1
-	 =  case happyOut252 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut252 happy_x_1 of { happy_var_1 ->
 	happyIn250
 		 (sL1 happy_var_1 $ HsVar happy_var_1
 	)}
 
 happyReduce_654 = happySpecReduce_1  236# happyReduction_654
 happyReduction_654 happy_x_1
-	 =  case happyOut237 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut237 happy_x_1 of { happy_var_1 ->
 	happyIn250
 		 (sL1 happy_var_1 $ HsVar happy_var_1
 	)}
 
 happyReduce_655 = happySpecReduce_1  237# happyReduction_655
 happyReduction_655 happy_x_1
-	 =  case happyOut253 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut253 happy_x_1 of { happy_var_1 ->
 	happyIn251
 		 (sL1 happy_var_1 $ HsVar happy_var_1
 	)}
 
 happyReduce_656 = happySpecReduce_1  237# happyReduction_656
 happyReduction_656 happy_x_1
-	 =  case happyOut237 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut237 happy_x_1 of { happy_var_1 ->
 	happyIn251
 		 (sL1 happy_var_1 $ HsVar happy_var_1
 	)}
 
 happyReduce_657 = happySpecReduce_1  238# happyReduction_657
 happyReduction_657 happy_x_1
-	 =  case happyOut261 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut261 happy_x_1 of { happy_var_1 ->
 	happyIn252
 		 (happy_var_1
 	)}
@@ -9030,9 +9030,9 @@ happyReduction_658 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut259 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut259 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -9040,7 +9040,7 @@ happyReduction_658 (happy_x_3 `HappyStk`
 
 happyReduce_659 = happySpecReduce_1  239# happyReduction_659
 happyReduction_659 happy_x_1
-	 =  case happyOut262 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut262 happy_x_1 of { happy_var_1 ->
 	happyIn253
 		 (happy_var_1
 	)}
@@ -9050,9 +9050,9 @@ happyReduction_660 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut259 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut259 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -9060,7 +9060,7 @@ happyReduction_660 (happy_x_3 `HappyStk`
 
 happyReduce_661 = happySpecReduce_1  240# happyReduction_661
 happyReduction_661 happy_x_1
-	 =  case happyOut256 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut256 happy_x_1 of { happy_var_1 ->
 	happyIn254
 		 (happy_var_1
 	)}
@@ -9070,9 +9070,9 @@ happyReduction_662 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut256 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut256 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mj AnnBackquote happy_var_1,mj AnnVal happy_var_2
                                        ,mj AnnBackquote happy_var_3])}}}
@@ -9081,7 +9081,7 @@ happyReduction_662 (happy_x_3 `HappyStk`
 happyReduce_663 = happyMonadReduce 1# 241# happyReduction_663
 happyReduction_663 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( parseErrorSDoc (getLoc happy_var_1)
                                       (vcat [text "Illegal symbol '.' in type",
                                              text "Perhaps you intended to use RankNTypes or a similar language",
@@ -9090,42 +9090,42 @@ happyReduction_663 (happy_x_1 `HappyStk`
 
 happyReduce_664 = happySpecReduce_1  242# happyReduction_664
 happyReduction_664 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn256
 		 (sL1 happy_var_1 $! mkUnqual tvName (getVARID happy_var_1)
 	)}
 
 happyReduce_665 = happySpecReduce_1  242# happyReduction_665
 happyReduction_665 happy_x_1
-	 =  case happyOut266 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut266 happy_x_1 of { happy_var_1 ->
 	happyIn256
 		 (sL1 happy_var_1 $! mkUnqual tvName (unLoc happy_var_1)
 	)}
 
 happyReduce_666 = happySpecReduce_1  242# happyReduction_666
 happyReduction_666 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn256
 		 (sL1 happy_var_1 $! mkUnqual tvName (fsLit "unsafe")
 	)}
 
 happyReduce_667 = happySpecReduce_1  242# happyReduction_667
 happyReduction_667 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn256
 		 (sL1 happy_var_1 $! mkUnqual tvName (fsLit "safe")
 	)}
 
 happyReduce_668 = happySpecReduce_1  242# happyReduction_668
 happyReduction_668 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn256
 		 (sL1 happy_var_1 $! mkUnqual tvName (fsLit "interruptible")
 	)}
 
 happyReduce_669 = happySpecReduce_1  243# happyReduction_669
 happyReduction_669 happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
 	happyIn257
 		 (happy_var_1
 	)}
@@ -9135,16 +9135,16 @@ happyReduction_670 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut264 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut264 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn257 r))
 
 happyReduce_671 = happySpecReduce_1  244# happyReduction_671
 happyReduction_671 happy_x_1
-	 =  case happyOut259 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut259 happy_x_1 of { happy_var_1 ->
 	happyIn258
 		 (happy_var_1
 	)}
@@ -9154,9 +9154,9 @@ happyReduction_672 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut264 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut264 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn258 r))
@@ -9166,226 +9166,226 @@ happyReduction_673 (happy_x_3 `HappyStk`
 	happy_x_2 `HappyStk`
 	happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
-	case happyOut263 happy_x_2 of { happy_var_2 -> 
-	case happyOutTok happy_x_3 of { happy_var_3 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
+	case happyOut263 happy_x_2 of { happy_var_2 ->
+	case happyOutTok happy_x_3 of { happy_var_3 ->
 	( ams (sLL happy_var_1 happy_var_3 (unLoc happy_var_2))
                                        [mop happy_var_1,mj AnnVal happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn258 r))
 
 happyReduce_674 = happySpecReduce_1  245# happyReduction_674
 happyReduction_674 happy_x_1
-	 =  case happyOut260 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut260 happy_x_1 of { happy_var_1 ->
 	happyIn259
 		 (happy_var_1
 	)}
 
 happyReduce_675 = happySpecReduce_1  245# happyReduction_675
 happyReduction_675 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn259
 		 (sL1 happy_var_1 $! mkQual varName (getQVARID happy_var_1)
 	)}
 
 happyReduce_676 = happySpecReduce_1  246# happyReduction_676
 happyReduction_676 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (getVARID happy_var_1)
 	)}
 
 happyReduce_677 = happySpecReduce_1  246# happyReduction_677
 happyReduction_677 happy_x_1
-	 =  case happyOut266 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut266 happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (unLoc happy_var_1)
 	)}
 
 happyReduce_678 = happySpecReduce_1  246# happyReduction_678
 happyReduction_678 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "unsafe")
 	)}
 
 happyReduce_679 = happySpecReduce_1  246# happyReduction_679
 happyReduction_679 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "safe")
 	)}
 
 happyReduce_680 = happySpecReduce_1  246# happyReduction_680
 happyReduction_680 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "interruptible")
 	)}
 
 happyReduce_681 = happySpecReduce_1  246# happyReduction_681
 happyReduction_681 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "forall")
 	)}
 
 happyReduce_682 = happySpecReduce_1  246# happyReduction_682
 happyReduction_682 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "family")
 	)}
 
 happyReduce_683 = happySpecReduce_1  246# happyReduction_683
 happyReduction_683 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn260
 		 (sL1 happy_var_1 $! mkUnqual varName (fsLit "role")
 	)}
 
 happyReduce_684 = happySpecReduce_1  247# happyReduction_684
 happyReduction_684 happy_x_1
-	 =  case happyOut264 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut264 happy_x_1 of { happy_var_1 ->
 	happyIn261
 		 (happy_var_1
 	)}
 
 happyReduce_685 = happySpecReduce_1  247# happyReduction_685
 happyReduction_685 happy_x_1
-	 =  case happyOut263 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut263 happy_x_1 of { happy_var_1 ->
 	happyIn261
 		 (happy_var_1
 	)}
 
 happyReduce_686 = happySpecReduce_1  248# happyReduction_686
 happyReduction_686 happy_x_1
-	 =  case happyOut265 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut265 happy_x_1 of { happy_var_1 ->
 	happyIn262
 		 (happy_var_1
 	)}
 
 happyReduce_687 = happySpecReduce_1  248# happyReduction_687
 happyReduction_687 happy_x_1
-	 =  case happyOut263 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut263 happy_x_1 of { happy_var_1 ->
 	happyIn262
 		 (happy_var_1
 	)}
 
 happyReduce_688 = happySpecReduce_1  249# happyReduction_688
 happyReduction_688 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn263
 		 (sL1 happy_var_1 $ mkQual varName (getQVARSYM happy_var_1)
 	)}
 
 happyReduce_689 = happySpecReduce_1  250# happyReduction_689
 happyReduction_689 happy_x_1
-	 =  case happyOut265 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut265 happy_x_1 of { happy_var_1 ->
 	happyIn264
 		 (happy_var_1
 	)}
 
 happyReduce_690 = happySpecReduce_1  250# happyReduction_690
 happyReduction_690 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn264
 		 (sL1 happy_var_1 $ mkUnqual varName (fsLit "-")
 	)}
 
 happyReduce_691 = happySpecReduce_1  251# happyReduction_691
 happyReduction_691 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn265
 		 (sL1 happy_var_1 $ mkUnqual varName (getVARSYM happy_var_1)
 	)}
 
 happyReduce_692 = happySpecReduce_1  251# happyReduction_692
 happyReduction_692 happy_x_1
-	 =  case happyOut267 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut267 happy_x_1 of { happy_var_1 ->
 	happyIn265
 		 (sL1 happy_var_1 $ mkUnqual varName (unLoc happy_var_1)
 	)}
 
 happyReduce_693 = happySpecReduce_1  252# happyReduction_693
 happyReduction_693 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "as")
 	)}
 
 happyReduce_694 = happySpecReduce_1  252# happyReduction_694
 happyReduction_694 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "qualified")
 	)}
 
 happyReduce_695 = happySpecReduce_1  252# happyReduction_695
 happyReduction_695 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "hiding")
 	)}
 
 happyReduce_696 = happySpecReduce_1  252# happyReduction_696
 happyReduction_696 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "export")
 	)}
 
 happyReduce_697 = happySpecReduce_1  252# happyReduction_697
 happyReduction_697 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "label")
 	)}
 
 happyReduce_698 = happySpecReduce_1  252# happyReduction_698
 happyReduction_698 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "dynamic")
 	)}
 
 happyReduce_699 = happySpecReduce_1  252# happyReduction_699
 happyReduction_699 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "stdcall")
 	)}
 
 happyReduce_700 = happySpecReduce_1  252# happyReduction_700
 happyReduction_700 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "ccall")
 	)}
 
 happyReduce_701 = happySpecReduce_1  252# happyReduction_701
 happyReduction_701 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "capi")
 	)}
 
 happyReduce_702 = happySpecReduce_1  252# happyReduction_702
 happyReduction_702 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "prim")
 	)}
 
 happyReduce_703 = happySpecReduce_1  252# happyReduction_703
 happyReduction_703 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "javascript")
 	)}
 
 happyReduce_704 = happySpecReduce_1  252# happyReduction_704
 happyReduction_704 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn266
 		 (sL1 happy_var_1 (fsLit "group")
 	)}
@@ -9393,76 +9393,76 @@ happyReduction_704 happy_x_1
 happyReduce_705 = happyMonadReduce 1# 253# happyReduction_705
 happyReduction_705 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( ams (sL1 happy_var_1 (fsLit "!")) [mj AnnBang happy_var_1])}
 	) (\r -> happyReturn (happyIn267 r))
 
 happyReduce_706 = happySpecReduce_1  253# happyReduction_706
 happyReduction_706 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn267
 		 (sL1 happy_var_1 (fsLit ".")
 	)}
 
 happyReduce_707 = happySpecReduce_1  254# happyReduction_707
 happyReduction_707 happy_x_1
-	 =  case happyOut269 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut269 happy_x_1 of { happy_var_1 ->
 	happyIn268
 		 (happy_var_1
 	)}
 
 happyReduce_708 = happySpecReduce_1  254# happyReduction_708
 happyReduction_708 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn268
 		 (sL1 happy_var_1 $! mkQual dataName (getQCONID happy_var_1)
 	)}
 
 happyReduce_709 = happySpecReduce_1  255# happyReduction_709
 happyReduction_709 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn269
 		 (sL1 happy_var_1 $ mkUnqual dataName (getCONID happy_var_1)
 	)}
 
 happyReduce_710 = happySpecReduce_1  256# happyReduction_710
 happyReduction_710 happy_x_1
-	 =  case happyOut271 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut271 happy_x_1 of { happy_var_1 ->
 	happyIn270
 		 (happy_var_1
 	)}
 
 happyReduce_711 = happySpecReduce_1  256# happyReduction_711
 happyReduction_711 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn270
 		 (sL1 happy_var_1 $ mkQual dataName (getQCONSYM happy_var_1)
 	)}
 
 happyReduce_712 = happySpecReduce_1  257# happyReduction_712
 happyReduction_712 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn271
 		 (sL1 happy_var_1 $ mkUnqual dataName (getCONSYM happy_var_1)
 	)}
 
 happyReduce_713 = happySpecReduce_1  257# happyReduction_713
 happyReduction_713 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn271
 		 (sL1 happy_var_1 $ consDataCon_RDR
 	)}
 
 happyReduce_714 = happySpecReduce_1  258# happyReduction_714
 happyReduction_714 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsChar       (getCHARs happy_var_1) $ getCHAR happy_var_1
 	)}
 
 happyReduce_715 = happySpecReduce_1  258# happyReduction_715
 happyReduction_715 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsString     (getSTRINGs happy_var_1)
                                                    $ getSTRING happy_var_1
@@ -9470,7 +9470,7 @@ happyReduction_715 happy_x_1
 
 happyReduce_716 = happySpecReduce_1  258# happyReduction_716
 happyReduction_716 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsIntPrim    (getPRIMINTEGERs happy_var_1)
                                                    $ getPRIMINTEGER happy_var_1
@@ -9478,7 +9478,7 @@ happyReduction_716 happy_x_1
 
 happyReduce_717 = happySpecReduce_1  258# happyReduction_717
 happyReduction_717 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsWordPrim   (getPRIMWORDs happy_var_1)
                                                    $ getPRIMWORD happy_var_1
@@ -9486,7 +9486,7 @@ happyReduction_717 happy_x_1
 
 happyReduce_718 = happySpecReduce_1  258# happyReduction_718
 happyReduction_718 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsCharPrim   (getPRIMCHARs happy_var_1)
                                                    $ getPRIMCHAR happy_var_1
@@ -9494,7 +9494,7 @@ happyReduction_718 happy_x_1
 
 happyReduce_719 = happySpecReduce_1  258# happyReduction_719
 happyReduction_719 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsStringPrim (getPRIMSTRINGs happy_var_1)
                                                    $ getPRIMSTRING happy_var_1
@@ -9502,14 +9502,14 @@ happyReduction_719 happy_x_1
 
 happyReduce_720 = happySpecReduce_1  258# happyReduction_720
 happyReduction_720 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsFloatPrim  $ getPRIMFLOAT happy_var_1
 	)}
 
 happyReduce_721 = happySpecReduce_1  258# happyReduction_721
 happyReduction_721 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn272
 		 (sL1 happy_var_1 $ HsDoublePrim $ getPRIMDOUBLE happy_var_1
 	)}
@@ -9528,14 +9528,14 @@ happyReduction_723 (happy_x_1 `HappyStk`
 
 happyReduce_724 = happySpecReduce_1  260# happyReduction_724
 happyReduction_724 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn274
 		 (sL1 happy_var_1 $ mkModuleNameFS (getCONID happy_var_1)
 	)}
 
 happyReduce_725 = happySpecReduce_1  260# happyReduction_725
 happyReduction_725 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn274
 		 (sL1 happy_var_1 $ let (mod,c) = getQCONID happy_var_1 in
                                   mkModuleNameFS
@@ -9546,15 +9546,15 @@ happyReduction_725 happy_x_1
 happyReduce_726 = happySpecReduce_2  261# happyReduction_726
 happyReduction_726 happy_x_2
 	happy_x_1
-	 =  case happyOut275 happy_x_1 of { happy_var_1 -> 
-	case happyOutTok happy_x_2 of { happy_var_2 -> 
+	 =  case happyOut275 happy_x_1 of { happy_var_1 ->
+	case happyOutTok happy_x_2 of { happy_var_2 ->
 	happyIn275
 		 (((fst happy_var_1)++[gl happy_var_2],snd happy_var_1 + 1)
 	)}}
 
 happyReduce_727 = happySpecReduce_1  261# happyReduction_727
 happyReduction_727 happy_x_1
-	 =  case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 =  case happyOutTok happy_x_1 of { happy_var_1 ->
 	happyIn275
 		 (([gl happy_var_1],1)
 	)}
@@ -9562,21 +9562,21 @@ happyReduction_727 happy_x_1
 happyReduce_728 = happyMonadReduce 1# 262# happyReduction_728
 happyReduction_728 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( return (sL1 happy_var_1 (HsDocString (mkFastString (getDOCNEXT happy_var_1)))))}
 	) (\r -> happyReturn (happyIn276 r))
 
 happyReduce_729 = happyMonadReduce 1# 263# happyReduction_729
 happyReduction_729 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( return (sL1 happy_var_1 (HsDocString (mkFastString (getDOCPREV happy_var_1)))))}
 	) (\r -> happyReturn (happyIn277 r))
 
 happyReduce_730 = happyMonadReduce 1# 264# happyReduction_730
 happyReduction_730 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	(
       let string = getDOCNAMED happy_var_1
           (name, rest) = break isSpace string
@@ -9586,7 +9586,7 @@ happyReduction_730 (happy_x_1 `HappyStk`
 happyReduce_731 = happyMonadReduce 1# 265# happyReduction_731
 happyReduction_731 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( let (n, doc) = getDOCSECTION happy_var_1 in
         return (sL1 happy_var_1 (n, HsDocString (mkFastString doc))))}
 	) (\r -> happyReturn (happyIn279 r))
@@ -9594,14 +9594,14 @@ happyReduction_731 (happy_x_1 `HappyStk`
 happyReduce_732 = happyMonadReduce 1# 266# happyReduction_732
 happyReduction_732 (happy_x_1 `HappyStk`
 	happyRest) tk
-	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
+	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 ->
 	( let string = getDOCNEXT happy_var_1 in
                      return (Just (sL1 happy_var_1 (HsDocString (mkFastString string)))))}
 	) (\r -> happyReturn (happyIn280 r))
 
 happyReduce_733 = happySpecReduce_1  267# happyReduction_733
 happyReduction_733 happy_x_1
-	 =  case happyOut277 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut277 happy_x_1 of { happy_var_1 ->
 	happyIn281
 		 (Just happy_var_1
 	)}
@@ -9613,7 +9613,7 @@ happyReduction_734  =  happyIn281
 
 happyReduce_735 = happySpecReduce_1  268# happyReduction_735
 happyReduction_735 happy_x_1
-	 =  case happyOut276 happy_x_1 of { happy_var_1 -> 
+	 =  case happyOut276 happy_x_1 of { happy_var_1 ->
 	happyIn282
 		 (Just happy_var_1
 	)}
@@ -9624,7 +9624,7 @@ happyReduction_736  =  happyIn282
 	)
 
 happyNewToken action sts stk
-	= (lexer True)(\tk -> 
+	= (lexer True)(\tk ->
 	let cont i = happyDoAction i tk action sts stk in
 	case tk of {
 	L _ ITeof -> happyDoAction 151# tk action sts stk;
@@ -10359,7 +10359,7 @@ asl (x:_xs) (L ls _) _x = addAnnotation (getLoc x) AnnSemi ls
 
 {-# LINE 11 "<command-line>" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
--- Id: GenericTemplate.hs,v 1.26 2005/01/14 14:47:22 simonmar Exp 
+-- Id: GenericTemplate.hs,v 1.26 2005/01/14 14:47:22 simonmar Exp
 
 {-# LINE 13 "templates/GenericTemplate.hs" #-}
 
@@ -10408,7 +10408,7 @@ happyParse start_state = happyNewToken start_state notHappyAtAll notHappyAtAll
 -- the stack in this case.
 happyAccept 0# tk st sts (_ `HappyStk` ans `HappyStk` _) =
         happyReturn1 ans
-happyAccept j tk st sts (HappyStk ans _) = 
+happyAccept j tk st sts (HappyStk ans _) =
         (happyTcHack j (happyTcHack st)) (happyReturn1 ans)
 
 -----------------------------------------------------------------------------
@@ -10544,7 +10544,7 @@ happyDropStk n (x `HappyStk` xs) = happyDropStk (n Happy_GHC_Exts.-# (1#::Happy_
 -- Moving to a new state after a reduction
 
 
-happyGoto nt j tk st = 
+happyGoto nt j tk st =
    {- nothing -}
    happyDoAction j tk new_state
    where off = indexShortOffAddr happyGotoOffsets st
@@ -10560,7 +10560,7 @@ happyGoto nt j tk st =
 -- parse error if we are in recovery and we fail again
 happyFail 0# tk old_st _ stk@(x `HappyStk` _) =
      let i = (case Happy_GHC_Exts.unsafeCoerce# x of { (Happy_GHC_Exts.I# (i)) -> i }) in
---      trace "failing" $ 
+--      trace "failing" $
         happyError_ i tk
 
 {-  We don't need state discarding for our restricted implementation of
@@ -10568,7 +10568,7 @@ happyFail 0# tk old_st _ stk@(x `HappyStk` _) =
     for now --SDM
 
 -- discard a state
-happyFail  0# tk old_st (HappyCons ((action)) (sts)) 
+happyFail  0# tk old_st (HappyCons ((action)) (sts))
                                                 (saved_tok `HappyStk` _ `HappyStk` stk) =
 --      trace ("discarding state, depth " ++ show (length stk))  $
         happyDoAction 0# tk action sts ((saved_tok`HappyStk`stk))
@@ -10595,7 +10595,7 @@ happyTcHack x y = y
 
 
 -----------------------------------------------------------------------------
--- Seq-ing.  If the --strict flag is given, then Happy emits 
+-- Seq-ing.  If the --strict flag is given, then Happy emits
 --      happySeq = happyDoSeq
 -- otherwise it emits
 --      happySeq = happyDontSeq

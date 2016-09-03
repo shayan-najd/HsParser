@@ -112,7 +112,7 @@ module TyCon(
 #include "HsVersions.h"
 
 import {-# SOURCE #-} TyCoRep ( Kind, Type, PredType, TyBinder, pprType, mkForAllTys )
-import {-# SOURCE #-} TysWiredIn  ( runtimeRepTyCon, constraintKind
+import {-# SOURCE #-} TysWiredIn2  ( runtimeRepTyCon, constraintKind
                                   , vecCountTyCon, vecElemTyCon, liftedTypeKind )
 import {-# SOURCE #-} DataCon ( DataCon, dataConExTyVars, dataConFieldLabels )
 

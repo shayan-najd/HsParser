@@ -208,7 +208,7 @@ import NameEnv
 import Class
 import TyCon
 import TysPrim
-import {-# SOURCE #-} TysWiredIn ( listTyCon, typeNatKind
+import {-# SOURCE #-} TysWiredIn2 ( listTyCon, typeNatKind
                                  , typeSymbolKind, liftedTypeKind )
 import PrelNames
 import CoAxiom

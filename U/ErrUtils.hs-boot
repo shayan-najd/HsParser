@@ -1,4 +1,4 @@
-module ErrUtils where
+module U.ErrUtils where
 
 import U.Outputable (SDoc)
 import SrcLoc (SrcSpan)

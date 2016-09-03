@@ -8,7 +8,7 @@
 
 -- | This module is about types that can be defined in Haskell, but which
 --   must be wired into the compiler nonetheless.  C.f module TysPrim
-module TysWiredIn (
+module TysWiredIn2 (
         -- * All wired in things
         wiredInTyCons, isBuiltInOcc_maybe,
 

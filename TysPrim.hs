@@ -75,7 +75,7 @@ module TysPrim(
 
 #include "HsVersions.h"
 
-import {-# SOURCE #-} TysWiredIn
+import {-# SOURCE #-} TysWiredIn2
   ( runtimeRepTy, liftedTypeKind
   , vecRepDataConTyCon, ptrRepUnliftedDataConTyCon
   , voidRepDataConTy, intRepDataConTy

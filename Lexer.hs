@@ -68,7 +68,7 @@ import U.UniqFM
 import U.Util             ( readRational )
 
 -- compiler/main
-import ErrUtils
+import U.ErrUtils
 import DynFlags
 
 -- compiler/basicTypes

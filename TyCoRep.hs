@@ -135,7 +135,7 @@ import {-# SOURCE #-} Type( isPredTy, isCoercionTy, mkAppTy
 
 import {-# SOURCE #-} Coercion
 import {-# SOURCE #-} ConLike ( ConLike(..), conLikeName )
-import {-# SOURCE #-} TysWiredIn ( ptrRepLiftedTy )
+import {-# SOURCE #-} TysWiredIn2 ( ptrRepLiftedTy )
 
 -- friends:
 import Var

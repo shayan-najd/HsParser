@@ -1,4 +1,4 @@
-module TysWiredIn where
+module TysWiredIn2 where
 
 import {-# SOURCE #-} TyCon      ( TyCon )
 import {-# SOURCE #-} TyCoRep    (Type, Kind)

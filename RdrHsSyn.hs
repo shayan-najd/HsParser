@@ -74,7 +74,7 @@ import U.BasicTypes
 import Lexer
 import Lexeme           ( isLexCon )
 import Type             ( TyThing(..) )
-import TysWiredIn       ( cTupleTyConName, tupleTyCon, tupleDataCon,
+import TysWiredIn2      ( cTupleTyConName, tupleTyCon, tupleDataCon,
                           nilDataConName, nilDataConKey,
                           listTyConName, listTyConKey,
                           starKindTyConName, unicodeStarKindTyConName )

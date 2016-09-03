@@ -208,7 +208,7 @@ import Name -- hiding (varName)
 import NameSet
 import VarEnv
 import PrelNames
-import TysWiredIn( coercibleClass, unitTyCon, unitTyConKey
+import TysWiredIn2( coercibleClass, unitTyCon, unitTyConKey
                  , listTyCon, constraintKind )
 import U.BasicTypes
 import U.Util
@@ -217,7 +217,7 @@ import U.Maybes
 import Pair( pFst )
 import U.Outputable
 import U.FastString
-import ErrUtils( Validity(..), MsgDoc, isValid )
+import U.ErrUtils( Validity(..), MsgDoc, isValid )
 import FV
 import qualified GHC.LanguageExtensions as LangExt
 

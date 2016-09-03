@@ -37,9 +37,8 @@ module MkId (DataConBoxer,mkDataConWorkId,mkDictSelId,magicDictId) where {-
 
 #include "HsVersions.h"
 
-import Rules
 import TysPrim
-import TysWiredIn
+import TysWiredIn2
 -- import PrelRules
 import Type
 import Coercion
@@ -62,7 +61,6 @@ import ListSetOps
 
 mkCompulsoryUnfolding = error "TODO: SHAYAN!"
 mkInlineUnfolding = error "TODO: SHAYAN!"
-exprIsConApp_maybe = error "TODO: SHAYAN!"
 
 mkDictSelId :: Name          -- Name of one of the *value* selectors
                              -- (dictionary superclass or method)
@@ -93,21 +91,9 @@ mkDictSelId name clas
                    -- See Note [Single-method classes] in TcInstDcls
                    -- for why alwaysInlinePragma
 
-         | otherwise
-         = base_info `setRuleInfo` mkRuleInfo [rule]
-                   -- Add a magic BuiltinRule, but no unfolding
-                   -- so that the rule is always available to fire.
-                   -- See Note [ClassOp/DFun selection] in TcInstDcls
-
-    n_ty_args = length tyvars
 
     -- This is the built-in rule that goes
     --      op (dfT d1 d2) --->  opT d1 d2
-    rule = BuiltinRule { ru_name = fsLit "Class op " `appendFS`
-                                     occNameFS (getOccName name)
-                       , ru_fn    = name
-                       , ru_nargs = n_ty_args + 1
-                       , ru_try   = dictSelRule val_index n_ty_args }
 
         -- The strictness signature is of the form U(AAAVAAAA) -> T
         -- where the V depends on which item we are selecting
@@ -142,19 +128,6 @@ mkDictSelRhs clas val_index
                                 [(DataAlt data_con, arg_ids, varToCoreExpr the_arg_id)]
                                 -- varToCoreExpr needed for equality superclass selectors
                                 --   sel a b d = case x of { MkC _ (g:a~b) _ -> CO g }
-
-dictSelRule :: Int -> Arity -> RuleFun
--- Tries to persuade the argument to look like a constructor
--- application, using exprIsConApp_maybe, and then selects
--- from it
---       sel_i t1..tk (D t1..tk op1 ... opm) = opi
---
-dictSelRule val_index n_ty_args _ id_unf _ args
-  | (dict_arg : _) <- drop n_ty_args args
-  , Just (_, _, con_args) <- exprIsConApp_maybe id_unf dict_arg
-  = Just (getNth con_args val_index)
-  | otherwise
-  = Nothing
 
 
 mkDataConWorkId :: Name -> DataCon -> Id
