@@ -13,11 +13,11 @@ module HsImpExp where
 import Module           ( ModuleName )
 import HsDoc            ( HsDocString )
 import OccName          ( HasOccName(..), isTcOcc, isSymOcc )
-import BasicTypes       ( SourceText, StringLiteral(..) )
+import U.BasicTypes       ( SourceText, StringLiteral(..) )
 import FieldLabel       ( FieldLbl(..) )
 
-import Outputable
-import FastString
+import U.Outputable
+import U.FastString
 import SrcLoc
 
 import Data.Data

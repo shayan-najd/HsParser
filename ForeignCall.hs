@@ -18,11 +18,11 @@ module ForeignCall (
         Header(..), CType(..),
     ) where
 
-import FastString
+import U.FastString
 import Binary
-import Outputable
+import U.Outputable
 import Module
-import BasicTypes ( SourceText )
+import U.BasicTypes ( SourceText )
 
 import Data.Char
 import Data.Data

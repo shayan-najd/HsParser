@@ -5,7 +5,7 @@ import {-# SOURCE #-} TyCon
 
 import CoAxiom
 import Var
-import Outputable
+import U.Outputable
 import Pair
 
 mkReflCo :: Role -> Type -> Coercion

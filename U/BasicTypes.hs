@@ -16,7 +16,7 @@ types that
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module BasicTypes(
+module U.BasicTypes(
         Version, bumpVersion, initialVersion,
 
         ConTag, fIRST_TAG,
@@ -91,10 +91,9 @@ module BasicTypes(
         IntWithInf, infinity, treatZeroAsInf, mkIntWithInf, intGtLimit
    ) where
 
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 import SrcLoc ( Located,unLoc )
-import StaticFlags( opt_PprStyle_Debug )
 import Data.Data hiding (Fixity)
 import Data.Function (on)
 
@@ -612,9 +611,7 @@ boxityTupleSort Unboxed = UnboxedTuple
 tupleParens :: TupleSort -> SDoc -> SDoc
 tupleParens BoxedTuple      p = parens p
 tupleParens UnboxedTuple    p = text "(#" <+> p <+> ptext (sLit "#)")
-tupleParens ConstraintTuple p   -- In debug-style write (% Eq a, Ord b %)
-  | opt_PprStyle_Debug        = text "(%" <+> p <+> ptext (sLit "%)")
-  | otherwise                 = parens p
+tupleParens ConstraintTuple p = parens p
 
 {-
 ************************************************************************

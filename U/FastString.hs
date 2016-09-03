@@ -24,7 +24,7 @@
 --   * Turn into 'Outputable.SDoc' with 'Outputable.ptext'
 --
 -- Use 'LitString' unless you want the facilities of 'FastString'.
-module FastString
+module U.FastString
        (
         -- * ByteString
         fastStringToByteString,
@@ -93,9 +93,9 @@ module FastString
 #include "HsVersions.h"
 
 import Encoding
-import FastFunctions
+import U.FastFunctions
 import Panic
-import Util
+import U.Util
 
 import Control.Monad
 import Data.ByteString (ByteString)

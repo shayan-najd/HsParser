@@ -100,11 +100,11 @@ import qualified Data.Map as Map
 
 -- compiler/utils
 import Bag
-import Outputable
+import U.Outputable
 import StringBuffer
-import FastString
-import UniqFM
-import Util             ( readRational )
+import U.FastString
+import U.UniqFM
+import U.Util             ( readRational )
 
 -- compiler/main
 import ErrUtils
@@ -113,7 +113,7 @@ import DynFlags
 -- compiler/basicTypes
 import SrcLoc
 import Module
-import BasicTypes     ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
+import U.BasicTypes     ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
                         SourceText )
 
 -- compiler/parser

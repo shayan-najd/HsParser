@@ -31,15 +31,15 @@ module CoAxiom (
 
 import {-# SOURCE #-} TyCoRep ( Type, pprType )
 import {-# SOURCE #-} TyCon ( TyCon )
-import Outputable
-import FastString
+import U.Outputable
+import U.FastString
 import Name
-import Unique
+import U.Unique
 import Var
-import Util
+import U.Util
 import Binary
 import Pair
-import BasicTypes
+import U.BasicTypes
 import Data.Typeable ( Typeable )
 import SrcLoc
 import qualified Data.Data as Data

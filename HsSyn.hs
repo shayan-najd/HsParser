@@ -39,13 +39,13 @@ import HsImpExp
 import HsLit
 import HsPat
 import HsTypes
-import BasicTypes       ( Fixity, WarningTxt )
+import U.BasicTypes       ( Fixity, WarningTxt )
 import HsUtils
 import HsDoc
 
 -- others:
 import OccName          ( HasOccName )
-import Outputable
+import U.Outputable
 import SrcLoc
 import Module           ( ModuleName )
 

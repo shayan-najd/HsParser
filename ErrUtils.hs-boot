@@ -1,6 +1,6 @@
 module ErrUtils where
 
-import Outputable (SDoc)
+import U.Outputable (SDoc)
 import SrcLoc (SrcSpan)
 
 data Severity

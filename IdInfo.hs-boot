@@ -1,5 +1,5 @@
 module IdInfo where
-import Outputable
+import U.Outputable
 data IdInfo
 data IdDetails
 

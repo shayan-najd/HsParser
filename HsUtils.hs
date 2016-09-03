@@ -108,10 +108,10 @@ import HsLit
 
 import RdrName
 import Name
-import BasicTypes
+import U.BasicTypes
 import SrcLoc
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 
 mAX_TUPLE_SIZE = 62
 

@@ -33,10 +33,10 @@ import Type hiding ( getTvSubstEnv )
 import Coercion hiding ( getCvSubstEnv )
 import TyCon
 import TyCoRep hiding ( getTvSubstEnv, getCvSubstEnv )
-import Util
+import U.Util
 import Pair
-import Outputable
-import UniqFM
+import U.Outputable
+import U.UniqFM
 
 import Control.Monad
 #if __GLASGOW_HASKELL__ > 710

@@ -45,13 +45,13 @@ module VarSet (
 #include "HsVersions.h"
 
 import Var      ( Var, TyVar, CoVar, TyCoVar, Id )
-import Unique
+import U.Unique
 import Name     ( Name )
-import UniqSet
-import UniqDSet
-import UniqFM( disjointUFM, pluralUFM, pprUFM )
-import UniqDFM( disjointUDFM, udfmToUfm )
-import Outputable (SDoc)
+import U.UniqSet
+import U.UniqDSet
+import U.UniqFM( disjointUFM, pluralUFM, pprUFM )
+import U.UniqDFM( disjointUDFM, udfmToUfm )
+import U.Outputable (SDoc)
 
 -- | A non-deterministic set of variables.
 -- See Note [Deterministic UniqFM] in UniqDFM for explanation why it's not

@@ -53,13 +53,13 @@ import DataCon
 import Literal
 import PrimOp
 import IdInfo
-import BasicTypes       ( Arity )
+import U.BasicTypes       ( Arity )
 import Type
 import PrelNames
 import TysPrim          ( realWorldStatePrimTy )
 import Bag
-import Util
-import Outputable
+import U.Util
+import U.Outputable
 import ForeignCall
 
 import qualified Data.ByteString as BS

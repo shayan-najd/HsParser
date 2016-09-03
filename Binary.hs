@@ -59,12 +59,12 @@ module Binary
 #include "MachDeps.h"
 
 import {-# SOURCE #-} Name (Name)
-import FastString
+import U.FastString
 import Panic
-import UniqFM
-import FastMutInt
+import U.UniqFM
+import U.FastMutInt
 import Fingerprint
-import BasicTypes
+import U.BasicTypes
 import SrcLoc
 
 import Foreign

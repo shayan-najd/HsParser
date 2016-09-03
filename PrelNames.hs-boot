@@ -1,7 +1,7 @@
 module PrelNames where
 
 import Module
-import Unique
+import U.Unique
 
 mAIN :: Module
 starKindTyConKey :: Unique

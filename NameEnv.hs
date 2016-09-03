@@ -35,9 +35,9 @@ module NameEnv (
 
 import Digraph
 import Name
-import UniqFM
-import UniqDFM
-import Maybes
+import U.UniqFM
+import U.UniqDFM
+import U.Maybes
 
 {-
 ************************************************************************

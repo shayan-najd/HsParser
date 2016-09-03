@@ -25,7 +25,7 @@ of arguments of combining function.
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# OPTIONS_GHC -Wall #-}
 
-module UniqFM (
+module U.UniqFM (
         -- * Unique-keyed mappings
         UniqFM,       -- abstract type
 
@@ -68,8 +68,8 @@ module UniqFM (
         pprUniqFM, pprUFM, pluralUFM
     ) where
 
-import Unique           ( Uniquable(..), Unique, getKey )
-import Outputable
+import U.Unique           ( Uniquable(..), Unique, getKey )
+import U.Outputable
 
 import qualified Data.IntMap as M
 import qualified Data.IntSet as S

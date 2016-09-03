@@ -9,7 +9,7 @@ module Pair ( Pair(..), unPair, toPair, swap, pLiftFst, pLiftSnd ) where
 
 #include "HsVersions.h"
 
-import Outputable
+import U.Outputable
 
 data Pair a = Pair { pFst :: a, pSnd :: a }
 -- Note that Pair is a *unary* type constructor

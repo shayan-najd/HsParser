@@ -23,8 +23,8 @@ module BufWrite (
         bFlush,
   ) where
 
-import FastString
-import FastMutInt
+import U.FastString
+import U.FastMutInt
 
 import Control.Monad    ( when )
 import Data.ByteString (ByteString)

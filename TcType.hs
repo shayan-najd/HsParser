@@ -210,13 +210,13 @@ import VarEnv
 import PrelNames
 import TysWiredIn( coercibleClass, unitTyCon, unitTyConKey
                  , listTyCon, constraintKind )
-import BasicTypes
-import Util
+import U.BasicTypes
+import U.Util
 import Bag
-import Maybes
+import U.Maybes
 import Pair( pFst )
-import Outputable
-import FastString
+import U.Outputable
+import U.FastString
 import ErrUtils( Validity(..), MsgDoc, isValid )
 import FV
 import qualified GHC.LanguageExtensions as LangExt

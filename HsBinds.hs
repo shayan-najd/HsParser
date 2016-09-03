@@ -24,11 +24,11 @@ import {-# SOURCE #-} HsExpr ( pprExpr, LHsExpr,
 import {-# SOURCE #-} HsPat  ( LPat )
 
 import HsTypes
-import BasicTypes
-import Outputable
+import U.BasicTypes
+import U.Outputable
 import SrcLoc
 import Bag
-import FastString
+import U.FastString
 import BooleanFormula (LBooleanFormula)
 
 import Data.Data hiding ( Fixity )

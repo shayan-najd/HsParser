@@ -61,14 +61,14 @@ module Demand (
 #include "HsVersions.h"
 
 import DynFlags
-import Outputable
+import U.Outputable
 import Var ( Var )
 import VarEnv
-import UniqFM
-import Util
-import BasicTypes
+import U.UniqFM
+import U.Util
+import U.BasicTypes
 import Binary
-import Maybes           ( orElse )
+import U.Maybes           ( orElse )
 
 import Type            ( Type, isUnliftedType )
 import TyCon           ( isNewTyCon, isClassTyCon )

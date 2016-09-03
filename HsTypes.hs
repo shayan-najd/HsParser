@@ -73,11 +73,11 @@ import {-# SOURCE #-} HsExpr ( HsSplice, pprSplice )
 import DataCon( HsSrcBang(..), HsImplBang(..),
                 SrcStrictness(..), SrcUnpackedness(..) )
 import HsDoc
-import BasicTypes
+import U.BasicTypes
 import SrcLoc
-import Outputable
-import FastString
-import Maybes( isJust )
+import U.Outputable
+import U.FastString
+import U.Maybes( isJust )
 
 import Data.Data hiding ( Fixity )
 import Data.Maybe ( fromMaybe )

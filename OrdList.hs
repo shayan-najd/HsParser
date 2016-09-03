@@ -16,7 +16,7 @@ module OrdList (
         mapOL, fromOL, toOL, foldrOL, foldlOL
 ) where
 
-import Outputable
+import U.Outputable
 
 #if __GLASGOW_HASKELL__ > 710
 import Data.Semigroup   ( Semigroup )

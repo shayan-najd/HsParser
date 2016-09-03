@@ -102,14 +102,14 @@ module OccName (
         FastStringEnv, emptyFsEnv, lookupFsEnv, extendFsEnv, mkFsEnv
     ) where
 
-import Util
-import Unique
+import U.Util
+import U.Unique
 import DynFlags
-import UniqFM
-import UniqSet
-import FastString
-import FastStringEnv
-import Outputable
+import U.UniqFM
+import U.UniqSet
+import U.FastString
+import U.FastStringEnv
+import U.Outputable
 import Lexeme
 import Binary
 import Data.Char

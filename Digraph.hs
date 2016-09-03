@@ -37,9 +37,9 @@ module Digraph(
 ------------------------------------------------------------------------------
 
 
-import Util        ( minWith, count )
-import Outputable
-import Maybes      ( expectJust )
+import U.Util        ( minWith, count )
+import U.Outputable
+import U.Maybes      ( expectJust )
 import MonadUtils  ( allM )
 
 -- Extensions

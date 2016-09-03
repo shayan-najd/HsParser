@@ -25,7 +25,7 @@ import CoreUtils        ( exprIsTrivial, isDefaultAlt, isExpandableApp,
                           stripTicksTopE, mkTicks )
 import Id
 import Name( localiseName )
-import BasicTypes
+import U.BasicTypes
 import Module( Module )
 import Coercion
 
@@ -33,12 +33,12 @@ import VarSet
 import VarEnv
 import Var
 import Demand           ( argOneShots, argsOneShots )
-import Maybes           ( orElse )
+import U.Maybes           ( orElse )
 import Digraph          ( SCC(..), stronglyConnCompFromEdgedVerticesR )
-import Unique
-import UniqFM
-import Util
-import Outputable
+import U.Unique
+import U.UniqFM
+import U.Util
+import U.Outputable
 import Data.List
 import Control.Arrow    ( second )
 
@@ -61,9 +61,7 @@ occurAnalysePgm this_mod active_rule imp_rules vects vectVars binds
   = occ_anald_binds
 
   | otherwise   -- See Note [Glomming]
-  = WARN( True, hang (text "Glomming in" <+> ppr this_mod <> colon)
-                   2 (ppr final_usage ) )
-    occ_anald_glommed_binds
+  = occ_anald_glommed_binds
   where
     init_env = initOccEnv active_rule
     (final_usage, occ_anald_binds) = go init_env binds

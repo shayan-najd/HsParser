@@ -66,16 +66,16 @@ import Id
 import Name     ( Name )
 import Var
 import IdInfo
-import UniqSupply
-import Maybes
+import U.UniqSupply
+import U.Maybes
 import ErrUtils
 import DynFlags
-import BasicTypes ( isAlwaysActive )
-import Util
+import U.BasicTypes ( isAlwaysActive )
+import U.Util
 import Pair
-import Outputable
+import U.Outputable
 import PprCore          ()              -- Instances
-import FastString
+import U.FastString
 
 import Data.List
 
@@ -273,9 +273,7 @@ lookupIdSubst doc (Subst in_scope ids _ _) v
   | Just e  <- lookupVarEnv ids       v = e
   | Just v' <- lookupInScope in_scope v = Var v'
         -- Vital! See Note [Extending the Subst]
-  | otherwise = WARN( True, text "CoreSubst.lookupIdSubst" <+> doc <+> ppr v
-                            $$ ppr in_scope)
-                Var v
+  | otherwise = Var v
 
 -- | Find the substitution for a 'TyVar' in the 'Subst'
 lookupTCvSubst :: Subst -> TyVar -> Type

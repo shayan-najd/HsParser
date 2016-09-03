@@ -29,7 +29,7 @@ module MonadUtils
 -- Imports
 -------------------------------------------------------------------------------
 
-import Maybes
+import U.Maybes
 
 import Control.Monad
 import Control.Monad.Fix

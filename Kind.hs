@@ -25,7 +25,7 @@ import TyCoRep
 import TyCon
 import VarSet ( isEmptyVarSet )
 import PrelNames
-import Util  ( (<&&>) )
+import U.Util  ( (<&&>) )
 
 {-
 ************************************************************************

@@ -27,13 +27,13 @@ import Id
 import Type
 import TyCon    ( initRecTc, checkRecTc )
 import Coercion
-import BasicTypes
-import Unique
+import U.BasicTypes
+import U.Unique
 import DynFlags ( DynFlags, GeneralFlag(..), gopt )
-import Outputable
-import FastString
+import U.Outputable
+import U.FastString
 import Pair
-import Util     ( debugIsOn )
+import U.Util     ( debugIsOn )
 
 {-
 ************************************************************************
@@ -989,8 +989,7 @@ mkEtaWW orig_n orig_expr in_scope orig_ty
 
        | otherwise       -- We have an expression of arity > 0,
                          -- but its type isn't a function.
-       = WARN( True, (ppr orig_n <+> ppr orig_ty) $$ ppr orig_expr )
-         (getTCvInScope subst, reverse eis)
+       = (getTCvInScope subst, reverse eis)
         -- This *can* legitmately happen:
         -- e.g.  coerce Int (\x. x) Essentially the programmer is
         -- playing fast and loose with types (Happy does this a lot).

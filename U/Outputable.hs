@@ -10,7 +10,7 @@
 -- The interface to this module is very similar to the standard Hughes-PJ pretty printing
 -- module, except that it exports a number of additional functions that are rarely used,
 -- and works over the 'SDoc' type.
-module Outputable (
+module U.Outputable (
         -- * Type classes
         Outputable(..), OutputableBndr(..),
 
@@ -89,9 +89,9 @@ import {-# SOURCE #-}   Module( UnitId, Module, ModuleName, moduleName )
 import {-# SOURCE #-}   OccName( OccName )
 import {-# SOURCE #-}   StaticFlags( opt_PprStyle_Debug, opt_NoDebugOutput )
 
-import FastString
+import U.FastString
 import qualified Pretty
-import Util
+import U.Util
 import Platform
 import Pretty           ( Doc, Mode(..) )
 import Panic

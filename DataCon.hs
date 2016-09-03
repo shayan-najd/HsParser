@@ -72,14 +72,14 @@ import Class
 import Name
 import PrelNames
 import Var
-import Outputable
+import U.Outputable
 import ListSetOps
-import Util
-import BasicTypes
-import FastString
+import U.Util
+import U.BasicTypes
+import U.FastString
 import Module
 import Binary
-import UniqFM
+import U.UniqFM
 
 import qualified Data.Data as Data
 import Data.Char

@@ -142,7 +142,7 @@ import Var
 import VarEnv
 import VarSet
 import Name hiding ( varName )
-import BasicTypes
+import U.BasicTypes
 import TyCon
 import Class
 import CoAxiom
@@ -151,14 +151,14 @@ import FV
 -- others
 import PrelNames
 import Binary
-import Outputable
+import U.Outputable
 import DynFlags
 import StaticFlags ( opt_PprStyle_Debug )
-import FastString
+import U.FastString
 import Pair
-import UniqSupply
-import Util
-import UniqFM
+import U.UniqSupply
+import U.Util
+import U.UniqFM
 
 -- libraries
 import qualified Data.Data as Data hiding ( TyCon )

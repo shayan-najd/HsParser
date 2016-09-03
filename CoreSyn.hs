@@ -101,11 +101,11 @@ import Literal
 import DataCon
 import Module
 import TyCon
-import BasicTypes
+import U.BasicTypes
 import DynFlags
-import Outputable
-import Util
-import UniqFM
+import U.Outputable
+import U.Util
+import U.UniqFM
 import SrcLoc     ( RealSrcSpan, containsSpan )
 import Binary
 
@@ -1348,9 +1348,7 @@ cmpAltCon (DataAlt _)  DEFAULT      = GT
 cmpAltCon (LitAlt  l1) (LitAlt  l2) = l1 `compare` l2
 cmpAltCon (LitAlt _)   DEFAULT      = GT
 
-cmpAltCon con1 con2 = WARN( True, text "Comparing incomparable AltCons" <+>
-                                  ppr con1 <+> ppr con2 )
-                      LT
+cmpAltCon con1 con2 = LT
 
 {-
 ************************************************************************

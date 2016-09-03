@@ -37,11 +37,11 @@ import Demand
 import OccName          ( OccName, pprOccName, mkVarOccFS )
 import TyCon            ( TyCon, isPrimTyCon, PrimRep(..) )
 import Type
-import BasicTypes       ( Arity, Fixity(..), FixityDirection(..), Boxity(..) )
+import U.BasicTypes       ( Arity, Fixity(..), FixityDirection(..), Boxity(..) )
 import ForeignCall      ( CLabelString )
-import Unique           ( Unique, mkPrimOpIdUnique )
-import Outputable
-import FastString
+import U.Unique           ( Unique, mkPrimOpIdUnique )
+import U.Outputable
+import U.FastString
 import Module           ( UnitId )
 
 {-

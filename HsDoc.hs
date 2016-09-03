@@ -8,9 +8,9 @@ module HsDoc (
 
 #include "HsVersions.h"
 
-import Outputable
+import U.Outputable
 import SrcLoc
-import FastString
+import U.FastString
 
 import Data.Data
 

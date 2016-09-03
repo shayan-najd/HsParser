@@ -53,11 +53,11 @@ import HsLit
 import HsTypes
 import HsBinds
 
-import BasicTypes
-import FastString
+import U.BasicTypes
+import U.FastString
 import SrcLoc
-import Util (dropTail)
-import Outputable
+import U.Util (dropTail)
+import U.Outputable
 
 
 -- libraries:

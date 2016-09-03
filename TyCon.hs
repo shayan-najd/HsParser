@@ -119,20 +119,20 @@ import {-# SOURCE #-} DataCon ( DataCon, dataConExTyVars, dataConFieldLabels )
 import Binary
 import Var
 import Class
-import BasicTypes
+import U.BasicTypes
 import ForeignCall
 import Name
 import NameEnv
 import CoAxiom
 import PrelNames
-import Maybes
-import Outputable
-import FastStringEnv
+import U.Maybes
+import U.Outputable
+import U.FastStringEnv
 import FieldLabel
 -- import Constants
-import Util
-import Unique( tyConRepNameUnique, dataConRepNameUnique )
-import UniqSet
+import U.Util
+import U.Unique( tyConRepNameUnique, dataConRepNameUnique )
+import U.UniqSet
 import Module
 
 import qualified Data.Data as Data

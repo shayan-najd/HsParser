@@ -77,12 +77,12 @@ import {-# SOURCE #-}   TcType( TcTyVarDetails, pprTcTyVarDetails, vanillaSkolem
 import {-# SOURCE #-}   IdInfo( IdDetails, IdInfo, coVarDetails, isCoVarDetails, vanillaIdInfo, pprIdDetails )
 
 import Name hiding (varName)
-import Unique
-import Util
+import U.Unique
+import U.Util
 import DynFlags
-import Outputable
+import U.Outputable
 
-import Unique (nonDetCmpUnique)
+import U.Unique (nonDetCmpUnique)
 import Data.Data
 
 {-
@@ -427,8 +427,7 @@ setIdExported tv                               = pprPanic "setIdExported" (ppr t
 
 setIdNotExported :: Id -> Id
 -- ^ We can only do this to LocalIds
-setIdNotExported id = ASSERT( isLocalId id )
-                      id { idScope = LocalId NotExported }
+setIdNotExported id = id { idScope = LocalId NotExported }
 
 {-
 ************************************************************************

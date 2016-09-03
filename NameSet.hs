@@ -34,8 +34,8 @@ module NameSet (
 #include "HsVersions.h"
 
 import Name
-import UniqSet
-import UniqFM
+import U.UniqSet
+import U.UniqFM
 import Data.List (sortBy)
 
 {-

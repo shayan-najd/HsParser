@@ -18,7 +18,7 @@ Haskell).
 
 {-# LANGUAGE CPP, BangPatterns, MagicHash #-}
 
-module Unique (
+module U.Unique (
         -- * Main data types
         Unique, Uniquable(..),
 
@@ -64,10 +64,10 @@ module Unique (
 
 #include "HsVersions.h"
 
-import BasicTypes
-import FastString
-import Outputable
-import Util
+import U.BasicTypes
+import U.FastString
+import U.Outputable
+import U.Util
 
 -- just for implementing a fast [0,61) -> Char function
 import GHC.Exts (indexCharOffAddr#, Char(..), Int(..))
@@ -261,7 +261,7 @@ Code stolen from Lennart.
 
 iToBase62 :: Int -> String
 iToBase62 n_
-  = ASSERT(n_ >= 0) go n_ ""
+  = go n_ ""
   where
     go n cs | n < 62
             = let !c = chooseChar62 n in c : cs

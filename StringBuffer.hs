@@ -44,10 +44,10 @@ module StringBuffer
 #include "HsVersions.h"
 
 import Encoding
-import FastString
-import FastFunctions
-import Outputable
-import Util
+import U.FastString
+import U.FastFunctions
+import U.Outputable
+import U.Util
 
 import Data.Maybe
 import Control.Exception

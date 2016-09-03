@@ -1,6 +1,6 @@
 module PatSyn where
 
-import BasicTypes (Arity)
+import U.BasicTypes (Arity)
 import {-# SOURCE #-} TyCoRep (Type)
 import Var (TyVar)
 import Name (Name)

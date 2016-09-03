@@ -8,7 +8,7 @@
 module HsExpr where
 
 import SrcLoc     ( Located )
-import Outputable ( SDoc, Outputable, OutputableBndr )
+import U.Outputable ( SDoc, Outputable, OutputableBndr )
 import {-# SOURCE #-} HsPat  ( LPat )
 import Data.Data hiding ( Fixity )
 

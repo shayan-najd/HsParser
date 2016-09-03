@@ -73,12 +73,12 @@ module VarEnv (
 import OccName
 import Var
 import VarSet
-import UniqFM
-import UniqDFM
-import Unique
-import Util
-import Maybes
-import Outputable
+import U.UniqFM
+import U.UniqDFM
+import U.Unique
+import U.Util
+import U.Maybes
+import U.Outputable
 import StaticFlags
 
 {-

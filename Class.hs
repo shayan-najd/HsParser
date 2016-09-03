@@ -27,13 +27,13 @@ import {-# SOURCE #-} TyCon     ( TyCon, tyConName, tyConUnique )
 import {-# SOURCE #-} TyCoRep   ( Type, PredType, pprType )
 import Var
 import Name
-import BasicTypes
-import Unique
-import Util
+import U.BasicTypes
+import U.Unique
+import U.Util
 import SrcLoc
 import PrelNames    ( eqTyConKey, coercibleTyConKey, typeableClassKey,
                       heqTyConKey )
-import Outputable
+import U.Outputable
 import BooleanFormula (BooleanFormula)
 
 import qualified Data.Data as Data

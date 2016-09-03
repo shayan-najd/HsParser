@@ -12,7 +12,7 @@ module CoreStats (
     ) where
 
 import CoreSyn
-import Outputable
+import U.Outputable
 import Coercion
 import Var
 import Type (Type, typeSize, seqType)

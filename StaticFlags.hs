@@ -15,7 +15,6 @@
 
 module StaticFlags (
         -- entry point
-        parseStaticFlags,
 
         staticFlags,
         initStaticOpts,
@@ -39,9 +38,9 @@ module StaticFlags (
 #include "HsVersions.h"
 
 import CmdLineParser
-import FastString
+import U.FastString
 import SrcLoc
-import Util
+import U.Util
 import Panic
 
 import Control.Monad
@@ -67,27 +66,6 @@ import System.IO.Unsafe ( unsafePerformIO )
 --
 -- XXX: can we add an auto-generated list of static flags here?
 --
-parseStaticFlags :: [Located String] -> IO ([Located String], [Located String])
-parseStaticFlags = parseStaticFlagsFull flagsStatic
-
--- | Parse GHC's static flags as @parseStaticFlags@ does. However it also
--- takes a list of available static flags, such that certain flags can be
--- enabled or disabled through this argument.
-parseStaticFlagsFull :: [Flag IO] -> [Located String]
-                     -> IO ([Located String], [Located String])
-parseStaticFlagsFull flagsAvailable args = do
-  ready <- readIORef v_opt_C_ready
-  when ready $ throwGhcExceptionIO (ProgramError "Too late for parseStaticFlags: call it before runGhc or runGhcT")
-
-  (leftover, errs, warns) <- processArgs flagsAvailable args
-
-  -- See Note [Handling errors when parsing commandline flags]
-  unless (null errs) $ throwGhcExceptionIO $
-      errorsToGhcException . map (("on the commandline", ) . unLoc) $ errs
-
-    -- see sanity code in staticOpts
-  writeIORef v_opt_C_ready True
-  return (leftover, warns)
 
 -- holds the static opts while they're being collected, before
 -- being unsafely read by unpacked_static_opts below.
@@ -232,4 +210,3 @@ try_read sw str
                         -- ToDo: hack alert. We should really parse the arguments
                         --       and announce errors in a more civilised way.
 -}
-

@@ -23,8 +23,8 @@ import NameSet
 
 import FieldLabel
 import Binary
-import Outputable
-import Util
+import U.Outputable
+import U.Util
 
 import Data.Function
 

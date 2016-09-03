@@ -82,13 +82,13 @@ import {-# SOURCE #-} PrelNames( starKindTyConKey, unicodeStarKindTyConKey )
 import OccName
 import Module
 import SrcLoc
-import Unique
-import Util
-import Maybes
+import U.Unique
+import U.Util
+import U.Maybes
 import Binary
 import DynFlags
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 
 import Data.Data
 

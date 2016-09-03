@@ -13,7 +13,7 @@ module CoreSeq (
 import CoreSyn
 import IdInfo
 import Demand( seqDemand, seqStrictSig )
-import BasicTypes( seqOccInfo )
+import U.BasicTypes( seqOccInfo )
 import VarSet( seqDVarSet )
 import Var( varType, tyVarKind )
 import Type( seqType, isTyVar )

@@ -135,15 +135,15 @@ import Class            ( Class, mkClass )
 import RdrName
 import Name
 import NameSet          ( NameSet, mkNameSet, elemNameSet )
-import BasicTypes       ( Arity, RecFlag(..), Boxity(..),
+import U.BasicTypes       ( Arity, RecFlag(..), Boxity(..),
                           TupleSort(..) )
 import ForeignCall
 import SrcLoc           ( noSrcSpan )
-import Unique
+import U.Unique
 import Data.Array
-import FastString
-import Outputable
-import Util
+import U.FastString
+import U.Outputable
+import U.Util
 import BooleanFormula   ( mkAnd )
 
 mAX_TUPLE_SIZE :: Int

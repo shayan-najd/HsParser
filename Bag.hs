@@ -24,8 +24,8 @@ module Bag (
         anyBagM, filterBagM
     ) where
 
-import Outputable
-import Util
+import U.Outputable
+import U.Util
 
 import MonadUtils
 import Control.Monad

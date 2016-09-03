@@ -1,6 +1,6 @@
 module TyCoRep where
 
-import Outputable ( SDoc )
+import U.Outputable ( SDoc )
 import Data.Data  ( Data )
 
 data Type

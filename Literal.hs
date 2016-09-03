@@ -46,14 +46,14 @@ import TysPrim
 import PrelNames
 import Type
 import TyCon
-import Outputable
-import FastString
-import BasicTypes
+import U.Outputable
+import U.FastString
+import U.BasicTypes
 import Binary
 -- import Constants
 import DynFlags
-import UniqFM
-import Util
+import U.UniqFM
+import U.Util
 
 import Data.ByteString (ByteString)
 import Data.Int

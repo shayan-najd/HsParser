@@ -80,9 +80,9 @@ module SrcLoc (
         spans, isSubspanOf, sortLocated
     ) where
 
-import Util
-import Outputable
-import FastString
+import U.Util
+import U.Outputable
+import U.FastString
 
 import Data.Bits
 import Data.Data

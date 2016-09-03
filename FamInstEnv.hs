@@ -48,16 +48,16 @@ import VarSet
 import VarEnv
 import Name
 import PrelNames ( eqPrimTyConKey )
-import UniqFM
-import Outputable
-import Maybes
+import U.UniqFM
+import U.Outputable
+import U.Maybes
 import TrieMap
-import Unique
-import Util
+import U.Unique
+import U.Util
 import Var
 import Pair
 import SrcLoc
-import FastString
+import U.FastString
 import MonadUtils
 import Control.Monad
 import Data.Function ( on )

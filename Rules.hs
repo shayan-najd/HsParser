@@ -48,16 +48,16 @@ import VarSet
 import Name             ( Name, NamedThing(..), nameIsLocalOrFrom )
 import NameSet
 import NameEnv
-import UniqFM
+import U.UniqFM
 import Unify            ( ruleMatchTyX )
-import BasicTypes       ( Activation, CompilerPhase, isActive, pprRuleName )
+import U.BasicTypes       ( Activation, CompilerPhase, isActive, pprRuleName )
 import StaticFlags      ( opt_PprStyle_Debug )
 import DynFlags         ( DynFlags )
-import Outputable
-import FastString
-import Maybes
+import U.Outputable
+import U.FastString
+import U.Maybes
 import Bag
-import Util
+import U.Util
 import Data.List
 import Control.Monad    ( guard )
 

@@ -1,4 +1,4 @@
-module Outputable where
+module U.Outputable where
 
 data SDoc
 

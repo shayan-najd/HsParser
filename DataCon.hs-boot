@@ -3,9 +3,9 @@ import Var( TyVar )
 import Name( Name, NamedThing )
 import {-# SOURCE #-} TyCon( TyCon )
 import FieldLabel ( FieldLabel )
-import Unique ( Uniquable )
-import Outputable ( Outputable, OutputableBndr )
-import BasicTypes (Arity)
+import U.Unique ( Uniquable )
+import U.Outputable ( Outputable, OutputableBndr )
+import U.BasicTypes (Arity)
 import {-# SOURCE #-} TyCoRep (Type, ThetaType, TyBinder)
 
 data DataCon

@@ -9,7 +9,7 @@ Based on @UniqFMs@ (as you would expect).
 Basically, the things need to be in class @Uniquable@.
 -}
 
-module UniqSet (
+module U.UniqSet (
         -- * Unique set type
         UniqSet,    -- type synonym for UniqFM a
 
@@ -33,8 +33,8 @@ module UniqSet (
         partitionUniqSet
     ) where
 
-import UniqFM
-import Unique
+import U.UniqFM
+import U.Unique
 
 {-
 ************************************************************************

@@ -19,9 +19,9 @@ module HsLit where
 #include "HsVersions.h"
 
 import {-# SOURCE #-} HsExpr( HsExpr, pprExpr )
-import BasicTypes ( FractionalLit(..),SourceText )
-import Outputable
-import FastString
+import U.BasicTypes ( FractionalLit(..),SourceText )
+import U.Outputable
+import U.FastString
 
 import Data.ByteString (ByteString)
 import Data.Data hiding ( Fixity )

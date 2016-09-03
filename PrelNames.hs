@@ -120,10 +120,10 @@ module PrelNames (
 import Module
 import OccName
 import RdrName
-import Unique
+import U.Unique
 import Name
 import SrcLoc
-import FastString
+import U.FastString
 import Config ( cIntegerLibraryType, IntegerLibrary(..) )
 import Panic ( panic )
 

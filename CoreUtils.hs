@@ -66,15 +66,15 @@ import IdInfo
 import Type
 import Coercion
 import TyCon
-import Unique
-import Outputable
+import U.Unique
+import U.Outputable
 import TysPrim
 import DynFlags
-import FastString
-import Maybes
+import U.FastString
+import U.Maybes
 import ListSetOps       ( minusList )
 import Platform
-import Util
+import U.Util
 import Pair
 import Data.Function       ( on )
 import Data.List
@@ -216,23 +216,13 @@ mkCast (Coercion e_co) co
   = Coercion (mkCoCast e_co co)
 
 mkCast (Cast expr co2) co
-  = WARN(let { Pair  from_ty  _to_ty  = coercionKind co;
-               Pair _from_ty2  to_ty2 = coercionKind co2} in
-            not (from_ty `eqType` to_ty2),
-             vcat ([ text "expr:" <+> ppr expr
-                   , text "co2:" <+> ppr co2
-                   , text "co:" <+> ppr co ]) )
-    mkCast expr (mkTransCo co2 co)
+  = mkCast expr (mkTransCo co2 co)
 
 mkCast (Tick t expr) co
    = Tick t (mkCast expr co)
 
 mkCast expr co
-  = let Pair from_ty _to_ty = coercionKind co in
-    WARN( not (from_ty `eqType` exprType expr),
-          text "Trying to coerce" <+> text "(" <> ppr expr
-          $$ text "::" <+> ppr (exprType expr) <> text ")"
-          $$ ppr co $$ ppr (coercionType co) )
+  = let Pair _ _to_ty = coercionKind co in
     (Cast expr co)
 
 -- | Wraps the given expression in the source annotation, dropping the

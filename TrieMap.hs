@@ -18,15 +18,15 @@ import Name
 import Type
 import TyCoRep
 import Var
-import UniqDFM
-import Unique( Unique )
-import FastString(FastString)
+import U.UniqDFM
+import U.Unique( Unique )
+import U.FastString(FastString)
 
 import qualified Data.Map    as Map
 import qualified Data.IntMap as IntMap
 import VarEnv
 import NameEnv
-import Outputable
+import U.Outputable
 import Control.Monad( (>=>) )
 
 {-

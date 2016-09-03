@@ -112,7 +112,7 @@ module Id (
 import CoreSyn ( CoreRule, Unfolding( NoUnfolding ) )
 
 import IdInfo
-import BasicTypes
+import U.BasicTypes
 
 -- Imported and re-exported
 import Var( Id, CoVar, DictId,
@@ -129,13 +129,13 @@ import Module
 import Class
 import {-# SOURCE #-} PrimOp (PrimOp)
 import ForeignCall
-import Maybes
+import U.Maybes
 import SrcLoc
-import Outputable
-import Unique
-import UniqSupply
-import FastString
-import Util
+import U.Outputable
+import U.Unique
+import U.UniqSupply
+import U.FastString
+import U.Util
 import StaticFlags
 
 -- infixl so you can say (id `set` a `set` b)

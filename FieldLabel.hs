@@ -72,9 +72,9 @@ module FieldLabel ( FieldLabelString
 import OccName
 import Name
 
-import FastString
-import FastStringEnv
-import Outputable
+import U.FastString
+import U.FastStringEnv
+import U.Outputable
 import Binary
 
 import Data.Data

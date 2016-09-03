@@ -56,19 +56,19 @@ import GHC.PackageDb
 import PackageConfig
 import DynFlags
 import Name             ( Name, nameModule_maybe )
-import UniqFM
-import UniqDFM
+import U.UniqFM
+import U.UniqDFM
 import Module
-import Util
+import U.Util
 import Panic
-import Outputable
-import Maybes
+import U.Outputable
+import U.Maybes
 
 import System.Environment ( getEnv )
-import FastString
+import U.FastString
 import ErrUtils         ( debugTraceMsg, MsgDoc )
 import Exception
-import Unique
+import U.Unique
 
 import System.Directory
 import System.FilePath as FilePath
@@ -646,7 +646,7 @@ packageFlagErr' :: DynFlags
 packageFlagErr' dflags flag_doc reasons
   = throwGhcExceptionIO (CmdLineError (showSDoc dflags $ err))
   where err = text "cannot satisfy " <> flag_doc <>
-                (if null reasons then Outputable.empty else text ": ") $$
+                (if null reasons then U.Outputable.empty else text ": ") $$
               nest 4 (ppr_reasons $$
                       text "(use -v for more information)")
         ppr_reasons = vcat (map ppr_reason reasons)
@@ -1450,7 +1450,7 @@ missingPackageMsg :: Outputable pkgid => pkgid -> SDoc
 missingPackageMsg p = text "unknown package:" <+> ppr p
 
 missingDependencyMsg :: Maybe UnitId -> SDoc
-missingDependencyMsg Nothing = Outputable.empty
+missingDependencyMsg Nothing = U.Outputable.empty
 missingDependencyMsg (Just parent)
   = space <> parens (text "dependency of" <+> ftext (unitIdFS parent))
 

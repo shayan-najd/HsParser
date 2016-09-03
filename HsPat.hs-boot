@@ -9,7 +9,7 @@ module HsPat where
 import SrcLoc( Located )
 
 import Data.Data hiding (Fixity)
-import Outputable
+import U.Outputable
 
 type role Pat nominal
 data Pat (i :: *)

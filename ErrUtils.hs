@@ -52,7 +52,7 @@ module ErrUtils (
 
 import Bag
 import Exception
-import Outputable
+import U.Outputable
 import Panic
 import SrcLoc
 import DynFlags
@@ -253,7 +253,7 @@ formatErrDoc dflags (ErrDoc important context supplementary)
         [msg] -> vcat msg
         _ -> vcat $ map starred msgs
     where
-    msgs = filter (not . null) $ map (filter (not . Outputable.isEmpty dflags))
+    msgs = filter (not . null) $ map (filter (not . U.Outputable.isEmpty dflags))
         [important, context, supplementary]
     starred = (bullet<+>) . vcat
     bullet = text $ if DynFlags.useUnicode dflags then "•" else "*"

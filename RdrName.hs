@@ -68,14 +68,14 @@ import Module
 import Name
 import Avail
 import NameSet
-import Maybes
+import U.Maybes
 import SrcLoc
-import FastString
+import U.FastString
 import FieldLabel
-import Outputable
-import Unique
-import UniqFM
-import Util
+import U.Outputable
+import U.Unique
+import U.UniqFM
+import U.Util
 import StaticFlags( opt_PprStyle_Debug )
 
 import Data.Data
@@ -347,14 +347,12 @@ emptyLocalRdrEnv = LRE { lre_env = emptyOccEnv
 extendLocalRdrEnv :: LocalRdrEnv -> Name -> LocalRdrEnv
 -- The Name should be a non-top-level thing
 extendLocalRdrEnv lre@(LRE { lre_env = env, lre_in_scope = ns }) name
-  = WARN( isExternalName name, ppr name )
-    lre { lre_env      = extendOccEnv env (nameOccName name) name
+  = lre { lre_env      = extendOccEnv env (nameOccName name) name
         , lre_in_scope = extendNameSet ns name }
 
 extendLocalRdrEnvList :: LocalRdrEnv -> [Name] -> LocalRdrEnv
 extendLocalRdrEnvList lre@(LRE { lre_env = env, lre_in_scope = ns }) names
-  = WARN( any isExternalName names, ppr names )
-    lre { lre_env = extendOccEnvList env [(nameOccName n, n) | n <- names]
+  = lre { lre_env = extendOccEnvList env [(nameOccName n, n) | n <- names]
         , lre_in_scope = extendNameSetList ns names }
 
 lookupLocalRdrEnv :: LocalRdrEnv -> RdrName -> Maybe Name

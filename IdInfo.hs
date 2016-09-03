@@ -74,12 +74,12 @@ import Class
 import {-# SOURCE #-} PrimOp (PrimOp)
 import Name
 import VarSet
-import BasicTypes
+import U.BasicTypes
 import DataCon
 import TyCon
 import PatSyn
 import ForeignCall
-import Outputable
+import U.Outputable
 import Module
 import Demand
 

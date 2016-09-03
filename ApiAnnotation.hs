@@ -14,7 +14,7 @@ module ApiAnnotation (
   ) where
 
 import RdrName
-import Outputable
+import U.Outputable
 import SrcLoc
 import qualified Data.Map as Map
 import Data.Data

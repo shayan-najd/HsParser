@@ -215,16 +215,16 @@ import CoAxiom
 import {-# SOURCE #-} Coercion
 
 -- others
-import BasicTypes       ( Arity, RepArity )
-import Util
-import Outputable
-import FastString
+import U.BasicTypes       ( Arity, RepArity )
+import U.Util
+import U.Outputable
+import U.FastString
 import Pair
 import ListSetOps
 import Digraph
-import Unique ( nonDetCmpUnique )
+import U.Unique ( nonDetCmpUnique )
 
-import Maybes           ( orElse )
+import U.Maybes           ( orElse )
 import Data.Maybe       ( isJust, mapMaybe )
 import Control.Monad    ( guard )
 import Control.Arrow    ( first, second )
@@ -1797,9 +1797,7 @@ kindPrimRep (TyConApp typ [runtime_rep])
       | RuntimeRep fun <- tyConRuntimeRepInfo rr_dc
       = fun args
     go rr = pprPanic "kindPrimRep.go" (ppr rr)
-kindPrimRep ki = WARN( True
-                     , text "kindPrimRep defaulting to PtrRep on" <+> ppr ki )
-                 PtrRep  -- this can happen legitimately for, e.g., Any
+kindPrimRep ki = PtrRep  -- this can happen legitimately for, e.g., Any
 
 typeRepArity :: Arity -> Type -> RepArity
 typeRepArity 0 _ = 0

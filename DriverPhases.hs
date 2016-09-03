@@ -40,11 +40,11 @@ module DriverPhases (
 #include "HsVersions.h"
 
 import {-# SOURCE #-} DynFlags
-import Outputable
+import U.Outputable
 import Platform
 import System.FilePath
 import Binary
-import Util
+import U.Util
 
 -----------------------------------------------------------------------------
 -- Phases

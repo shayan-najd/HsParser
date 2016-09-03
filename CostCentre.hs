@@ -24,11 +24,11 @@ import Binary
 import Var
 import Name
 import Module
-import Unique
-import Outputable
+import U.Unique
+import U.Outputable
 import SrcLoc
-import FastString
-import Util
+import U.FastString
+import U.Util
 
 import Data.Data
 

@@ -23,8 +23,8 @@ module CmdLineParser
 
 #include "HsVersions.h"
 
-import Util
-import Outputable
+import U.Util
+import U.Outputable
 import Panic
 import Bag
 import SrcLoc

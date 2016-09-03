@@ -44,8 +44,8 @@ import HsLit
 import HsTypes
 import SrcLoc
 
-import BasicTypes
-import Outputable
+import U.BasicTypes
+import U.Outputable
 
 -- libraries:
 import Data.Data hiding (TyCon,Fixity)

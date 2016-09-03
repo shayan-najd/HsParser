@@ -70,7 +70,7 @@ import ConLike          ( ConLike(..) )
 -- import CoAxiom          ( Role,fsFromRole )
 import RdrName
 import Name
-import BasicTypes
+import U.BasicTypes
 import Lexer
 import Lexeme           ( isLexCon )
 import Type             ( TyThing(..) )
@@ -81,13 +81,13 @@ import TysWiredIn       ( cTupleTyConName, tupleTyCon, tupleDataCon,
 import ForeignCall
 import PrelNames        ( forall_tv_RDR, eqTyCon_RDR, allNameStrings )
 import SrcLoc
-import Unique           ( hasKey )
+import U.Unique           ( hasKey )
 import OrdList          ( OrdList, fromOL )
 import Bag              ( emptyBag, consBag )
-import Outputable
-import FastString
-import Maybes
-import Util
+import U.Outputable
+import U.FastString
+import U.Maybes
+import U.Util
 import ApiAnnotation
 import Data.List
 import qualified GHC.LanguageExtensions as LangExt

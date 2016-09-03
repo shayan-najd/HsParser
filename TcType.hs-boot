@@ -1,5 +1,5 @@
 module TcType where
-import Outputable( SDoc )
+import U.Outputable( SDoc )
 
 data MetaDetails
 

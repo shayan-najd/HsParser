@@ -162,13 +162,13 @@ import Config
 import CmdLineParser
 -- import Constants
 import Panic
-import Util
-import Maybes
+import U.Util
+import U.Maybes
 import MonadUtils
 import qualified Pretty
 import SrcLoc
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 import Foreign.C        ( CInt(..) )
 import System.IO.Unsafe ( unsafeDupablePerformIO )
 import {-# SOURCE #-} ErrUtils ( Severity(..), MsgDoc, mkLocMessageAnn )

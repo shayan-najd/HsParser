@@ -7,7 +7,7 @@
 --
 -- Unboxed mutable Ints
 
-module FastMutInt(
+module U.FastMutInt(
         FastMutInt, newFastMutInt,
         readFastMutInt, writeFastMutInt,
 

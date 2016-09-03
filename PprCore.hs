@@ -27,10 +27,10 @@ import TyCon
 import Type
 import Coercion
 import DynFlags
-import BasicTypes
-import Util
-import Outputable
-import FastString
+import U.BasicTypes
+import U.Util
+import U.Outputable
+import U.FastString
 import SrcLoc      ( pprUserRealSpan )
 
 {-

@@ -38,11 +38,11 @@ import VarSet
 import Name
 import NameSet
 import Unify
-import Outputable
+import U.Outputable
 import ErrUtils
-import BasicTypes
-import UniqFM
-import Util
+import U.BasicTypes
+import U.UniqFM
+import U.Util
 import Id
 import Data.Data        ( Data )
 import Data.Maybe       ( isJust, isNothing )

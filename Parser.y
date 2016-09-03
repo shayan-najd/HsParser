@@ -41,9 +41,9 @@ import HsSyn
 -- compiler/utils
 import OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
-import FastString
-import Maybes           ( orElse )
-import Outputable
+import U.FastString
+import U.Maybes           ( orElse )
+import U.Outputable
 
 -- compiler/basicTypes
 import RdrName
@@ -51,7 +51,7 @@ import OccName          ( varName, dataName, tcClsName, tvName )
 import DataCon          ( DataCon, dataConName )
 import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
-import BasicTypes
+import U.BasicTypes
 
 -- compiler/types
 import Type             ( funTyCon )
@@ -71,7 +71,7 @@ import TysWiredIn       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilD
                           listTyCon_RDR, parrTyCon_RDR, consDataCon_RDR )
 
 -- compiler/utils
-import Util             ( looksLikePackageName )
+import U.Util             ( looksLikePackageName )
 import Prelude
 
 import qualified GHC.LanguageExtensions as LangExt

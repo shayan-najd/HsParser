@@ -32,8 +32,8 @@ where
 #include "HsVersions.h"
 
 import DynFlags
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 
 import Data.Word
 import Data.Int

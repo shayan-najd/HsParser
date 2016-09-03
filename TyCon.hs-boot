@@ -1,7 +1,7 @@
 module TyCon where
 
 import Name (Name)
-import Unique (Unique)
+import U.Unique (Unique)
 
 data TyCon
 

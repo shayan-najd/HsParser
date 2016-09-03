@@ -94,17 +94,17 @@ import {-# SOURCE #-}   HsExpr( LHsExpr, HsExpr, HsSplice, pprExpr, pprSplice )
 import HsBinds
 import HsTypes
 import HsDoc
-import BasicTypes
+import U.BasicTypes
 import ForeignCall
 
 -- others:
 
-import Outputable
+import U.Outputable
 import SrcLoc
 
 import Bag
-import Maybes
-import FastString
+import U.Maybes
+import U.FastString
 import Data.Data        hiding (TyCon,Fixity)
 
 count :: (a -> Bool) -> [a] -> Int

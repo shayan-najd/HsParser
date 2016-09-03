@@ -5,7 +5,7 @@
 
 {-# LANGUAGE UnboxedTuples #-}
 
-module UniqSupply (
+module U.UniqSupply (
         -- * Main data type
         UniqSupply, -- Abstractly
 
@@ -29,7 +29,7 @@ module UniqSupply (
         initUniqSupply
   ) where
 
-import Unique
+import U.Unique
 
 import GHC.IO
 

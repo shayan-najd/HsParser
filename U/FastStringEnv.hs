@@ -6,7 +6,7 @@
 \section[FastStringEnv]{@FastStringEnv@: FastString environments}
 -}
 
-module FastStringEnv (
+module U.FastStringEnv (
         -- * FastString environments (maps)
         FastStringEnv,
 
@@ -27,10 +27,10 @@ module FastStringEnv (
         mkDFsEnv, emptyDFsEnv, dFsEnvElts,
     ) where
 
-import UniqFM
-import UniqDFM
-import Maybes
-import FastString
+import U.UniqFM
+import U.UniqDFM
+import U.Maybes
+import U.FastString
 
 
 -- | A non-deterministic set of FastStrings.

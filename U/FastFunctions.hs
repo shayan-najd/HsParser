@@ -4,7 +4,7 @@
 
 {-# LANGUAGE CPP, MagicHash, UnboxedTuples #-}
 
-module FastFunctions (
+module U.FastFunctions (
     inlinePerformIO,
   ) where
 

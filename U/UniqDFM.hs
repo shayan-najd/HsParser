@@ -19,7 +19,7 @@ is not deterministic.
 {-# LANGUAGE FlexibleContexts #-}
 {-# OPTIONS_GHC -Wall #-}
 
-module UniqDFM (
+module U.UniqDFM (
         -- * Unique-keyed deterministic mappings
         UniqDFM,       -- abstract type
 
@@ -59,14 +59,14 @@ module UniqDFM (
         alwaysUnsafeUfmToUdfm,
     ) where
 
-import Unique           ( Uniquable(..), Unique, getKey )
-import Outputable
+import U.Unique           ( Uniquable(..), Unique, getKey )
+import U.Outputable
 
 import qualified Data.IntMap as M
 import Data.Data
 import Data.List (sortBy)
 import Data.Function (on)
-import UniqFM (UniqFM, listToUFM_Directly, ufmToList, ufmToIntMap)
+import U.UniqFM (UniqFM, listToUFM_Directly, ufmToList, ufmToIntMap)
 
 -- Note [Deterministic UniqFM]
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~

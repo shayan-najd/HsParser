@@ -6,9 +6,9 @@ import Lexer
 import SrcLoc
 import RdrName
 import HsExpr
-import FastString
+import U.FastString
 import StringBuffer
-import Outputable
+import U.Outputable
 import Pretty
 import Platform
 

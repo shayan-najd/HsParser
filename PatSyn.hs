@@ -26,10 +26,10 @@ module PatSyn (
 
 import Type
 import Name
-import Outputable
-import Unique
-import Util
-import BasicTypes
+import U.Outputable
+import U.Unique
+import U.Util
+import U.BasicTypes
 import Var
 import FieldLabel
 

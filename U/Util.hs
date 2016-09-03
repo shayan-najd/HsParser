@@ -4,7 +4,7 @@
 
 -- | Highly random utility functions
 --
-module Util (
+module U.Util (
         -- * Flags dependent on the compiler build
         ghciSupported, debugIsOn, ncgDebugIsOn,
         ghciTablesNextToCode,

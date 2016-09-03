@@ -203,7 +203,7 @@ module Pretty (
   ) where
 
 import BufWrite
-import FastString
+import U.FastString
 import Panic
 import System.IO
 import Prelude hiding (error)
@@ -212,7 +212,7 @@ import Prelude hiding (error)
 import GHC.Base ( unpackCString# )
 import GHC.Ptr  ( Ptr(..) )
 
--- Don't import Util( assertPanic ) because it makes a loop in the module structure
+-- Don't import U.Util( assertPanic ) because it makes a loop in the module structure
 
 
 -- ---------------------------------------------------------------------------

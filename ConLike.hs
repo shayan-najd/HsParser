@@ -27,11 +27,11 @@ module ConLike (
 
 import DataCon
 import PatSyn
-import Outputable
-import Unique
-import Util
+import U.Outputable
+import U.Unique
+import U.Util
 import Name
-import BasicTypes
+import U.BasicTypes
 import TyCoRep (Type, ThetaType)
 import Var
 import Type (mkTyConApp)

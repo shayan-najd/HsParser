@@ -112,17 +112,17 @@ import CoAxiom
 import Var
 import VarEnv
 import Name hiding ( varName )
-import Util
-import BasicTypes
-import Outputable
-import Unique
+import U.Util
+import U.BasicTypes
+import U.Outputable
+import U.Unique
 import Pair
 import SrcLoc
 import PrelNames
 import TysPrim          ( eqPhantPrimTyCon )
 import ListSetOps
-import Maybes
-import UniqFM
+import U.Maybes
+import U.UniqFM
 
 import Control.Monad (foldM)
 import Control.Arrow ( first )

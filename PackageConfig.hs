@@ -30,10 +30,10 @@ module PackageConfig (
 import GHC.PackageDb
 import Data.Version
 
-import FastString
-import Outputable
+import U.FastString
+import U.Outputable
 import Module
-import Unique
+import U.Unique
 
 -- -----------------------------------------------------------------------------
 -- Our PackageConfig type is the InstalledPackageInfo from ghc-boot,

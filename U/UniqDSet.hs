@@ -8,7 +8,7 @@
 --
 -- Basically, the things need to be in class @Uniquable@.
 
-module UniqDSet (
+module U.UniqDSet (
         -- * Unique set type
         UniqDSet,    -- type synonym for UniqFM a
 
@@ -32,9 +32,9 @@ module UniqDSet (
         partitionUniqDSet
     ) where
 
-import UniqDFM
-import UniqSet
-import Unique
+import U.UniqDFM
+import U.UniqSet
+import U.Unique
 
 type UniqDSet a = UniqDFM a
 

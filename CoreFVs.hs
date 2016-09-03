@@ -65,7 +65,7 @@ import CoreSyn
 import Id
 import IdInfo
 import NameSet
-import UniqFM
+import U.UniqFM
 import Literal ( literalType )
 import Name
 import VarSet
@@ -77,10 +77,10 @@ import CoAxiom
 import FamInstEnv
 import TysPrim( funTyConName )
 import Coercion
-import Maybes( orElse )
-import Util
-import BasicTypes( Activation )
-import Outputable
+import U.Maybes( orElse )
+import U.Util
+import U.BasicTypes( Activation )
+import U.Outputable
 import FV
 
 {-

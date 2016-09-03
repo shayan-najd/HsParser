@@ -80,13 +80,13 @@ module Module
     ) where
 
 import Config
-import Outputable
-import Unique
-import UniqFM
-import UniqDFM
-import FastString
+import U.Outputable
+import U.Unique
+import U.UniqFM
+import U.UniqDFM
+import U.FastString
 import Binary
-import Util
+import U.Util
 import {-# SOURCE #-} Packages
 import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
