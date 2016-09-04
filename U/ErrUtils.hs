@@ -46,7 +46,7 @@ module U.ErrUtils (
 #include "HsVersions.h"
 
 import U.Bag
-import Exception
+import U.Exception
 import U.Outputable
 import Panic
 import SrcLoc

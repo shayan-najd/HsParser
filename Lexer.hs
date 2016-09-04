@@ -62,7 +62,7 @@ import qualified Data.Map as Map
 -- compiler/utils
 import U.Bag
 import U.Outputable
-import StringBuffer
+import U.StringBuffer
 import U.FastString
 import U.UniqFM
 import U.Util             ( readRational )

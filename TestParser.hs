@@ -7,7 +7,7 @@ import SrcLoc
 import RdrName
 import HsExpr
 import U.FastString
-import StringBuffer
+import U.StringBuffer
 import U.Outputable
 import U.Pretty
 import Platform

@@ -92,7 +92,7 @@ import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 import Data.Data
 import Data.Map (Map)
 import qualified Data.Map as Map
-import qualified FiniteMap as Map
+import qualified U.FiniteMap as Map
 import System.FilePath
 
 -- Note [The identifier lexicon]

@@ -1,6 +1,6 @@
 -- Some extra functions to extend Data.Map
 
-module FiniteMap (
+module U.FiniteMap (
         insertList,
         insertListWith,
         deleteList,

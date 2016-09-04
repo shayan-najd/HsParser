@@ -111,7 +111,7 @@ module U.Util (
 
 #include "HsVersions.h"
 
-import Exception
+import U.Exception
 import Panic
 
 import Data.Data

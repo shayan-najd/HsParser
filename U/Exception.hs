@@ -1,8 +1,8 @@
 {-# OPTIONS_GHC -fno-warn-deprecations #-}
-module Exception
+module U.Exception
     (
     module Control.Exception,
-    module Exception
+    module U.Exception
     )
     where
 
@@ -78,4 +78,3 @@ gonException :: (ExceptionMonad m) => m a -> m b -> m a
 gonException ioA cleanup = ioA `gcatch` \e ->
                              do _ <- cleanup
                                 liftIO $ throwIO (e :: SomeException)
-

@@ -20,7 +20,7 @@ module Panic (
      panic, sorry, assertPanic, trace,
      panicDoc, sorryDoc, pgmErrorDoc,
 
-     Exception.Exception(..), showException, safeShowException,
+     U.Exception.Exception(..), showException, safeShowException,
      try, tryMost, throwTo,
 
      installSignalHandlers,
@@ -30,7 +30,7 @@ module Panic (
 import {-# SOURCE #-} U.Outputable (SDoc, showSDocUnsafe)
 
 import Config
-import Exception
+import U.Exception
 
 import Control.Concurrent
 import Debug.Trace        ( trace )
@@ -167,10 +167,10 @@ showGhcException exception
 
 
 throwGhcException :: GhcException -> a
-throwGhcException = Exception.throw
+throwGhcException = U.Exception.throw
 
 throwGhcExceptionIO :: GhcException -> IO a
-throwGhcExceptionIO = Exception.throwIO
+throwGhcExceptionIO = U.Exception.throwIO
 
 handleGhcException :: ExceptionMonad m => (GhcException -> m a) -> m a -> m a
 handleGhcException = ghandle
@@ -196,7 +196,7 @@ pgmErrorDoc x doc = throwGhcException (PprProgramError x doc)
 -- | Throw an failed assertion exception for a given filename and line number.
 assertPanic :: String -> Int -> a
 assertPanic file line =
-  Exception.throw (Exception.AssertionFailed
+  U.Exception.throw (U.Exception.AssertionFailed
            ("ASSERT failed! file " ++ file ++ ", line " ++ show line))
 
 
