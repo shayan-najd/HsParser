@@ -34,7 +34,7 @@ module NameEnv (
 #include "HsVersions.h"
 
 import Digraph
-import Name
+import {-# SOURCE #-} Name
 import U.UniqFM
 import U.UniqDFM
 import U.Maybes

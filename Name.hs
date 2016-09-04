@@ -89,7 +89,7 @@ import DynFlags
 import U.FastString
 import U.Outputable
 
-import Data.Data
+import Data.Data hiding (TyCon)
 
 starKindTyConKey :: Unique
 starKindTyConKey = mkPreludeTyConUnique 93
@@ -630,9 +630,9 @@ nameSortStableString (WiredIn mod _ _) = moduleStableString mod
 
 -- | A class allowing convenient access to the 'Name' of various datatypes
 class NamedThing a where
-    getOccName :: a -> OccName
+    {-# MINIMAL getName #-}
     getName    :: a -> Name
-
+    getOccName :: a -> OccName
     getOccName n = nameOccName (getName n)      -- Default method
 
 getSrcLoc           :: NamedThing a => a -> SrcLoc

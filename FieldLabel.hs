@@ -70,7 +70,7 @@ module FieldLabel ( FieldLabelString
                   ) where
 
 import OccName
-import Name
+import {-# SOURCE #-} Name
 
 import U.FastString
 import U.FastStringEnv

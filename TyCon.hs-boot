@@ -1,6 +1,6 @@
 module TyCon where
 
-import Name (Name)
+import {-# SOURCE #-} Name (Name)
 import U.Unique (Unique)
 
 data TyCon

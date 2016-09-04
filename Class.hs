@@ -26,7 +26,7 @@ module Class (
 import {-# SOURCE #-} TyCon     ( TyCon, tyConName, tyConUnique )
 import {-# SOURCE #-} TyCoRep   ( Type, PredType, pprType )
 import Var
-import Name
+import {-# SOURCE #-} Name
 import U.BasicTypes
 import U.Unique
 import U.Util

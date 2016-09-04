@@ -40,10 +40,14 @@ module RdrName (
 #include "HsVersions.h"
 
 import Module (ModuleName,Module,mkModuleNameFS)
-import Name
+import {-# SOURCE #-} Name
 import U.FastString
 import U.Outputable
 import U.Util
+import OccName(HasOccName(..),OccName(..),NameSpace,
+               isSymOcc,isTvOcc,demoteOccName,
+               mkOccNameFS,mkVarOccFS,isDataOcc,isTcOcc)
+
 
 
 import Data.Data

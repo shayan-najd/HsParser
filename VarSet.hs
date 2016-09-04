@@ -46,7 +46,7 @@ module VarSet (
 
 import Var      ( Var, TyVar, CoVar, TyCoVar, Id )
 import U.Unique
-import Name     ( Name )
+import {-# SOURCE #-} Name     ( Name )
 import U.UniqSet
 import U.UniqDSet
 import U.UniqFM( disjointUFM, pluralUFM, pprUFM )

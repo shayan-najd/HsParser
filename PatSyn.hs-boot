@@ -3,7 +3,7 @@ module PatSyn where
 import U.BasicTypes (Arity)
 import {-# SOURCE #-} TyCoRep (Type)
 import Var (TyVar)
-import Name (Name)
+import {-# SOURCE #-} Name (Name)
 
 data PatSyn
 

@@ -104,7 +104,7 @@ module OccName (
 
 import U.Util
 import U.Unique
-import DynFlags
+-- import DynFlags
 import U.UniqFM
 import U.UniqSet
 import U.FastString
@@ -270,15 +270,7 @@ pprOccName (OccName sp occ)
     pp_debug sty | debugStyle sty = braces (pprNameSpaceBrief sp)
                  | otherwise      = empty
 
-    pp_occ = sdocWithDynFlags $ \dflags ->
-             if gopt Opt_SuppressUniques dflags
-             then text (strip_th_unique (unpackFS occ))
-             else ftext occ
-
-        -- See Note [Suppressing uniques in OccNames]
-    strip_th_unique ('[' : c : _) | isAlphaNum c = []
-    strip_th_unique (c : cs) = c : strip_th_unique cs
-    strip_th_unique []       = []
+    pp_occ = sdocWithDynFlags $ \dflags -> ftext occ
 
 {-
 Note [Suppressing uniques in OccNames]

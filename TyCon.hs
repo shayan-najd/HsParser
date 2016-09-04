@@ -115,20 +115,21 @@ import {-# SOURCE #-} TyCoRep ( Kind, Type, PredType, TyBinder, pprType, mkForAl
 import {-# SOURCE #-} TysWiredIn2  ( runtimeRepTyCon, constraintKind
                                   , vecCountTyCon, vecElemTyCon, liftedTypeKind )
 import {-# SOURCE #-} DataCon ( DataCon, dataConExTyVars, dataConFieldLabels )
+import {-# SOURCE #-} Name
+import {-# SOURCE #-} FieldLabel
+import OccName(OccName,isTcOcc,mkTyConRepOcc)
 
 import U.Binary
 import Var
 import Class
 import U.BasicTypes
 import ForeignCall
-import Name
 import NameEnv
 import CoAxiom
 import PrelNames
 import U.Maybes
 import U.Outputable
 import U.FastStringEnv
-import FieldLabel
 -- import Constants
 import U.Util
 import U.Unique( tyConRepNameUnique, dataConRepNameUnique )

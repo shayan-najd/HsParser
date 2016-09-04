@@ -89,16 +89,17 @@ import {-# SOURCE #-} TysWiredIn2
   , doubleElemRepDataConTy )
 
 import Var              ( TyVar, KindVar, mkTyVar )
-import Name
+import {-# SOURCE #-} Name
+import OccName
 import TyCon
 import SrcLoc
+import Module
 import U.Unique
 import PrelNames
 import U.FastString
 import U.Outputable
-import TyCoRep   -- doesn't need special access, but this is easier to avoid
-                 -- import loops
-
+import TyCoRep (Type(..),Kind,mkTyConTy,mkTyVarTy,TyBinder(..),
+                VisibilityFlag(..),mkTyVarTys,TyThing(..))
 import Data.Char
 
 {-

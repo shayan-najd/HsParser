@@ -141,12 +141,13 @@ import {-# SOURCE #-} TysWiredIn2 ( ptrRepLiftedTy )
 import Var
 import VarEnv
 import VarSet
-import Name hiding ( varName )
+import {-# SOURCE #-} Name hiding ( varName )
 import U.BasicTypes
 import TyCon
 import Class
 import CoAxiom
 import FV
+import OccName hiding (varName)
 
 -- others
 import PrelNames

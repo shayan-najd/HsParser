@@ -121,7 +121,7 @@ import Module
 import OccName
 import RdrName
 import U.Unique
-import Name
+import {-# SOURCE #-} Name
 import SrcLoc
 import U.FastString
 

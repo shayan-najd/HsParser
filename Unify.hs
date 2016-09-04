@@ -28,7 +28,7 @@ import Var
 import VarEnv
 import VarSet
 import Kind
-import Name( Name )
+import {-# SOURCE #-} Name( Name )
 import Type hiding ( getTvSubstEnv )
 import Coercion hiding ( getCvSubstEnv )
 import TyCon

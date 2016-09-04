@@ -1,6 +1,6 @@
 module DataCon where
 import Var( TyVar )
-import Name( Name, NamedThing )
+import {-# SOURCE #-} Name( Name, NamedThing )
 import {-# SOURCE #-} TyCon( TyCon )
 import FieldLabel ( FieldLabel )
 import U.Unique ( Uniquable )

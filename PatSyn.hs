@@ -25,7 +25,7 @@ module PatSyn (
 #include "HsVersions.h"
 
 import Type
-import Name
+import {-# SOURCE #-} Name
 import U.Outputable
 import U.Unique
 import U.Util

@@ -33,7 +33,7 @@ import {-# SOURCE #-} TyCoRep ( Type, pprType )
 import {-# SOURCE #-} TyCon ( TyCon )
 import U.Outputable
 import U.FastString
-import Name
+import {-# SOURCE #-} Name
 import U.Unique
 import Var
 import U.Util

@@ -1,5 +1,5 @@
 module MkId where
-import Name( Name )
+import {-# SOURCE #-} Name( Name )
 import Var( Id )
 import Class( Class )
 import {-# SOURCE #-} DataCon( DataCon )

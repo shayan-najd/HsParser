@@ -62,6 +62,8 @@ module DataCon (
 #include "HsVersions.h"
 
 import {-# SOURCE #-} MkId( DataConBoxer )
+import {-# SOURCE #-} Name
+import {-# SOURCE #-} OccName(occNameFS)
 import Type
 import ForeignCall ( CType )
 import Coercion
@@ -69,7 +71,6 @@ import Unify
 import TyCon
 import FieldLabel
 import Class
-import Name
 import PrelNames
 import Var
 import U.Outputable
