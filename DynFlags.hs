@@ -35,8 +35,6 @@ module DynFlags (
 
 #include "HsVersions.h"
 
-import Platform (Platform(platformWordSize))
-import PlatformConstants
 import Module
 import Panic
 import qualified U.Pretty
@@ -486,11 +484,11 @@ data DynFlags = DynFlags {
 
 
 data Settings = Settings {
-  sTargetPlatform        :: Platform,    -- Filled in by SysTools
+  sTargetPlatform        :: {-# UNPACK #-} !Int,    -- Filled in by SysTools
   sPlatformConstants     :: PlatformConstants
  }
 
-targetPlatform :: DynFlags -> Platform
+targetPlatform :: DynFlags -> Int
 targetPlatform dflags = sTargetPlatform (settings dflags)
 
 
@@ -578,17 +576,17 @@ safeImportsOn dflags = safeHaskell dflags == Sf_Unsafe ||
 
 tARGET_MIN_INT, tARGET_MAX_INT, tARGET_MAX_WORD :: DynFlags -> Integer
 tARGET_MIN_INT dflags
-    = case platformWordSize (targetPlatform dflags) of
+    = case targetPlatform dflags of
       4 -> toInteger (minBound :: Int32)
       8 -> toInteger (minBound :: Int64)
       w -> panic ("tARGET_MIN_INT: Unknown platformWordSize: " ++ show w)
 tARGET_MAX_INT dflags
-    = case platformWordSize (targetPlatform dflags) of
+    = case targetPlatform dflags of
       4 -> toInteger (maxBound :: Int32)
       8 -> toInteger (maxBound :: Int64)
       w -> panic ("tARGET_MAX_INT: Unknown platformWordSize: " ++ show w)
 tARGET_MAX_WORD dflags
-    = case platformWordSize (targetPlatform dflags) of
+    = case targetPlatform dflags of
       4 -> toInteger (maxBound :: Word32)
       8 -> toInteger (maxBound :: Word64)
       w -> panic ("tARGET_MAX_WORD: Unknown platformWordSize: " ++ show w)
@@ -603,3 +601,11 @@ wORD_SIZE dflags = pc_WORD_SIZE (sPlatformConstants (settings dflags))
 
 cINT_SIZE :: DynFlags -> Int
 cINT_SIZE dflags = pc_CINT_SIZE (sPlatformConstants (settings dflags))
+
+data PlatformConstants = PlatformConstants {
+      pc_REP_CostCentreStack_mem_alloc :: Int
+    , pc_REP_CostCentreStack_scc_count :: Int
+    , pc_REP_StgEntCounter_allocs :: Int
+    , pc_REP_StgEntCounter_allocd :: Int
+    , pc_WORD_SIZE :: Int
+    , pc_CINT_SIZE :: Int} deriving Read
