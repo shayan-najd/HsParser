@@ -40,7 +40,6 @@ import U.Outputable
 -- compiler/basicTypes
 import RdrName
 import OccName          ( varName, dataName, tcClsName, tvName )
-import DataCon          ( DataCon, dataConName )
 import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
 import U.BasicTypes
@@ -1421,16 +1420,16 @@ happyIn233 x = Happy_GHC_Exts.unsafeCoerce# x
 happyOut233 :: (HappyAbsSyn ) -> (Located [Located RdrName])
 happyOut233 x = Happy_GHC_Exts.unsafeCoerce# x
 {-# INLINE happyOut233 #-}
-happyIn234 :: (Located DataCon) -> (HappyAbsSyn )
+happyIn234 :: (Located RdrName) -> (HappyAbsSyn )
 happyIn234 x = Happy_GHC_Exts.unsafeCoerce# x
 {-# INLINE happyIn234 #-}
-happyOut234 :: (HappyAbsSyn ) -> (Located DataCon)
+happyOut234 :: (HappyAbsSyn ) -> (Located RdrName)
 happyOut234 x = Happy_GHC_Exts.unsafeCoerce# x
 {-# INLINE happyOut234 #-}
-happyIn235 :: (Located DataCon) -> (HappyAbsSyn )
+happyIn235 :: (Located RdrName) -> (HappyAbsSyn )
 happyIn235 x = Happy_GHC_Exts.unsafeCoerce# x
 {-# INLINE happyIn235 #-}
-happyOut235 :: (HappyAbsSyn ) -> (Located DataCon)
+happyOut235 :: (HappyAbsSyn ) -> (Located RdrName)
 happyOut235 x = Happy_GHC_Exts.unsafeCoerce# x
 {-# INLINE happyOut235 #-}
 happyIn236 :: (Located RdrName) -> (HappyAbsSyn )
@@ -8477,7 +8476,7 @@ happyReduce_597 = happySpecReduce_1  215# happyReduction_597
 happyReduction_597 happy_x_1
 	 =  case happyOut234 happy_x_1 of { happy_var_1 -> 
 	happyIn229
-		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
+		 (happy_var_1
 	)}
 
 happyReduce_598 = happySpecReduce_1  216# happyReduction_598
@@ -8491,7 +8490,7 @@ happyReduce_599 = happySpecReduce_1  216# happyReduction_599
 happyReduction_599 happy_x_1
 	 =  case happyOut235 happy_x_1 of { happy_var_1 -> 
 	happyIn230
-		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
+		 (happy_var_1
 	)}
 
 happyReduce_600 = happySpecReduce_1  217# happyReduction_600
@@ -8536,7 +8535,7 @@ happyReduce_604 = happySpecReduce_1  218# happyReduction_604
 happyReduction_604 happy_x_1
 	 =  case happyOut235 happy_x_1 of { happy_var_1 -> 
 	happyIn232
-		 (sL1 happy_var_1 $ nameRdrName (dataConName (unLoc happy_var_1))
+		 (happy_var_1
 	)}
 
 happyReduce_605 = happySpecReduce_1  219# happyReduction_605
@@ -8564,7 +8563,7 @@ happyReduction_607 (happy_x_2 `HappyStk`
 	happyRest) tk
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	( ams (sLL happy_var_1 happy_var_2 unitDataCon) [mop happy_var_1,mcp happy_var_2])}}
+	( ams (sLL happy_var_1 happy_var_2 unitDataCon_RDR) [mop happy_var_1,mcp happy_var_2])}}
 	) (\r -> happyReturn (happyIn234 r))
 
 happyReduce_608 = happyMonadReduce 3# 220# happyReduction_608
@@ -8575,7 +8574,7 @@ happyReduction_608 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOut275 happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon Boxed (snd happy_var_2 + 1))
+	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon_RDR Boxed (snd happy_var_2 + 1))
                                        (mop happy_var_1:mcp happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn234 r))
 
@@ -8585,7 +8584,7 @@ happyReduction_609 (happy_x_2 `HappyStk`
 	happyRest) tk
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	( ams (sLL happy_var_1 happy_var_2 $ unboxedUnitDataCon) [mo happy_var_1,mc happy_var_2])}}
+	( ams (sLL happy_var_1 happy_var_2 $ unboxedUnitDataCon_RDR) [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn234 r))
 
 happyReduce_610 = happyMonadReduce 3# 220# happyReduction_610
@@ -8596,7 +8595,7 @@ happyReduction_610 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOut275 happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon Unboxed (snd happy_var_2 + 1))
+	( ams (sLL happy_var_1 happy_var_3 $ tupleDataCon_RDR Unboxed (snd happy_var_2 + 1))
                                        (mo happy_var_1:mc happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn234 r))
 
@@ -8613,7 +8612,7 @@ happyReduction_612 (happy_x_2 `HappyStk`
 	happyRest) tk
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	( ams (sLL happy_var_1 happy_var_2 nilDataCon) [mos happy_var_1,mcs happy_var_2])}}
+	( ams (sLL happy_var_1 happy_var_2 nilDataCon_RDR) [mos happy_var_1,mcs happy_var_2])}}
 	) (\r -> happyReturn (happyIn235 r))
 
 happyReduce_613 = happySpecReduce_1  222# happyReduction_613

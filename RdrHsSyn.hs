@@ -61,25 +61,23 @@ module RdrHsSyn (
         checkImportSpec,
         cTupleTyConName,
         unicodeStarKindTyConName,
+        tupleTyConName,
         starKindTyConName,
         tupleDataCon_RDR,
-        tupleTyConName,
         tupleTyCon_RDR,
         unitTyCon_RDR,
         consDataCon_RDR,
         parrTyCon_RDR,
         listTyCon_RDR,
         unboxedUnitTyCon_RDR,
-        unitDataCon,
-        tupleDataCon,
-        unboxedUnitDataCon,
-        nilDataCon,
+        unitDataCon_RDR,
+        unboxedUnitDataCon_RDR,
+        nilDataCon_RDR,
         funTyCon_RDR,
         eqPrimTyCon_RDR,
         eqTyCon_RDR
     ) where
 
-import DataCon (DataCon)
 import HsSyn            -- Lots of it
 import RdrName
 import Name
@@ -115,14 +113,14 @@ cTupleTyConName = error "SHAYAN TODO!"
 unicodeStarKindTyConName :: Name
 unicodeStarKindTyConName = error "SHAYAN TODO!"
 
+tupleTyConName :: Boxity -> Int -> Name
+tupleTyConName = error "SHAYAN TODO!"
+
 starKindTyConName :: Name
 starKindTyConName = error "SHAYAN TODO!"
 
 tupleDataCon_RDR ::  Boxity -> Int -> RdrName
 tupleDataCon_RDR = error "SHAYAN TODO!"
-
-tupleTyConName :: Boxity -> Int -> Name
-tupleTyConName = error "SHAYAN TODO!"
 
 tupleTyCon_RDR :: Boxity -> Int -> RdrName
 tupleTyCon_RDR b i = getRdrName (tupleTyConName b i)
@@ -151,17 +149,14 @@ eqTyCon_RDR = error "SHAYAN TODO!"
 eqPrimTyCon_RDR :: RdrName
 eqPrimTyCon_RDR = error "SHAYAN TODO!"
 
-unitDataCon :: DataCon
-unitDataCon = error "SHAYAN TODO!"
+unitDataCon_RDR :: RdrName
+unitDataCon_RDR = error "SHAYAN TODO!"
 
-tupleDataCon :: Boxity -> Int -> DataCon
-tupleDataCon = error "SHAYAN TODO!"
+unboxedUnitDataCon_RDR :: RdrName
+unboxedUnitDataCon_RDR = error "SHAYAN TODO!"
 
-unboxedUnitDataCon :: DataCon
-unboxedUnitDataCon = error "SHAYAN TODO!"
-
-nilDataCon :: DataCon
-nilDataCon = error "SHAYAN TODO!"
+nilDataCon_RDR :: RdrName
+nilDataCon_RDR = error "SHAYAN TODO!"
 
 forall_tv_RDR :: RdrName
 forall_tv_RDR = error "SHAYAN TODO!"

@@ -48,7 +48,6 @@ import U.Outputable
 -- compiler/basicTypes
 import RdrName
 import OccName          ( varName, dataName, tcClsName, tvName )
-import DataCon          ( DataCon, dataConName )
 import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
 import U.BasicTypes
@@ -2734,11 +2733,11 @@ name_var : var { $1 }
 
 qcon_nowiredlist :: { Located RdrName }
         : gen_qcon                     { $1 }
-        | sysdcon_nolist               { sL1 $1 $ nameRdrName (dataConName (unLoc $1)) }
+        | sysdcon_nolist               { $1 }
 
 qcon :: { Located RdrName }
   : gen_qcon              { $1}
-  | sysdcon               { sL1 $1 $ nameRdrName (dataConName (unLoc $1)) }
+  | sysdcon               { $1 }
 
 gen_qcon :: { Located RdrName }
   : qconid                { $1 }
@@ -2751,24 +2750,24 @@ con     :: { Located RdrName }
         : conid                 { $1 }
         | '(' consym ')'        {% ams (sLL $1 $> (unLoc $2))
                                        [mop $1,mj AnnVal $2,mcp $3] }
-        | sysdcon               { sL1 $1 $ nameRdrName (dataConName (unLoc $1)) }
+        | sysdcon               { $1 }
 
 con_list :: { Located [Located RdrName] }
 con_list : con                  { sL1 $1 [$1] }
          | con ',' con_list     {% addAnnotation (gl $1) AnnComma (gl $2) >>
                                    return (sLL $1 $> ($1 : unLoc $3)) }
 
-sysdcon_nolist :: { Located DataCon }  -- Wired in data constructors
-        : '(' ')'               {% ams (sLL $1 $> unitDataCon) [mop $1,mcp $2] }
-        | '(' commas ')'        {% ams (sLL $1 $> $ tupleDataCon Boxed (snd $2 + 1))
+sysdcon_nolist :: { Located RdrName }  -- Wired in data constructors
+        : '(' ')'               {% ams (sLL $1 $> unitDataCon_RDR) [mop $1,mcp $2] }
+        | '(' commas ')'        {% ams (sLL $1 $> $ tupleDataCon_RDR Boxed (snd $2 + 1))
                                        (mop $1:mcp $3:(mcommas (fst $2))) }
-        | '(#' '#)'             {% ams (sLL $1 $> $ unboxedUnitDataCon) [mo $1,mc $2] }
-        | '(#' commas '#)'      {% ams (sLL $1 $> $ tupleDataCon Unboxed (snd $2 + 1))
+        | '(#' '#)'             {% ams (sLL $1 $> $ unboxedUnitDataCon_RDR) [mo $1,mc $2] }
+        | '(#' commas '#)'      {% ams (sLL $1 $> $ tupleDataCon_RDR Unboxed (snd $2 + 1))
                                        (mo $1:mc $3:(mcommas (fst $2))) }
 
-sysdcon :: { Located DataCon }
+sysdcon :: { Located RdrName }
         : sysdcon_nolist                 { $1 }
-        | '[' ']'               {% ams (sLL $1 $> nilDataCon) [mos $1,mcs $2] }
+        | '[' ']'               {% ams (sLL $1 $> nilDataCon_RDR) [mos $1,mcs $2] }
 
 conop :: { Located RdrName }
         : consym                { $1 }
