@@ -60,7 +60,7 @@ module U.Binary
 
 import {-# SOURCE #-} Name (Name)
 import U.FastString
-import Panic
+import U.Panic
 import U.UniqFM
 import U.FastMutInt
 import U.Fingerprint

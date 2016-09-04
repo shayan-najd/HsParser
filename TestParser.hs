@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -Wall -fno-warn-orphans #-}
 module TestParser where
 import Parser
-import DynFlags
+import U.DynFlags
 import Lexer
 import SrcLoc
 import RdrName

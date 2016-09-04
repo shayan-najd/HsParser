@@ -10,7 +10,7 @@ some unnecessary loops in the module dependency graph.
 
 {-# LANGUAGE CPP, ScopedTypeVariables #-}
 #define TargetPlatform_NAME ""
-module Panic (
+module U.Panic (
      GhcException(..), showGhcException,
      throwGhcException, throwGhcExceptionIO,
      handleGhcException,

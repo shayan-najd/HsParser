@@ -124,7 +124,7 @@ module Name (Name,NamedThing(..),
         module OccName
     ) where-}
 
-import {-# SOURCE #-} TyCoRep( TyThing )
+-- import {-# SOURCE #-} TyCoRep( TyThing )
 
 import OccName
 import Module
@@ -133,7 +133,7 @@ import U.Unique
 import U.Util
 import U.Maybes
 import U.Binary
-import DynFlags
+import U.DynFlags
 import U.FastString
 import U.Outputable
 
@@ -169,7 +169,7 @@ data Name = Name {
 data NameSort
   = External Module
 
-  | WiredIn Module TyThing BuiltInSyntax
+  | WiredIn Module () BuiltInSyntax -- SHAYAN TODO
         -- A variant of External, for wired-in things
 
   | Internal            -- A user-defined Id or TyVar

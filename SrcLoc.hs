@@ -522,11 +522,7 @@ cmpLocated :: Ord a => Located a -> Located a -> Ordering
 cmpLocated a b = unLoc a `compare` unLoc b
 
 instance (Outputable l, Outputable e) => Outputable (GenLocated l e) where
-  ppr (L l e) = -- TODO: We can't do this since Located was refactored into
-                -- GenLocated:
-                -- Print spans without the file name etc
-                -- ifPprDebug (braces (pprUserSpan False l))
-                ifPprDebug (braces (ppr l))
+  ppr (L l e) = ifPprDebug (braces (ppr l))
              $$ ppr e
 
 {-

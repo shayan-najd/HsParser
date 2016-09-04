@@ -124,7 +124,7 @@ import Type
 import TysPrim
 import DataCon
 import Demand
-import {-# SOURCE #-} Name
+import Name
 import OccName (OccName,mkWorkerOcc)
 import Module
 import Class

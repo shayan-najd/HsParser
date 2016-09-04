@@ -76,10 +76,10 @@ import {-# SOURCE #-}   TyCoRep( Type, Kind, pprKind )
 import {-# SOURCE #-}   TcType( TcTyVarDetails, pprTcTyVarDetails, vanillaSkolemTv )
 import {-# SOURCE #-}   IdInfo( IdDetails, IdInfo, coVarDetails, isCoVarDetails, vanillaIdInfo, pprIdDetails )
 
-import {-# SOURCE #-} Name hiding (varName)
+import Name hiding (varName)
 import U.Unique
 import U.Util
-import DynFlags
+import U.DynFlags
 import U.Outputable
 
 import U.Unique (nonDetCmpUnique)

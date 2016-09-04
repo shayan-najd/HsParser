@@ -89,7 +89,7 @@ import {-# SOURCE #-} TysWiredIn2
   , doubleElemRepDataConTy )
 
 import Var              ( TyVar, KindVar, mkTyVar )
-import {-# SOURCE #-} Name
+import Name
 import OccName
 import TyCon
 import SrcLoc

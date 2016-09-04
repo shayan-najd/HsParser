@@ -28,7 +28,7 @@ import Var
 import VarEnv
 import VarSet
 import Kind
-import {-# SOURCE #-} Name( Name )
+import Name( Name )
 import Type hiding ( getTvSubstEnv )
 import Coercion hiding ( getCvSubstEnv )
 import TyCon
@@ -448,7 +448,6 @@ definition of env' in niFixTvSubst
 niFixTCvSubst :: TvSubstEnv -> TCvSubst
 -- Find the idempotent fixed point of the non-idempotent substitution
 -- See Note [Finding the substitution fixpoint]
--- ToDo: use laziness instead of iteration?
 niFixTCvSubst tenv = f tenv
   where
     f tenv

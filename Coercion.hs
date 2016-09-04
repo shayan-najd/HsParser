@@ -111,7 +111,7 @@ import TyCon
 import CoAxiom
 import Var
 import VarEnv
-import {-# SOURCE #-} Name hiding ( varName )
+import Name hiding ( varName )
 import OccName (parenSymOcc)
 import U.Util
 import U.BasicTypes

@@ -115,8 +115,8 @@ import {-# SOURCE #-} TyCoRep ( Kind, Type, PredType, TyBinder, pprType, mkForAl
 import {-# SOURCE #-} TysWiredIn2  ( runtimeRepTyCon, constraintKind
                                   , vecCountTyCon, vecElemTyCon, liftedTypeKind )
 import {-# SOURCE #-} DataCon ( DataCon, dataConExTyVars, dataConFieldLabels )
-import {-# SOURCE #-} Name
-import {-# SOURCE #-} FieldLabel
+import Name
+import FieldLabel
 import OccName(OccName,isTcOcc,mkTyConRepOcc)
 
 import U.Binary

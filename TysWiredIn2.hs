@@ -133,7 +133,7 @@ import TyCon
 import TyCoRep          ( TyBinder(..) )
 import Class            ( Class, mkClass )
 import RdrName
-import {-# SOURCE #-} Name
+import Name
 import OccName
 import NameSet          ( NameSet, mkNameSet, elemNameSet )
 import U.BasicTypes       ( Arity, RecFlag(..), Boxity(..),

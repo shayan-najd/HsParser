@@ -706,11 +706,6 @@ freeVars = go
     go (Var v)
       = (FVAnn fvs ty_fvs (idType v), AnnVar v)
       where
-            -- ToDo: insert motivating example for why we *need*
-            -- to include the idSpecVars in the FV list.
-            --      Actually [June 98] I don't think it's necessary
-            -- fvs = fvs_v `unionVarSet` idSpecVars v
-
         (fvs, ty_fvs)
             | isLocalVar v = (aFreeVar v `unionFVs` ty_fvs, dVarTypeTyCoVars v)
             | otherwise    = (emptyDVarSet, emptyDVarSet)

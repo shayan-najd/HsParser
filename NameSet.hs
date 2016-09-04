@@ -33,7 +33,7 @@ module NameSet (
 
 #include "HsVersions.h"
 
-import {-# SOURCE #-} Name
+import Name
 import OccName (startsWithUnderscore)
 import U.UniqSet
 import U.UniqFM

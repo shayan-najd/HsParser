@@ -112,7 +112,7 @@ module U.Util (
 #include "HsVersions.h"
 
 import U.Exception
-import Panic
+import U.Panic
 
 import Data.Data
 import Data.IORef       ( IORef, newIORef, atomicModifyIORef' )

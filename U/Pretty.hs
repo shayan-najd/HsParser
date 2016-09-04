@@ -204,7 +204,7 @@ module U.Pretty (
 
 import U.BufWrite
 import U.FastString
-import Panic
+import U.Panic
 import System.IO
 import Prelude hiding (error)
 

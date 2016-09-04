@@ -94,7 +94,7 @@ module U.FastString
 
 import U.Encoding
 import U.FastFunctions
-import Panic
+import U.Panic
 import U.Util
 
 import Control.Monad
@@ -554,8 +554,6 @@ getFastStringTable = do
 hPutFS :: Handle -> FastString -> IO ()
 hPutFS handle fs = BS.hPut handle $ fastStringToByteString fs
 
--- ToDo: we'll probably want an hPutFSLocal, or something, to output
--- in the current locale's encoding (for error messages and suchlike).
 
 -- -----------------------------------------------------------------------------
 -- LitStrings, here for convenience only.

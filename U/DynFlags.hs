@@ -3,7 +3,7 @@
 {-# OPTIONS_GHC -fno-cse #-}
 -- -fno-cse is needed for GLOBAL_VAR's to behave properly
 
-module DynFlags (
+module U.DynFlags (
         defaultDynFlag,
         PlatformConstants(..),
 
@@ -36,7 +36,7 @@ module DynFlags (
 #include "HsVersions.h"
 
 import Module
-import Panic
+import U.Panic
 import qualified U.Pretty
 import SrcLoc
 import U.Outputable

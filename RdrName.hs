@@ -40,7 +40,7 @@ module RdrName (
 #include "HsVersions.h"
 
 import Module (ModuleName,Module,mkModuleNameFS)
-import {-# SOURCE #-} Name
+import Name
 import U.FastString
 import U.Outputable
 import U.Util

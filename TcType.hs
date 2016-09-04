@@ -200,9 +200,9 @@ import Type
 import TyCon
 
 -- others:
-import DynFlags
+import U.DynFlags
 import CoreFVs
-import {-# SOURCE #-} Name -- hiding (varName)
+import Name -- hiding (varName)
 import OccName
 
             -- We use this to make dictionaries for type literals.

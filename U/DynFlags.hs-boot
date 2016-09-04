@@ -1,5 +1,4 @@
-
-module DynFlags where
+module U.DynFlags where
 
 data DynFlags
 

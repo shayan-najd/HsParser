@@ -51,7 +51,7 @@ import U.FastString
 import U.BasicTypes
 import U.Binary
 -- import Constants
-import DynFlags
+import U.DynFlags
 import U.UniqFM
 import U.Util
 

@@ -80,9 +80,9 @@ module U.Outputable (
         pprDebugAndThen, showSDocUnsafe
     ) where
 
-import {-# SOURCE #-}   DynFlags( DynFlags,defaultDynFlag,
-                                  pprUserLength, pprCols,
-                                  useUnicode, useUnicodeSyntax)
+import {-# SOURCE #-}   U.DynFlags( DynFlags,defaultDynFlag,
+                                    pprUserLength, pprCols,
+                                    useUnicode, useUnicodeSyntax)
 import {-# SOURCE #-}   Module( UnitId, Module, ModuleName, moduleName )
 import {-# SOURCE #-}   OccName( OccName )
 
@@ -90,7 +90,7 @@ import U.FastString
 import qualified U.Pretty
 import U.Util
 import U.Pretty           ( Doc, Mode(..) )
-import Panic
+import U.Panic
 import GHC.Serialized
 import GHC.LanguageExtensions (Extension)
 

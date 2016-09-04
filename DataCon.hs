@@ -62,8 +62,8 @@ module DataCon (
 #include "HsVersions.h"
 
 import {-# SOURCE #-} MkId( DataConBoxer )
-import {-# SOURCE #-} Name
-import {-# SOURCE #-} OccName(occNameFS)
+import Name
+import OccName(occNameFS)
 import Type
 import ForeignCall ( CType )
 import Coercion

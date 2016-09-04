@@ -53,8 +53,6 @@ import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
 import U.BasicTypes
 
--- compiler/types
-import Type             ( funTyCon )
 
 -- compiler/parser
 import RdrHsSyn
@@ -64,11 +62,6 @@ import ApiAnnotation
 
 -- compiler/prelude
 import ForeignCall
-import TysPrim          ( eqPrimTyCon )
-import PrelNames        ( eqTyCon_RDR )
-import TysWiredIn2       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
-                          unboxedUnitTyCon, unboxedUnitDataCon,
-                          listTyCon_RDR, parrTyCon_RDR, consDataCon_RDR )
 
 -- compiler/utils
 import U.Util             ( looksLikePackageName )
@@ -498,7 +491,7 @@ identifier :: { Located RdrName }
         | qcon                          { $1 }
         | qvarop                        { $1 }
         | qconop                        { $1 }
-    | '(' '->' ')'      {% ams (sLL $1 $> $ getRdrName funTyCon)
+    | '(' '->' ')'      {% ams (sLL $1 $> $ funTyCon_RDR)
                                [mj AnnOpenP $1,mu AnnRarrow $2,mj AnnCloseP $3] }
 
 -----------------------------------------------------------------------------
@@ -2797,24 +2790,24 @@ qconop :: { Located RdrName }
 -- between gtycon and ntgtycon
 gtycon :: { Located RdrName }  -- A "general" qualified tycon, including unit tuples
         : ntgtycon                     { $1 }
-        | '(' ')'                      {% ams (sLL $1 $> $ getRdrName unitTyCon)
+        | '(' ')'                      {% ams (sLL $1 $> $ unitTyCon_RDR)
                                               [mop $1,mcp $2] }
-        | '(#' '#)'                    {% ams (sLL $1 $> $ getRdrName unboxedUnitTyCon)
+        | '(#' '#)'                    {% ams (sLL $1 $> $ unboxedUnitTyCon_RDR)
                                               [mo $1,mc $2] }
 
 ntgtycon :: { Located RdrName }  -- A "general" qualified tycon, excluding unit tuples
         : oqtycon               { $1 }
-        | '(' commas ')'        {% ams (sLL $1 $> $ getRdrName (tupleTyCon Boxed
+        | '(' commas ')'        {% ams (sLL $1 $> $ (tupleTyCon_RDR Boxed
                                                         (snd $2 + 1)))
                                        (mop $1:mcp $3:(mcommas (fst $2))) }
-        | '(#' commas '#)'      {% ams (sLL $1 $> $ getRdrName (tupleTyCon Unboxed
+        | '(#' commas '#)'      {% ams (sLL $1 $> $ (tupleTyCon_RDR Unboxed
                                                         (snd $2 + 1)))
                                        (mo $1:mc $3:(mcommas (fst $2))) }
-        | '(' '->' ')'          {% ams (sLL $1 $> $ getRdrName funTyCon)
+        | '(' '->' ')'          {% ams (sLL $1 $> $ funTyCon_RDR)
                                        [mop $1,mu AnnRarrow $2,mcp $3] }
         | '[' ']'               {% ams (sLL $1 $> $ listTyCon_RDR) [mos $1,mcs $2] }
         | '[:' ':]'             {% ams (sLL $1 $> $ parrTyCon_RDR) [mo $1,mc $2] }
-        | '(' '~#' ')'          {% ams (sLL $1 $> $ getRdrName eqPrimTyCon)
+        | '(' '~#' ')'          {% ams (sLL $1 $> $ eqPrimTyCon_RDR)
                                         [mop $1,mj AnnTildehsh $2,mcp $3] }
 
 oqtycon :: { Located RdrName }  -- An "ordinary" qualified tycon;

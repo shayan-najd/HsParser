@@ -45,8 +45,6 @@ import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
 import U.BasicTypes
 
--- compiler/types
-import Type             ( funTyCon )
 
 -- compiler/parser
 import RdrHsSyn
@@ -56,11 +54,6 @@ import ApiAnnotation
 
 -- compiler/prelude
 import ForeignCall
-import TysPrim          ( eqPrimTyCon )
-import PrelNames        ( eqTyCon_RDR )
-import TysWiredIn2       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
-                          unboxedUnitTyCon, unboxedUnitDataCon,
-                          listTyCon_RDR, parrTyCon_RDR, consDataCon_RDR )
 
 -- compiler/utils
 import U.Util             ( looksLikePackageName )
@@ -2513,7 +2506,7 @@ happyReduction_15 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ getRdrName funTyCon)
+	( ams (sLL happy_var_1 happy_var_3 $ funTyCon_RDR)
                                [mj AnnOpenP happy_var_1,mu AnnRarrow happy_var_2,mj AnnCloseP happy_var_3])}}}
 	) (\r -> happyReturn (happyIn14 r))
 
@@ -8676,7 +8669,7 @@ happyReduction_618 (happy_x_2 `HappyStk`
 	happyRest) tk
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	( ams (sLL happy_var_1 happy_var_2 $ getRdrName unitTyCon)
+	( ams (sLL happy_var_1 happy_var_2 $ unitTyCon_RDR)
                                               [mop happy_var_1,mcp happy_var_2])}}
 	) (\r -> happyReturn (happyIn238 r))
 
@@ -8686,7 +8679,7 @@ happyReduction_619 (happy_x_2 `HappyStk`
 	happyRest) tk
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
-	( ams (sLL happy_var_1 happy_var_2 $ getRdrName unboxedUnitTyCon)
+	( ams (sLL happy_var_1 happy_var_2 $ unboxedUnitTyCon_RDR)
                                               [mo happy_var_1,mc happy_var_2])}}
 	) (\r -> happyReturn (happyIn238 r))
 
@@ -8705,7 +8698,7 @@ happyReduction_621 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOut275 happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ getRdrName (tupleTyCon Boxed
+	( ams (sLL happy_var_1 happy_var_3 $ (tupleTyCon_RDR Boxed
                                                         (snd happy_var_2 + 1)))
                                        (mop happy_var_1:mcp happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn239 r))
@@ -8718,7 +8711,7 @@ happyReduction_622 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOut275 happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ getRdrName (tupleTyCon Unboxed
+	( ams (sLL happy_var_1 happy_var_3 $ (tupleTyCon_RDR Unboxed
                                                         (snd happy_var_2 + 1)))
                                        (mo happy_var_1:mc happy_var_3:(mcommas (fst happy_var_2))))}}}
 	) (\r -> happyReturn (happyIn239 r))
@@ -8731,7 +8724,7 @@ happyReduction_623 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ getRdrName funTyCon)
+	( ams (sLL happy_var_1 happy_var_3 $ funTyCon_RDR)
                                        [mop happy_var_1,mu AnnRarrow happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn239 r))
 
@@ -8761,7 +8754,7 @@ happyReduction_626 (happy_x_3 `HappyStk`
 	 = happyThen (case happyOutTok happy_x_1 of { happy_var_1 -> 
 	case happyOutTok happy_x_2 of { happy_var_2 -> 
 	case happyOutTok happy_x_3 of { happy_var_3 -> 
-	( ams (sLL happy_var_1 happy_var_3 $ getRdrName eqPrimTyCon)
+	( ams (sLL happy_var_1 happy_var_3 $ eqPrimTyCon_RDR)
                                         [mop happy_var_1,mj AnnTildehsh happy_var_2,mcp happy_var_3])}}}
 	) (\r -> happyReturn (happyIn239 r))
 

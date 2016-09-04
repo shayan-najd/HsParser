@@ -94,7 +94,7 @@ import VarEnv( InScopeSet )
 import Var
 import Type
 import Coercion
-import {-# SOURCE #-} Name
+import Name
 import OccName (OccName)
 import NameSet
 import NameEnv( NameEnv, emptyNameEnv )
@@ -103,7 +103,7 @@ import DataCon
 import Module
 import TyCon
 import U.BasicTypes
-import DynFlags
+import U.DynFlags
 import U.Outputable
 import U.Util
 import U.UniqFM

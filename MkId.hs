@@ -19,7 +19,7 @@ module MkId (DataConBoxer,mkDataConWorkId,mkDictSelId,magicDictId) where
 #include "HsVersions.h"
 
 import DataCon
-import {-# SOURCE #-} Name
+import Name
 import Id
 import Class
 

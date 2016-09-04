@@ -22,7 +22,7 @@ module CostCentre (
 
 import U.Binary
 import Var
-import {-# SOURCE #-} Name
+import Name
 import OccName (occNameFS)
 import Module
 import U.Unique

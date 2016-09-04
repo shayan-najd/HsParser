@@ -48,9 +48,9 @@ module U.ErrUtils (
 import U.Bag
 import U.Exception
 import U.Outputable
-import Panic
+import U.Panic
 import SrcLoc
-import DynFlags
+import U.DynFlags
 
 import Data.List
 import Data.Maybe       ( fromMaybe )
@@ -243,7 +243,7 @@ formatErrDoc dflags (ErrDoc important context supplementary)
     msgs = filter (not . null) $ map (filter (not . U.Outputable.isEmpty dflags))
         [important, context, supplementary]
     starred = (bullet<+>) . vcat
-    bullet = text $ if DynFlags.useUnicode dflags then "•" else "*"
+    bullet = text $ if U.DynFlags.useUnicode dflags then "•" else "*"
 
 pprErrMsgBagWithLoc :: Bag ErrMsg -> [SDoc]
 pprErrMsgBagWithLoc bag = [ pprLocErrMsg item | item <- sortMsgBag Nothing bag ]

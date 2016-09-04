@@ -141,7 +141,7 @@ import {-# SOURCE #-} TysWiredIn2 ( ptrRepLiftedTy )
 import Var
 import VarEnv
 import VarSet
-import {-# SOURCE #-} Name hiding ( varName )
+import Name hiding ( varName )
 import OccName (parenSymOcc,tidyOccName,mkTyVarOcc,
                occNameString,initTidyOccEnv,mkVarOcc,isSymOcc)
 import U.BasicTypes
@@ -154,7 +154,7 @@ import FV
 import PrelNames
 import U.Binary
 import U.Outputable
-import DynFlags
+import U.DynFlags
 import U.FastString
 import Pair
 import U.UniqSupply
@@ -2538,7 +2538,6 @@ defaultRuntimeRepVars = defaultRuntimeRepVars' emptyVarSet
 
 defaultRuntimeRepVars' :: TyVarSet  -- ^ the binders which we should default
                        -> Type -> Type
--- TODO: Eventually we should just eliminate the Type pretty-printer
 -- entirely and simply use IfaceType; this task is tracked as #11660.
 defaultRuntimeRepVars' subs (ForAllTy (Named var vis) ty)
   | isRuntimeRepVar var                        =

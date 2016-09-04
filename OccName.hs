@@ -104,7 +104,7 @@ module OccName (
 
 import U.Util
 import U.Unique
--- import DynFlags
+-- import U.DynFlags
 import U.UniqFM
 import U.UniqSet
 import U.FastString

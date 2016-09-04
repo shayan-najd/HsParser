@@ -58,51 +58,117 @@ module RdrHsSyn (
         mkModuleImpExp,
         mkTypeImpExp,
         mkImpExpSubSpec,
-        checkImportSpec
-
+        checkImportSpec,
+        cTupleTyConName,
+        unicodeStarKindTyConName,
+        starKindTyConName,
+        tupleDataCon_RDR,
+        tupleTyConName,
+        tupleTyCon_RDR,
+        unitTyCon_RDR,
+        consDataCon_RDR,
+        parrTyCon_RDR,
+        listTyCon_RDR,
+        unboxedUnitTyCon_RDR,
+        unitDataCon,
+        tupleDataCon,
+        unboxedUnitDataCon,
+        nilDataCon,
+        funTyCon_RDR,
+        eqPrimTyCon_RDR,
+        eqTyCon_RDR
     ) where
 
+import DataCon (DataCon)
 import HsSyn            -- Lots of it
-import TyCon            ( TyCon, isTupleTyCon, tyConSingleDataCon_maybe )
-import DataCon          ( DataCon, dataConTyCon )
-import ConLike          ( ConLike(..) )
--- import CoAxiom          ( Role,fsFromRole )
 import RdrName
 import Name
 import OccName
-import U.BasicTypes
 import Lexer
 import Lexeme           ( isLexCon )
-import Type             ( TyThing(..) )
-import TysWiredIn2      ( cTupleTyConName, tupleTyCon, tupleDataCon,
-                          nilDataConName, nilDataConKey,
-                          listTyConName, listTyConKey,
-                          starKindTyConName, unicodeStarKindTyConName )
 import ForeignCall
-import PrelNames        ( forall_tv_RDR, eqTyCon_RDR, allNameStrings )
 import SrcLoc
-import U.Unique           ( hasKey )
+import ApiAnnotation
+
+import U.BasicTypes
 import U.OrdList          ( OrdList, fromOL )
 import U.Bag              ( emptyBag, consBag )
 import U.Outputable
 import U.FastString
 import U.Maybes
 import U.Util
-import ApiAnnotation
-import Data.List
-import qualified GHC.LanguageExtensions as LangExt
 import U.MonadUtils
+
+import qualified GHC.LanguageExtensions as LangExt
 
 import Control.Monad
 import Text.ParserCombinators.ReadP as ReadP
 import Data.Char
-
+import Data.List
 import Data.Data       ( dataTypeOf, fromConstr, dataTypeConstrs )
 
 #include "HsVersions.h"
 
-wiredInNameTyThing_maybe :: Name -> Maybe TyThing
-wiredInNameTyThing_maybe = error "SHAYAN TODO!"
+cTupleTyConName :: Int -> Name
+cTupleTyConName = error "SHAYAN TODO!"
+
+unicodeStarKindTyConName :: Name
+unicodeStarKindTyConName = error "SHAYAN TODO!"
+
+starKindTyConName :: Name
+starKindTyConName = error "SHAYAN TODO!"
+
+tupleDataCon_RDR ::  Boxity -> Int -> RdrName
+tupleDataCon_RDR = error "SHAYAN TODO!"
+
+tupleTyConName :: Boxity -> Int -> Name
+tupleTyConName = error "SHAYAN TODO!"
+
+tupleTyCon_RDR :: Boxity -> Int -> RdrName
+tupleTyCon_RDR b i = getRdrName (tupleTyConName b i)
+
+unitTyCon_RDR :: RdrName
+unitTyCon_RDR = error "SHAYAN TODO!"
+
+consDataCon_RDR :: RdrName
+consDataCon_RDR = error "SHAYAN TODO!"
+
+parrTyCon_RDR :: RdrName
+parrTyCon_RDR = error "SHAYAN TODO!"
+
+listTyCon_RDR :: RdrName
+listTyCon_RDR = error "SHAYAN TODO!"
+
+unboxedUnitTyCon_RDR :: RdrName
+unboxedUnitTyCon_RDR = error "SHAYAN TODO!"
+
+funTyCon_RDR :: RdrName
+funTyCon_RDR = error "SHAYAN TODO!"
+
+eqTyCon_RDR :: RdrName
+eqTyCon_RDR = error "SHAYAN TODO!"
+
+eqPrimTyCon_RDR :: RdrName
+eqPrimTyCon_RDR = error "SHAYAN TODO!"
+
+unitDataCon :: DataCon
+unitDataCon = error "SHAYAN TODO!"
+
+tupleDataCon :: Boxity -> Int -> DataCon
+tupleDataCon = error "SHAYAN TODO!"
+
+unboxedUnitDataCon :: DataCon
+unboxedUnitDataCon = error "SHAYAN TODO!"
+
+nilDataCon :: DataCon
+nilDataCon = error "SHAYAN TODO!"
+
+forall_tv_RDR :: RdrName
+forall_tv_RDR = error "SHAYAN TODO!"
+
+allNameStrings :: [String]
+-- Infinite list of a,b,c...z, aa, ab, ac, ... etc
+allNameStrings = [ c:cs | cs <- "" : allNameStrings, c <- ['a'..'z'] ]
 
 
 {- **********************************************************************
@@ -463,7 +529,8 @@ splitCon ty
    split (L l (HsTyVar (L _ tc)))  ts = do data_con <- tyConToDataCon l tc
                                            return (data_con, mk_rest ts)
    split (L l (HsTupleTy HsBoxedOrConstraintTuple ts)) []
-      = return (L l (getRdrName (tupleDataCon Boxed (length ts))), PrefixCon ts)
+      = return (L l (tupleDataCon_RDR Boxed (length ts)),
+                PrefixCon ts)
    split (L l _) _ = parseErrorSDoc l (text "Cannot parse data constructor in a data/newtype declaration:" <+> ppr ty)
 
    mk_rest [L l (HsRecTy flds)] = RecCon (L l flds)
@@ -548,6 +615,9 @@ mkGadtDecl names ty = ConDeclGADT { con_names = names
                                   , con_type  = ty
                                   , con_doc   = Nothing }
 
+setWiredInNameSpace :: Name -> NameSpace -> Maybe RdrName
+setWiredInNameSpace n ns = error "TODO: SHAYAN"
+
 setRdrNameSpace :: RdrName -> NameSpace -> RdrName
 -- ^ This rather gruesome function is used mainly by the parser.
 -- When parsing:
@@ -566,20 +636,17 @@ setRdrNameSpace (Unqual occ) ns = Unqual (setOccNameSpace ns occ)
 setRdrNameSpace (Qual m occ) ns = Qual m (setOccNameSpace ns occ)
 setRdrNameSpace (Orig m occ) ns = Orig m (setOccNameSpace ns occ)
 setRdrNameSpace (Exact n)    ns
-  | Just thing <- wiredInNameTyThing_maybe n
-  = setWiredInNameSpace thing ns
-    -- Preserve Exact Names for wired-in things,
-    -- notably tuples and lists
-
+  | Just rdr <- setWiredInNameSpace n ns
+  = rdr
   | isExternalName n
   = Orig (nameModule n) occ
-
   | otherwise   -- This can happen when quoting and then
                 -- splicing a fixity declaration for a type
   = Exact (mkSystemNameAt (nameUnique n) occ (nameSrcSpan n))
   where
     occ = setOccNameSpace ns (nameOccName n)
 
+{-
 setWiredInNameSpace :: TyThing -> NameSpace -> RdrName
 setWiredInNameSpace (ATyCon tc) ns
   | isDataConNameSpace ns
@@ -595,7 +662,9 @@ setWiredInNameSpace (AConLike (RealDataCon dc)) ns
 
 setWiredInNameSpace thing ns
   = pprPanic "setWiredinNameSpace" (pprNameSpace ns <+> ppr thing)
+-}
 
+{-
 ty_con_data_con :: TyCon -> RdrName
 ty_con_data_con tc
   | isTupleTyCon tc
@@ -619,7 +688,7 @@ data_con_ty_con dc
 
   | otherwise  -- See Note [setRdrNameSpace for wired-in names]
   = Unqual (setOccNameSpace tcClsName (getOccName dc))
-
+-}
 
 {- Note [setRdrNameSpace for wired-in names]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -747,8 +816,8 @@ checkTyClHdr is_cls ty
       where
         arity = length ts
         tup_name | is_cls    = cTupleTyConName arity
-                 | otherwise = getName (tupleTyCon Boxed arity)
-                 -- See Note [Unit tuples] in HsTypes  (TODO: is this still relevant?)
+                 | otherwise = tupleTyConName Boxed arity
+
     go l _  _  _
       = parseErrorSDoc l (text "Malformed head of type or class declaration:"
                           <+> ppr ty)
@@ -1043,8 +1112,6 @@ isFunLhs e = go e [] []
         --
         -- There is a complication to deal with bang patterns.
         --
-        -- ToDo: what about this?
-        --              x + 1 `op` y = ...
 
    go e@(L loc (OpApp l (L loc' (HsVar (L _ op))) r)) es ann
         | Just (e',es') <- splitBang e
