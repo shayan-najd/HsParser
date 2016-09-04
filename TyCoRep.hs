@@ -147,7 +147,6 @@ import TyCon
 import Class
 import CoAxiom
 import FV
-import OccName hiding (varName)
 
 -- others
 import PrelNames

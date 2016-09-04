@@ -90,10 +90,8 @@ import {-# SOURCE #-} TysWiredIn2
 
 import Var              ( TyVar, KindVar, mkTyVar )
 import {-# SOURCE #-} Name
-import OccName
 import TyCon
 import SrcLoc
-import Module
 import U.Unique
 import PrelNames
 import U.FastString
