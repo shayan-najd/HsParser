@@ -56,42 +56,16 @@ module Module
         stableModuleCmp,
         HasModule(..),
         ContainsModule(..),
-
-        -- * The ModuleLocation type
-        ModLocation(..),
-        addBootSuffix, addBootSuffix_maybe, addBootSuffixLocn,
-
-        -- * Module mappings
-        ModuleEnv,
-        elemModuleEnv, extendModuleEnv, extendModuleEnvList,
-        extendModuleEnvList_C, plusModuleEnv_C,
-        delModuleEnvList, delModuleEnv, plusModuleEnv, lookupModuleEnv,
-        lookupWithDefaultModuleEnv, mapModuleEnv, mkModuleEnv, emptyModuleEnv,
-        moduleEnvKeys, moduleEnvElts, moduleEnvToList,
-        unitModuleEnv, isEmptyModuleEnv,
-        foldModuleEnv, extendModuleEnvWith, filterModuleEnv,
-
-        -- * ModuleName mappings
-        ModuleNameEnv, DModuleNameEnv,
-
-        -- * Sets of Modules
-        ModuleSet,
-        emptyModuleSet, mkModuleSet, moduleSetElts, extendModuleSet, elemModuleSet
     ) where
 
 import U.Outputable
 import U.Unique
-import U.UniqFM
-import U.UniqDFM
 import U.FastString
 import U.Binary
 import U.Util
 import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
 import Data.Data
-import Data.Map (Map)
-import qualified Data.Map as Map
-import qualified U.FiniteMap as Map
 import System.FilePath
 
 -- Note [The identifier lexicon]
@@ -163,64 +137,6 @@ import System.FilePath
 -- assign different "PackageKeys" to components from the same package.
 -- (For a brief, non-released period of time, we also called these
 -- UnitKeys).
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Module locations}
-*                                                                      *
-************************************************************************
--}
-
--- | Where a module lives on the file system: the actual locations
--- of the .hs, .hi and .o files, if we have them
-data ModLocation
-   = ModLocation {
-        ml_hs_file   :: Maybe FilePath,
-                -- The source file, if we have one.  Package modules
-                -- probably don't have source files.
-
-        ml_hi_file   :: FilePath,
-                -- Where the .hi file is, whether or not it exists
-                -- yet.  Always of form foo.hi, even if there is an
-                -- hi-boot file (we add the -boot suffix later)
-
-        ml_obj_file  :: FilePath
-                -- Where the .o file is, whether or not it exists yet.
-                -- (might not exist either because the module hasn't
-                -- been compiled yet, or because it is part of a
-                -- package with a .a file)
-  } deriving Show
-
-instance Outputable ModLocation where
-   ppr = text . show
-
-{-
-For a module in another package, the hs_file and obj_file
-components of ModLocation are undefined.
-
-The locations specified by a ModLocation may or may not
-correspond to actual files yet: for example, even if the object
-file doesn't exist, the ModLocation still contains the path to
-where the object file will reside if/when it is created.
--}
-
-addBootSuffix :: FilePath -> FilePath
--- ^ Add the @-boot@ suffix to .hs, .hi and .o files
-addBootSuffix path = path ++ "-boot"
-
-addBootSuffix_maybe :: Bool -> FilePath -> FilePath
--- ^ Add the @-boot@ suffix if the @Bool@ argument is @True@
-addBootSuffix_maybe is_boot path
- | is_boot   = addBootSuffix path
- | otherwise = path
-
-addBootSuffixLocn :: ModLocation -> ModLocation
--- ^ Add the @-boot@ suffix to all file paths associated with the module
-addBootSuffixLocn locn
-  = locn { ml_hs_file  = fmap addBootSuffix (ml_hs_file locn)
-         , ml_hi_file  = addBootSuffix (ml_hi_file locn)
-         , ml_obj_file = addBootSuffix (ml_obj_file locn) }
 
 {-
 ************************************************************************
@@ -406,11 +322,8 @@ stableUnitIdCmp :: UnitId -> UnitId -> Ordering
 -- ^ Compares package ids lexically, rather than by their 'Unique's
 stableUnitIdCmp p1 p2 = unitIdFS p1 `compare` unitIdFS p2
 
-
-
 instance Outputable UnitId where
    ppr pk = ftext (unitIdFS pk)
-
 
 instance Binary UnitId where
   put_ bh pid = put_ bh (unitIdFS pid)
@@ -486,113 +399,10 @@ isHoleModule mod = moduleUnitId mod == holeUnitId
 
 wiredInUnitIds :: [UnitId]
 wiredInUnitIds = [ primUnitId,
-                       integerUnitId,
-                       baseUnitId,
-                       rtsUnitId,
-                       thUnitId,
-                       thisGhcUnitId,
-                       dphSeqUnitId,
-                       dphParUnitId ]
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{@ModuleEnv@s}
-*                                                                      *
-************************************************************************
--}
-
--- | A map keyed off of 'Module's
-newtype ModuleEnv elt = ModuleEnv (Map Module elt)
-
-filterModuleEnv :: (Module -> a -> Bool) -> ModuleEnv a -> ModuleEnv a
-filterModuleEnv f (ModuleEnv e) = ModuleEnv (Map.filterWithKey f e)
-
-elemModuleEnv :: Module -> ModuleEnv a -> Bool
-elemModuleEnv m (ModuleEnv e) = Map.member m e
-
-extendModuleEnv :: ModuleEnv a -> Module -> a -> ModuleEnv a
-extendModuleEnv (ModuleEnv e) m x = ModuleEnv (Map.insert m x e)
-
-extendModuleEnvWith :: (a -> a -> a) -> ModuleEnv a -> Module -> a -> ModuleEnv a
-extendModuleEnvWith f (ModuleEnv e) m x = ModuleEnv (Map.insertWith f m x e)
-
-extendModuleEnvList :: ModuleEnv a -> [(Module, a)] -> ModuleEnv a
-extendModuleEnvList (ModuleEnv e) xs = ModuleEnv (Map.insertList xs e)
-
-extendModuleEnvList_C :: (a -> a -> a) -> ModuleEnv a -> [(Module, a)]
-                      -> ModuleEnv a
-extendModuleEnvList_C f (ModuleEnv e) xs = ModuleEnv (Map.insertListWith f xs e)
-
-plusModuleEnv_C :: (a -> a -> a) -> ModuleEnv a -> ModuleEnv a -> ModuleEnv a
-plusModuleEnv_C f (ModuleEnv e1) (ModuleEnv e2) = ModuleEnv (Map.unionWith f e1 e2)
-
-delModuleEnvList :: ModuleEnv a -> [Module] -> ModuleEnv a
-delModuleEnvList (ModuleEnv e) ms = ModuleEnv (Map.deleteList ms e)
-
-delModuleEnv :: ModuleEnv a -> Module -> ModuleEnv a
-delModuleEnv (ModuleEnv e) m = ModuleEnv (Map.delete m e)
-
-plusModuleEnv :: ModuleEnv a -> ModuleEnv a -> ModuleEnv a
-plusModuleEnv (ModuleEnv e1) (ModuleEnv e2) = ModuleEnv (Map.union e1 e2)
-
-lookupModuleEnv :: ModuleEnv a -> Module -> Maybe a
-lookupModuleEnv (ModuleEnv e) m = Map.lookup m e
-
-lookupWithDefaultModuleEnv :: ModuleEnv a -> a -> Module -> a
-lookupWithDefaultModuleEnv (ModuleEnv e) x m = Map.findWithDefault x m e
-
-mapModuleEnv :: (a -> b) -> ModuleEnv a -> ModuleEnv b
-mapModuleEnv f (ModuleEnv e) = ModuleEnv (Map.mapWithKey (\_ v -> f v) e)
-
-mkModuleEnv :: [(Module, a)] -> ModuleEnv a
-mkModuleEnv xs = ModuleEnv (Map.fromList xs)
-
-emptyModuleEnv :: ModuleEnv a
-emptyModuleEnv = ModuleEnv Map.empty
-
-moduleEnvKeys :: ModuleEnv a -> [Module]
-moduleEnvKeys (ModuleEnv e) = Map.keys e
-
-moduleEnvElts :: ModuleEnv a -> [a]
-moduleEnvElts (ModuleEnv e) = Map.elems e
-
-moduleEnvToList :: ModuleEnv a -> [(Module, a)]
-moduleEnvToList (ModuleEnv e) = Map.toList e
-
-unitModuleEnv :: Module -> a -> ModuleEnv a
-unitModuleEnv m x = ModuleEnv (Map.singleton m x)
-
-isEmptyModuleEnv :: ModuleEnv a -> Bool
-isEmptyModuleEnv (ModuleEnv e) = Map.null e
-
-foldModuleEnv :: (a -> b -> b) -> b -> ModuleEnv a -> b
-foldModuleEnv f x (ModuleEnv e) = Map.foldRightWithKey (\_ v -> f v) x e
-
--- | A set of 'Module's
-type ModuleSet = Map Module ()
-
-mkModuleSet     :: [Module] -> ModuleSet
-extendModuleSet :: ModuleSet -> Module -> ModuleSet
-emptyModuleSet  :: ModuleSet
-moduleSetElts   :: ModuleSet -> [Module]
-elemModuleSet   :: Module -> ModuleSet -> Bool
-
-emptyModuleSet    = Map.empty
-mkModuleSet ms    = Map.fromList [(m,()) | m <- ms ]
-extendModuleSet s m = Map.insert m () s
-moduleSetElts     = Map.keys
-elemModuleSet     = Map.member
-
-{-
-A ModuleName has a Unique, so we can build mappings of these using
-UniqFM.
--}
-
--- | A map keyed off of 'ModuleName's (actually, their 'Unique's)
-type ModuleNameEnv elt = UniqFM elt
-
-
--- | A map keyed off of 'ModuleName's (actually, their 'Unique's)
--- Has deterministic folds and can be deterministically converted to a list
-type DModuleNameEnv elt = UniqDFM elt
+                   integerUnitId,
+                   baseUnitId,
+                   rtsUnitId,
+                   thUnitId,
+                   thisGhcUnitId,
+                   dphSeqUnitId,
+                   dphParUnitId ]

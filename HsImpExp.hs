@@ -13,7 +13,7 @@ module HsImpExp where
 import Module           ( ModuleName )
 import HsDoc            ( HsDocString )
 import OccName          ( HasOccName(..), isTcOcc, isSymOcc )
-import U.BasicTypes       ( SourceText, StringLiteral(..) )
+import U.BasicTypes     ( SourceText, StringLiteral(..) )
 import FieldLabel       ( FieldLbl(..) )
 
 import U.Outputable

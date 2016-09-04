@@ -830,14 +830,13 @@ type RuleBase = NameEnv [CoreRule]
 -- rules which are not visible (even though we can see them...)
 data RuleEnv
     = RuleEnv { re_base          :: RuleBase
-              , re_visible_orphs :: ModuleSet
               }
 
 mkRuleEnv :: RuleBase -> [Module] -> RuleEnv
-mkRuleEnv rules vis_orphs = RuleEnv rules (mkModuleSet vis_orphs)
+mkRuleEnv rules vis_orphs = RuleEnv rules
 
 emptyRuleEnv :: RuleEnv
-emptyRuleEnv = RuleEnv emptyNameEnv emptyModuleSet
+emptyRuleEnv = RuleEnv emptyNameEnv
 
 -- | A 'CoreRule' is:
 --

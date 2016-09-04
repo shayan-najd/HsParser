@@ -124,7 +124,6 @@ import U.Unique
 import Name
 import SrcLoc
 import U.FastString
-import Panic ( panic )
 
 {-
 ************************************************************************

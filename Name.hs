@@ -77,7 +77,6 @@ module Name (
     ) where
 
 import {-# SOURCE #-} TyCoRep( TyThing )
-import {-# SOURCE #-} PrelNames( starKindTyConKey, unicodeStarKindTyConKey )
 
 import OccName
 import Module
@@ -91,6 +90,12 @@ import U.FastString
 import U.Outputable
 
 import Data.Data
+
+starKindTyConKey :: Unique
+starKindTyConKey = mkPreludeTyConUnique 93
+
+unicodeStarKindTyConKey :: Unique
+unicodeStarKindTyConKey = mkPreludeTyConUnique 94
 
 {-
 ************************************************************************
