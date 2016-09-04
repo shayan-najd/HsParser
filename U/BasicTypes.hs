@@ -17,6 +17,33 @@ types that
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module U.BasicTypes(
+   Boxity(..),
+   Arity,
+   FunctionOrData(..),
+   FractionalLit(..),
+   SourceText,
+   tupleParens,
+   Fixity(..),
+   FixityDirection(..),
+   TupleSort(..),
+   Activation(..),
+   InlinePragma(..),
+   RuleMatchInfo(..),
+   InlineSpec(..),
+   RecFlag(..),
+   OverlapMode(..),
+   OverlapFlag(..),
+   WarningTxt(..),
+   StringLiteral(..),
+   inlinePragmaSpec,
+   isDefaultInlinePragma,
+   boxityTupleSort,
+   TopLevelFlag(..),
+   RuleName(..),
+   Origin(..),
+   maxPrecedence
+  {-
+
         Version, bumpVersion, initialVersion,
 
         ConTag, fIRST_TAG,
@@ -44,7 +71,7 @@ module U.BasicTypes(
         OverlapFlag(..), OverlapMode(..), setOverlapModeMaybe,
         hasOverlappingFlag, hasOverlappableFlag, hasIncoherentFlag,
 
-        Boxity(..), isBoxed,
+        isBoxed,
 
         TupleSort(..), tupleSortBoxity, boxityTupleSort,
         tupleParens,
@@ -89,6 +116,7 @@ module U.BasicTypes(
         SourceText,
 
         IntWithInf, infinity, treatZeroAsInf, mkIntWithInf, intGtLimit
+-}
    ) where
 
 import U.FastString
@@ -117,114 +145,6 @@ type Arity = Int
 --  fib 100                    has representation arity 0
 --  \x -> fib x                has representation arity 1
 --  \(# x, y #) -> fib (x + y) has representation arity 2
-type RepArity = Int
-
-{-
-************************************************************************
-*                                                                      *
-              Constructor tags
-*                                                                      *
-************************************************************************
--}
-
--- | Type of the tags associated with each constructor possibility
---   or superclass selector
-type ConTag = Int
-
-fIRST_TAG :: ConTag
--- ^ Tags are allocated from here for real constructors
---   or for superclass selectors
-fIRST_TAG =  1
-
-{-
-************************************************************************
-*                                                                      *
-\subsection[Alignment]{Alignment}
-*                                                                      *
-************************************************************************
--}
-
-type Alignment = Int -- align to next N-byte boundary (N must be a power of 2).
-
-{-
-************************************************************************
-*                                                                      *
-         One-shot information
-*                                                                      *
-************************************************************************
--}
-
--- | If the 'Id' is a lambda-bound variable then it may have lambda-bound
--- variable info. Sometimes we know whether the lambda binding this variable
--- is a \"one-shot\" lambda; that is, whether it is applied at most once.
---
--- This information may be useful in optimisation, as computations may
--- safely be floated inside such a lambda without risk of duplicating
--- work.
-data OneShotInfo
-  = NoOneShotInfo -- ^ No information
-  | ProbOneShot   -- ^ The lambda is probably applied at most once
-                  -- See Note [Computing one-shot info, and ProbOneShot] in Demand
-  | OneShotLam    -- ^ The lambda is applied at most once.
-  deriving (Eq)
-
--- | It is always safe to assume that an 'Id' has no lambda-bound variable information
-noOneShotInfo :: OneShotInfo
-noOneShotInfo = NoOneShotInfo
-
-isOneShotInfo, hasNoOneShotInfo :: OneShotInfo -> Bool
-isOneShotInfo OneShotLam = True
-isOneShotInfo _          = False
-
-hasNoOneShotInfo NoOneShotInfo = True
-hasNoOneShotInfo _             = False
-
-worstOneShot, bestOneShot :: OneShotInfo -> OneShotInfo -> OneShotInfo
-worstOneShot NoOneShotInfo _             = NoOneShotInfo
-worstOneShot ProbOneShot   NoOneShotInfo = NoOneShotInfo
-worstOneShot ProbOneShot   _             = ProbOneShot
-worstOneShot OneShotLam    os            = os
-
-bestOneShot NoOneShotInfo os         = os
-bestOneShot ProbOneShot   OneShotLam = OneShotLam
-bestOneShot ProbOneShot   _          = ProbOneShot
-bestOneShot OneShotLam    _          = OneShotLam
-
-pprOneShotInfo :: OneShotInfo -> SDoc
-pprOneShotInfo NoOneShotInfo = empty
-pprOneShotInfo ProbOneShot   = text "ProbOneShot"
-pprOneShotInfo OneShotLam    = text "OneShot"
-
-instance Outputable OneShotInfo where
-    ppr = pprOneShotInfo
-
-{-
-************************************************************************
-*                                                                      *
-           Swap flag
-*                                                                      *
-************************************************************************
--}
-
-data SwapFlag
-  = NotSwapped  -- Args are: actual,   expected
-  | IsSwapped   -- Args are: expected, actual
-
-instance Outputable SwapFlag where
-  ppr IsSwapped  = text "Is-swapped"
-  ppr NotSwapped = text "Not-swapped"
-
-flipSwap :: SwapFlag -> SwapFlag
-flipSwap IsSwapped  = NotSwapped
-flipSwap NotSwapped = IsSwapped
-
-isSwapped :: SwapFlag -> Bool
-isSwapped IsSwapped  = True
-isSwapped NotSwapped = False
-
-unSwap :: SwapFlag -> (a->a->b) -> a -> a -> b
-unSwap NotSwapped f a b = f a b
-unSwap IsSwapped  f a b = f b a
 
 {-
 ************************************************************************
@@ -241,32 +161,6 @@ instance Outputable FunctionOrData where
     ppr IsFunction = text "(function)"
     ppr IsData     = text "(data)"
 
-{-
-************************************************************************
-*                                                                      *
-\subsection[Version]{Module and identifier version numbers}
-*                                                                      *
-************************************************************************
--}
-
-type Version = Int
-
-bumpVersion :: Version -> Version
-bumpVersion v = v+1
-
-initialVersion :: Version
-initialVersion = 1
-
-{-
-************************************************************************
-*                                                                      *
-                Deprecations
-*                                                                      *
-************************************************************************
--}
-
--- |A String Literal in the source, including its original raw format for use by
--- source to source manipulation tools.
 data StringLiteral = StringLiteral
                        { sl_st :: SourceText, -- literal raw source.
                                               -- See not [Literal source text]
@@ -300,9 +194,6 @@ instance Outputable WarningTxt where
 
 type RuleName = FastString
 
-pprRuleName :: RuleName -> SDoc
-pprRuleName rn = doubleQuotes (ftext rn)
-
 {-
 ************************************************************************
 *                                                                      *
@@ -332,43 +223,8 @@ instance Outputable FixityDirection where
     ppr InfixN = text "infix"
 
 ------------------------
-maxPrecedence, minPrecedence :: Int
+maxPrecedence :: Int
 maxPrecedence = 9
-minPrecedence = 0
-
-defaultFixity :: Fixity
-defaultFixity = Fixity (show maxPrecedence) maxPrecedence InfixL
-
-negateFixity, funTyFixity :: Fixity
--- Wired-in fixities
-negateFixity = Fixity "6" 6 InfixL  -- Fixity of unary negate
-funTyFixity  = Fixity "0" 0 InfixR  -- Fixity of '->'
-
-{-
-Consider
-
-\begin{verbatim}
-        a `op1` b `op2` c
-\end{verbatim}
-@(compareFixity op1 op2)@ tells which way to arrange appication, or
-whether there's an error.
--}
-
-compareFixity :: Fixity -> Fixity
-              -> (Bool,         -- Error please
-                  Bool)         -- Associate to the right: a op1 (b op2 c)
-compareFixity (Fixity _ prec1 dir1) (Fixity _ prec2 dir2)
-  = case prec1 `compare` prec2 of
-        GT -> left
-        LT -> right
-        EQ -> case (dir1, dir2) of
-                        (InfixR, InfixR) -> right
-                        (InfixL, InfixL) -> left
-                        _                -> error_please
-  where
-    right        = (False, True)
-    left         = (False, False)
-    error_please = (True,  False)
 
 {-
 ************************************************************************
@@ -381,14 +237,6 @@ compareFixity (Fixity _ prec1 dir1) (Fixity _ prec2 dir2)
 data TopLevelFlag
   = TopLevel
   | NotTopLevel
-
-isTopLevel, isNotTopLevel :: TopLevelFlag -> Bool
-
-isNotTopLevel NotTopLevel = True
-isNotTopLevel TopLevel    = False
-
-isTopLevel TopLevel     = True
-isTopLevel NotTopLevel  = False
 
 instance Outputable TopLevelFlag where
   ppr TopLevel    = text "<TopLevel>"
@@ -407,10 +255,6 @@ data Boxity
   | Unboxed
   deriving( Eq, Data )
 
-isBoxed :: Boxity -> Bool
-isBoxed Boxed   = True
-isBoxed Unboxed = False
-
 instance Outputable Boxity where
   ppr Boxed   = text "Boxed"
   ppr Unboxed = text "Unboxed"
@@ -427,18 +271,6 @@ data RecFlag = Recursive
              | NonRecursive
              deriving( Eq, Data )
 
-isRec :: RecFlag -> Bool
-isRec Recursive    = True
-isRec NonRecursive = False
-
-isNonRec :: RecFlag -> Bool
-isNonRec Recursive    = False
-isNonRec NonRecursive = True
-
-boolToRecFlag :: Bool -> RecFlag
-boolToRecFlag True  = Recursive
-boolToRecFlag False = NonRecursive
-
 instance Outputable RecFlag where
   ppr Recursive    = text "Recursive"
   ppr NonRecursive = text "NonRecursive"
@@ -454,10 +286,6 @@ instance Outputable RecFlag where
 data Origin = FromSource
             | Generated
             deriving( Eq, Data )
-
-isGenerated :: Origin -> Bool
-isGenerated Generated = True
-isGenerated FromSource = False
 
 instance Outputable Origin where
   ppr FromSource  = text "FromSource"
@@ -488,31 +316,6 @@ data OverlapFlag = OverlapFlag
   , isSafeOverlap :: Bool
   } deriving (Eq, Data)
 
-setOverlapModeMaybe :: OverlapFlag -> Maybe OverlapMode -> OverlapFlag
-setOverlapModeMaybe f Nothing  = f
-setOverlapModeMaybe f (Just m) = f { overlapMode = m }
-
-hasIncoherentFlag :: OverlapMode -> Bool
-hasIncoherentFlag mode =
-  case mode of
-    Incoherent   _ -> True
-    _              -> False
-
-hasOverlappableFlag :: OverlapMode -> Bool
-hasOverlappableFlag mode =
-  case mode of
-    Overlappable _ -> True
-    Overlaps     _ -> True
-    Incoherent   _ -> True
-    _              -> False
-
-hasOverlappingFlag :: OverlapMode -> Bool
-hasOverlappingFlag mode =
-  case mode of
-    Overlapping  _ -> True
-    Overlaps     _ -> True
-    Incoherent   _ -> True
-    _              -> False
 
 data OverlapMode  -- See Note [Rules for instance lookup] in InstEnv
   = NoOverlap SourceText
@@ -570,7 +373,6 @@ data OverlapMode  -- See Note [Rules for instance lookup] in InstEnv
 
   deriving (Eq, Data)
 
-
 instance Outputable OverlapFlag where
    ppr flag = ppr (overlapMode flag) <+> pprSafeOverlap (isSafeOverlap flag)
 
@@ -598,11 +400,6 @@ data TupleSort
   | UnboxedTuple
   | ConstraintTuple
   deriving( Eq, Data )
-
-tupleSortBoxity :: TupleSort -> Boxity
-tupleSortBoxity BoxedTuple      = Boxed
-tupleSortBoxity UnboxedTuple    = Unboxed
-tupleSortBoxity ConstraintTuple = Boxed
 
 boxityTupleSort :: Boxity -> TupleSort
 boxityTupleSort Boxed   = BoxedTuple
@@ -636,9 +433,6 @@ T and Tring are arbitrary, but typically T is the 'main' type while
 Tring is the 'representation' type.  (This just helps us remember
 whether to use 'from' or 'to'.
 -}
-
-data EP a = EP { fromEP :: a,   -- :: T -> Tring
-                 toEP   :: a }  -- :: Tring -> T
 
 {-
 Embedding-projection pairs are used in several places:
@@ -696,13 +490,6 @@ Note [LoopBreaker OccInfo]
 See OccurAnal Note [Weak loop breakers]
 -}
 
-isNoOcc :: OccInfo -> Bool
-isNoOcc NoOccInfo = True
-isNoOcc _         = False
-
-seqOccInfo :: OccInfo -> ()
-seqOccInfo occ = occ `seq` ()
-
 -----------------
 type InterestingCxt = Bool      -- True <=> Function: is applied
                                 --          Data value: scrutinised by a case with
@@ -712,40 +499,10 @@ type InterestingCxt = Bool      -- True <=> Function: is applied
 type InsideLam = Bool   -- True <=> Occurs inside a non-linear lambda
                         -- Substituting a redex for this occurrence is
                         -- dangerous because it might duplicate work.
-insideLam, notInsideLam :: InsideLam
-insideLam    = True
-notInsideLam = False
+
 
 -----------------
 type OneBranch = Bool   -- True <=> Occurs in only one case branch
-                        --      so no code-duplication issue to worry about
-oneBranch, notOneBranch :: OneBranch
-oneBranch    = True
-notOneBranch = False
-
-strongLoopBreaker, weakLoopBreaker :: OccInfo
-strongLoopBreaker = IAmALoopBreaker False
-weakLoopBreaker   = IAmALoopBreaker True
-
-isWeakLoopBreaker :: OccInfo -> Bool
-isWeakLoopBreaker (IAmALoopBreaker _) = True
-isWeakLoopBreaker _                   = False
-
-isStrongLoopBreaker :: OccInfo -> Bool
-isStrongLoopBreaker (IAmALoopBreaker False) = True   -- Loop-breaker that breaks a non-rule cycle
-isStrongLoopBreaker _                       = False
-
-isDeadOcc :: OccInfo -> Bool
-isDeadOcc IAmDead = True
-isDeadOcc _       = False
-
-isOneOcc :: OccInfo -> Bool
-isOneOcc (OneOcc {}) = True
-isOneOcc _           = False
-
-zapFragileOcc :: OccInfo -> OccInfo
-zapFragileOcc (OneOcc {}) = NoOccInfo
-zapFragileOcc occ         = occ
 
 instance Outputable OccInfo where
   -- only used for debugging; never parsed.  KSW 1999-07
@@ -762,51 +519,6 @@ instance Outputable OccInfo where
           pp_args | int_cxt   = char '!'
                   | otherwise = empty
 
-{-
-************************************************************************
-*                                                                      *
-                Default method specfication
-*                                                                      *
-************************************************************************
-
-The DefMethSpec enumeration just indicates what sort of default method
-is used for a class. It is generated from source code, and present in
-interface files; it is converted to Class.DefMethInfo before begin put in a
-Class object.
--}
-
-data DefMethSpec ty
-  = VanillaDM     -- Default method given with polymorphic code
-  | GenericDM ty  -- Default method given with code of this type
-
-instance Outputable (DefMethSpec ty) where
-  ppr VanillaDM      = text "{- Has default method -}"
-  ppr (GenericDM {}) = text "{- Has generic default method -}"
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Success flag}
-*                                                                      *
-************************************************************************
--}
-
-data SuccessFlag = Succeeded | Failed
-
-instance Outputable SuccessFlag where
-    ppr Succeeded = text "Succeeded"
-    ppr Failed    = text "Failed"
-
-successIf :: Bool -> SuccessFlag
-successIf True  = Succeeded
-successIf False = Failed
-
-succeeded, failed :: SuccessFlag -> Bool
-succeeded Succeeded = True
-succeeded Failed    = False
-
-failed Succeeded = False
-failed Failed    = True
 
 {-
 ************************************************************************
@@ -988,9 +700,6 @@ The main effects of CONLIKE are:
       Note [Expanding variables] in Rules.hs.
 -}
 
-isConLike :: RuleMatchInfo -> Bool
-isConLike ConLike = True
-isConLike _            = False
 
 isFunLike :: RuleMatchInfo -> Bool
 isFunLike FunLike = True
@@ -1000,17 +709,6 @@ isEmptyInlineSpec :: InlineSpec -> Bool
 isEmptyInlineSpec EmptyInlineSpec = True
 isEmptyInlineSpec _               = False
 
-defaultInlinePragma, alwaysInlinePragma, neverInlinePragma, dfunInlinePragma
-  :: InlinePragma
-defaultInlinePragma = InlinePragma { inl_src = "{-# INLINE"
-                                   , inl_act = AlwaysActive
-                                   , inl_rule = FunLike
-                                   , inl_inline = EmptyInlineSpec
-                                   , inl_sat = Nothing }
-
-alwaysInlinePragma = defaultInlinePragma { inl_inline = Inline }
-neverInlinePragma  = defaultInlinePragma { inl_act    = NeverActive }
-
 inlinePragmaSpec :: InlinePragma -> InlineSpec
 inlinePragmaSpec = inl_inline
 
@@ -1018,46 +716,11 @@ inlinePragmaSpec = inl_inline
 -- exprIsConApp_maybe can "see" its unfolding
 -- (However, its actual Unfolding is a DFunUnfolding, which is
 --  never inlined other than via exprIsConApp_maybe.)
-dfunInlinePragma   = defaultInlinePragma { inl_act  = AlwaysActive
-                                         , inl_rule = ConLike }
-
 isDefaultInlinePragma :: InlinePragma -> Bool
 isDefaultInlinePragma (InlinePragma { inl_act = activation
                                     , inl_rule = match_info
                                     , inl_inline = inline })
   = isEmptyInlineSpec inline && isAlwaysActive activation && isFunLike match_info
-
-isInlinePragma :: InlinePragma -> Bool
-isInlinePragma prag = case inl_inline prag of
-                        Inline -> True
-                        _      -> False
-
-isInlinablePragma :: InlinePragma -> Bool
-isInlinablePragma prag = case inl_inline prag of
-                           Inlinable -> True
-                           _         -> False
-
-isAnyInlinePragma :: InlinePragma -> Bool
--- INLINE or INLINABLE
-isAnyInlinePragma prag = case inl_inline prag of
-                        Inline    -> True
-                        Inlinable -> True
-                        _         -> False
-
-inlinePragmaSat :: InlinePragma -> Maybe Arity
-inlinePragmaSat = inl_sat
-
-inlinePragmaActivation :: InlinePragma -> Activation
-inlinePragmaActivation (InlinePragma { inl_act = activation }) = activation
-
-inlinePragmaRuleMatchInfo :: InlinePragma -> RuleMatchInfo
-inlinePragmaRuleMatchInfo (InlinePragma { inl_rule = info }) = info
-
-setInlinePragmaActivation :: InlinePragma -> Activation -> InlinePragma
-setInlinePragmaActivation prag activation = prag { inl_act = activation }
-
-setInlinePragmaRuleMatchInfo :: InlinePragma -> RuleMatchInfo -> InlinePragma
-setInlinePragmaRuleMatchInfo prag info = prag { inl_rule = info }
 
 instance Outputable Activation where
    ppr AlwaysActive       = brackets (text "ALWAYS")
@@ -1089,62 +752,11 @@ instance Outputable InlinePragma where
       pp_info | isFunLike info = empty
               | otherwise      = ppr info
 
-isActive :: CompilerPhase -> Activation -> Bool
-isActive InitialPhase AlwaysActive      = True
-isActive InitialPhase (ActiveBefore {}) = True
-isActive InitialPhase _                 = False
-isActive (Phase p)    act               = isActiveIn p act
 
-isActiveIn :: PhaseNum -> Activation -> Bool
-isActiveIn _ NeverActive        = False
-isActiveIn _ AlwaysActive       = True
-isActiveIn p (ActiveAfter _ n)  = p <= n
-isActiveIn p (ActiveBefore _ n) = p >  n
-
-competesWith :: Activation -> Activation -> Bool
--- See Note [Activation competition]
-competesWith NeverActive       _                = False
-competesWith _                 NeverActive      = False
-competesWith AlwaysActive      _                = True
-
-competesWith (ActiveBefore {})  AlwaysActive      = True
-competesWith (ActiveBefore {})  (ActiveBefore {}) = True
-competesWith (ActiveBefore _ a) (ActiveAfter _ b) = a < b
-
-competesWith (ActiveAfter {})  AlwaysActive      = False
-competesWith (ActiveAfter {})  (ActiveBefore {}) = False
-competesWith (ActiveAfter _ a) (ActiveAfter _ b) = a >= b
-
-{- Note [Competing activations]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sometimes a RULE and an inlining may compete, or two RULES.
-See Note [Rules and inlining/other rules] in Desugar.
-
-We say that act1 "competes with" act2 iff
-   act1 is active in the phase when act2 *becomes* active
-NB: remember that phases count *down*: 2, 1, 0!
-
-It's too conservative to ensure that the two are never simultaneously
-active.  For example, a rule might be always active, and an inlining
-might switch on in phase 2.  We could switch off the rule, but it does
-no harm.
--}
-
-isNeverActive, isAlwaysActive, isEarlyActive :: Activation -> Bool
-isNeverActive NeverActive = True
-isNeverActive _           = False
-
+isAlwaysActive :: Activation -> Bool
 isAlwaysActive AlwaysActive = True
 isAlwaysActive _            = False
 
-isEarlyActive AlwaysActive      = True
-isEarlyActive (ActiveBefore {}) = True
-isEarlyActive _                 = False
-
--- Used (instead of Rational) to represent exactly the floating point literal that we
--- encountered in the user's source program. This allows us to pretty-print exactly what
--- the user wrote, which is important e.g. for floating point numbers that can't represented
--- as Doubles (we used to via Double for pretty-printing). See also #2245.
 data FractionalLit
   = FL { fl_text :: String         -- How the value was written in the source
        , fl_value :: Rational      -- Numeric value of the literal
@@ -1152,12 +764,6 @@ data FractionalLit
   deriving (Data, Show)
   -- The Show instance is required for the derived Lexer.x:Token instance when DEBUG is on
 
-negateFractionalLit :: FractionalLit -> FractionalLit
-negateFractionalLit (FL { fl_text = '-':text, fl_value = value }) = FL { fl_text = text, fl_value = negate value }
-negateFractionalLit (FL { fl_text = text, fl_value = value }) = FL { fl_text = '-':text, fl_value = negate value }
-
-integralFractionalLit :: Integer -> FractionalLit
-integralFractionalLit i = FL { fl_text = show i, fl_value = fromInteger i }
 
 -- Comparison operations are needed when grouping literals
 -- for compiling pattern-matching (module MatchLit)
@@ -1170,72 +776,3 @@ instance Ord FractionalLit where
 
 instance Outputable FractionalLit where
   ppr = text . fl_text
-
-{-
-************************************************************************
-*                                                                      *
-    IntWithInf
-*                                                                      *
-************************************************************************
-
-Represents an integer or positive infinity
-
--}
-
--- | An integer or infinity
-data IntWithInf = Int {-# UNPACK #-} !Int
-                | Infinity
-  deriving Eq
-
--- | A representation of infinity
-infinity :: IntWithInf
-infinity = Infinity
-
-instance Ord IntWithInf where
-  compare Infinity Infinity = EQ
-  compare (Int _)  Infinity = LT
-  compare Infinity (Int _)  = GT
-  compare (Int a)  (Int b)  = a `compare` b
-
-instance Outputable IntWithInf where
-  ppr Infinity = char '∞'
-  ppr (Int n)  = int n
-
-instance Num IntWithInf where
-  (+) = plusWithInf
-  (*) = mulWithInf
-
-  abs Infinity = Infinity
-  abs (Int n)  = Int (abs n)
-
-  signum Infinity = Int 1
-  signum (Int n)  = Int (signum n)
-
-  fromInteger = Int . fromInteger
-
-  (-) = panic "subtracting IntWithInfs"
-
-intGtLimit :: Int -> IntWithInf -> Bool
-intGtLimit _ Infinity = False
-intGtLimit n (Int m)  = n > m
-
--- | Add two 'IntWithInf's
-plusWithInf :: IntWithInf -> IntWithInf -> IntWithInf
-plusWithInf Infinity _        = Infinity
-plusWithInf _        Infinity = Infinity
-plusWithInf (Int a)  (Int b)  = Int (a + b)
-
--- | Multiply two 'IntWithInf's
-mulWithInf :: IntWithInf -> IntWithInf -> IntWithInf
-mulWithInf Infinity _        = Infinity
-mulWithInf _        Infinity = Infinity
-mulWithInf (Int a)  (Int b)  = Int (a * b)
-
--- | Turn a positive number into an 'IntWithInf', where 0 represents infinity
-treatZeroAsInf :: Int -> IntWithInf
-treatZeroAsInf 0 = Infinity
-treatZeroAsInf n = Int n
-
--- | Inject any integer into an 'IntWithInf'
-mkIntWithInf :: Int -> IntWithInf
-mkIntWithInf = Int
