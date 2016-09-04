@@ -107,7 +107,7 @@ import HsTypes
 import HsLit
 
 import RdrName
-import Name
+import OccName (mkVarOccFS)
 import U.BasicTypes
 import SrcLoc
 import U.FastString

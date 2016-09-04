@@ -69,6 +69,7 @@ import ConLike          ( ConLike(..) )
 -- import CoAxiom          ( Role,fsFromRole )
 import RdrName
 import Name
+import OccName
 import U.BasicTypes
 import Lexer
 import Lexeme           ( isLexCon )
@@ -99,6 +100,9 @@ import Data.Char
 import Data.Data       ( dataTypeOf, fromConstr, dataTypeConstrs )
 
 #include "HsVersions.h"
+
+wiredInNameTyThing_maybe :: Name -> Maybe TyThing
+wiredInNameTyThing_maybe = error "SHAYAN TODO!"
 
 
 {- **********************************************************************

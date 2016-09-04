@@ -33,48 +33,96 @@
 --  * Internal, if they name things in the module being compiled. Some internal
 --    Names are system names, if they are names manufactured by the compiler
 
-module Name (
+module Name (Name,NamedThing(..),
+             nameModule,
+             nameUnique,
+             setNameUnique,
+             nameOccName,
+             isExternalName,
+             isInternalName,
+             localiseName,
+             isWiredInName,
+             pprModulePrefix,
+             pprPrefixName,
+             pprInfixName,
+             mkInternalName,
+             mkExternalName,
+             mkSystemVarName,
+             nameSrcSpan,
+             tidyNameOcc,
+             isSystemName,
+             stableNameCmp,
+             nameIsLocalOrFrom,
+             getSrcSpan,
+             mkSysTvName,
+             mkSystemNameAt,
+             BuiltInSyntax (..)
+            ) where {-
         -- * The main types
         Name,                                   -- Abstract
         BuiltInSyntax(..),
 
         -- ** Creating 'Name's
-        mkSystemName, mkSystemNameAt,
-        mkInternalName, mkClonedInternalName, mkDerivedInternalName,
-        mkSystemVarName, mkSysTvName,
+        mkSystemName,
+        mkSystemNameAt,
+        mkInternalName,
+        mkClonedInternalName,
+        mkDerivedInternalName,
+        mkSystemVarName,
+        mkSysTvName,
         mkFCallName,
-        mkExternalName, mkWiredInName,
+        mkExternalName,
+        mkWiredInName,
 
         -- ** Manipulating and deconstructing 'Name's
-        nameUnique, setNameUnique,
-        nameOccName, nameModule, nameModule_maybe,
+        nameUnique,
+        setNameUnique,
+        nameOccName,
+        nameModule,
+        nameModule_maybe,
         setNameLoc,
         tidyNameOcc,
         localiseName,
         mkLocalisedOccName,
 
-        nameSrcLoc, nameSrcSpan, pprNameDefnLoc, pprDefinedAt,
+        nameSrcLoc,
+        nameSrcSpan,
+        pprNameDefnLoc,
+        pprDefinedAt,
 
         -- ** Predicates on 'Name's
-        isSystemName, isInternalName, isExternalName,
-        isTyVarName, isTyConName, isDataConName,
-        isValName, isVarName,
-        isWiredInName, isBuiltInSyntax,
+        isSystemName,
+        isInternalName,
+        isExternalName,
+        isTyVarName,
+        isTyConName,
+        isDataConName,
+        isValName,
+        isVarName,
+        isWiredInName,
+        isBuiltInSyntax,
         isHoleName,
         wiredInNameTyThing_maybe,
-        nameIsLocalOrFrom, nameIsHomePackageImport, nameIsFromExternalPackage,
+        nameIsLocalOrFrom,
+        nameIsHomePackageImport,
+        nameIsFromExternalPackage,
         stableNameCmp,
 
         -- * Class 'NamedThing' and overloaded friends
         NamedThing(..),
-        getSrcLoc, getSrcSpan, getOccString, getOccFS,
+        getSrcLoc,
+        getSrcSpan,
+        getOccString,
+        getOccFS,
 
-        pprInfixName, pprPrefixName, pprModulePrefix,
+        pprInfixName,
+        pprPrefixName,
+        pprModulePrefix,
         nameStableString,
 
         -- Re-export the OccName stuff
         module OccName
-    ) where
+    ) where-}
 
 import {-# SOURCE #-} TyCoRep( TyThing )
 
@@ -184,12 +232,12 @@ instance HasOccName Name where
 nameUnique              :: Name -> Unique
 nameOccName             :: Name -> OccName
 nameModule              :: Name -> Module
-nameSrcLoc              :: Name -> SrcLoc
+-- nameSrcLoc              :: Name -> SrcLoc
 nameSrcSpan             :: Name -> SrcSpan
 
 nameUnique  name = mkUniqueGrimily (n_uniq name)
 nameOccName name = n_occ  name
-nameSrcLoc  name = srcSpanStart (n_loc name)
+-- nameSrcLoc  name = srcSpanStart (n_loc name)
 nameSrcSpan name = n_loc  name
 
 {-
@@ -207,7 +255,7 @@ isWiredInName     :: Name -> Bool
 
 isWiredInName (Name {n_sort = WiredIn _ _ _}) = True
 isWiredInName _                               = False
-
+{-
 wiredInNameTyThing_maybe :: Name -> Maybe TyThing
 wiredInNameTyThing_maybe (Name {n_sort = WiredIn _ thing _}) = Just thing
 wiredInNameTyThing_maybe _                                   = Nothing
@@ -215,16 +263,16 @@ wiredInNameTyThing_maybe _                                   = Nothing
 isBuiltInSyntax :: Name -> Bool
 isBuiltInSyntax (Name {n_sort = WiredIn _ _ BuiltInSyntax}) = True
 isBuiltInSyntax _                                           = False
-
+-}
 isExternalName (Name {n_sort = External _})    = True
 isExternalName (Name {n_sort = WiredIn _ _ _}) = True
 isExternalName _                               = False
 
 isInternalName name = not (isExternalName name)
-
+{-
 isHoleName :: Name -> Bool
 isHoleName = isHoleModule . nameModule
-
+-}
 nameModule name =
   nameModule_maybe name `orElse`
   pprPanic "nameModule" (ppr (n_sort name) <+> ppr name)
@@ -260,7 +308,7 @@ nameIsLocalOrFrom :: Module -> Name -> Bool
 nameIsLocalOrFrom from name
   | Just mod <- nameModule_maybe name = from == mod || isInteractiveModule mod
   | otherwise                         = True
-
+{-
 nameIsHomePackageImport :: Module -> Name -> Bool
 -- True if the Name is defined in module of this package
 -- /other than/ the this_mod
@@ -297,7 +345,7 @@ isValName name = isValOcc (nameOccName name)
 
 isVarName :: Name -> Bool
 isVarName = isVarOcc . nameOccName
-
+-}
 isSystemName (Name {n_sort = System}) = True
 isSystemName _                        = False
 
@@ -324,17 +372,18 @@ mkInternalName uniq occ loc = Name { n_uniq = getKey uniq
         --        uniques if you get confused
         --      * for interface files we tidyCore first, which makes
         --        the OccNames distinct when they need to be
-
+{-
 mkClonedInternalName :: Unique -> Name -> Name
 mkClonedInternalName uniq (Name { n_occ = occ, n_loc = loc })
   = Name { n_uniq = getKey uniq, n_sort = Internal
          , n_occ = occ, n_loc = loc }
-
+-}
+{-
 mkDerivedInternalName :: (OccName -> OccName) -> Unique -> Name -> Name
 mkDerivedInternalName derive_occ uniq (Name { n_occ = occ, n_loc = loc })
   = Name { n_uniq = getKey uniq, n_sort = Internal
          , n_occ = derive_occ occ, n_loc = loc }
-
+-}
 -- | Create a name which definitely originates in the given module
 mkExternalName :: Unique -> Module -> OccName -> SrcSpan -> Name
 -- WATCH OUT! External Names should be in the Name Cache
@@ -343,14 +392,14 @@ mkExternalName :: Unique -> Module -> OccName -> SrcSpan -> Name
 mkExternalName uniq mod occ loc
   = Name { n_uniq = getKey uniq, n_sort = External mod,
            n_occ = occ, n_loc = loc }
-
+{-
 -- | Create a name which is actually defined by the compiler itself
 mkWiredInName :: Module -> OccName -> Unique -> TyThing -> BuiltInSyntax -> Name
 mkWiredInName mod occ uniq thing built_in
   = Name { n_uniq = getKey uniq,
            n_sort = WiredIn mod thing built_in,
            n_occ = occ, n_loc = wiredInSrcSpan }
-
+-}
 -- | Create a name brought into being by the compiler
 mkSystemName :: Unique -> OccName -> Name
 mkSystemName uniq occ = mkSystemNameAt uniq occ noSrcSpan
@@ -364,23 +413,23 @@ mkSystemVarName uniq fs = mkSystemName uniq (mkVarOccFS fs)
 
 mkSysTvName :: Unique -> FastString -> Name
 mkSysTvName uniq fs = mkSystemName uniq (mkOccNameFS tvName fs)
-
+{-
 -- | Make a name for a foreign call
 mkFCallName :: Unique -> String -> Name
 mkFCallName uniq str = mkInternalName uniq (mkVarOcc str) noSrcSpan
    -- The encoded string completely describes the ccall
-
+-}
 -- When we renumber/rename things, we need to be
 -- able to change a Name's Unique to match the cached
 -- one in the thing it's the name of.  If you know what I mean.
 setNameUnique :: Name -> Unique -> Name
 setNameUnique name uniq = name {n_uniq = getKey uniq}
-
+{-
 -- This is used for hsigs: we want to use the name of the originally exported
 -- entity, but edit the location to refer to the reexport site
 setNameLoc :: Name -> SrcSpan -> Name
 setNameLoc name loc = name {n_loc = loc}
-
+-}
 tidyNameOcc :: Name -> OccName -> Name
 -- We set the OccName of a Name when tidying
 -- In doing so, we change System --> Internal, so that when we print
@@ -391,7 +440,7 @@ tidyNameOcc name                            occ = name { n_occ = occ }
 -- | Make the 'Name' into an internal name, regardless of what it was to begin with
 localiseName :: Name -> Name
 localiseName n = n { n_sort = Internal }
-
+{-
 -- |Create a localised variant of a name.
 --
 -- If the name is external, encode the original's module name to disambiguate.
@@ -403,7 +452,7 @@ mkLocalisedOccName this_mod mk_occ name = mk_occ origin (nameOccName name)
     origin
       | nameIsLocalOrFrom this_mod name = Nothing
       | otherwise                       = Just (moduleNameColons . moduleName . nameModule $ name)
-
+-}
 {-
 ************************************************************************
 *                                                                      *
@@ -584,7 +633,7 @@ ppr_occ_name occ = ftext (occNameFS occ)
 -- cached behind the scenes in the FastString implementation.
 ppr_z_occ_name :: OccName -> SDoc
 ppr_z_occ_name occ = ztext (zEncodeFS (occNameFS occ))
-
+{-
 -- Prints (if mod information is available) "Defined at <loc>" or
 --  "Defined in <mod>" information for a Name.
 pprDefinedAt :: Name -> SDoc
@@ -619,7 +668,7 @@ nameSortStableString System = "$_sys"
 nameSortStableString Internal = "$_in"
 nameSortStableString (External mod) = moduleStableString mod
 nameSortStableString (WiredIn mod _ _) = moduleStableString mod
-
+-}
 {-
 ************************************************************************
 *                                                                      *
@@ -635,15 +684,15 @@ class NamedThing a where
     getOccName :: a -> OccName
     getOccName n = nameOccName (getName n)      -- Default method
 
-getSrcLoc           :: NamedThing a => a -> SrcLoc
+-- getSrcLoc           :: NamedThing a => a -> SrcLoc
 getSrcSpan          :: NamedThing a => a -> SrcSpan
-getOccString        :: NamedThing a => a -> String
-getOccFS            :: NamedThing a => a -> FastString
+-- getOccString        :: NamedThing a => a -> String
+-- getOccFS            :: NamedThing a => a -> FastString
 
-getSrcLoc           = nameSrcLoc           . getName
+-- getSrcLoc           = nameSrcLoc           . getName
 getSrcSpan          = nameSrcSpan          . getName
-getOccString        = occNameString        . getOccName
-getOccFS            = occNameFS            . getOccName
+-- getOccString        = occNameString        . getOccName
+-- getOccFS            = occNameFS            . getOccName
 
 pprInfixName :: (Outputable a, NamedThing a) => a -> SDoc
 -- See Outputable.pprPrefixVar, pprInfixVar;

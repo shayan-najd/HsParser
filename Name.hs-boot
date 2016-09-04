@@ -20,7 +20,10 @@ nameUnique :: Name -> Unique
 setNameUnique :: Name -> Unique -> Name
 nameOccName   :: Name -> OccName
 isExternalName :: Name -> Bool
+isInternalName :: Name -> Bool
 isWiredInName :: Name -> Bool
+localiseName :: Name -> Name
+nameIsLocalOrFrom :: Module -> Name -> Bool
 
 instance Outputable Name
 instance Uniquable Name
@@ -38,5 +41,10 @@ mkSystemVarName :: Unique -> FastString -> Name
 nameSrcSpan :: Name -> SrcSpan
 tidyNameOcc :: Name -> OccName -> Name
 isSystemName :: Name -> Bool
+getSrcSpan :: NamedThing a => a -> SrcSpan
+mkSysTvName :: Unique -> FastString -> Name
+
+stableNameCmp :: Name -> Name -> Ordering
+mkSystemNameAt :: Unique -> OccName -> SrcSpan -> Name
 
 data BuiltInSyntax = BuiltInSyntax | UserSyntax

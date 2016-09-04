@@ -124,7 +124,8 @@ import Type
 import TysPrim
 import DataCon
 import Demand
-import Name
+import {-# SOURCE #-} Name
+import OccName (OccName,mkWorkerOcc)
 import Module
 import Class
 import {-# SOURCE #-} PrimOp (PrimOp)
@@ -136,6 +137,8 @@ import U.Unique
 import U.UniqSupply
 import U.FastString
 import U.Util
+
+mkDerivedInternalName = error "SHAYAN TODO!"
 
 -- infixl so you can say (id `set` a `set` b)
 infixl  1 `setIdUnfoldingLazily`,

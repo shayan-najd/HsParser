@@ -142,6 +142,8 @@ import Var
 import VarEnv
 import VarSet
 import {-# SOURCE #-} Name hiding ( varName )
+import OccName (parenSymOcc,tidyOccName,mkTyVarOcc,
+               occNameString,initTidyOccEnv,mkVarOcc,isSymOcc)
 import U.BasicTypes
 import TyCon
 import Class

@@ -202,7 +202,9 @@ import TyCon
 -- others:
 import DynFlags
 import CoreFVs
-import Name -- hiding (varName)
+import {-# SOURCE #-} Name -- hiding (varName)
+import OccName
+
             -- We use this to make dictionaries for type literals.
             -- Perhaps there's a better way to do this?
 import NameSet
@@ -1177,8 +1179,8 @@ getDFunTyKey (CastTy ty _)           = getDFunTyKey ty
 getDFunTyKey t@(CoercionTy _)        = pprPanic "getDFunTyKey" (ppr t)
 
 getDFunTyLitKey :: TyLit -> OccName
-getDFunTyLitKey (NumTyLit n) = mkOccName Name.varName (show n)
-getDFunTyLitKey (StrTyLit n) = mkOccName Name.varName (show n)  -- hm
+getDFunTyLitKey (NumTyLit n) = mkOccName OccName.varName (show n)
+getDFunTyLitKey (StrTyLit n) = mkOccName OccName.varName (show n)  -- hm
 
 ---------------
 mkNakedTyConApp :: TyCon -> [Type] -> Type

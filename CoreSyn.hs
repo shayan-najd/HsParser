@@ -94,7 +94,8 @@ import VarEnv( InScopeSet )
 import Var
 import Type
 import Coercion
-import Name
+import {-# SOURCE #-} Name
+import OccName (OccName)
 import NameSet
 import NameEnv( NameEnv, emptyNameEnv )
 import Literal

@@ -33,7 +33,8 @@ module NameSet (
 
 #include "HsVersions.h"
 
-import Name
+import {-# SOURCE #-} Name
+import OccName (startsWithUnderscore)
 import U.UniqSet
 import U.UniqFM
 import Data.List (sortBy)

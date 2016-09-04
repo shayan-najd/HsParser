@@ -133,7 +133,8 @@ import TyCon
 import TyCoRep          ( TyBinder(..) )
 import Class            ( Class, mkClass )
 import RdrName
-import Name
+import {-# SOURCE #-} Name
+import OccName
 import NameSet          ( NameSet, mkNameSet, elemNameSet )
 import U.BasicTypes       ( Arity, RecFlag(..), Boxity(..),
                           TupleSort(..) )
@@ -159,6 +160,8 @@ alpha_tyvar = [alphaTyVar]
 
 alpha_ty :: [Type]
 alpha_ty = [alphaTy]
+
+mkWiredInName = error "SHAYAN TODO"
 
 {-
 Note [Wiring in RuntimeRep]
@@ -237,7 +240,7 @@ mkWiredInDataConName built_in modu fs unique datacon
 
 mkWiredInIdName :: Module -> FastString -> Unique -> Id -> Name
 mkWiredInIdName mod fs uniq id
- = mkWiredInName mod (mkOccNameFS Name.varName fs) uniq (AnId id) UserSyntax
+ = mkWiredInName mod (mkOccNameFS OccName.varName fs) uniq (AnId id) UserSyntax
 
 -- See Note [Kind-changing of (~) and Coercible]
 -- in libraries/ghc-prim/GHC/Types.hs

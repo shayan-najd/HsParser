@@ -90,6 +90,7 @@ import {-# SOURCE #-} TysWiredIn2
 
 import Var              ( TyVar, KindVar, mkTyVar )
 import {-# SOURCE #-} Name
+import OccName
 import TyCon
 import SrcLoc
 import U.Unique
@@ -99,6 +100,8 @@ import U.Outputable
 import TyCoRep (Type(..),Kind,mkTyConTy,mkTyVarTy,TyBinder(..),
                 VisibilityFlag(..),mkTyVarTys,TyThing(..))
 import Data.Char
+
+mkWiredInName = error "SHAYAN TODO!"
 
 {-
 ************************************************************************
