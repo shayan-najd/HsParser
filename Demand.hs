@@ -67,7 +67,7 @@ import VarEnv
 import U.UniqFM
 import U.Util
 import U.BasicTypes
-import Binary
+import U.Binary
 import U.Maybes           ( orElse )
 
 import Type            ( Type, isUnliftedType )

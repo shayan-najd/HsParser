@@ -49,7 +49,7 @@ import TyCon
 import U.Outputable
 import U.FastString
 import U.BasicTypes
-import Binary
+import U.Binary
 -- import Constants
 import DynFlags
 import U.UniqFM

@@ -107,7 +107,7 @@ import U.Outputable
 import U.Util
 import U.UniqFM
 import SrcLoc     ( RealSrcSpan, containsSpan )
-import Binary
+import U.Binary
 
 import Data.Data hiding (TyCon)
 import Data.Int

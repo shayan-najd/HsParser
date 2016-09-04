@@ -85,7 +85,7 @@ import SrcLoc
 import U.Unique
 import U.Util
 import U.Maybes
-import Binary
+import U.Binary
 import DynFlags
 import U.FastString
 import U.Outputable

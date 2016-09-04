@@ -124,7 +124,6 @@ import U.Unique
 import Name
 import SrcLoc
 import U.FastString
-import Config ( cIntegerLibraryType, IntegerLibrary(..) )
 import Panic ( panic )
 
 {-
@@ -385,10 +384,8 @@ basicKnownKeyNames
 
         -- homogeneous equality
         , eqTyConName
-
-    ] ++ case cIntegerLibraryType of
-           IntegerGMP    -> [integerSDataConName]
-           IntegerSimple -> []
+        , integerSDataConName
+        ]
 
 genericTyConNames :: [Name]
 genericTyConNames = [
@@ -1057,10 +1054,8 @@ integerTyConName, mkIntegerName, integerSDataConName,
     andIntegerName, orIntegerName, xorIntegerName, complementIntegerName,
     shiftLIntegerName, shiftRIntegerName, bitIntegerName :: Name
 integerTyConName      = tcQual  gHC_INTEGER_TYPE (fsLit "Integer")           integerTyConKey
-integerSDataConName   = dcQual gHC_INTEGER_TYPE (fsLit n)                   integerSDataConKey
-  where n = case cIntegerLibraryType of
-            IntegerGMP    -> "S#"
-            IntegerSimple -> panic "integerSDataConName evaluated for integer-simple"
+integerSDataConName   = dcQual gHC_INTEGER_TYPE (fsLit "S#")                   integerSDataConKey
+
 mkIntegerName         = varQual gHC_INTEGER_TYPE (fsLit "mkInteger")         mkIntegerIdKey
 integerToWord64Name   = varQual gHC_INTEGER_TYPE (fsLit "integerToWord64")   integerToWord64IdKey
 integerToInt64Name    = varQual gHC_INTEGER_TYPE (fsLit "integerToInt64")    integerToInt64IdKey

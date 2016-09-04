@@ -31,7 +31,7 @@ import Control.Applicative ((<$))
 import HsSyn
 
 -- compiler/utils
-import OrdList
+import U.OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
 import U.FastString
 import U.Maybes           ( orElse )
@@ -58,7 +58,7 @@ import ApiAnnotation
 import ForeignCall
 import TysPrim          ( eqPrimTyCon )
 import PrelNames        ( eqTyCon_RDR )
-import TysWiredIn       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
+import TysWiredIn2       ( unitTyCon, unitDataCon, tupleTyCon, tupleDataCon, nilDataCon,
                           unboxedUnitTyCon, unboxedUnitDataCon,
                           listTyCon_RDR, parrTyCon_RDR, consDataCon_RDR )
 

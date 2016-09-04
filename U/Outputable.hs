@@ -66,7 +66,7 @@ module U.Outputable (
         neverQualify, neverQualifyNames, neverQualifyModules,
         alwaysQualifyPackages, neverQualifyPackages,
         QualifyName(..), queryQual,
-        sdocWithDynFlags, sdocWithPlatform,
+        sdocWithDynFlags,
         getPprStyle, withPprStyle, withPprStyleDoc,
         pprDeeper, pprDeeperList, pprSetDepth,
         codeStyle, userStyle, debugStyle, dumpStyle, asmStyle,
@@ -81,7 +81,7 @@ module U.Outputable (
     ) where
 
 import {-# SOURCE #-}   DynFlags( DynFlags,defaultDynFlag,
-                                  targetPlatform, pprUserLength, pprCols,
+                                  pprUserLength, pprCols,
                                   useUnicode, useUnicodeSyntax)
 import {-# SOURCE #-}   Module( UnitId, Module, ModuleName, moduleName )
 import {-# SOURCE #-}   OccName( OccName )
@@ -89,7 +89,6 @@ import {-# SOURCE #-}   OccName( OccName )
 import U.FastString
 import qualified U.Pretty
 import U.Util
-import Platform
 import U.Pretty           ( Doc, Mode(..) )
 import Panic
 import GHC.Serialized
@@ -337,8 +336,6 @@ getPprStyle df = SDoc $ \ctx -> runSDoc (df (sdocStyle ctx)) ctx
 sdocWithDynFlags :: (DynFlags -> SDoc) -> SDoc
 sdocWithDynFlags f = SDoc $ \ctx -> runSDoc (f (sdocDynFlags ctx)) ctx
 
-sdocWithPlatform :: (Platform -> SDoc) -> SDoc
-sdocWithPlatform f = sdocWithDynFlags (f . targetPlatform)
 
 qualName :: PprStyle -> QueryQualifyName
 qualName (PprUser q _)  mod occ = queryQualifyName q mod occ

@@ -111,7 +111,7 @@ import U.FastString
 import U.FastStringEnv
 import U.Outputable
 import Lexeme
-import Binary
+import U.Binary
 import Data.Char
 import Data.Data
 

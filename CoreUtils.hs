@@ -78,7 +78,7 @@ import Pair
 import Data.Function       ( on )
 import Data.List
 import Data.Ord            ( comparing )
-import OrdList
+import U.OrdList
 
 {-
 ************************************************************************

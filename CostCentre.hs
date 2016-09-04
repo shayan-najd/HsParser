@@ -20,7 +20,7 @@ module CostCentre (
         cmpCostCentre   -- used for removing dups in a list
     ) where
 
-import Binary
+import U.Binary
 import Var
 import Name
 import Module

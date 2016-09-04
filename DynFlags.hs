@@ -23,7 +23,6 @@ module DynFlags (
                  pprUserLength,pprCols,useUnicode,settings,log_action
                 ,verbosity,reverseErrors,extensionFlags,warningFlags,
                 thisPackage),
-        targetPlatform,
         Settings(Settings,sPlatformConstants),
         wORD_SIZE ,
         cINT_SIZE,
@@ -36,7 +35,7 @@ module DynFlags (
 
 #include "HsVersions.h"
 
-import Platform
+import Platform (Platform(platformWordSize))
 import PlatformConstants
 import Module
 import Panic

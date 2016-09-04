@@ -19,7 +19,7 @@ module ForeignCall (
     ) where
 
 import U.FastString
-import Binary
+import U.Binary
 import U.Outputable
 import Module
 import U.BasicTypes ( SourceText )

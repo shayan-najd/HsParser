@@ -79,13 +79,12 @@ module Module
         emptyModuleSet, mkModuleSet, moduleSetElts, extendModuleSet, elemModuleSet
     ) where
 
-import Config
 import U.Outputable
 import U.Unique
 import U.UniqFM
 import U.UniqDFM
 import U.FastString
-import Binary
+import U.Binary
 import U.Util
 import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
@@ -460,11 +459,7 @@ integerUnitId, primUnitId,
   thUnitId, dphSeqUnitId, dphParUnitId,
   mainUnitId, thisGhcUnitId, interactiveUnitId  :: UnitId
 primUnitId        = fsToUnitId (fsLit "ghc-prim")
-integerUnitId     = fsToUnitId (fsLit n)
-  where
-    n = case cIntegerLibraryType of
-        IntegerGMP    -> "integer-gmp"
-        IntegerSimple -> "integer-simple"
+integerUnitId     = fsToUnitId (fsLit "integer-gmp")
 baseUnitId        = fsToUnitId (fsLit "base")
 rtsUnitId         = fsToUnitId (fsLit "rts")
 thUnitId          = fsToUnitId (fsLit "template-haskell")

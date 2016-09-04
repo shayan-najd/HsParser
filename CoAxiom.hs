@@ -37,7 +37,7 @@ import Name
 import U.Unique
 import Var
 import U.Util
-import Binary
+import U.Binary
 import Pair
 import U.BasicTypes
 import Data.Typeable ( Typeable )

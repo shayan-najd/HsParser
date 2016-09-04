@@ -29,7 +29,6 @@ module Panic (
 
 import {-# SOURCE #-} U.Outputable (SDoc, showSDocUnsafe)
 
-import Config
 import U.Exception
 
 import Control.Concurrent
@@ -47,6 +46,10 @@ import GHC.ConsoleHandler
 
 import GHC.Stack
 import System.Mem.Weak  ( deRefWeak )
+
+cProjectVersion       :: String
+cProjectVersion       = "8.1.20160617"
+
 
 -- | GHC's own exception type
 --   error messages all take the form:

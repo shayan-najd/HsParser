@@ -39,7 +39,7 @@ import Control.Applicative ((<$))
 import HsSyn
 
 -- compiler/utils
-import OrdList
+import U.OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
 import U.FastString
 import U.Maybes           ( orElse )

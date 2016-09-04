@@ -21,7 +21,7 @@ import Data.Data
 
 import U.MonadUtils
 import U.Outputable
-import Binary
+import U.Binary
 import SrcLoc
 
 ----------------------------------------------------------------------

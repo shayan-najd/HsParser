@@ -22,12 +22,11 @@ module RdrHsSyn (
         mkRecConstrOrUpdate, -- HsExp -> [HsFieldUpdate] -> P HsExp
         mkTyClD, mkInstD,
         mkRdrRecordCon, mkRdrRecordUpd,
-        setRdrNameSpace,
+--        setRdrNameSpace,
 
         cvBindGroup,
         cvBindsAndSigs,
         cvTopDecls,
-        placeHolderPunRhs,
 
         -- Stuff to do with Foreign declarations
         mkImport,
@@ -82,7 +81,7 @@ import ForeignCall
 import PrelNames        ( forall_tv_RDR, eqTyCon_RDR, allNameStrings )
 import SrcLoc
 import U.Unique           ( hasKey )
-import OrdList          ( OrdList, fromOL )
+import U.OrdList          ( OrdList, fromOL )
 import U.Bag              ( emptyBag, consBag )
 import U.Outputable
 import U.FastString
@@ -869,15 +868,9 @@ checkAPat msg loc e0 = do
                -> return (SplicePat s)
    _           -> patFail msg loc e0
 
-placeHolderPunRhs :: LHsExpr RdrName
--- The RHS of a punned record field will be filled in by the renamer
--- It's better not to make it an error, in case we want to print it when debugging
-placeHolderPunRhs = noLoc (HsVar (noLoc pun_RDR))
-
-plus_RDR, bang_RDR, pun_RDR :: RdrName
+plus_RDR, bang_RDR:: RdrName
 plus_RDR = mkUnqual varName (fsLit "+") -- Hack
 bang_RDR = mkUnqual varName (fsLit "!") -- Hack
-pun_RDR  = mkUnqual varName (fsLit "pun-right-hand-side")
 
 checkPatField :: SDoc -> LHsRecField RdrName (LHsExpr RdrName)
               -> P (LHsRecField RdrName (LPat RdrName))

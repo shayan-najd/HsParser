@@ -116,7 +116,7 @@ import {-# SOURCE #-} TysWiredIn2  ( runtimeRepTyCon, constraintKind
                                   , vecCountTyCon, vecElemTyCon, liftedTypeKind )
 import {-# SOURCE #-} DataCon ( DataCon, dataConExTyVars, dataConFieldLabels )
 
-import Binary
+import U.Binary
 import Var
 import Class
 import U.BasicTypes

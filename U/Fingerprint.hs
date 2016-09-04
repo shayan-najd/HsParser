@@ -12,7 +12,7 @@
 --
 -- ----------------------------------------------------------------------------
 
-module Fingerprint (
+module U.Fingerprint (
         Fingerprint(..), fingerprint0,
         readHexFingerprint,
         fingerprintData,

@@ -75,7 +75,7 @@ import Name
 import U.FastString
 import U.FastStringEnv
 import U.Outputable
-import Binary
+import U.Binary
 
 import Data.Data
 

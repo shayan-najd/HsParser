@@ -22,7 +22,7 @@ import NameEnv
 import NameSet
 
 import FieldLabel
-import Binary
+import U.Binary
 import U.Outputable
 import U.Util
 

@@ -78,7 +78,7 @@ import U.Util
 import U.BasicTypes
 import U.FastString
 import Module
-import Binary
+import U.Binary
 import U.UniqFM
 
 import qualified Data.Data as Data

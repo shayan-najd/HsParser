@@ -150,7 +150,7 @@ import FV
 
 -- others
 import PrelNames
-import Binary
+import U.Binary
 import U.Outputable
 import DynFlags
 import U.FastString

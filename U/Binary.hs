@@ -16,7 +16,7 @@
 -- where you can obtain the original version of the Binary library, namely
 --     http://www.cs.york.ac.uk/fp/nhc98/
 
-module Binary
+module U.Binary
   ( {-type-}  Bin,
     {-class-} Binary(..),
     {-type-}  BinHandle,
@@ -63,7 +63,7 @@ import U.FastString
 import Panic
 import U.UniqFM
 import U.FastMutInt
-import Fingerprint
+import U.Fingerprint
 import U.BasicTypes
 import SrcLoc
 
