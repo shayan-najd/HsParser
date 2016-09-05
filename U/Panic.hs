@@ -205,7 +205,7 @@ assertPanic file line =
 
 -- | Like try, but pass through UserInterrupt and Panic exceptions.
 --   Used when we want soft failures when reading interface files, for example.
---   TODO: I'm not entirely sure if this is catching what we really want to catch
+--   I'm not entirely sure if this is catching what we really want to catch
 tryMost :: IO a -> IO (Either SomeException a)
 tryMost action = do r <- try action
                     case r of

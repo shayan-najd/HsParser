@@ -17,7 +17,6 @@
 --
 -----------------------------------------------------------------------------
 
---   ToDo / known bugs:
 --    - parsing integers is a bit slow
 --    - readRational is a bit slow
 --
@@ -130,12 +129,12 @@ import ApiAnnotation
 $unispace    = \x05 -- Trick Alex into handling Unicode. See alexGetByte.
 $nl          = [\n\r\f]
 $whitechar   = [$nl\v\ $unispace]
-$white_no_nl = $whitechar # \n -- TODO #8424
+$white_no_nl = $whitechar # \n --  #8424
 $tab         = \t
 
 $ascdigit  = 0-9
 $unidigit  = \x03 -- Trick Alex into handling Unicode. See alexGetByte.
-$decdigit  = $ascdigit -- for now, should really be $digit (ToDo)
+$decdigit  = $ascdigit -- for now, should really be $digit ()
 $digit     = [$ascdigit $unidigit]
 
 $special   = [\(\)\,\;\[\]\`\{\}]
@@ -329,7 +328,7 @@ $tab          { warnTab }
   "{-#" $whitechar* $pragmachar+ / { known_pragma ignoredPrags }
                                  { dispatch_pragmas ignoredPrags }
 
-  -- ToDo: should only be valid inside a pragma:
+  --  should only be valid inside a pragma:
   "#-}"                          { endPrag }
 }
 
@@ -468,7 +467,7 @@ $tab          { warnTab }
   @conid "#"+       / { ifExtension magicHashEnabled } { idtoken conid }
 }
 
--- ToDo: - move `var` and (sym) into lexical syntax?
+--  - move `var` and (sym) into lexical syntax?
 --       - remove backquote from $special?
 <0> {
   @qvarsym                                         { idtoken qvarsym }
@@ -889,7 +888,7 @@ reservedSymsFM = listToUFM $
        ,("⤜",   ITRarrowtail UnicodeSyntax,
                                 \i -> unicodeSyntaxEnabled i && arrowsEnabled i)
 
-        -- ToDo: ideally, → and ∷ should be "specials", so that they cannot
+        --  ideally, → and ∷ should be "specials", so that they cannot
         -- form part of a large operator.  This would let us have a better
         -- syntax for kinds: ɑ∷*→* would be a legal kind signature. (maybe).
        ]
@@ -2871,7 +2870,7 @@ As always, we need code to be warning free when validating with -Werror.
 The list of flags is as short as possible (at the time of writing), to try to
 avoid suppressing warnings for bugs in our own code.
 
-TODO. Reevaluate this situation once Alex >3.1.4 is released. Hopefully you
+ Reevaluate this situation once Alex >3.1.4 is released. Hopefully you
 can remove these flags from all (Lexer).x files in the repository, and also
 delete this Note. Don't forget to update aclocal.m4, and send a HEADS UP
 message to ghc-devs.

@@ -95,7 +95,7 @@ data HsSrcBang =
 data HsImplBang
   = HsLazy  -- ^ Lazy field
   | HsStrict  -- ^ Strict but not unpacked field
-  | HsUnpack -- TODO: Hack SHAYAN (removed Coercion)
+  | HsUnpack -- Hack: SHAYAN removed Coercion
   deriving Data
 
 -- | What strictness annotation the user wrote

@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-unused-binds -fno-warn-missing-signatures #-}
 {-# LANGUAGE CPP #-}
-{-# LINE 43 "Lexer.x" #-}
+{-# LINE 42 "Lexer.x" #-}
 
 {-# LANGUAGE BangPatterns #-}
 
@@ -116,7 +116,7 @@ alex_accept = listArray (0::Int,283) [AlexAccNone,AlexAcc (alex_action_14),AlexA
                                       ifExtension binaryLiteralsEnabled )(AlexAccNone),AlexAccPred  (alex_action_103) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_104) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_105) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_106) ( ifExtension magicHashEnabled `alexAndPred`
                                       ifExtension binaryLiteralsEnabled )(AlexAccNone),AlexAccPred  (alex_action_107) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_108) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_109) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_110) ( ifExtension magicHashEnabled `alexAndPred`
                                          ifExtension binaryLiteralsEnabled )(AlexAccNone),AlexAccPred  (alex_action_111) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_112) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_113) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAccPred  (alex_action_114) ( ifExtension magicHashEnabled )(AlexAccNone),AlexAcc (alex_action_115),AlexAcc (alex_action_116)]
-{-# LINE 565 "Lexer.x" #-}
+{-# LINE 564 "Lexer.x" #-}
 
 
 -- -----------------------------------------------------------------------------
@@ -444,7 +444,7 @@ reservedSymsFM = listToUFM $
        ,("⤜",   ITRarrowtail UnicodeSyntax,
                                 \i -> unicodeSyntaxEnabled i && arrowsEnabled i)
 
-        -- ToDo: ideally, → and ∷ should be "specials", so that they cannot
+        --  ideally, → and ∷ should be "specials", so that they cannot
         -- form part of a large operator.  This would let us have a better
         -- syntax for kinds: ɑ∷*→* would be a legal kind signature. (maybe).
        ]
@@ -2426,7 +2426,7 @@ As always, we need code to be warning free when validating with -Werror.
 The list of flags is as short as possible (at the time of writing), to try to
 avoid suppressing warnings for bugs in our own code.
 
-TODO. Reevaluate this situation once Alex >3.1.4 is released. Hopefully you
+ Reevaluate this situation once Alex >3.1.4 is released. Hopefully you
 can remove these flags from all (Lexer).x files in the repository, and also
 delete this Note. Don't forget to update aclocal.m4, and send a HEADS UP
 message to ghc-devs.

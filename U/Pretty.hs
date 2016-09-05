@@ -785,7 +785,7 @@ sepNB g (Nest _ p) k ys
   = sepNB g p k ys -- Never triggered, because of invariant (2)
 sepNB g Empty k ys
   = oneLiner (nilBeside g (reduceDoc rest)) `mkUnion`
-    -- XXX: TODO: PRETTY: Used to use True here (but GHC used False...)
+    -- XXX:  PRETTY: Used to use True here (but GHC used False...)
     nilAboveNest False k (reduceDoc (vcat ys))
   where
     rest | g         = hsep ys
@@ -850,7 +850,7 @@ fillNB g p k ys             = fill1 g p k ys
 fillNBE :: Bool -> Int -> Doc -> [Doc] -> Doc
 fillNBE g k y ys
   = nilBeside g (fill1 g ((elideNest . oneLiner . reduceDoc) y) k' ys)
-    -- XXX: TODO: PRETTY: Used to use True here (but GHC used False...)
+    -- XXX:  PRETTY: Used to use True here (but GHC used False...)
     `mkUnion` nilAboveNest False k (fill g (y:ys))
   where k' = if g then k - 1 else k
 

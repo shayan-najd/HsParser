@@ -663,7 +663,7 @@ colReset = PprColour "\27[0m"
 --
 -- Only takes effect if colours are enabled.
 coloured :: PprColour -> SDoc -> SDoc
--- TODO: coloured _ sdoc ctxt | coloursDisabled = sdoc ctxt
+-- coloured _ sdoc ctxt | coloursDisabled = sdoc ctxt
 coloured col@(PprColour c) sdoc =
   SDoc $ \ctx@SDC{ sdocLastColour = PprColour lc } ->
     let ctx' = ctx{ sdocLastColour = col } in
@@ -744,7 +744,7 @@ instance (Outputable a, Outputable b) => Outputable (Either a b) where
     ppr (Left x)  = text "Left"  <+> ppr x
     ppr (Right y) = text "Right" <+> ppr y
 
--- ToDo: may not be used
+-- may not be used
 instance (Outputable a, Outputable b, Outputable c) => Outputable (a, b, c) where
     ppr (x,y,z) =
       parens (sep [ppr x <> comma,

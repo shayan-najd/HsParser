@@ -299,7 +299,7 @@ instance DbModuleRep UnitId ModuleName Module where
 
 -- | A string which uniquely identifies a package.  For wired-in packages,
 -- it is just the package name, but for user compiled packages, it is a hash.
--- ToDo: when the key is a hash, we can do more clever things than store
+
 -- the hex representation and hash-cons those strings.
 newtype UnitId = PId FastString deriving Eq
     -- here to avoid module loops with PackageConfig

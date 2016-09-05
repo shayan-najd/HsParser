@@ -565,7 +565,7 @@ pprExternal :: PprStyle -> Unique -> Module -> OccName -> Bool -> BuiltInSyntax 
 pprExternal sty uniq mod occ is_wired is_builtin
   | codeStyle sty = ppr mod <> char '_' <> ppr_z_occ_name occ
         -- In code style, always qualify
-        -- ToDo: maybe we could print all wired-in things unqualified
+        --  maybe we could print all wired-in things unqualified
         --       in code style, to reduce symbol table bloat?
   | debugStyle sty = pp_mod <> ppr_occ_name occ
                      <> braces (hsep [if is_wired then text "(w)" else empty,

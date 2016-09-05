@@ -295,7 +295,7 @@ encode_as_unicode_char :: Char -> EncodedString
 encode_as_unicode_char c = 'z' : if isDigit (head hex_str) then hex_str
                                                            else '0':hex_str
   where hex_str = showHex (ord c) "U"
-  -- ToDo: we could improve the encoding here in various ways.
+  --  we could improve the encoding here in various ways.
   -- eg. strings of unicode characters come out as 'z1234Uz5678U', we
   -- could remove the 'U' in the middle (the 'z' works as a separator).
 

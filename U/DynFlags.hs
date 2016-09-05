@@ -52,7 +52,22 @@ data DynFlags = DynFlags {
 }
 
 defaultDynFlag :: DynFlags
-defaultDynFlag = error "TODO:SHAYAN"
+defaultDynFlag =  DynFlags {
+  pprUserLength  = 5,
+  pprCols        = 100,
+  useUnicode     = True,
+  log_action     = error "no log action",
+  reverseErrors  = False,
+  verbosity      = 0,
+  extensionFlags = IntSet.fromList [5,8,10,22,40,67,77,88,90],
+  warningFlags   = IntSet.fromList [0,8,9,10,12,16,27,28,37,38,
+                                    39,41,42,48,49,50,51,52,56,61],
+  thisPackage    = stringToUnitId "main",
+  generalFlags   = IntSet.fromList [34,36,43,47,52,55,59,60,64,81,82,
+                                    83,84,87,88,89,98,101,103,104,116],
+  safeHaskell    = Sf_None}
+
+
 
 -- | Test whether a 'LangExt.Extension' is set
 xopt :: LangExt.Extension -> DynFlags -> Bool

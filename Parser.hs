@@ -6867,7 +6867,7 @@ happyReduction_435 (happy_x_4 `HappyStk`
 	( checkPattern empty happy_var_2 >>= \ p ->
                            checkCommand happy_var_4 >>= \ cmd ->
                            ams (sLL happy_var_1 happy_var_4 $ HsProc p (sLL happy_var_1 happy_var_4 $ HsCmdTop cmd))
-                                            -- TODO: is LL right here?
+                                            --  is LL right here?
                                [mj AnnProc happy_var_1,mu AnnRarrow happy_var_3])}}}}
 	) (\r -> happyReturn (happyIn171 r))
 
@@ -9991,7 +9991,7 @@ incorrect.
 
 -- Make a source location for the file.  We're a bit lazy here and just
 -- make a point SrcSpan at line 1, column 0.  Strictly speaking we should
--- try to find the span of the whole file (ToDo).
+-- try to find the span of the whole file .
 fileSrcSpan :: P SrcSpan
 fileSrcSpan = do
   l <- getSrcLoc;

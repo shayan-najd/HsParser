@@ -161,6 +161,9 @@ nilDataCon_RDR = error "SHAYAN TODO!"
 forall_tv_RDR :: RdrName
 forall_tv_RDR = error "SHAYAN TODO!"
 
+setWiredInNameSpace :: Name -> NameSpace -> Maybe RdrName
+setWiredInNameSpace n ns = error "TODO: SHAYAN"
+
 allNameStrings :: [String]
 -- Infinite list of a,b,c...z, aa, ab, ac, ... etc
 allNameStrings = [ c:cs | cs <- "" : allNameStrings, c <- ['a'..'z'] ]
@@ -598,7 +601,7 @@ mkConDeclH98 name mb_forall cxt details
   = ConDeclH98 { con_name     = name
                , con_qvars    = fmap mkHsQTvs mb_forall
                , con_cxt      = Just cxt
-                             -- AZ:TODO: when can cxt be Nothing?
+                             -- AZ: when can cxt be Nothing?
                              --          remembering that () is a valid context.
                , con_details  = details
                , con_doc      = Nothing }
@@ -610,8 +613,6 @@ mkGadtDecl names ty = ConDeclGADT { con_names = names
                                   , con_type  = ty
                                   , con_doc   = Nothing }
 
-setWiredInNameSpace :: Name -> NameSpace -> Maybe RdrName
-setWiredInNameSpace n ns = error "TODO: SHAYAN"
 
 setRdrNameSpace :: RdrName -> NameSpace -> RdrName
 -- ^ This rather gruesome function is used mainly by the parser.
@@ -942,7 +943,11 @@ bang_RDR = mkUnqual varName (fsLit "!") -- Hack
 
 checkPatField :: SDoc -> LHsRecField RdrName (LHsExpr RdrName)
               -> P (LHsRecField RdrName (LPat RdrName))
-checkPatField = error "TODO: SHAYAN"
+checkPatField msg (L l (HsRecField id marg)) =
+  case marg of
+    Just arg -> do p <- checkLPat msg arg
+                   return (L l (HsRecField id (Just p)))
+    Nothing  -> return (L l (HsRecField id Nothing))
 
 patFail :: SDoc -> SrcSpan -> HsExpr RdrName -> P a
 patFail msg loc e = parseErrorSDoc loc err

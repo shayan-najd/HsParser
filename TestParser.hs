@@ -13,9 +13,8 @@ import U.Pretty
 import Platform
 
 pExp :: String -> String
-pExp = runParser (defaultDynFlag
-                  (Settings
-                   {sTargetPlatform = }))
+pExp = runParser defaultDynFlag
+
 
 runParser :: DynFlags -> String -> String
 -- LHsExpr RdrName

@@ -455,7 +455,7 @@ instance Binary DiffTime where
 
 --to quote binary-0.3 on this code idea,
 --
--- TODO  This instance is not architecture portable.  GMP stores numbers as
+-- This instance is not architecture portable.  GMP stores numbers as
 -- arrays of machine sized words, so the byte format is not portable across
 -- architectures with different endianess and word size.
 --

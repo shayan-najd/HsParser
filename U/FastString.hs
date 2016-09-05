@@ -512,7 +512,7 @@ appendFS fs1 fs2 = mkFastStringByteString
                              (fastStringToByteString fs2)
 
 concatFS :: [FastString] -> FastString
-concatFS ls = mkFastString (Prelude.concat (map unpackFS ls)) -- ToDo: do better
+concatFS ls = mkFastString (Prelude.concat (map unpackFS ls)) --  do better
 
 headFS :: FastString -> Char
 headFS (FastString _ 0 _ _) = panic "headFS: Empty FastString"

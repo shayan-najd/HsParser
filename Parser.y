@@ -219,7 +219,7 @@ state 465 contains 1 shift/reduce conflict.
 
     Conflict: ')'
 
-TODO: Why?
+ Why?
 
 -------------------------------------------------------------------------------
 
@@ -272,7 +272,7 @@ state 1269 contains 1 shift/reduce conflict.
 
     Conflict: '::'
 
-TODO: Why?
+ Why?
 
 -------------------------------------------------------------------------------
 -- API Annotations
@@ -2159,7 +2159,7 @@ exp10 :: { LHsExpr RdrName }
                        {% checkPattern empty $2 >>= \ p ->
                            checkCommand $4 >>= \ cmd ->
                            ams (sLL $1 $> $ HsProc p (sLL $1 $> $ HsCmdTop cmd))
-                                            -- TODO: is LL right here?
+                                            --  is LL right here?
                                [mj AnnProc $1,mu AnnRarrow $3] }
 
         | '{-# CORE' STRING '#-}' exp  {% ams (sLL $1 $> $ HsCoreAnn (getCORE_PRAGs $1) (getStringLiteral $2) $4)
@@ -3281,7 +3281,7 @@ incorrect.
 
 -- Make a source location for the file.  We're a bit lazy here and just
 -- make a point SrcSpan at line 1, column 0.  Strictly speaking we should
--- try to find the span of the whole file (ToDo).
+-- try to find the span of the whole file .
 fileSrcSpan :: P SrcSpan
 fileSrcSpan = do
   l <- getSrcLoc;
