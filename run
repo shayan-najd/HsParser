@@ -1,15 +1,4 @@
-rm Lexer.hs
+./clean
 alex Lexer.x
-rm Parser.hs
 happy -agc --strict Parser.y -idetailed-info
-rm *.hi
-rm *.hi-boot
-rm *.o
-rm *.o-boot
-rm *~
-rm ./U/*.hi
-rm ./U/*.hi-boot
-rm ./U/*.o
-rm ./U/*.o-boot
-rm ./U/*~
 ghci Parser.hs -fobject-code -fwarn-unused-imports

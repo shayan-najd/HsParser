@@ -83,6 +83,7 @@ import Data.Char
 import Data.List
 import Data.Maybe
 import Data.Word
+import U.Panic (panic)
 
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
@@ -112,7 +113,7 @@ import U.DynFlags
 -- compiler/basicTypes
 import SrcLoc
 import Module
-import U.BasicTypes     ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
+import BasicTypes     ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
                         SourceText )
 
 -- compiler/parser

@@ -16,7 +16,7 @@ types that
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module U.BasicTypes(
+module BasicTypes(
    Boxity(..),
    Arity,
    FunctionOrData(..),
@@ -42,81 +42,6 @@ module U.BasicTypes(
    RuleName(..),
    Origin(..),
    maxPrecedence
-  {-
-
-        Version, bumpVersion, initialVersion,
-
-        ConTag, fIRST_TAG,
-
-        Arity, RepArity,
-
-        Alignment,
-
-        FunctionOrData(..),
-
-        WarningTxt(..), StringLiteral(..),
-
-        Fixity(..), FixityDirection(..),
-        defaultFixity, maxPrecedence, minPrecedence,
-        negateFixity, funTyFixity,
-        compareFixity,
-
-        RecFlag(..), isRec, isNonRec, boolToRecFlag,
-        Origin(..), isGenerated,
-
-        RuleName, pprRuleName,
-
-        TopLevelFlag(..), isTopLevel, isNotTopLevel,
-
-        OverlapFlag(..), OverlapMode(..), setOverlapModeMaybe,
-        hasOverlappingFlag, hasOverlappableFlag, hasIncoherentFlag,
-
-        isBoxed,
-
-        TupleSort(..), tupleSortBoxity, boxityTupleSort,
-        tupleParens,
-
-        -- ** The OneShotInfo type
-        OneShotInfo(..),
-        noOneShotInfo, hasNoOneShotInfo, isOneShotInfo,
-        bestOneShot, worstOneShot,
-
-        OccInfo(..), seqOccInfo, zapFragileOcc, isOneOcc,
-        isDeadOcc, isStrongLoopBreaker, isWeakLoopBreaker, isNoOcc,
-        strongLoopBreaker, weakLoopBreaker,
-
-        InsideLam, insideLam, notInsideLam,
-        OneBranch, oneBranch, notOneBranch,
-        InterestingCxt,
-
-        EP(..),
-
-        DefMethSpec(..),
-        SwapFlag(..), flipSwap, unSwap, isSwapped,
-
-        CompilerPhase(..), PhaseNum,
-
-        Activation(..), isActive, isActiveIn, competesWith,
-        isNeverActive, isAlwaysActive, isEarlyActive,
-
-        RuleMatchInfo(..), isConLike, isFunLike,
-        InlineSpec(..), isEmptyInlineSpec,
-        InlinePragma(..), defaultInlinePragma, alwaysInlinePragma,
-        neverInlinePragma, dfunInlinePragma,
-        isDefaultInlinePragma,
-        isInlinePragma, isInlinablePragma, isAnyInlinePragma,
-        inlinePragmaSpec, inlinePragmaSat,
-        inlinePragmaActivation, inlinePragmaRuleMatchInfo,
-        setInlinePragmaActivation, setInlinePragmaRuleMatchInfo,
-
-        SuccessFlag(..), succeeded, failed, successIf,
-
-        FractionalLit(..), negateFractionalLit, integralFractionalLit,
-
-        SourceText,
-
-        IntWithInf, infinity, treatZeroAsInf, mkIntWithInf, intGtLimit
--}
    ) where
 
 import U.FastString

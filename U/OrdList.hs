@@ -17,6 +17,7 @@ module U.OrdList (
 ) where
 
 import U.Outputable
+import U.Panic
 
 #if __GLASGOW_HASKELL__ > 710
 import Data.Semigroup   ( Semigroup )

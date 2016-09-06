@@ -71,7 +71,7 @@ module HsTypes (
 import {-# SOURCE #-} HsExpr ( HsSplice, pprSplice )
 
 import HsDoc
-import U.BasicTypes
+import BasicTypes
 import SrcLoc
 import U.Outputable
 import U.FastString

@@ -10,80 +10,114 @@
 -- The interface to this module is very similar to the standard Hughes-PJ pretty printing
 -- module, except that it exports a number of additional functions that are rarely used,
 -- and works over the 'SDoc' type.
-module U.Outputable (
-        -- * Type classes
-        Outputable(..), OutputableBndr(..),
-
-        -- * Pretty printing combinators
-        SDoc, runSDoc, initSDocContext,
-        docToSDoc,
-        interppSP, interpp'SP,
-        pprQuotedList, pprWithCommas, quotedListWithOr, quotedListWithNor,
-        empty, isEmpty, nest,
-        char,
-        text, ftext, ptext, ztext,
-        int, intWithCommas, integer, float, double, rational, doublePrec,
-        parens, cparen, brackets, braces, quotes, quote,
-        doubleQuotes, angleBrackets, paBrackets,
-        semi, comma, colon, dcolon, space, equals, dot, vbar,
-        arrow, larrow, darrow, arrowt, larrowt, arrowtt, larrowtt,
-        lparen, rparen, lbrack, rbrack, lbrace, rbrace, underscore,
-        blankLine, forAllLit,
-        (<>), (<+>), hcat, hsep,
-        ($$), ($+$), vcat,
-        sep, cat,
-        fsep, fcat,
-        hang, hangNotEmpty, punctuate, ppWhen, ppUnless,
-        speakNth, speakN, speakNOf, plural, isOrAre, doOrDoes,
-        unicodeSyntax,
-
-        coloured, PprColour, colType, colCoerc, colDataCon,
-        colBinder, bold, keyword,
-
-        -- * Converting 'SDoc' into strings and outputing it
-        printForC, printForAsm, printForUser, printForUserPartWay,
-        pprCode, mkCodeStyle,
-        showSDoc,  showSDocOneLine,
-        showSDocForUser, showSDocDebug, showSDocDump, showSDocDumpOneLine,
-        showSDocUnqual, showPpr,
-        renderWithStyle,
-
-        pprInfixVar, pprPrefixVar,
-        pprHsChar, pprHsString, pprHsBytes,
-
-        primFloatSuffix, primDoubleSuffix,
-        pprPrimChar, pprPrimInt, pprPrimWord, pprPrimInt64, pprPrimWord64,
-
-        pprFastFilePath,
-
-        -- * Controlling the style in which output is printed
-        BindingSite(..),
-
-        PprStyle, CodeStyle(..), PrintUnqualified(..),
-        QueryQualifyName, QueryQualifyModule, QueryQualifyPackage,
-        reallyAlwaysQualify, reallyAlwaysQualifyNames,
-        alwaysQualify, alwaysQualifyNames, alwaysQualifyModules,
-        neverQualify, neverQualifyNames, neverQualifyModules,
-        alwaysQualifyPackages, neverQualifyPackages,
-        QualifyName(..), queryQual,
-        sdocWithDynFlags,
-        getPprStyle, withPprStyle, withPprStyleDoc,
-        pprDeeper, pprDeeperList, pprSetDepth,
-        codeStyle, userStyle, debugStyle, dumpStyle, asmStyle,
-        ifPprDebug, qualName, qualModule, qualPackage,
-        mkErrStyle, defaultErrStyle, defaultDumpStyle, mkDumpStyle, defaultUserStyle,
-        mkUserStyle, cmdlineParserStyle, Depth(..),
-
-        -- * Error handling and debugging utilities
-        pprPanic, pprSorry, assertPprPanic, pprPgmError,
-        trace, pgmError, panic, sorry, assertPanic,
-        pprDebugAndThen, showSDocUnsafe
-    ) where
+module U.Outputable (SDoc,
+                     showSDocUnsafe,
+                     Outputable(..),
+                     ($$),
+                     (<>),
+                     (<+>),
+                     braces,
+                     ifPprDebug,
+                     int,
+                     char,
+                     parens,
+                     comma,
+                     colon,
+                     ppWhen,
+                     ppUnless,
+                     pprFastFilePath,
+                     hcat,
+                     vcat,
+                     ftext,
+                     empty,
+                     OutputableBndr(..),
+                     text,
+                     sep,
+                     quotes,
+                     vbar,
+                     cparen,
+                     punctuate,
+                     fsep,
+                     keyword,
+                     getPprStyle,
+                     codeStyle,
+                     ztext,
+                     qualModule,
+                     PprStyle(..),
+                     pprWithCommas,
+                     PrintUnqualified,
+                     isEmpty,
+                     pprDebugAndThen,
+                     mkUserStyle,
+                     defaultDumpStyle,
+                     Depth(..),
+                     defaultUserStyle,
+                     defaultErrStyle,
+                     doublePrec,
+                     mkErrStyle,
+                     alwaysQualify,
+                     sdocWithDynFlags,
+                     showSDoc,
+                     blankLine,
+                     dot,
+                     hsep,
+                     hang,
+                     withPprStyle,
+                     pprPrefixVar,
+                     pprInfixVar,
+                     debugStyle,
+                     brackets,
+                     QualifyName(..),
+                     qualName,
+                     dumpStyle,
+                     pprPanic,
+                     ptext,
+                     doubleQuotes,
+                     space,
+                     interpp'SP,
+                     integer,
+                     pprHsBytes,
+                     pprHsString,
+                     pprPrimWord64,
+                     pprPrimInt64,
+                     pprPrimWord,
+                     primDoubleSuffix,
+                     primFloatSuffix,
+                     pprHsChar,
+                     pprPrimChar,
+                     pprPrimInt,
+                     quote,
+                     dcolon,
+                     paBrackets,
+                     interppSP,
+                     forAllLit,
+                     darrow,
+                     nest,
+                     pprDeeperList,
+                     equals,
+                     BindingSite(..),
+                     speakNOf,
+                     ($+$),
+                     arrow,
+                     underscore,
+                     arrowtt,
+                     pprDeeper,
+                     larrow,
+                     lbrace,
+                     rbrace,
+                     semi,
+                     angleBrackets,
+                     larrowtt,
+                     arrowt,
+                     larrowt,
+                     fcat,
+                     rparen,
+                     lparen) where
 
 import {-# SOURCE #-}   U.DynFlags( DynFlags,defaultDynFlag,
                                     pprUserLength, pprCols,
                                     useUnicode, useUnicodeSyntax)
-import {-# SOURCE #-}   Module( UnitId, Module, ModuleName, moduleName )
+import {-# SOURCE #-}   Module(ModuleName)
 import {-# SOURCE #-}   OccName( OccName )
 
 import U.FastString
@@ -103,17 +137,12 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.String
 import Data.Word
-import System.IO        ( Handle )
 import System.FilePath (normalise)
-import Text.Printf
 import Numeric (showFFloat)
-import Data.Graph (SCC(..))
+-- import Data.Graph (SCC(..))
 
-import GHC.Fingerprint
+-- import GHC.Fingerprint
 import GHC.Show         ( showMultiLineString )
-#if __GLASGOW_HASKELL__ > 710
-import GHC.Stack
-#endif
 
 {-
 ************************************************************************
@@ -141,8 +170,8 @@ data PprStyle
   | PprCode CodeStyle
                 -- Print code; either C or assembler
 
-data CodeStyle = CStyle         -- The format of labels differs for C and assembler
-               | AsmStyle
+data CodeStyle {- = CStyle         -- The format of labels differs for C and assembler
+                | AsmStyle -}
 
 data Depth = AllTheWay
            | PartWay Int        -- 0 => stop
@@ -157,8 +186,8 @@ data Depth = AllTheWay
 -- when rendering 'SDoc'.
 data PrintUnqualified = QueryQualify {
     queryQualifyName    :: QueryQualifyName,
-    queryQualifyModule  :: QueryQualifyModule,
-    queryQualifyPackage :: QueryQualifyPackage
+    queryQualifyModule  :: QueryQualifyModule
+--    queryQualifyPackage :: QueryQualifyPackage
 }
 
 -- | given an /original/ name, this function tells you which module
@@ -167,15 +196,15 @@ data PrintUnqualified = QueryQualify {
 -- as @Exception.catch@, this function will return @Just "Exception"@.
 -- Note that the return value is a ModuleName, not a Module, because
 -- in source code, names are qualified by ModuleNames.
-type QueryQualifyName = Module -> OccName -> QualifyName
+type QueryQualifyName = ModuleName -> OccName -> QualifyName
 
 -- | For a given module, we need to know whether to print it with
 -- a package name to disambiguate it.
-type QueryQualifyModule = Module -> Bool
+type QueryQualifyModule = ModuleName -> Bool
 
 -- | For a given package, we need to know whether to print it with
 -- the unit id to disambiguate it.
-type QueryQualifyPackage = UnitId -> Bool
+-- type QueryQualifyPackage = UnitId -> Bool
 
 -- See Note [Printing original names] in HscTypes
 data QualifyName   -- Given P:M.T
@@ -190,12 +219,9 @@ data QualifyName   -- Given P:M.T
   | NameNotInScope2      -- It's not in scope at all, and M.T is already bound in
                          -- the current scope, so we must refer to it as "P:M.T"
 
-reallyAlwaysQualifyNames :: QueryQualifyName
-reallyAlwaysQualifyNames _ _ = NameNotInScope2
-
 -- | NB: This won't ever show package IDs
 alwaysQualifyNames :: QueryQualifyName
-alwaysQualifyNames m _ = NameQual (moduleName m)
+alwaysQualifyNames m _ = NameQual m
 
 neverQualifyNames :: QueryQualifyName
 neverQualifyNames _ _ = NameUnqual
@@ -206,23 +232,13 @@ alwaysQualifyModules _ = True
 neverQualifyModules :: QueryQualifyModule
 neverQualifyModules _ = False
 
-alwaysQualifyPackages :: QueryQualifyPackage
-alwaysQualifyPackages _ = True
-
-neverQualifyPackages :: QueryQualifyPackage
-neverQualifyPackages _ = False
-
-reallyAlwaysQualify, alwaysQualify, neverQualify :: PrintUnqualified
-reallyAlwaysQualify
-              = QueryQualify reallyAlwaysQualifyNames
-                             alwaysQualifyModules
-                             alwaysQualifyPackages
+alwaysQualify, neverQualify :: PrintUnqualified
 alwaysQualify = QueryQualify alwaysQualifyNames
                              alwaysQualifyModules
-                             alwaysQualifyPackages
+                   --          alwaysQualifyPackages
 neverQualify  = QueryQualify neverQualifyNames
                              neverQualifyModules
-                             neverQualifyPackages
+                 --            neverQualifyPackages
 
 defaultUserStyle, defaultDumpStyle :: PprStyle
 
@@ -230,9 +246,6 @@ defaultUserStyle = mkUserStyle neverQualify AllTheWay
  -- Print without qualifiers to reduce verbosity, unless -dppr-debug
 
 defaultDumpStyle = PprDump neverQualify
-
-mkDumpStyle :: PrintUnqualified -> PprStyle
-mkDumpStyle print_unqual = PprDump print_unqual
 
 defaultErrStyle :: DynFlags -> PprStyle
 -- Default style for error messages, when we don't know PrintUnqualified
@@ -244,9 +257,6 @@ defaultErrStyle dflags = mkErrStyle dflags neverQualify
 -- | Style for printing error messages
 mkErrStyle :: DynFlags -> PrintUnqualified -> PprStyle
 mkErrStyle dflags qual = mkUserStyle qual (PartWay (pprUserLength dflags))
-
-cmdlineParserStyle :: PprStyle
-cmdlineParserStyle = mkUserStyle alwaysQualify AllTheWay
 
 mkUserStyle :: PrintUnqualified -> Depth -> PprStyle
 mkUserStyle unqual depth = PprUser unqual depth
@@ -295,9 +305,6 @@ initSDocContext dflags sty = SDC
 withPprStyle :: PprStyle -> SDoc -> SDoc
 withPprStyle sty d = SDoc $ \ctxt -> runSDoc d ctxt{sdocStyle=sty}
 
-withPprStyleDoc :: DynFlags -> PprStyle -> SDoc -> Doc
-withPprStyleDoc dflags sty d = runSDoc d (initSDocContext dflags sty)
-
 pprDeeper :: SDoc -> SDoc
 pprDeeper d = SDoc $ \ctx -> case ctx of
   SDC{sdocStyle=PprUser _ (PartWay 0)} -> U.Pretty.text "..."
@@ -321,14 +328,6 @@ pprDeeperList f ds
                  | otherwise = d : go (i+1) ds
   work other_ctx = runSDoc (f ds) other_ctx
 
-pprSetDepth :: Depth -> SDoc -> SDoc
-pprSetDepth depth doc = SDoc $ \ctx ->
-    case ctx of
-        SDC{sdocStyle=PprUser q _} ->
-            runSDoc doc ctx{sdocStyle = PprUser q depth}
-        _ ->
-            runSDoc doc ctx
-
 getPprStyle :: (PprStyle -> SDoc) -> SDoc
 getPprStyle df = SDoc $ \ctx -> runSDoc (df (sdocStyle ctx)) ctx
 
@@ -339,30 +338,16 @@ sdocWithDynFlags f = SDoc $ \ctx -> runSDoc (f (sdocDynFlags ctx)) ctx
 qualName :: PprStyle -> QueryQualifyName
 qualName (PprUser q _)  mod occ = queryQualifyName q mod occ
 qualName (PprDump q)    mod occ = queryQualifyName q mod occ
-qualName _other         mod _   = NameQual (moduleName mod)
+qualName _other         mod _   = NameQual mod
 
 qualModule :: PprStyle -> QueryQualifyModule
 qualModule (PprUser q _)  m = queryQualifyModule q m
 qualModule (PprDump q)    m = queryQualifyModule q m
 qualModule _other        _m = True
 
-qualPackage :: PprStyle -> QueryQualifyPackage
-qualPackage (PprUser q _)  m = queryQualifyPackage q m
-qualPackage (PprDump q)    m = queryQualifyPackage q m
-qualPackage _other        _m = True
-
-queryQual :: PprStyle -> PrintUnqualified
-queryQual s = QueryQualify (qualName s)
-                           (qualModule s)
-                           (qualPackage s)
-
 codeStyle :: PprStyle -> Bool
 codeStyle (PprCode _)     = True
 codeStyle _               = False
-
-asmStyle :: PprStyle -> Bool
-asmStyle (PprCode AsmStyle)  = True
-asmStyle _other              = False
 
 dumpStyle :: PprStyle -> Bool
 dumpStyle (PprDump {}) = True
@@ -372,43 +357,11 @@ debugStyle :: PprStyle -> Bool
 debugStyle PprDebug = True
 debugStyle _other   = False
 
-userStyle ::  PprStyle -> Bool
-userStyle (PprUser _ _) = True
-userStyle _other        = False
-
 ifPprDebug :: SDoc -> SDoc        -- Empty for non-debug style
 ifPprDebug d = SDoc $ \ctx ->
     case ctx of
         SDC{sdocStyle=PprDebug} -> runSDoc d ctx
         _                       -> U.Pretty.empty
-
-printForUser :: DynFlags -> Handle -> PrintUnqualified -> SDoc -> IO ()
-printForUser dflags handle unqual doc
-  = U.Pretty.printDoc PageMode (pprCols dflags) handle
-      (runSDoc doc (initSDocContext dflags (mkUserStyle unqual AllTheWay)))
-
-printForUserPartWay :: DynFlags -> Handle -> Int -> PrintUnqualified -> SDoc
-                    -> IO ()
-printForUserPartWay dflags handle d unqual doc
-  = U.Pretty.printDoc PageMode (pprCols dflags) handle
-      (runSDoc doc (initSDocContext dflags (mkUserStyle unqual (PartWay d))))
-
--- printForC, printForAsm do what they sound like
-printForC :: DynFlags -> Handle -> SDoc -> IO ()
-printForC dflags handle doc =
-  U.Pretty.printDoc LeftMode (pprCols dflags) handle
-    (runSDoc doc (initSDocContext dflags (PprCode CStyle)))
-
-printForAsm :: DynFlags -> Handle -> SDoc -> IO ()
-printForAsm dflags handle doc =
-  U.Pretty.printDoc LeftMode (pprCols dflags) handle
-    (runSDoc doc (initSDocContext dflags (PprCode AsmStyle)))
-
-pprCode :: CodeStyle -> SDoc -> SDoc
-pprCode cs d = withPprStyle (PprCode cs) d
-
-mkCodeStyle :: CodeStyle -> PprStyle
-mkCodeStyle = PprCode
 
 -- Can't make SDoc an instance of Show because SDoc is just a function type
 -- However, Doc *is* an instance of Show
@@ -416,48 +369,14 @@ mkCodeStyle = PprCode
 showSDoc :: DynFlags -> SDoc -> String
 showSDoc dflags sdoc = renderWithStyle dflags sdoc defaultUserStyle
 
-showPpr :: Outputable a => DynFlags -> a -> String
-showPpr dflags thing = showSDoc dflags (ppr thing)
-
-showSDocUnqual :: DynFlags -> SDoc -> String
--- Only used by Haddock
-showSDocUnqual dflags sdoc = showSDoc dflags sdoc
-
-showSDocForUser :: DynFlags -> PrintUnqualified -> SDoc -> String
--- Allows caller to specify the PrintUnqualified to use
-showSDocForUser dflags unqual doc
- = renderWithStyle dflags doc (mkUserStyle unqual AllTheWay)
-
 showSDocDump :: DynFlags -> SDoc -> String
 showSDocDump dflags d = renderWithStyle dflags d defaultDumpStyle
-
-showSDocDebug :: DynFlags -> SDoc -> String
-showSDocDebug dflags d = renderWithStyle dflags d PprDebug
 
 renderWithStyle :: DynFlags -> SDoc -> PprStyle -> String
 renderWithStyle dflags sdoc sty
   = let s = U.Pretty.style{ U.Pretty.mode = PageMode,
                           U.Pretty.lineLength = pprCols dflags }
     in U.Pretty.renderStyle s $ runSDoc sdoc (initSDocContext dflags sty)
-
--- This shows an SDoc, but on one line only. It's cheaper than a full
--- showSDoc, designed for when we're getting results like "Foo.bar"
--- and "foo{uniq strictness}" so we don't want fancy layout anyway.
-showSDocOneLine :: DynFlags -> SDoc -> String
-showSDocOneLine dflags d
- = let s = U.Pretty.style{ U.Pretty.mode = OneLineMode,
-                         U.Pretty.lineLength = pprCols dflags } in
-   U.Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultUserStyle)
-
-showSDocDumpOneLine :: DynFlags -> SDoc -> String
-showSDocDumpOneLine dflags d
- = let s = U.Pretty.style{ U.Pretty.mode = OneLineMode,
-                         U.Pretty.lineLength = irrelevantNCols } in
-   U.Pretty.renderStyle s $ runSDoc d (initSDocContext dflags defaultDumpStyle)
-
-irrelevantNCols :: Int
--- Used for OneLineMode and LeftMode when number of cols isn't used
-irrelevantNCols = 1
 
 isEmpty :: DynFlags -> SDoc -> Bool
 isEmpty dflags sdoc = U.Pretty.isEmpty $ runSDoc sdoc dummySDocContext
@@ -474,9 +393,6 @@ ptext    :: LitString  -> SDoc
 ztext    :: FastZString -> SDoc
 int      :: Int        -> SDoc
 integer  :: Integer    -> SDoc
-float    :: Float      -> SDoc
-double   :: Double     -> SDoc
-rational :: Rational   -> SDoc
 
 empty       = docToSDoc $ U.Pretty.empty
 char c      = docToSDoc $ U.Pretty.char c
@@ -489,9 +405,6 @@ ptext s     = docToSDoc $ U.Pretty.ptext s
 ztext s     = docToSDoc $ U.Pretty.ztext s
 int n       = docToSDoc $ U.Pretty.int n
 integer n   = docToSDoc $ U.Pretty.integer n
-float n     = docToSDoc $ U.Pretty.float n
-double n    = docToSDoc $ U.Pretty.double n
-rational n  = docToSDoc $ U.Pretty.rational n
 
 -- | @doublePrec p n@ shows a floating point number @n@ with @p@
 -- digits of precision after the decimal point.
@@ -529,7 +442,7 @@ quotes d =
 
 semi, comma, colon, equals, space, dcolon, underscore, dot, vbar :: SDoc
 arrow, larrow, darrow, arrowt, larrowt, arrowtt, larrowtt :: SDoc
-lparen, rparen, lbrack, rbrack, lbrace, rbrace, blankLine :: SDoc
+lparen, rparen, lbrace, rbrace, blankLine :: SDoc
 
 blankLine  = docToSDoc $ U.Pretty.text ""
 dcolon     = unicodeSyntax (char '∷') (docToSDoc $ U.Pretty.text "::")
@@ -550,8 +463,6 @@ dot        = char '.'
 vbar       = char '|'
 lparen     = docToSDoc $ U.Pretty.lparen
 rparen     = docToSDoc $ U.Pretty.rparen
-lbrack     = docToSDoc $ U.Pretty.lbrack
-rbrack     = docToSDoc $ U.Pretty.rbrack
 lbrace     = docToSDoc $ U.Pretty.lbrace
 rbrace     = docToSDoc $ U.Pretty.rbrace
 
@@ -589,8 +500,6 @@ hsep :: [SDoc] -> SDoc
 vcat :: [SDoc] -> SDoc
 -- ^ Concatenate 'SDoc' vertically with dovetailing
 sep :: [SDoc] -> SDoc
--- ^ Separate: is either like 'hsep' or like 'vcat', depending on what fits
-cat :: [SDoc] -> SDoc
 -- ^ Catenate: is either like 'hcat' or like 'vcat', depending on what fits
 fsep :: [SDoc] -> SDoc
 -- ^ A paragraph-fill combinator. It's much like sep, only it
@@ -603,7 +512,6 @@ hcat ds = SDoc $ \sty -> U.Pretty.hcat [runSDoc d sty | d <- ds]
 hsep ds = SDoc $ \sty -> U.Pretty.hsep [runSDoc d sty | d <- ds]
 vcat ds = SDoc $ \sty -> U.Pretty.vcat [runSDoc d sty | d <- ds]
 sep ds  = SDoc $ \sty -> U.Pretty.sep  [runSDoc d sty | d <- ds]
-cat ds  = SDoc $ \sty -> U.Pretty.cat  [runSDoc d sty | d <- ds]
 fsep ds = SDoc $ \sty -> U.Pretty.fsep [runSDoc d sty | d <- ds]
 fcat ds = SDoc $ \sty -> U.Pretty.fcat [runSDoc d sty | d <- ds]
 
@@ -612,12 +520,6 @@ hang :: SDoc  -- ^ The header
       -> SDoc -- ^ The hung body, indented and placed below the header
       -> SDoc
 hang d1 n d2   = SDoc $ \sty -> U.Pretty.hang (runSDoc d1 sty) n (runSDoc d2 sty)
-
--- | This behaves like 'hang', but does not indent the second document
--- when the header is empty.
-hangNotEmpty :: SDoc -> Int -> SDoc -> SDoc
-hangNotEmpty d1 n d2 =
-    SDoc $ \sty -> U.Pretty.hangNotEmpty (runSDoc d1 sty) n (runSDoc d2 sty)
 
 punctuate :: SDoc   -- ^ The punctuation
           -> [SDoc] -- ^ The list that will have punctuation added between every adjacent pair of elements
@@ -638,22 +540,8 @@ ppUnless False doc = doc
 -- | A colour\/style for use with 'coloured'.
 newtype PprColour = PprColour String
 
--- Colours
-
-colType :: PprColour
-colType = PprColour "\27[34m"
-
 colBold :: PprColour
 colBold = PprColour "\27[;1m"
-
-colCoerc :: PprColour
-colCoerc = PprColour "\27[34m"
-
-colDataCon :: PprColour
-colDataCon = PprColour "\27[31m"
-
-colBinder :: PprColour
-colBinder = PprColour "\27[32m"
 
 colReset :: PprColour
 colReset = PprColour "\27[0m"
@@ -797,13 +685,6 @@ instance (Outputable key, Outputable elt) => Outputable (M.Map key elt) where
 instance (Outputable elt) => Outputable (IM.IntMap elt) where
     ppr m = ppr (IM.toList m)
 
-instance Outputable Fingerprint where
-    ppr (Fingerprint w1 w2) = text (printf "%016x%016x" w1 w2)
-
-instance Outputable a => Outputable (SCC a) where
-   ppr (AcyclicSCC v) = text "NONREC" $$ (nest 3 (ppr v))
-   ppr (CyclicSCC vs) = text "REC" $$ (nest 3 (vcat (map ppr vs)))
-
 instance Outputable Extension where
     ppr = text . show
 
@@ -925,67 +806,6 @@ interppSP  xs = sep (map ppr xs)
 interpp'SP :: Outputable a => [a] -> SDoc
 interpp'SP xs = sep (punctuate comma (map ppr xs))
 
--- | Returns the comma-separated concatenation of the quoted pretty printed things.
---
--- > [x,y,z]  ==>  `x', `y', `z'
-pprQuotedList :: Outputable a => [a] -> SDoc
-pprQuotedList = quotedList . map ppr
-
-quotedList :: [SDoc] -> SDoc
-quotedList xs = hsep (punctuate comma (map quotes xs))
-
-quotedListWithOr :: [SDoc] -> SDoc
--- [x,y,z]  ==>  `x', `y' or `z'
-quotedListWithOr xs@(_:_:_) = quotedList (init xs) <+> text "or" <+> quotes (last xs)
-quotedListWithOr xs = quotedList xs
-
-quotedListWithNor :: [SDoc] -> SDoc
--- [x,y,z]  ==>  `x', `y' nor `z'
-quotedListWithNor xs@(_:_:_) = quotedList (init xs) <+> text "nor" <+> quotes (last xs)
-quotedListWithNor xs = quotedList xs
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Printing numbers verbally}
-*                                                                      *
-************************************************************************
--}
-
-intWithCommas :: Integral a => a -> SDoc
--- Prints a big integer with commas, eg 345,821
-intWithCommas n
-  | n < 0     = char '-' <> intWithCommas (-n)
-  | q == 0    = int (fromIntegral r)
-  | otherwise = intWithCommas q <> comma <> zeroes <> int (fromIntegral r)
-  where
-    (q,r) = n `quotRem` 1000
-    zeroes | r >= 100  = empty
-           | r >= 10   = char '0'
-           | otherwise = text "00"
-
--- | Converts an integer to a verbal index:
---
--- > speakNth 1 = text "first"
--- > speakNth 5 = text "fifth"
--- > speakNth 21 = text "21st"
-speakNth :: Int -> SDoc
-speakNth 1 = text "first"
-speakNth 2 = text "second"
-speakNth 3 = text "third"
-speakNth 4 = text "fourth"
-speakNth 5 = text "fifth"
-speakNth 6 = text "sixth"
-speakNth n = hcat [ int n, text suffix ]
-  where
-    suffix | n <= 20       = "th"       -- 11,12,13 are non-std
-           | last_dig == 1 = "st"
-           | last_dig == 2 = "nd"
-           | last_dig == 3 = "rd"
-           | otherwise     = "th"
-
-    last_dig = n `rem` 10
-
 -- | Converts an integer to a verbal multiplicity:
 --
 -- > speakN 0 = text "none"
@@ -1012,33 +832,6 @@ speakNOf 0 d = text "no" <+> d <> char 's'
 speakNOf 1 d = text "one" <+> d                 -- E.g. "one argument"
 speakNOf n d = speakN n <+> d <> char 's'               -- E.g. "three arguments"
 
--- | Determines the pluralisation suffix appropriate for the length of a list:
---
--- > plural [] = char 's'
--- > plural ["Hello"] = empty
--- > plural ["Hello", "World"] = char 's'
-plural :: [a] -> SDoc
-plural [_] = empty  -- a bit frightening, but there you are
-plural _   = char 's'
-
--- | Determines the form of to be appropriate for the length of a list:
---
--- > isOrAre [] = text "are"
--- > isOrAre ["Hello"] = text "is"
--- > isOrAre ["Hello", "World"] = text "are"
-isOrAre :: [a] -> SDoc
-isOrAre [_] = text "is"
-isOrAre _   = text "are"
-
--- | Determines the form of to do appropriate for the length of a list:
---
--- > doOrDoes [] = text "do"
--- > doOrDoes ["Hello"] = text "does"
--- > doOrDoes ["Hello", "World"] = text "do"
-doOrDoes :: [a] -> SDoc
-doOrDoes [_] = text "does"
-doOrDoes _   = text "do"
-
 {-
 ************************************************************************
 *                                                                      *
@@ -1050,35 +843,6 @@ doOrDoes _   = text "do"
 pprPanic :: String -> SDoc -> a
 -- ^ Throw an exception saying "bug in GHC"
 pprPanic    = panicDoc
-
-pprSorry :: String -> SDoc -> a
--- ^ Throw an exception saying "this isn't finished yet"
-pprSorry    = sorryDoc
-
-
-pprPgmError :: String -> SDoc -> a
--- ^ Throw an exception saying "bug in pgm being compiled" (used for unusual program errors)
-pprPgmError = pgmErrorDoc
-
-
--- | Panic with an assertation failure, recording the given file and
--- line number. Should typically be accessed with the ASSERT family of macros
-#if __GLASGOW_HASKELL__ > 710
-assertPprPanic :: (?callStack :: CallStack) => String -> Int -> SDoc -> a
-assertPprPanic _file _line msg
-  = pprPanic "ASSERT failed!" doc
-  where
-    doc = sep [ text (prettyCallStack ?callStack)
-              , msg ]
-#else
-assertPprPanic :: String -> Int -> SDoc -> a
-assertPprPanic file line msg
-  = pprPanic "ASSERT failed!" doc
-  where
-    doc = sep [ hsep [ text "file", text file
-                     , text "line", int line ]
-              , msg ]
-#endif
 
 pprDebugAndThen :: DynFlags -> (String -> a) -> SDoc -> SDoc -> a
 pprDebugAndThen dflags cont heading pretty_msg

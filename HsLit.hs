@@ -19,7 +19,7 @@ module HsLit where
 #include "HsVersions.h"
 
 import {-# SOURCE #-} HsExpr( HsExpr, pprExpr )
-import U.BasicTypes ( FractionalLit(..),SourceText )
+import BasicTypes ( FractionalLit(..),SourceText )
 import U.Outputable
 import U.FastString
 

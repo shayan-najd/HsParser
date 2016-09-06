@@ -44,7 +44,7 @@ import HsLit
 import HsTypes
 import SrcLoc
 
-import U.BasicTypes
+import BasicTypes
 import U.Outputable
 
 -- libraries:

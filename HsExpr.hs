@@ -53,12 +53,12 @@ import HsLit
 import HsTypes
 import HsBinds
 
-import U.BasicTypes
+import BasicTypes
 import U.FastString
 import SrcLoc
 import U.Util (dropTail)
 import U.Outputable
-
+import U.Panic (panic)
 
 -- libraries:
 import Data.Data hiding (Fixity(..))

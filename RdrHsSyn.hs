@@ -77,12 +77,13 @@ import ForeignCall
 import SrcLoc
 import ApiAnnotation
 
-import U.BasicTypes
+import BasicTypes
 import U.OrdList          ( OrdList, fromOL )
 import U.Bag              ( emptyBag, consBag )
 import U.Outputable
 import U.FastString
 import U.Util
+import U.Panic (panic, assertPanic)
 
 import qualified GHC.LanguageExtensions.Type as LangExt
 

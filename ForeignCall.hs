@@ -21,7 +21,8 @@ module ForeignCall (
 import U.FastString
 import U.Outputable
 import Module
-import U.BasicTypes ( SourceText )
+import BasicTypes ( SourceText )
+import U.Panic (panic)
 
 import Data.Char
 import Data.Data

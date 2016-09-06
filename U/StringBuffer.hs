@@ -46,8 +46,8 @@ module U.StringBuffer
 import U.Encoding
 import U.FastString
 import U.FastFunctions
-import U.Outputable
 import U.Util
+import U.Panic (assertPanic)
 
 import Data.Maybe
 import Control.Exception

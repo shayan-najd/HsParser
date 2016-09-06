@@ -24,7 +24,7 @@ import {-# SOURCE #-} HsExpr ( pprExpr, LHsExpr,
 import {-# SOURCE #-} HsPat  ( LPat )
 
 import HsTypes
-import U.BasicTypes
+import BasicTypes
 import U.Outputable
 import SrcLoc
 import U.Bag

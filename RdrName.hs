@@ -47,7 +47,7 @@ import U.Util
 import OccName(HasOccName(..),OccName(..),NameSpace,
                isSymOcc,isTvOcc,demoteOccName,
                mkOccNameFS,mkVarOccFS,isDataOcc,isTcOcc)
-
+import U.Panic
 
 
 import Data.Data

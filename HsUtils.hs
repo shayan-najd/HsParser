@@ -12,92 +12,42 @@ which deal with the instantiated versions are located elsewhere:
    Name                 rename/RnHsSyn
    Id                   typecheck/TcHsSyn
 -}
-
-{-# OPTIONS_GHC -fwarn-unused-imports #-}
-
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeFamilies #-}
-module HsUtils(mkChunkified,chunkify,mkMatchGroup,mkLHsSigWcType,mkNPlusKPat,
-               mkUntypedSplice,mkClassOpSigs,mkHsOpApp,mkHsIntegral,
-               mkHsIsString,mkHsDo,mkLHsSigType,mkHsFractional,
-               mkBindStmt, mkBodyStmt,mkPatSynBind,unguardedRHS,
-               mkRecStmt,mkHsComp,mkGroupByUsingStmt,
-               mkGroupUsingStmt,mkTransformByStmt,missingTupArg,
-               mkTransformStmt,mkHsSpliceNE,mkHsSpliceTE,
-               mkHsSpliceE,mkHsSpliceTy,mkHsQuasiQuote,
-               unguardedGRHSs,mkHsIf) where {-
-  -- Terms
-  mkHsPar, mkHsApp, mkHsAppType, -- mkHsConApp,
-  mkHsCaseAlt,
-  mkSimpleMatch, unguardedGRHSs, unguardedRHS,
-  mkMatchGroup, mkMatchGroupName, mkMatch, mkHsLam, mkHsIf,
-  -- mkHsWrap, mkLHsWrap, mkHsWrapCo, mkHsWrapCoR, mkLHsWrapCo,
-  --  mkHsDictLet, mkHsLams,
-  mkHsOpApp, mkHsDo, mkHsComp,
-  mkLHsPar, -- mkHsCmdWrap, mkLHsCmdWrap,
+module HsUtils(mkChunkified,
+               chunkify,
+               mkMatchGroup,
+               mkLHsSigWcType,
+               mkNPlusKPat,
+               mkUntypedSplice,
+               mkClassOpSigs,
+               mkHsOpApp,
+               mkHsIntegral,
+               mkHsIsString,
+               mkHsDo,
+               mkLHsSigType,
+               mkHsFractional,
+               mkBindStmt,
+               mkBodyStmt,
+               mkPatSynBind,
+               unguardedRHS,
+               mkRecStmt,
+               mkHsComp,
+               mkGroupByUsingStmt,
+               mkGroupUsingStmt,
+               mkTransformByStmt,
+               missingTupArg,
+               mkTransformStmt,
+               mkHsSpliceNE,
+               mkHsSpliceTE,
+               mkHsSpliceE,
+               mkHsSpliceTy,
+               mkHsQuasiQuote,
+               unguardedGRHSs,
+               mkHsIf) where
 
-  -- nlHsTyApp,
-  -- nlHsTyApps,
-  nlHsVar, nlHsLit, nlHsApp, nlHsApps, -- nlHsSyntaxApps,
-  nlHsIntLit, nlHsVarApps,
-  nlHsDo, nlHsOpApp, nlHsLam, nlHsPar, nlHsIf, nlHsCase, nlList,
-  mkLHsTupleExpr, mkLHsVarTuple, missingTupArg,
-  toLHsSigWcType,
-
-  -- * Constructing general big tuples
-  -- $big_tuples
-  mkChunkified, chunkify,
-
-  -- Bindings
-  mkFunBind, mkVarBind, mkHsVarBind, mk_easy_FunBind, mkTopFunBind,
-  mkPatSynBind,
-  isInfixFunBind,
-
-  -- Literals
-  mkHsIntegral, mkHsFractional, mkHsIsString, mkHsString, mkHsStringPrimLit,
-
-  -- Patterns
-  mkNPat, mkNPlusKPat, nlVarPat, nlLitPat, nlConVarPat, nlConVarPatName, nlConPat,
-  nlConPatName, nlInfixConPat, nlNullaryConPat, nlWildConPat, nlWildPat,
-  nlWildPatName, nlWildPatId, nlTuplePat, mkParPat,
-  mkBigLHsVarTup, mkBigLHsTup, mkBigLHsVarPatTup, mkBigLHsPatTup,
-
-  -- Types
-  mkHsAppTy, mkHsAppTys, userHsTyVarBndrs, userHsLTyVarBndrs,
-  mkLHsSigType, mkLHsSigWcType, mkClassOpSigs,
-  nlHsAppTy, nlHsTyVar, nlHsFunTy, nlHsTyConApp,
-
-  -- Stmts
-  mkTransformStmt, mkTransformByStmt, mkBodyStmt, mkBindStmt, mkTcBindStmt,
-  mkLastStmt,
-  emptyTransStmt, mkGroupUsingStmt, mkGroupByUsingStmt,
-  emptyRecStmt, emptyRecStmtName, emptyRecStmtId, mkRecStmt,
-
-  -- Template Haskell
-  mkHsSpliceTy, mkHsSpliceE, mkHsSpliceTE, mkUntypedSplice, mkHsSpliceNE,
-  mkHsQuasiQuote, unqualQuasiQuote,
-
-  -- Flags
-  noRebindableInfo,
-
-  -- Collecting binders
-  collectLocalBinders, collectHsValBinders, collectHsBindListBinders,
-  collectHsIdBinders,
-  collectHsBindsBinders, collectHsBindBinders, collectMethodBinders,
-  collectPatBinders, collectPatsBinders,
-  collectLStmtsBinders, collectStmtsBinders,
-  collectLStmtBinders, collectStmtBinders,
-
-  hsLTyClDeclBinders, hsTyClForeignBinders, hsPatSynSelectors,
-  hsForeignDeclsBinders, hsGroupBinders, hsDataFamInstBinders,
-  hsDataDefnBinders,
-
-  -- Collecting implicit binders
-  lStmtsImplicits, hsValBindsImplicits, lPatImplicits
-  ) where
--}
 #include "HsVersions.h"
 
 import HsBinds
@@ -108,10 +58,10 @@ import HsLit
 
 import RdrName
 import OccName (mkVarOccFS)
-import U.BasicTypes
+import BasicTypes
 import SrcLoc
 import U.FastString
-import U.Outputable
+import U.Panic (panic)
 
 mAX_TUPLE_SIZE = 62
 

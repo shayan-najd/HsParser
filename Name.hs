@@ -591,7 +591,7 @@ pprModulePrefix sty mod occ = sdocWithDynFlags $ \dflags ->
   if gopt Opt_SuppressModulePrefixes dflags
   then empty
   else
-    case qualName sty mod occ of              -- See Outputable.QualifyName:
+    case qualName sty (moduleName mod) occ of              -- See Outputable.QualifyName:
       NameQual modname -> ppr modname <> dot       -- Name is in scope
       NameNotInScope1  -> ppr mod <> dot           -- Not in scope
       NameNotInScope2  -> ppr (moduleUnitId mod) <> colon     -- Module not in

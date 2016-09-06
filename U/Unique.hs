@@ -18,53 +18,20 @@ Haskell).
 
 {-# LANGUAGE CPP, BangPatterns, MagicHash #-}
 
-module U.Unique (
-        -- * Main data types
-        Unique, Uniquable(..),
-
-        -- ** Constructors, destructors and operations on 'Unique's
-        hasKey,
-
-        pprUnique,
-
-        mkUniqueGrimily,                -- Used in UniqSupply only!
-        getKey,                         -- Used in Var, UniqFM, Name only!
-        mkUnique, unpkUnique,           -- Used in BinIface only
-
-        incrUnique,                     -- Used for renumbering
-        deriveUnique,                   -- Ditto
-        newTagUnique,                   -- Used in CgCase
-        initTyVarUnique,
-        nonDetCmpUnique,
-
-        -- ** Making built-in uniques
-
-        -- now all the built-in Uniques (and functions to make them)
-        -- [the Oh-So-Wonderful Haskell module system wins again...]
-        mkAlphaTyVarUnique,
-        mkPrimOpIdUnique,
-        mkTupleTyConUnique, mkTupleDataConUnique,
-        mkCTupleTyConUnique,
-        mkPreludeMiscIdUnique, mkPreludeDataConUnique,
-        mkPreludeTyConUnique, mkPreludeClassUnique,
-        mkPArrDataConUnique, mkCoVarUnique,
-
-        mkVarOccUnique, mkDataOccUnique, mkTvOccUnique, mkTcOccUnique,
-        mkRegSingleUnique, mkRegPairUnique, mkRegClassUnique, mkRegSubUnique,
-        mkCostCentreUnique,
-
-        tyConRepNameUnique,
-        dataConWorkerUnique, dataConRepNameUnique,
-
-        mkBuiltinUnique,
-        mkPseudoUniqueD,
-        mkPseudoUniqueE,
-        mkPseudoUniqueH
-    ) where
+module U.Unique (Unique,
+                 Uniquable(..),
+                 mkVarOccUnique,
+                 mkDataOccUnique,
+                 mkTvOccUnique,
+                 mkTcOccUnique,
+                 hasKey,
+                 getKey,
+                 pprUnique,
+                 mkPreludeTyConUnique,
+                 mkUniqueGrimily) where
 
 #include "HsVersions.h"
 
-import U.BasicTypes
 import U.FastString
 import U.Outputable
 
@@ -102,26 +69,14 @@ unpkUnique      :: Unique -> (Char, Int)        -- The reverse
 mkUniqueGrimily :: Int -> Unique                -- A trap-door for UniqSupply
 getKey          :: Unique -> Int                -- for Var
 
-incrUnique   :: Unique -> Unique
-stepUnique   :: Unique -> Int -> Unique
-deriveUnique :: Unique -> Int -> Unique
-newTagUnique :: Unique -> Char -> Unique
+
+
 
 mkUniqueGrimily = MkUnique
 
 {-# INLINE getKey #-}
 getKey (MkUnique x) = x
 
-incrUnique (MkUnique i) = MkUnique (i + 1)
-stepUnique (MkUnique i) n = MkUnique (i + n)
-
--- deriveUnique uses an 'X' tag so that it won't clash with
--- any of the uniques produced any other way
--- SPJ says: this looks terribly smelly to me!
-deriveUnique (MkUnique i) delta = mkUnique 'X' (i + delta)
-
--- newTagUnique changes the "domain" of a unique to a different char
-newTagUnique u c = mkUnique c i where (_,i) = unpkUnique u
 
 -- pop the Char in the top 8 bits of the Unique(Supply)
 
@@ -300,84 +255,13 @@ Allocation of unique supply characters:
         s       simplifier
 -}
 
-mkAlphaTyVarUnique     :: Int -> Unique
-mkPreludeClassUnique   :: Int -> Unique
 mkPreludeTyConUnique   :: Int -> Unique
-mkTupleTyConUnique     :: Boxity -> Arity -> Unique
-mkCTupleTyConUnique    :: Arity -> Unique
-mkPreludeDataConUnique :: Arity -> Unique
-mkTupleDataConUnique   :: Boxity -> Arity -> Unique
-mkPrimOpIdUnique       :: Int -> Unique
-mkPreludeMiscIdUnique  :: Int -> Unique
-mkPArrDataConUnique    :: Int -> Unique
-mkCoVarUnique          :: Int -> Unique
-
-mkAlphaTyVarUnique   i = mkUnique '1' i
-mkCoVarUnique        i = mkUnique 'g' i
-mkPreludeClassUnique i = mkUnique '2' i
 
 --------------------------------------------------
 -- Wired-in type constructor keys occupy *two* slots:
 --    * u: the TyCon itself
 --    * u+1: the TyConRepName of the TyCon
 mkPreludeTyConUnique i                = mkUnique '3' (2*i)
-mkTupleTyConUnique Boxed           a  = mkUnique '4' (2*a)
-mkTupleTyConUnique Unboxed         a  = mkUnique '5' (2*a)
-mkCTupleTyConUnique                a  = mkUnique 'k' (2*a)
-
-tyConRepNameUnique :: Unique -> Unique
-tyConRepNameUnique  u = incrUnique u
-
--- Data constructor keys occupy *two* slots.  The first is used for the
--- data constructor itself and its wrapper function (the function that
--- evaluates arguments as necessary and calls the worker). The second is
--- used for the worker function (the function that builds the constructor
--- representation).
-
---------------------------------------------------
--- Wired-in data constructor keys occupy *three* slots:
---    * u: the DataCon itself
---    * u+1: its worker Id
---    * u+2: the TyConRepName of the promoted TyCon
--- Prelude data constructors are too simple to need wrappers.
-
-mkPreludeDataConUnique i              = mkUnique '6' (3*i)    -- Must be alphabetic
-mkTupleDataConUnique Boxed          a = mkUnique '7' (3*a)    -- ditto (*may* be used in C labels)
-mkTupleDataConUnique Unboxed        a = mkUnique '8' (3*a)
-
-dataConRepNameUnique, dataConWorkerUnique :: Unique -> Unique
-dataConWorkerUnique  u = incrUnique u
-dataConRepNameUnique u = stepUnique u 2
-
---------------------------------------------------
-mkPrimOpIdUnique op         = mkUnique '9' op
-mkPreludeMiscIdUnique  i    = mkUnique '0' i
-
--- No numbers left anymore, so I pick something different for the character tag
-mkPArrDataConUnique a           = mkUnique ':' (2*a)
-
--- The "tyvar uniques" print specially nicely: a, b, c, etc.
--- See pprUnique for details
-
-initTyVarUnique :: Unique
-initTyVarUnique = mkUnique 't' 0
-
-mkPseudoUniqueD, mkPseudoUniqueE, mkPseudoUniqueH,
-   mkBuiltinUnique :: Int -> Unique
-
-mkBuiltinUnique i = mkUnique 'B' i
-mkPseudoUniqueD i = mkUnique 'D' i -- used in NCG for getUnique on RealRegs
-mkPseudoUniqueE i = mkUnique 'E' i -- used in NCG spiller to create spill VirtualRegs
-mkPseudoUniqueH i = mkUnique 'H' i -- used in NCG spiller to create spill VirtualRegs
-
-mkRegSingleUnique, mkRegPairUnique, mkRegSubUnique, mkRegClassUnique :: Int -> Unique
-mkRegSingleUnique = mkUnique 'R'
-mkRegSubUnique    = mkUnique 'S'
-mkRegPairUnique   = mkUnique 'P'
-mkRegClassUnique  = mkUnique 'L'
-
-mkCostCentreUnique :: Int -> Unique
-mkCostCentreUnique = mkUnique 'C'
 
 mkVarOccUnique, mkDataOccUnique, mkTvOccUnique, mkTcOccUnique :: FastString -> Unique
 -- See Note [The Unique of an OccName] in OccName

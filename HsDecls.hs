@@ -94,7 +94,7 @@ import {-# SOURCE #-}   HsExpr( LHsExpr, HsExpr, HsSplice, pprExpr, pprSplice )
 import HsBinds
 import HsTypes
 import HsDoc
-import U.BasicTypes
+import BasicTypes
 import ForeignCall
 
 -- others:

@@ -42,7 +42,7 @@ import HsSyn
 import U.OrdList
 import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
 import U.FastString
-import U.Maybes           ( orElse )
+import U.Util           ( orElse )
 import U.Outputable
 
 -- compiler/basicTypes
@@ -50,7 +50,7 @@ import RdrName
 import OccName          ( varName, dataName, tcClsName, tvName )
 import SrcLoc
 import Module           (ModuleName,mkModuleNameFS)
-import U.BasicTypes
+import BasicTypes
 
 
 -- compiler/parser

@@ -39,7 +39,7 @@ import HsImpExp
 import HsLit
 import HsPat
 import HsTypes
-import U.BasicTypes       ( Fixity, WarningTxt )
+import BasicTypes       ( Fixity, WarningTxt )
 import HsUtils
 import HsDoc
 

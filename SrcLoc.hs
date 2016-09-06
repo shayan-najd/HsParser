@@ -83,6 +83,7 @@ module SrcLoc (
 import U.Util
 import U.Outputable
 import U.FastString
+import U.Panic
 
 import Data.Bits
 import Data.Data
