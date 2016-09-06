@@ -8,9 +8,6 @@ module U.DynFlags
              pprUserLength,
              pprCols,
              useUnicode,
-             log_action,
-             reverseErrors,
-             verbosity,
              extensionFlags,
              warningFlags,
              thisPackage),
@@ -23,16 +20,11 @@ module U.DynFlags
    WarnReason(..),
    WarningFlag(..),
    safeImportsOn,
-   FatalMessager,
-   LogAction,
    useUnicodeSyntax) where
 
 #include "HsVersions.h"
 
-import Module
-import SrcLoc
-import U.Outputable
-import {-# SOURCE #-} U.ErrUtils ( Severity(..), MsgDoc)
+import Module (UnitId,stringToUnitId)
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import GHC.LanguageExtensions.Type
@@ -41,9 +33,6 @@ data DynFlags = DynFlags {
   pprUserLength         :: Int,
   pprCols               :: Int,
   useUnicode            :: Bool,
-  log_action            :: LogAction,
-  reverseErrors         :: Bool,
-  verbosity             :: Int,
   extensionFlags        :: IntSet,
   warningFlags          :: IntSet,
   thisPackage           :: UnitId,
@@ -56,9 +45,6 @@ defaultDynFlag =  DynFlags {
   pprUserLength  = 5,
   pprCols        = 100,
   useUnicode     = True,
-  log_action     = error "no log action",
-  reverseErrors  = False,
-  verbosity      = 0,
   extensionFlags = IntSet.fromList [5,8,10,22,40,67,77,88,90],
   warningFlags   = IntSet.fromList [0,8,9,10,12,16,27,28,37,38,
                                     39,41,42,48,49,50,51,52,56,61],
@@ -340,11 +326,6 @@ safeImportsOn :: DynFlags -> Bool
 safeImportsOn dflags = safeHaskell dflags == Sf_Unsafe ||
                        safeHaskell dflags == Sf_Trustworthy ||
                        safeHaskell dflags == Sf_Safe
-
-type FatalMessager = String -> IO ()
-
-type LogAction = DynFlags -> WarnReason -> Severity -> SrcSpan ->
-                 PprStyle -> MsgDoc -> IO ()
 
 useUnicodeSyntax :: DynFlags -> Bool
 useUnicodeSyntax = gopt Opt_PrintUnicodeSyntax
