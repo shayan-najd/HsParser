@@ -7,49 +7,22 @@ Defines basic functions for printing error messages.
 It's hard to put these functions anywhere else without causing
 some unnecessary loops in the module dependency graph.
 -}
-
 {-# LANGUAGE CPP, ScopedTypeVariables #-}
 #define TargetPlatform_NAME ""
-module U.Panic (
-     GhcException(..), showGhcException,
-     throwGhcException, throwGhcExceptionIO,
-     handleGhcException,
-     progName,
-     pgmError,
-
-     panic, sorry, assertPanic, trace,
-     panicDoc, sorryDoc, pgmErrorDoc,
-
-     U.Exception.Exception(..), showException, safeShowException,
-     try, tryMost, throwTo,
-
-     installSignalHandlers,
-) where
--- #include "HsVersions.h"
+module U.Panic (panic,panicDoc,sorryDoc,pgmErrorDoc,trace,pgmError,
+                sorry,assertPanic,GhcException(..)) where
 
 import {-# SOURCE #-} U.Outputable (SDoc, showSDocUnsafe)
 
 import U.Exception
 
-import Control.Concurrent
 import Debug.Trace        ( trace )
 import System.IO.Unsafe
 import System.Environment
-
-#ifndef mingw32_HOST_OS
-import System.Posix.Signals
-#endif
-
-#if defined(mingw32_HOST_OS)
-import GHC.ConsoleHandler
-#endif
-
 import GHC.Stack
-import System.Mem.Weak  ( deRefWeak )
 
 cProjectVersion       :: String
 cProjectVersion       = "8.1.20160617"
-
 
 -- | GHC's own exception type
 --   error messages all take the form:
@@ -107,24 +80,6 @@ progName = unsafePerformIO (getProgName)
 short_usage :: String
 short_usage = "Usage: For basic information, try the `--help' option."
 
-
--- | Show an exception as a string.
-showException :: Exception e => e -> String
-showException = show
-
--- | Show an exception which can possibly throw other exceptions.
--- Used when displaying exception thrown within TH code.
-safeShowException :: Exception e => e -> IO String
-safeShowException e = do
-    -- ensure the whole error message is evaluated inside try
-    r <- try (return $! forceList (showException e))
-    case r of
-        Right msg -> return msg
-        Left e' -> safeShowException (e' :: SomeException)
-    where
-        forceList [] = []
-        forceList xs@(x : xt) = x `seq` forceList xt `seq` xs
-
 -- | Append a description of the given exception to this string.
 --
 -- Note that this uses 'DynFlags.unsafeGlobalDynFlags', which may have some
@@ -172,13 +127,6 @@ showGhcException exception
 throwGhcException :: GhcException -> a
 throwGhcException = U.Exception.throw
 
-throwGhcExceptionIO :: GhcException -> IO a
-throwGhcExceptionIO = U.Exception.throwIO
-
-handleGhcException :: ExceptionMonad m => (GhcException -> m a) -> m a -> m a
-handleGhcException = ghandle
-
-
 -- | Panics and asserts.
 panic, sorry, pgmError :: String -> a
 panic    x = unsafeDupablePerformIO $ do
@@ -201,66 +149,3 @@ assertPanic :: String -> Int -> a
 assertPanic file line =
   U.Exception.throw (U.Exception.AssertionFailed
            ("ASSERT failed! file " ++ file ++ ", line " ++ show line))
-
-
--- | Like try, but pass through UserInterrupt and Panic exceptions.
---   Used when we want soft failures when reading interface files, for example.
---   I'm not entirely sure if this is catching what we really want to catch
-tryMost :: IO a -> IO (Either SomeException a)
-tryMost action = do r <- try action
-                    case r of
-                        Left se ->
-                            case fromException se of
-                                -- Some GhcException's we rethrow,
-                                Just (Signal _)  -> throwIO se
-                                Just (Panic _)   -> throwIO se
-                                -- others we return
-                                Just _           -> return (Left se)
-                                Nothing ->
-                                    case fromException se of
-                                        -- All IOExceptions are returned
-                                        Just (_ :: IOException) ->
-                                            return (Left se)
-                                        -- Anything else is rethrown
-                                        Nothing -> throwIO se
-                        Right v -> return (Right v)
-
-
--- | Install standard signal handlers for catching ^C, which just throw an
---   exception in the target thread.  The current target thread is the
---   thread at the head of the list in the MVar passed to
---   installSignalHandlers.
-installSignalHandlers :: IO ()
-installSignalHandlers = do
-  main_thread <- myThreadId
-  wtid <- mkWeakThreadId main_thread
-
-  let
-      interrupt = do
-        r <- deRefWeak wtid
-        case r of
-          Nothing -> return ()
-          Just t  -> throwTo t UserInterrupt
-
-#if !defined(mingw32_HOST_OS)
-  _ <- installHandler sigQUIT  (Catch interrupt) Nothing
-  _ <- installHandler sigINT   (Catch interrupt) Nothing
-  -- see #3656; in the future we should install these automatically for
-  -- all Haskell programs in the same way that we install a ^C handler.
-  let fatal_signal n = throwTo main_thread (Signal (fromIntegral n))
-  _ <- installHandler sigHUP   (Catch (fatal_signal sigHUP))  Nothing
-  _ <- installHandler sigTERM  (Catch (fatal_signal sigTERM)) Nothing
-  return ()
-#else
-  -- GHC 6.3+ has support for console events on Windows
-  -- NOTE: running GHCi under a bash shell for some reason requires
-  -- you to press Ctrl-Break rather than Ctrl-C to provoke
-  -- an interrupt.  Ctrl-C is getting blocked somewhere, I don't know
-  -- why --SDM 17/12/2004
-  let sig_handler ControlC = interrupt
-      sig_handler Break    = interrupt
-      sig_handler _        = return ()
-
-  _ <- installHandler (Catch sig_handler)
-  return ()
-#endif

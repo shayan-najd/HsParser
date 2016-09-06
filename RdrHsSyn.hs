@@ -7,58 +7,9 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module RdrHsSyn (
-        mkHsOpApp,
-        mkHsIntegral, mkHsFractional, mkHsIsString,
-        mkHsDo, mkSpliceDecl,
-        mkRoleAnnotDecl,
-        mkClassDecl,
-        mkTyData, mkDataFamInst,
-        mkTySynonym, mkTyFamInstEqn,
-        mkTyFamInst,
-        mkFamDecl, mkLHsSigType,
-        splitCon, mkInlinePragma,
-        mkPatSynMatchGroup,
-        mkRecConstrOrUpdate, -- HsExp -> [HsFieldUpdate] -> P HsExp
-        mkTyClD, mkInstD,
-        mkRdrRecordCon, mkRdrRecordUpd,
---        setRdrNameSpace,
-
-        cvBindGroup,
-        cvBindsAndSigs,
-        cvTopDecls,
-
-        -- Stuff to do with Foreign declarations
-        mkImport,
-        parseCImport,
-        mkExport,
-        mkExtName,           -- RdrName -> CLabelString
-        mkGadtDecl,          -- [Located RdrName] -> LHsType RdrName -> ConDecl RdrName
-        mkConDeclH98,
-        mkATDefault,
-
-        -- Bunch of functions in the parser monad for
-        -- checking and constructing values
-        checkPrecP,           -- Int -> P Int
-        checkContext,         -- HsType -> P HsContext
-        checkPattern,         -- HsExp -> P HsPat
-        bang_RDR,
-        checkPatterns,        -- SrcLoc -> [HsExp] -> P [HsPat]
-        checkMonadComp,       -- P (HsStmtContext RdrName)
-        checkCommand,         -- LHsExpr RdrName -> P (LHsCmd RdrName)
-        checkValDef,          -- (SrcLoc, HsExp, HsRhs, [HsDecl]) -> P HsDecl
-        checkValSigLhs,
-        checkDoAndIfThenElse,
-        checkRecordSyntax,
+module RdrHsSyn
+       (ImpExpSubSpec(..),
         parseErrorSDoc,
-        splitTilde, splitTildeApps,
-
-        -- Help with processing exports
-        ImpExpSubSpec(..),
-        mkModuleImpExp,
-        mkTypeImpExp,
-        mkImpExpSubSpec,
-        checkImportSpec,
         cTupleTyConName,
         unicodeStarKindTyConName,
         tupleTyConName,
@@ -75,8 +26,46 @@ module RdrHsSyn (
         nilDataCon_RDR,
         funTyCon_RDR,
         eqPrimTyCon_RDR,
-        eqTyCon_RDR
-    ) where
+        eqTyCon_RDR,
+        bang_RDR,
+        checkPattern,
+        checkMonadComp,
+        checkCommand,
+        checkRecordSyntax,
+        mkRecConstrOrUpdate,
+        checkDoAndIfThenElse,
+        mkInlinePragma,
+        checkValSigLhs,
+        mkSpliceDecl,
+        checkValDef,
+        splitTilde,
+        splitCon,
+        mkConDeclH98,
+        mkGadtDecl,
+        splitTildeApps,
+        checkContext,
+        mkExport,
+        mkImport,
+        cvBindGroup,
+        mkDataFamInst,
+        mkTyFamInst,
+        mkInstD,
+        mkPatSynMatchGroup,
+        mkRoleAnnotDecl,
+        mkFamDecl,
+        mkTyClD,
+        mkTyFamInstEqn,
+        cvBindsAndSigs,
+        mkTyData,
+        mkTySynonym,
+        mkClassDecl,
+        checkPrecP,
+        checkImportSpec,
+        mkTypeImpExp,
+        mkImpExpSubSpec,
+        cvTopDecls,
+        mkModuleImpExp
+       ) where
 
 import HsSyn            -- Lots of it
 import RdrName
@@ -93,9 +82,7 @@ import U.OrdList          ( OrdList, fromOL )
 import U.Bag              ( emptyBag, consBag )
 import U.Outputable
 import U.FastString
-import U.Maybes
 import U.Util
-import U.MonadUtils
 
 import qualified GHC.LanguageExtensions.Type as LangExt
 
@@ -104,6 +91,7 @@ import Text.ParserCombinators.ReadP as ReadP
 import Data.Char
 import Data.List
 import Data.Data       ( dataTypeOf, fromConstr, dataTypeConstrs )
+import Data.Maybe (isNothing,listToMaybe,fromMaybe)
 
 #include "HsVersions.h"
 

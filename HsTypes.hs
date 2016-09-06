@@ -75,7 +75,7 @@ import U.BasicTypes
 import SrcLoc
 import U.Outputable
 import U.FastString
-import U.Maybes( isJust )
+import Data.Maybe( isJust )
 
 import Data.Data hiding ( Fixity )
 import Data.Maybe ( fromMaybe )

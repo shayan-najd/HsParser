@@ -4,114 +4,30 @@
 
 -- | Highly random utility functions
 --
-module U.Util (abstractConstr,snocView,thenCmp,isSingleton,partitionWith,
-               dropWhileEndLE,debugIsOn,dropTail,readRational,fuzzyLookup,
-               mapFst,takeList,looksLikePackageName) {-
-        -- * Flags dependent on the compiler build
-        ghciSupported, debugIsOn, ncgDebugIsOn,
-        ghciTablesNextToCode,
-        isWindowsHost, isDarwinHost,
-
-        -- * General list processing
-        zipEqual, zipWithEqual, zipWith3Equal, zipWith4Equal,
-        zipLazy, stretchZipWith, zipWithAndUnzip,
-
-        zipWithLazy, zipWith3Lazy,
-
-        filterByList, filterByLists, partitionByList,
-
-        unzipWith,
-
-        mapFst, mapSnd, chkAppend,
-        mapAndUnzip, mapAndUnzip3, mapAccumL2,
-        nOfThem, filterOut, partitionWith, splitEithers,
-
-        dropWhileEndLE, spanEnd,
-
-        foldl1', foldl2, count, all2,
-
-        lengthExceeds, lengthIs, lengthAtLeast,
-        listLengthCmp, atLength,
-        equalLength, compareLength, leLength,
-
-        isSingleton, only, singleton,
-        notNull, ,
-
-        isIn, isn'tIn,
-
-        chunkList,
-
-        -- * Tuples
-        fstOf3, sndOf3, thdOf3,
-        firstM, first3M,
-        fst3, snd3, third3,
-        uncurry3,
-        liftFst, liftSnd,
-
-        -- * List operations controlled by another list
-        takeList, dropList, splitAtList, split,
-        dropTail,
-
-        -- * For loop
-        nTimes,
-
-        -- * Sorting
-        sortWith, minWith, nubSort,
-
-        -- * Comparisons
-        isEqual, eqListBy, eqMaybeBy,
-        thenCmp, cmpList,
-        removeSpaces,
-        (<&&>), (<||>),
-
-        -- * Edit distance
-        fuzzyMatch, fuzzyLookup,
-
-        -- * Transitive closures
-        transitiveClosure,
-
-        -- * Strictness
-        seqList,
-
-        -- * Module names
-        looksLikeModuleName,
-        looksLikePackageName,
-
-        -- * Argument processing
-        getCmd, toCmdArgs, toArgs,
-
-        -- * Floating point
-        readRational,
-
-        -- * read helpers
-        maybeRead, maybeReadFuzzy,
-
-        -- * IO-ish utilities
-        hSetTranslit,
-
-        global, consIORef, globalM,
-
-        -- * Filenames and paths
-        Suffix,
-        splitLongestPrefix,
-        escapeSpaces,
-        Direction(..), reslash,
-        makeRelativeTo,
-
-        -- * Utils for defining Data instances
-         abstractDataType, mkNoRepType,
-
-        -- * Utils for printing C code
-        charToC,
-
-        -- * Hashing
-        hashString,
-    )  -} where
+module U.Util (abstractConstr,
+               snocView,
+               thenCmp,
+               isSingleton,
+               partitionWith,
+               dropWhileEndLE,
+               debugIsOn,
+               dropTail,
+               readRational,
+               fuzzyLookup,
+               mapFst,
+               takeList,
+               looksLikePackageName,
+               expectJust,
+               orElse,
+               concatMapM,
+               foldrM,
+               mapAccumLM,
+               anyM) where
 
 #include "HsVersions.h"
 
 import U.Panic
-
+import Control.Monad
 import Data.Data
 import Data.List        hiding (group)
 import Control.Applicative ( liftA2 )
@@ -122,6 +38,15 @@ import Data.Ord         ( comparing )
 import Data.Bits
 import Data.Word
 import qualified Data.IntMap as IM
+
+import Data.Maybe
+#if __GLASGOW_HASKELL__ >= 800
+import GHC.Stack
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
+
 
 infixr 9 `thenCmp`
 
@@ -440,3 +365,42 @@ abstractConstr n = mkConstr (abstractDataType n) ("{abstract:"++n++"}") [] Prefi
 
 abstractDataType :: String -> DataType
 abstractDataType n = mkDataType n [abstractConstr n]
+
+expectJust :: HasCallStack => String -> Maybe a -> a
+{-# INLINE expectJust #-}
+expectJust _   (Just x) = x
+expectJust err Nothing  = error ("expectJust " ++ err)
+
+infixr 4 `orElse`
+
+-- | Flipped version of @fromMaybe@, useful for chaining.
+orElse :: Maybe a -> a -> a
+orElse = flip fromMaybe
+
+-- | Monadic version of mapAccumL
+mapAccumLM :: Monad m
+            => (acc -> x -> m (acc, y)) -- ^ combining funcction
+            -> acc                      -- ^ initial state
+            -> [x]                      -- ^ inputs
+            -> m (acc, [y])             -- ^ final state, outputs
+mapAccumLM _ s []     = return (s, [])
+mapAccumLM f s (x:xs) = do
+    (s1, x')  <- f s x
+    (s2, xs') <- mapAccumLM f s1 xs
+    return    (s2, x' : xs')
+
+-- | Monadic version of concatMap
+concatMapM :: Monad m => (a -> m [b]) -> [a] -> m [b]
+concatMapM f xs = liftM concat (mapM f xs)
+
+-- | Monadic version of 'any', aborts the computation at the first @True@ value
+anyM :: Monad m => (a -> m Bool) -> [a] -> m Bool
+anyM _ []     = return False
+anyM f (x:xs) = do b <- f x
+                   if b then return True
+                        else anyM f xs
+
+-- | Monadic version of foldr
+foldrM        :: (Monad m) => (b -> a -> m a) -> a -> [b] -> m a
+foldrM _ z []     = return z
+foldrM k z (x:xs) = do { r <- foldrM k z xs; k x r }

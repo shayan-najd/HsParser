@@ -46,12 +46,10 @@ library
     U.Unique,
     U.OrdList,
     U.DynFlags,
-    U.Binary,
     U.Bag,
     U.Panic,
     U.Encoding,
     U.BasicTypes,
-    U.UniqSet,
     U.Maybes,
     U.StringBuffer,
     U.Util,
@@ -64,7 +62,6 @@ library
     U.FastFunctions,
     U.UniqFM,
     U.FastString,
-    U.Fingerprint,
     U.FastStringEnv
   other-extensions:
     DeriveDataTypeable,
@@ -95,10 +92,7 @@ library
     ghc-boot-th == 8.0.1,
     bytestring >=0.10 && <0.11,
     array >=0.5 && <0.6,
-    filepath >=1.4 && <1.5,
-    time >=1.6 && <1.7,
-    unix >=2.7 && <2.8,
-    transformers >=0.5 && <0.6
+    filepath >=1.4 && <1.5
   build-tools:
     alex,
     happy

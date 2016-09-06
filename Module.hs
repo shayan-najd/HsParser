@@ -61,7 +61,6 @@ module Module
 import U.Outputable
 import U.Unique
 import U.FastString
-import U.Binary
 import U.Util
 -- import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
@@ -164,10 +163,6 @@ instance Ord ModuleName where
 instance Outputable ModuleName where
   ppr = pprModuleName
 
-instance Binary ModuleName where
-  put_ bh (ModuleName fs) = put_ bh fs
-  get bh = do fs <- get bh; return (ModuleName fs)
-
 instance Data ModuleName where
   -- don't traverse?
   toConstr _   = abstractConstr "ModuleName"
@@ -236,10 +231,6 @@ instance Uniquable Module where
 
 instance Outputable Module where
   ppr = pprModule
-
-instance Binary Module where
-  put_ bh (Module p n) = put_ bh p >> put_ bh n
-  get bh = do p <- get bh; n <- get bh; return (Module p n)
 
 instance Data Module where
   -- don't traverse?
@@ -316,10 +307,6 @@ stableUnitIdCmp p1 p2 = unitIdFS p1 `compare` unitIdFS p2
 
 instance Outputable UnitId where
    ppr pk = ftext (unitIdFS pk)
-
-instance Binary UnitId where
-  put_ bh pid = put_ bh (unitIdFS pid)
-  get bh = do { fs <- get bh; return (fsToUnitId fs) }
 
 fsToUnitId :: FastString -> UnitId
 fsToUnitId = PId

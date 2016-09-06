@@ -18,10 +18,8 @@ module BooleanFormula (
 
 import Data.List ( nub, intersperse )
 import Data.Data
-
-import U.MonadUtils
+import U.Util (concatMapM)
 import U.Outputable
-import U.Binary
 import SrcLoc
 
 ----------------------------------------------------------------------
@@ -202,21 +200,3 @@ pprBooleanFormulaNice = pprBooleanFormula' pprVar pprAnd pprOr 0
 
 instance Outputable a => Outputable (BooleanFormula a) where
   pprPrec = pprBooleanFormula pprPrec
-
-----------------------------------------------------------------------
--- Binary
-----------------------------------------------------------------------
-
-instance Binary a => Binary (BooleanFormula a) where
-  put_ bh (Var x)    = putByte bh 0 >> put_ bh x
-  put_ bh (And xs)   = putByte bh 1 >> put_ bh xs
-  put_ bh (Or  xs)   = putByte bh 2 >> put_ bh xs
-  put_ bh (Parens x) = putByte bh 3 >> put_ bh x
-
-  get bh = do
-    h <- getByte bh
-    case h of
-      0 -> Var    <$> get bh
-      1 -> And    <$> get bh
-      2 -> Or     <$> get bh
-      _ -> Parens <$> get bh

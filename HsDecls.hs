@@ -103,9 +103,10 @@ import U.Outputable
 import SrcLoc
 
 import U.Bag
-import U.Maybes
+import U.Util (orElse)
 import U.FastString
 import Data.Data        hiding (TyCon,Fixity)
+import Data.Maybe (fromMaybe)
 
 count :: (a -> Bool) -> [a] -> Int
 count _ [] = 0

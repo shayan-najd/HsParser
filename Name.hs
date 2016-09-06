@@ -131,8 +131,6 @@ import Module
 import SrcLoc
 import U.Unique
 import U.Util
-import U.Maybes
-import U.Binary
 import U.DynFlags
 import U.FastString
 import U.Outputable
@@ -518,23 +516,6 @@ instance Data Name where
   toConstr _   = abstractConstr "Name"
   gunfold _ _  = error "gunfold"
   dataTypeOf _ = mkNoRepType "Name"
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Binary}
-*                                                                      *
-************************************************************************
--}
-
-instance Binary Name where
-   put_ bh name =
-      case getUserData bh of
-        UserData{ ud_put_name = put_name } -> put_name bh name
-
-   get bh =
-      case getUserData bh of
-        UserData { ud_get_name = get_name } -> get_name bh
 
 {-
 ************************************************************************

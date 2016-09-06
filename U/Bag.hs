@@ -27,7 +27,6 @@ module U.Bag (
 import U.Outputable
 import U.Util
 
-import U.MonadUtils
 import Control.Monad
 import Data.Data
 import Data.List ( partition, mapAccumL )
@@ -209,7 +208,7 @@ foldlBagM :: (Monad m) => (b -> a -> m b) -> b -> Bag a -> m b
 foldlBagM _ z EmptyBag        = return z
 foldlBagM k z (UnitBag x)     = k z x
 foldlBagM k z (TwoBags b1 b2) = do { z' <- foldlBagM k z b1; foldlBagM k z' b2 }
-foldlBagM k z (ListBag xs)    = foldlM k z xs
+foldlBagM k z (ListBag xs)    = foldM k z xs
 
 mapBag :: (a -> b) -> Bag a -> Bag b
 mapBag _ EmptyBag        = EmptyBag

@@ -29,9 +29,8 @@ module U.FastStringEnv (
 
 import U.UniqFM
 import U.UniqDFM
-import U.Maybes
 import U.FastString
-
+import U.Util (expectJust)
 
 -- | A non-deterministic set of FastStrings.
 -- See Note [Deterministic UniqFM] in UniqDFM for explanation why it's not

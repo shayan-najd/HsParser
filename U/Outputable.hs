@@ -104,7 +104,7 @@ import qualified Data.Set as Set
 import Data.String
 import Data.Word
 import System.IO        ( Handle )
-import System.FilePath
+import System.FilePath (normalise)
 import Text.Printf
 import Numeric (showFFloat)
 import Data.Graph (SCC(..))
