@@ -144,6 +144,9 @@ import Numeric (showFFloat)
 -- import GHC.Fingerprint
 import GHC.Show         ( showMultiLineString )
 
+import U.Exception
+
+
 {-
 ************************************************************************
 *                                                                      *
@@ -852,3 +855,6 @@ pprDebugAndThen dflags cont heading pretty_msg
 
 showSDocUnsafe :: SDoc -> String
 showSDocUnsafe = showSDoc defaultDynFlag
+
+panicDoc :: String -> SDoc -> a
+panicDoc    x doc = U.Exception.throw (PprPanic        x doc)

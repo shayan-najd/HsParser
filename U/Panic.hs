@@ -9,7 +9,7 @@ some unnecessary loops in the module dependency graph.
 -}
 {-# LANGUAGE CPP, ScopedTypeVariables #-}
 #define TargetPlatform_NAME ""
-module U.Panic (panic,panicDoc,sorryDoc,pgmErrorDoc,trace,pgmError,
+module U.Panic (panic,trace,pgmError,
                 sorry,assertPanic,GhcException(..)) where
 
 import {-# SOURCE #-} U.Outputable (SDoc, showSDocUnsafe)
@@ -137,11 +137,6 @@ panic    x = unsafeDupablePerformIO $ do
 
 sorry    x = throwGhcException (Sorry x)
 pgmError x = throwGhcException (ProgramError x)
-
-panicDoc, sorryDoc, pgmErrorDoc :: String -> SDoc -> a
-panicDoc    x doc = throwGhcException (PprPanic        x doc)
-sorryDoc    x doc = throwGhcException (PprSorry        x doc)
-pgmErrorDoc x doc = throwGhcException (PprProgramError x doc)
 
 
 -- | Throw an failed assertion exception for a given filename and line number.
