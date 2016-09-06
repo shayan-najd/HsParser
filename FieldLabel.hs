@@ -63,7 +63,6 @@ Of course, datatypes with no constructors cannot have any fields.
 {-# LANGUAGE StandaloneDeriving #-}
 
 module FieldLabel ( FieldLabelString
-                  , FieldLabelEnv
                   , FieldLbl(..)
                   , FieldLabel
                   , mkFieldLabelOccs
@@ -73,17 +72,12 @@ import OccName
 import Name
 
 import U.FastString
-import U.FastStringEnv
 import U.Outputable
-
 import Data.Data
 
 -- | Field labels are just represented as strings;
 -- they are not necessarily unique (even within a module)
 type FieldLabelString = FastString
-
--- | A map from labels to all the auxiliary information
-type FieldLabelEnv = DFastStringEnv FieldLabel
 
 
 type FieldLabel = FieldLbl Name

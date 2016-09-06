@@ -49,18 +49,16 @@ library
     U.Bag,
     U.Panic,
     U.Encoding,
-    U.BasicTypes,
+    BasicTypes,
     U.StringBuffer,
     U.Util,
     U.FastMutInt,
     U.Exception,
     U.ErrUtils,
     U.Pretty,
-    U.UniqDFM,
     U.FastFunctions,
     U.UniqFM,
-    U.FastString,
-    U.FastStringEnv
+    U.FastString
   other-extensions:
     DeriveDataTypeable,
     BangPatterns,
