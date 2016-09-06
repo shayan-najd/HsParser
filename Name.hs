@@ -161,6 +161,7 @@ data Name = Name {
                 n_uniq :: {-# UNPACK #-} !Int,
                 n_loc  :: !SrcSpan      -- Definition site
             }
+            deriving Show
 
 -- NOTE: we make the n_loc field strict to eliminate some potential
 -- (and real!) space leaks, due to the fact that we don't look at
@@ -177,6 +178,7 @@ data NameSort
 
   | System              -- A system-defined Id or TyVar.  Typically the
                         -- OccName is very uninformative (like 's')
+  deriving Show
 
 instance Outputable NameSort where
   ppr (External _)    = text "external"
@@ -187,7 +189,7 @@ instance Outputable NameSort where
 -- | BuiltInSyntax is for things like @(:)@, @[]@ and tuples,
 -- which have special syntactic forms.  They aren't in scope
 -- as such.
-data BuiltInSyntax = BuiltInSyntax | UserSyntax
+data BuiltInSyntax = BuiltInSyntax | UserSyntax deriving Show
 
 {-
 Notes about the NameSorts:

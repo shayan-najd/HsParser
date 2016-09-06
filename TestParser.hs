@@ -4,24 +4,22 @@ import Parser
 import U.DynFlags
 import Lexer
 import SrcLoc
-import RdrName
-import HsExpr
 import U.FastString
 import U.StringBuffer
-import U.Outputable
-import U.Pretty
-import Platform
+import ShowInstances ()
+import RdrName
+import HsExpr
 
-pExp :: String -> String
+pExp :: String -> LHsExpr RdrName
 pExp = runParser defaultDynFlag
 
 
-runParser :: DynFlags -> String -> String
+runParser :: DynFlags -> String -> LHsExpr RdrName
 -- LHsExpr RdrName
 runParser flags str = let POk _ r = unP parseExpression parseState
-                in  showPpr flags r
+                      in  r
   where
     filename = "<interactive>"
     location = mkRealSrcLoc (mkFastString filename) 1 1
-    buffer = stringToStringBuffer str
-    parseState = mkPState flags buffer location
+    buff = stringToStringBuffer str
+    parseState = mkPState flags buff location

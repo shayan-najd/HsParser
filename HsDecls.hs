@@ -114,7 +114,7 @@ count p (x:xs) | p x       = 1 + count p xs
 
 
 data Role = Nominal | Representational | Phantom
-          deriving Data
+          deriving (Data,Show)
 
 fsFromRole :: Role -> FastString
 fsFromRole Nominal          = fsLit "nominal"

@@ -41,6 +41,7 @@ data Bag a
   | UnitBag a
   | TwoBags (Bag a) (Bag a) -- INVARIANT: neither branch is empty
   | ListBag [a]             -- INVARIANT: the list is non-empty
+  deriving Show
 
 emptyBag :: Bag a
 emptyBag = EmptyBag

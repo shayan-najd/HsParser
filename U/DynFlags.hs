@@ -35,7 +35,7 @@ import U.Outputable
 import {-# SOURCE #-} U.ErrUtils ( Severity(..), MsgDoc)
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
-import qualified GHC.LanguageExtensions as LangExt
+import GHC.LanguageExtensions.Type
 
 data DynFlags = DynFlags {
   pprUserLength         :: Int,
@@ -67,10 +67,8 @@ defaultDynFlag =  DynFlags {
                                     83,84,87,88,89,98,101,103,104,116],
   safeHaskell    = Sf_None}
 
-
-
 -- | Test whether a 'LangExt.Extension' is set
-xopt :: LangExt.Extension -> DynFlags -> Bool
+xopt :: Extension -> DynFlags -> Bool
 xopt f dflags = fromEnum f `IntSet.member` extensionFlags dflags
 
 -- | Enumerates the simple on-or-off dynamic flags

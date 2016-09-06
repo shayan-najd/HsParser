@@ -91,8 +91,7 @@ import qualified U.Pretty
 import U.Util
 import U.Pretty           ( Doc, Mode(..) )
 import U.Panic
-import GHC.Serialized
-import GHC.LanguageExtensions (Extension)
+import GHC.LanguageExtensions.Type (Extension)
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -804,9 +803,6 @@ instance Outputable Fingerprint where
 instance Outputable a => Outputable (SCC a) where
    ppr (AcyclicSCC v) = text "NONREC" $$ (nest 3 (ppr v))
    ppr (CyclicSCC vs) = text "REC" $$ (nest 3 (vcat (map ppr vs)))
-
-instance Outputable Serialized where
-    ppr (Serialized the_type bytes) = int (length bytes) <+> text "of type" <+> text (show the_type)
 
 instance Outputable Extension where
     ppr = text . show

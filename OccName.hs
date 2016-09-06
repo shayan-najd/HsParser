@@ -128,7 +128,7 @@ data NameSpace = VarName        -- Variables, including "real" data constructors
                | TvName         -- Type variables
                | TcClsName      -- Type constructors and classes; Haskell has them
                                 -- in the same name space for now.
-               deriving( Eq, Ord )
+               deriving( Eq, Ord, Show )
    {-! derive: Binary !-}
 
 -- Note [Data Constructors]
@@ -225,7 +225,7 @@ demoteNameSpace TcClsName = Just DataName
 data OccName = OccName
     { occNameSpace  :: !NameSpace
     , occNameFS     :: !FastString
-    }
+    } deriving Show
 
 instance Eq OccName where
     (OccName sp1 s1) == (OccName sp2 s2) = s1 == s2 && sp1 == sp2

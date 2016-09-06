@@ -66,7 +66,7 @@ import ForeignCall
 import U.Util             ( looksLikePackageName )
 import Prelude
 
-import qualified GHC.LanguageExtensions as LangExt
+import qualified GHC.LanguageExtensions.Type as LangExt
 
 }
 

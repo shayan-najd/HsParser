@@ -88,7 +88,7 @@ import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 
 -- ghc-boot
-import qualified GHC.LanguageExtensions as LangExt
+import qualified GHC.LanguageExtensions.Type as LangExt
 
 -- bytestring
 import Data.ByteString (ByteString)

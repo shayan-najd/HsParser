@@ -63,7 +63,7 @@ import U.Unique
 import U.FastString
 import U.Binary
 import U.Util
-import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
+-- import GHC.PackageDb (BinaryStringRep(..), DbModuleRep(..), DbModule(..))
 
 import Data.Data
 import System.FilePath
@@ -147,7 +147,7 @@ import System.FilePath
 -}
 
 -- | A ModuleName is essentially a simple string, e.g. @Data.List@.
-newtype ModuleName = ModuleName FastString
+newtype ModuleName = ModuleName FastString deriving Show
 
 instance Uniquable ModuleName where
   getUnique (ModuleName nm) = getUnique nm
@@ -167,10 +167,6 @@ instance Outputable ModuleName where
 instance Binary ModuleName where
   put_ bh (ModuleName fs) = put_ bh fs
   get bh = do fs <- get bh; return (ModuleName fs)
-
-instance BinaryStringRep ModuleName where
-  fromStringRep = mkModuleNameFS . mkFastStringByteString
-  toStringRep   = fastStringToByteString . moduleNameFS
 
 instance Data ModuleName where
   -- don't traverse?
@@ -233,7 +229,7 @@ data Module = Module {
    moduleUnitId :: !UnitId,  -- pkg-1.0
    moduleName      :: !ModuleName  -- A.B.C
   }
-  deriving (Eq, Ord)
+  deriving (Eq, Ord,Show)
 
 instance Uniquable Module where
   getUnique (Module p n) = getUnique (unitIdFS p `appendFS` moduleNameFS n)
@@ -285,10 +281,6 @@ class ContainsModule t where
 class HasModule m where
     getModule :: m Module
 
-instance DbModuleRep UnitId ModuleName Module where
-  fromDbModule (DbModule uid mod_name) = mkModule uid mod_name
-  toDbModule mod = DbModule (moduleUnitId mod) (moduleName mod)
-
 {-
 ************************************************************************
 *                                                                      *
@@ -301,7 +293,7 @@ instance DbModuleRep UnitId ModuleName Module where
 -- it is just the package name, but for user compiled packages, it is a hash.
 
 -- the hex representation and hash-cons those strings.
-newtype UnitId = PId FastString deriving Eq
+newtype UnitId = PId FastString deriving (Show,Eq)
     -- here to avoid module loops with PackageConfig
 
 instance Uniquable UnitId where
@@ -328,10 +320,6 @@ instance Outputable UnitId where
 instance Binary UnitId where
   put_ bh pid = put_ bh (unitIdFS pid)
   get bh = do { fs <- get bh; return (fsToUnitId fs) }
-
-instance BinaryStringRep UnitId where
-  fromStringRep = fsToUnitId . mkFastStringByteString
-  toStringRep   = fastStringToByteString . unitIdFS
 
 fsToUnitId :: FastString -> UnitId
 fsToUnitId = PId

@@ -97,7 +97,7 @@ import U.Maybes
 import U.Util
 import U.MonadUtils
 
-import qualified GHC.LanguageExtensions as LangExt
+import qualified GHC.LanguageExtensions.Type as LangExt
 
 import Control.Monad
 import Text.ParserCombinators.ReadP as ReadP
