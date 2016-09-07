@@ -12,7 +12,7 @@ the keys.
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Module
+module Module {-
     (
         -- * The ModuleName type
         ModuleName,
@@ -56,9 +56,8 @@ module Module
         stableModuleCmp,
         HasModule(..),
         ContainsModule(..),
-    ) where
+    ) -} where
 
-import U.Outputable
 import U.Unique
 import U.FastString
 import U.Util
@@ -160,9 +159,6 @@ instance Eq ModuleName where
 instance Ord ModuleName where
   nm1 `compare` nm2 = getUnique nm1 `compare` getUnique nm2
 
-instance Outputable ModuleName where
-  ppr = pprModuleName
-
 instance Data ModuleName where
   -- don't traverse?
   toConstr _   = abstractConstr "ModuleName"
@@ -172,13 +168,6 @@ instance Data ModuleName where
 stableModuleNameCmp :: ModuleName -> ModuleName -> Ordering
 -- ^ Compares module names lexically, rather than by their 'Unique's
 stableModuleNameCmp n1 n2 = moduleNameFS n1 `compare` moduleNameFS n2
-
-pprModuleName :: ModuleName -> SDoc
-pprModuleName (ModuleName nm) =
-    getPprStyle $ \ sty ->
-    if codeStyle sty
-        then ztext (zEncodeFS nm)
-        else ftext nm
 
 moduleNameFS :: ModuleName -> FastString
 moduleNameFS (ModuleName mod) = mod
@@ -229,9 +218,6 @@ data Module = Module {
 instance Uniquable Module where
   getUnique (Module p n) = getUnique (unitIdFS p `appendFS` moduleNameFS n)
 
-instance Outputable Module where
-  ppr = pprModule
-
 instance Data Module where
   -- don't traverse?
   toConstr _   = abstractConstr "Module"
@@ -248,23 +234,6 @@ stableModuleCmp (Module p1 n1) (Module p2 n2)
 
 mkModule :: UnitId -> ModuleName -> Module
 mkModule = Module
-
-pprModule :: Module -> SDoc
-pprModule mod@(Module p n)  =
-  pprPackagePrefix p mod <> pprModuleName n
-
-pprPackagePrefix :: UnitId -> Module -> SDoc
-pprPackagePrefix p mod = getPprStyle doc
- where
-   doc sty
-       | codeStyle sty =
-          if p == mainUnitId
-                then empty -- never qualify the main package in code
-                else ztext (zEncodeFS (unitIdFS p)) <> char '_'
-       | qualModule sty (moduleName mod) = ppr (moduleUnitId mod) <> char ':'
-                -- the PrintUnqualified tells us which modules have to
-                -- be qualified with package names
-       | otherwise = empty
 
 class ContainsModule t where
     extractModule :: t -> Module
@@ -304,9 +273,6 @@ instance Data UnitId where
 stableUnitIdCmp :: UnitId -> UnitId -> Ordering
 -- ^ Compares package ids lexically, rather than by their 'Unique's
 stableUnitIdCmp p1 p2 = unitIdFS p1 `compare` unitIdFS p2
-
-instance Outputable UnitId where
-   ppr pk = ftext (unitIdFS pk)
 
 fsToUnitId :: FastString -> UnitId
 fsToUnitId = PId

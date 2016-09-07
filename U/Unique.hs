@@ -26,14 +26,12 @@ module U.Unique (Unique,
                  mkTcOccUnique,
                  hasKey,
                  getKey,
-                 pprUnique,
                  mkPreludeTyConUnique,
                  mkUniqueGrimily) where
 
 #include "HsVersions.h"
 
 import U.FastString
-import U.Outputable
 
 -- just for implementing a fast [0,61) -> Char function
 import GHC.Exts (indexCharOffAddr#, Char(..), Int(..))
@@ -191,12 +189,6 @@ finish_show 't' u _pp_u | u < 26
     -- come out as a, b, ... (shorter, easier to read)
     [chr (ord 'a' + u)]
 finish_show tag _ pp_u = tag : pp_u
-
-pprUnique :: Unique -> SDoc
-pprUnique u = text (showUnique u)
-
-instance Outputable Unique where
-    ppr = pprUnique
 
 instance Show Unique where
     show uniq = showUnique uniq

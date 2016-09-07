@@ -44,8 +44,6 @@ import HsUtils
 import HsDoc
 
 -- others:
-import OccName          ( HasOccName )
-import U.Outputable
 import SrcLoc
 import Module           ( ModuleName )
 
@@ -104,40 +102,5 @@ data HsModule name
 
      -- For details on above see note [Api annotations] in ApiAnnotation
 deriving instance (Data name) => Data (HsModule name)
-
-instance (OutputableBndr name, HasOccName name)
-        => Outputable (HsModule name) where
-
-    ppr (HsModule Nothing _ imports decls _ mbDoc)
-      = pp_mb mbDoc $$ pp_nonnull imports
-                    $$ pp_nonnull decls
-
-    ppr (HsModule (Just name) exports imports decls deprec mbDoc)
-      = vcat [
-            pp_mb mbDoc,
-            case exports of
-              Nothing -> pp_header (text "where")
-              Just es -> vcat [
-                           pp_header lparen,
-                           nest 8 (fsep (punctuate comma (map ppr (unLoc es)))),
-                           nest 4 (text ") where")
-                          ],
-            pp_nonnull imports,
-            pp_nonnull decls
-          ]
-      where
-        pp_header rest = case deprec of
-           Nothing -> pp_modname <+> rest
-           Just d -> vcat [ pp_modname, ppr d, rest ]
-
-        pp_modname = text "module" <+> ppr name
-
-pp_mb :: Outputable t => Maybe t -> SDoc
-pp_mb (Just x) = ppr x
-pp_mb Nothing  = empty
-
-pp_nonnull :: Outputable t => [t] -> SDoc
-pp_nonnull [] = empty
-pp_nonnull xs = vcat (map ppr xs)
 
 type IsBootInterface = Bool

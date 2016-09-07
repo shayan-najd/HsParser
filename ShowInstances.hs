@@ -10,7 +10,7 @@ import HsTypes
 import HsDecls
 import SrcLoc
 import HsBinds
-import U.BasicTypes
+import BasicTypes
 import BooleanFormula
 import ForeignCall
 import RdrName

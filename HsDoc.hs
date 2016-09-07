@@ -1,14 +1,13 @@
 {-# LANGUAGE CPP, DeriveDataTypeable #-}
 
-module HsDoc (
+module HsDoc {- (
   HsDocString(..),
   LHsDocString,
   ppr_mbDoc
-  ) where
+  ) -} where
 
 #include "HsVersions.h"
 
-import U.Outputable
 import SrcLoc
 import U.FastString
 
@@ -18,11 +17,3 @@ newtype HsDocString = HsDocString FastString
   deriving (Eq, Show, Data)
 
 type LHsDocString = Located HsDocString
-
-instance Outputable HsDocString where
-  ppr (HsDocString fs) = ftext fs
-
-ppr_mbDoc :: Maybe LHsDocString -> SDoc
-ppr_mbDoc (Just doc) = ppr doc
-ppr_mbDoc Nothing    = empty
-

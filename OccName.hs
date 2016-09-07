@@ -21,14 +21,14 @@
 --
 -- * 'Var.Var': see "Var#name_types"
 
-module OccName (OccName,
+module OccName {-
+               (OccName,
                 HasOccName(occName),
                 NameSpace,
                 isSymOcc,
                 occNameFS,
                 mkOccNameFS,
                 isDataOcc,
-                pprNameSpaceBrief,
                 occNameSpace,
                 tvName,
                 mkVarOccFS,
@@ -42,7 +42,7 @@ module OccName (OccName,
                 isVarNameSpace,
                 srcDataName,
                 dataName,
-                isTcOcc) where {-
+                isTcOcc) -} where {-
         -- * The 'NameSpace' type
         NameSpace, -- Abstract
 
@@ -126,7 +126,6 @@ module OccName (OccName,
 import U.Util
 import U.Unique
 import U.FastString
-import U.Outputable
 import Lexeme
 import Data.Data
 
@@ -185,12 +184,6 @@ isVarNameSpace TvName  = True
 isVarNameSpace VarName = True
 isVarNameSpace _       = False
 
-pprNameSpaceBrief :: NameSpace -> SDoc
-pprNameSpaceBrief DataName  = char 'd'
-pprNameSpaceBrief VarName   = char 'v'
-pprNameSpaceBrief TvName    = text "tv"
-pprNameSpaceBrief TcClsName = text "tc"
-
 -- demoteNameSpace lowers the NameSpace if possible.  We can not know
 -- in advance, since a TvName can appear in an HsTyVar.
 -- See Note [Demotion] in RnEnv
@@ -229,34 +222,6 @@ instance Data OccName where
 
 instance HasOccName OccName where
   occName = id
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Printing}
-*                                                                      *
-************************************************************************
--}
-
-instance Outputable OccName where
-    ppr = pprOccName
-
-instance OutputableBndr OccName where
-    pprBndr _ = ppr
-    pprInfixOcc n = pprInfixVar (isSymOcc n) (ppr n)
-    pprPrefixOcc n = pprPrefixVar (isSymOcc n) (ppr n)
-
-pprOccName :: OccName -> SDoc
-pprOccName (OccName sp occ)
-  = getPprStyle $ \ sty ->
-    if codeStyle sty
-    then ztext (zEncodeFS occ)
-    else pp_occ <> pp_debug sty
-  where
-    pp_debug sty | debugStyle sty = braces (pprNameSpaceBrief sp)
-                 | otherwise      = empty
-
-    pp_occ = sdocWithDynFlags $ \dflags -> ftext occ
 
 {-
 Note [Suppressing uniques in OccNames]

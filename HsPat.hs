@@ -17,7 +17,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module HsPat (
+module HsPat {-  (
         Pat(..), InPat, LPat,
 
         HsConPatDetails,
@@ -34,18 +34,17 @@ module HsPat (
         isIrrefutableHsPat,
 
         pprParendLPat, pprConArgs
-    ) where
+    )  -} where
 
-import {-# SOURCE #-} HsExpr            (LHsExpr, HsSplice, pprLExpr, pprSplice)
+import {-# SOURCE #-} HsExpr (LHsExpr, HsSplice)
 
 -- friends:
 import HsBinds
 import HsLit
 import HsTypes
 import SrcLoc
-
+import U.Panic (panic)
 import BasicTypes
-import U.Outputable
 
 -- libraries:
 import Data.Data hiding (TyCon,Fixity)
@@ -234,87 +233,6 @@ data HsRecField' id arg = HsRecField {
 hsRecFieldsArgs :: HsRecFields id arg -> [Maybe arg]
 hsRecFieldsArgs rbinds = map (hsRecFieldArg . unLoc) (rec_flds rbinds)
 
-
-{-
-************************************************************************
-*                                                                      *
-*              Printing patterns
-*                                                                      *
-************************************************************************
--}
-
-instance (OutputableBndr name) => Outputable (Pat name) where
-    ppr = pprPat
-
-pprPatBndr :: OutputableBndr name => name -> SDoc
-pprPatBndr var                  -- Print with type info if -dppr-debug is on
-  = getPprStyle $ \ sty ->
-    if debugStyle sty then
-        parens (pprBndr LambdaBind var)         -- Could pass the site to pprPat
-                                                -- but is it worth it?
-    else
-        pprPrefixOcc var
-
-pprParendLPat :: (OutputableBndr name) => LPat name -> SDoc
-pprParendLPat (L _ p) = pprParendPat p
-
-pprParendPat :: (OutputableBndr name) => Pat name -> SDoc
-pprParendPat p = sdocWithDynFlags $ \ dflags ->
-                 if need_parens dflags p
-                 then parens (pprPat p)
-                 else  pprPat p
-  where
-    need_parens dflags p
-      | otherwise     = hsPatNeedsParens p
-      -- For a CoPat we need parens if we are going to show it, which
-      -- we do if -fprint-typechecker-elaboration is on (c.f. pprHsWrapper)
-      -- But otherwise the CoPat is discarded, so it
-      -- is the pattern inside that matters.  Sigh.
-
-pprPat :: (OutputableBndr name) => Pat name -> SDoc
-pprPat (VarPat (L _ var))     = pprPatBndr var
-pprPat (WildPat)              = char '_'
-pprPat (LazyPat pat)          = char '~' <> pprParendLPat pat
-pprPat (BangPat pat)          = char '!' <> pprParendLPat pat
-pprPat (AsPat name pat)       = hcat [pprPrefixOcc (unLoc name), char '@', pprParendLPat pat]
-pprPat (ViewPat expr pat)     = hcat [pprLExpr expr, text " -> ", ppr pat]
-pprPat (ParPat pat)           = parens (ppr pat)
-pprPat (LitPat s)             = ppr s
-pprPat (NPlusKPat n k)        = hcat [ppr n, char '+', ppr k]
-pprPat (SplicePat splice)     = pprSplice splice
-pprPat (SigPatIn pat ty)      = ppr pat <+> dcolon <+> ppr ty
-pprPat (ListPat pats)         = brackets (interpp'SP pats)
-pprPat (PArrPat pats)         = paBrackets (interpp'SP pats)
-pprPat (TuplePat pats bx)     = tupleParens (boxityTupleSort bx) (pprWithCommas ppr pats)
-pprPat (ConPatIn con details) = pprUserCon (unLoc con) details
-
-pprUserCon :: (OutputableBndr con, OutputableBndr id)
-           => con -> HsConPatDetails id -> SDoc
-pprUserCon c (InfixCon p1 p2) = ppr p1 <+> pprInfixOcc c <+> ppr p2
-pprUserCon c details          = pprPrefixOcc c <+> pprConArgs details
-
-pprConArgs :: (OutputableBndr id) => HsConPatDetails id -> SDoc
-pprConArgs (PrefixCon pats) = sep (map pprParendLPat pats)
-pprConArgs (InfixCon p1 p2) = sep [pprParendLPat p1, pprParendLPat p2]
-pprConArgs (RecCon rpats)   = ppr rpats
-
-instance (Outputable id, Outputable arg)
-      => Outputable (HsRecFields id arg) where
-  ppr (HsRecFields { rec_flds = flds, rec_dotdot = Nothing })
-        = braces (fsep (punctuate comma (map ppr flds)))
-  ppr (HsRecFields { rec_flds = flds, rec_dotdot = Just n })
-        = braces (fsep (punctuate comma (map ppr (take n flds) ++ [dotdot])))
-        where
-          dotdot = text ".." <+> ifPprDebug (ppr (drop n flds))
-
-instance (Outputable id, Outputable arg)
-      => Outputable (HsRecField' id arg) where
-  ppr (HsRecField { hsRecFieldLbl = f, hsRecFieldArg = Just arg})
-    = ppr f <+> (equals <+> ppr arg)
-  ppr (HsRecField { hsRecFieldLbl = f, hsRecFieldArg = Nothing})
-    = ppr f <+> empty
-
-
 {-
 ************************************************************************
 *                                                                      *
@@ -392,7 +310,7 @@ looksLazyLPat (L _ (VarPat {}))            = False
 looksLazyLPat (L _ (WildPat {}))           = False
 looksLazyLPat _                            = True
 
-isIrrefutableHsPat :: (OutputableBndr id) => LPat id -> Bool
+isIrrefutableHsPat :: {- (OutputableBndr id) =>  -} LPat id -> Bool
 -- (isIrrefutableHsPat p) is true if matching against p cannot fail,
 -- in the sense of falling through to the next pattern.
 --      (NB: this is not quite the same as the (silly) defn
@@ -428,9 +346,11 @@ isIrrefutableHsPat pat
 
     -- Both should be gotten rid of by renamer before
     -- isIrrefutablePat is called
-    go1 (SplicePat {})     = urk pat
+    go1 (SplicePat {})     = panic "errir ub isIrrefutableHsPat"
+                             {- urk pat
 
     urk pat = pprPanic "isIrrefutableHsPat:" (ppr pat)
+    SHAYAN Hack-}
 
 hsPatNeedsParens :: Pat a -> Bool
 hsPatNeedsParens (NPlusKPat {})      = True

@@ -58,7 +58,9 @@ library
     U.Pretty,
     U.FastFunctions,
     U.UniqFM,
-    U.FastString
+    U.FastString,
+    ShowInstances,
+    OutputableInstances
   other-extensions:
     DeriveDataTypeable,
     BangPatterns,

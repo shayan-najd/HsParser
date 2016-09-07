@@ -62,17 +62,16 @@ Of course, datatypes with no constructors cannot have any fields.
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE StandaloneDeriving #-}
 
-module FieldLabel ( FieldLabelString
+module FieldLabel {- ( FieldLabelString
                   , FieldLbl(..)
                   , FieldLabel
                   , mkFieldLabelOccs
-                  ) where
+                  ) -} where
 
 import OccName
 import Name
 
 import U.FastString
-import U.Outputable
 import Data.Data
 
 -- | Field labels are just represented as strings;
@@ -91,10 +90,6 @@ data FieldLbl a = FieldLabel {
     }
   deriving (Eq, Functor, Foldable, Traversable)
 deriving instance Data a => Data (FieldLbl a)
-
-instance Outputable a => Outputable (FieldLbl a) where
-    ppr fl = ppr (flLabel fl) <> braces (ppr (flSelector fl))
-
 
 -- | Record selector OccNames are built from the underlying field name
 -- and the name of the first data constructor of the type, to support

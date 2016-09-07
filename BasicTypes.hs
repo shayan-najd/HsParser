@@ -16,7 +16,7 @@ types that
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module BasicTypes(
+module BasicTypes {- (
    Boxity(..),
    Arity,
    FunctionOrData(..),
@@ -42,11 +42,10 @@ module BasicTypes(
    RuleName(..),
    Origin(..),
    maxPrecedence
-   ) where
+   ) -} where
 
 import U.FastString
-import U.Outputable
-import SrcLoc ( Located,unLoc )
+import SrcLoc (Located)
 import Data.Data hiding (Fixity)
 import Data.Function (on)
 
@@ -82,10 +81,6 @@ type Arity = Int
 data FunctionOrData = IsFunction | IsData
     deriving (Eq, Ord, Data)
 
-instance Outputable FunctionOrData where
-    ppr IsFunction = text "(function)"
-    ppr IsData     = text "(data)"
-
 data StringLiteral = StringLiteral
                        { sl_st :: SourceText, -- literal raw source.
                                               -- See not [Literal source text]
@@ -101,13 +96,6 @@ data WarningTxt = WarningTxt (Located SourceText)
                 | DeprecatedTxt (Located SourceText)
                                 [Located StringLiteral]
     deriving (Eq, Data)
-
-instance Outputable WarningTxt where
-    ppr (WarningTxt    _ ws)
-                         = doubleQuotes (vcat (map (ftext . sl_fs . unLoc) ws))
-    ppr (DeprecatedTxt _ ds)
-                         = text "Deprecated:" <+>
-                           doubleQuotes (vcat (map (ftext . sl_fs . unLoc) ds))
 
 {-
 ************************************************************************
@@ -132,20 +120,12 @@ data Fixity = Fixity SourceText Int FixityDirection
   -- Note [Pragma source text]
   deriving Data
 
-instance Outputable Fixity where
-    ppr (Fixity _ prec dir) = hcat [ppr dir, space, int prec]
-
 instance Eq Fixity where -- Used to determine if two fixities conflict
   (Fixity _ p1 dir1) == (Fixity _ p2 dir2) = p1==p2 && dir1 == dir2
 
 ------------------------
 data FixityDirection = InfixL | InfixR | InfixN
                      deriving (Eq, Data)
-
-instance Outputable FixityDirection where
-    ppr InfixL = text "infixl"
-    ppr InfixR = text "infixr"
-    ppr InfixN = text "infix"
 
 ------------------------
 maxPrecedence :: Int
@@ -163,9 +143,6 @@ data TopLevelFlag
   = TopLevel
   | NotTopLevel
 
-instance Outputable TopLevelFlag where
-  ppr TopLevel    = text "<TopLevel>"
-  ppr NotTopLevel = text "<NotTopLevel>"
 
 {-
 ************************************************************************
@@ -180,9 +157,6 @@ data Boxity
   | Unboxed
   deriving( Eq, Data )
 
-instance Outputable Boxity where
-  ppr Boxed   = text "Boxed"
-  ppr Unboxed = text "Unboxed"
 
 {-
 ************************************************************************
@@ -196,10 +170,6 @@ data RecFlag = Recursive
              | NonRecursive
              deriving( Eq, Data )
 
-instance Outputable RecFlag where
-  ppr Recursive    = text "Recursive"
-  ppr NonRecursive = text "NonRecursive"
-
 {-
 ************************************************************************
 *                                                                      *
@@ -212,9 +182,6 @@ data Origin = FromSource
             | Generated
             deriving( Eq, Data )
 
-instance Outputable Origin where
-  ppr FromSource  = text "FromSource"
-  ppr Generated   = text "Generated"
 
 {-
 ************************************************************************
@@ -298,19 +265,6 @@ data OverlapMode  -- See Note [Rules for instance lookup] in InstEnv
 
   deriving (Eq, Data)
 
-instance Outputable OverlapFlag where
-   ppr flag = ppr (overlapMode flag) <+> pprSafeOverlap (isSafeOverlap flag)
-
-instance Outputable OverlapMode where
-   ppr (NoOverlap    _) = empty
-   ppr (Overlappable _) = text "[overlappable]"
-   ppr (Overlapping  _) = text "[overlapping]"
-   ppr (Overlaps     _) = text "[overlap ok]"
-   ppr (Incoherent   _) = text "[incoherent]"
-
-pprSafeOverlap :: Bool -> SDoc
-pprSafeOverlap True  = text "[safe]"
-pprSafeOverlap False = empty
 
 {-
 ************************************************************************
@@ -330,46 +284,7 @@ boxityTupleSort :: Boxity -> TupleSort
 boxityTupleSort Boxed   = BoxedTuple
 boxityTupleSort Unboxed = UnboxedTuple
 
-tupleParens :: TupleSort -> SDoc -> SDoc
-tupleParens BoxedTuple      p = parens p
-tupleParens UnboxedTuple    p = text "(#" <+> p <+> ptext (sLit "#)")
-tupleParens ConstraintTuple p = parens p
-
 {-
-************************************************************************
-*                                                                      *
-\subsection[Generic]{Generic flag}
-*                                                                      *
-************************************************************************
-
-This is the "Embedding-Projection pair" datatype, it contains
-two pieces of code (normally either RenamedExpr's or Id's)
-If we have a such a pair (EP from to), the idea is that 'from' and 'to'
-represents functions of type
-
-        from :: T -> Tring
-        to   :: Tring -> T
-
-And we should have
-
-        to (from x) = x
-
-T and Tring are arbitrary, but typically T is the 'main' type while
-Tring is the 'representation' type.  (This just helps us remember
-whether to use 'from' or 'to'.
--}
-
-{-
-Embedding-projection pairs are used in several places:
-
-First of all, each type constructor has an EP associated with it, the
-code in EP converts (datatype T) from T to Tring and back again.
-
-Secondly, when we are filling in Generic methods (in the typechecker,
-tcMethodBinds), we are constructing bimaps by induction on the structure
-of the type of the method signature.
-
-
 ************************************************************************
 *                                                                      *
 \subsection{Occurrence information}
@@ -428,22 +343,6 @@ type InsideLam = Bool   -- True <=> Occurs inside a non-linear lambda
 
 -----------------
 type OneBranch = Bool   -- True <=> Occurs in only one case branch
-
-instance Outputable OccInfo where
-  -- only used for debugging; never parsed.  KSW 1999-07
-  ppr NoOccInfo            = empty
-  ppr (IAmALoopBreaker ro) = text "LoopBreaker" <> if ro then char '!' else empty
-  ppr IAmDead              = text "Dead"
-  ppr (OneOcc inside_lam one_branch int_cxt)
-        = text "Once" <> pp_lam <> pp_br <> pp_args
-        where
-          pp_lam | inside_lam = char 'L'
-                 | otherwise  = empty
-          pp_br  | one_branch = empty
-                 | otherwise  = char '*'
-          pp_args | int_cxt   = char '!'
-                  | otherwise = empty
-
 
 {-
 ************************************************************************
@@ -527,9 +426,6 @@ data CompilerPhase
   = Phase PhaseNum
   | InitialPhase    -- The first phase -- number = infinity!
 
-instance Outputable CompilerPhase where
-   ppr (Phase n)    = int n
-   ppr InitialPhase = text "InitialPhase"
 
 -- See note [Pragma source text]
 data Activation = NeverActive
@@ -647,36 +543,6 @@ isDefaultInlinePragma (InlinePragma { inl_act = activation
                                     , inl_inline = inline })
   = isEmptyInlineSpec inline && isAlwaysActive activation && isFunLike match_info
 
-instance Outputable Activation where
-   ppr AlwaysActive       = brackets (text "ALWAYS")
-   ppr NeverActive        = brackets (text "NEVER")
-   ppr (ActiveBefore _ n) = brackets (char '~' <> int n)
-   ppr (ActiveAfter  _ n) = brackets (int n)
-
-instance Outputable RuleMatchInfo where
-   ppr ConLike = text "CONLIKE"
-   ppr FunLike = text "FUNLIKE"
-
-instance Outputable InlineSpec where
-   ppr Inline          = text "INLINE"
-   ppr NoInline        = text "NOINLINE"
-   ppr Inlinable       = text "INLINABLE"
-   ppr EmptyInlineSpec = empty
-
-instance Outputable InlinePragma where
-  ppr (InlinePragma { inl_inline = inline, inl_act = activation
-                    , inl_rule = info, inl_sat = mb_arity })
-    = ppr inline <> pp_act inline activation <+> pp_sat <+> pp_info
-    where
-      pp_act Inline   AlwaysActive = empty
-      pp_act NoInline NeverActive  = empty
-      pp_act _        act          = ppr act
-
-      pp_sat | Just ar <- mb_arity = parens (text "sat-args=" <> int ar)
-             | otherwise           = empty
-      pp_info | isFunLike info = empty
-              | otherwise      = ppr info
-
 
 isAlwaysActive :: Activation -> Bool
 isAlwaysActive AlwaysActive = True
@@ -698,6 +564,3 @@ instance Eq FractionalLit where
 
 instance Ord FractionalLit where
   compare = compare `on` fl_value
-
-instance Outputable FractionalLit where
-  ppr = text . fl_text

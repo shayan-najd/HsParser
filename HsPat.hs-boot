@@ -9,11 +9,9 @@ module HsPat where
 import SrcLoc( Located )
 
 import Data.Data hiding (Fixity)
-import U.Outputable
 
 type role Pat nominal
 data Pat (i :: *)
 type LPat i = Located (Pat i)
 
 instance (Data id) => Data (Pat id)
-instance (OutputableBndr name) => Outputable (Pat name)

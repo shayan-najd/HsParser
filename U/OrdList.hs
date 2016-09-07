@@ -16,7 +16,6 @@ module U.OrdList (
         mapOL, fromOL, toOL, foldrOL, foldlOL
 ) where
 
-import U.Outputable
 import U.Panic
 
 #if __GLASGOW_HASKELL__ > 710
@@ -36,9 +35,6 @@ data OrdList a
   | Snoc (OrdList a) a
   | Two (OrdList a) -- Invariant: non-empty
         (OrdList a) -- Invariant: non-empty
-
-instance Outputable a => Outputable (OrdList a) where
-  ppr ol = ppr (fromOL ol)  -- Convert to list and print that
 
 #if __GLASGOW_HASKELL__ > 710
 instance Semigroup (OrdList a) where

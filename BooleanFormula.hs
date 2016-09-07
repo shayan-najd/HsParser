@@ -7,19 +7,18 @@
 --
 -- This module is used to represent minimal complete definitions for classes.
 --
-module BooleanFormula (
+module BooleanFormula {- (
         BooleanFormula(..), LBooleanFormula,
         mkFalse, mkTrue, mkAnd, mkOr, mkVar,
         isFalse, isTrue,
         eval, simplify, isUnsatisfied,
         implies, impliesAtom,
         pprBooleanFormula, pprBooleanFormulaNice
-  ) where
+  ) -} where
 
-import Data.List ( nub, intersperse )
+import Data.List ( nub )
 import Data.Data
 import U.Util (concatMapM)
-import U.Outputable
 import SrcLoc
 
 ----------------------------------------------------------------------
@@ -160,43 +159,3 @@ x `implies` Var y  = x `impliesAtom` y
 x `implies` And ys = all (implies x . unLoc) ys
 x `implies` Or ys  = any (implies x . unLoc) ys
 x `implies` Parens y  = x `implies` (unLoc y)
-
-----------------------------------------------------------------------
--- Pretty printing
-----------------------------------------------------------------------
-
--- Pretty print a BooleanFormula,
--- using the arguments as pretty printers for Var, And and Or respectively
-pprBooleanFormula' :: (Rational -> a -> SDoc)
-                   -> (Rational -> [SDoc] -> SDoc)
-                   -> (Rational -> [SDoc] -> SDoc)
-                   -> Rational -> BooleanFormula a -> SDoc
-pprBooleanFormula' pprVar pprAnd pprOr = go
-  where
-  go p (Var x)  = pprVar p x
-  go p (And []) = cparen (p > 0) $ empty
-  go p (And xs) = pprAnd p (map (go 3 . unLoc) xs)
-  go _ (Or  []) = keyword $ text "FALSE"
-  go p (Or  xs) = pprOr p (map (go 2 . unLoc) xs)
-  go p (Parens x) = go p (unLoc x)
-
--- Pretty print in source syntax, "a | b | c,d,e"
-pprBooleanFormula :: (Rational -> a -> SDoc) -> Rational -> BooleanFormula a -> SDoc
-pprBooleanFormula pprVar = pprBooleanFormula' pprVar pprAnd pprOr
-  where
-  pprAnd p = cparen (p > 3) . fsep . punctuate comma
-  pprOr  p = cparen (p > 2) . fsep . intersperse vbar
-
--- Pretty print human in readable format, "either `a' or `b' or (`c', `d' and `e')"?
-pprBooleanFormulaNice :: Outputable a => BooleanFormula a -> SDoc
-pprBooleanFormulaNice = pprBooleanFormula' pprVar pprAnd pprOr 0
-  where
-  pprVar _ = quotes . ppr
-  pprAnd p = cparen (p > 1) . pprAnd'
-  pprAnd' [] = empty
-  pprAnd' [x,y] = x <+> text "and" <+> y
-  pprAnd' xs@(_:_) = fsep (punctuate comma (init xs)) <> text ", and" <+> last xs
-  pprOr p xs = cparen (p > 1) $ text "either" <+> sep (intersperse (text "or") xs)
-
-instance Outputable a => Outputable (BooleanFormula a) where
-  pprPrec = pprBooleanFormula pprPrec

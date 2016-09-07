@@ -22,7 +22,7 @@
 --
 -- * 'Var.Var': see "Var#name_types"
 
-module RdrName (
+module RdrName {- (
         -- * The main type
         RdrName(..),    -- Constructors exported only to BinIface
 
@@ -35,17 +35,16 @@ module RdrName (
         rdrNameOcc, rdrNameSpace, demoteRdrName,
         isRdrDataCon, isRdrTyVar, isRdrTc, isQual, isQual_maybe, isUnqual,
         isOrig, isOrig_maybe, isExact, isExact_maybe, isSrcRdrName,
-        ) where
+        )  -} where
 
 #include "HsVersions.h"
 
 import Module (ModuleName,Module,mkModuleNameFS)
 import Name
 import U.FastString
-import U.Outputable
 import U.Util
 import OccName(HasOccName(..),OccName(..),NameSpace,
-               isSymOcc,isTvOcc,demoteOccName,
+               isTvOcc,demoteOccName,
                mkOccNameFS,mkVarOccFS,isDataOcc,isTcOcc)
 import U.Panic
 
@@ -223,24 +222,6 @@ isExact_maybe _         = Nothing
 *                                                                      *
 ************************************************************************
 -}
-
-instance Outputable RdrName where
-    ppr (Exact name)   = ppr name
-    ppr (Unqual occ)   = ppr occ
-    ppr (Qual mod occ) = ppr mod <> dot <> ppr occ
-    ppr (Orig mod occ) = getPprStyle (\sty -> pprModulePrefix sty mod occ <> ppr occ)
-
-instance OutputableBndr RdrName where
-    pprBndr _ n
-        | isTvOcc (rdrNameOcc n) = char '@' <+> ppr n
-        | otherwise              = ppr n
-
-    pprInfixOcc  rdr = pprInfixVar  (isSymOcc (rdrNameOcc rdr)) (ppr rdr)
-    pprPrefixOcc rdr
-      | Just name <- isExact_maybe rdr = pprPrefixName name
-             -- pprPrefixName has some special cases, so
-             -- we delegate to them rather than reproduce them
-      | otherwise = pprPrefixVar (isSymOcc (rdrNameOcc rdr)) (ppr rdr)
 
 instance Eq RdrName where
     (Exact n1)    == (Exact n2)    = n1==n2

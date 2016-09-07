@@ -56,8 +56,6 @@ import HsBinds
 import BasicTypes
 import U.FastString
 import SrcLoc
-import U.Util (dropTail)
-import U.Outputable
 import U.Panic (panic)
 
 -- libraries:
@@ -606,19 +604,6 @@ RenamedSource that the API Annotations cannot be used directly with
 RenamedSource, so this allows a simple mapping to be used based on the location.
 -}
 
-instance (OutputableBndr id) => Outputable (HsExpr id) where
-    ppr expr = pprExpr expr
-
------------------------
--- pprExpr, pprLExpr, pprBinds call pprDeeper;
--- the underscore versions do not
-pprLExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
-pprLExpr (L _ e) = pprExpr e
-
-pprExpr :: (OutputableBndr id) => HsExpr id -> SDoc
-pprExpr e | isAtomicHsExpr e || isQuietHsExpr e =            ppr_expr e
-          | otherwise                           = pprDeeper (ppr_expr e)
-
 isQuietHsExpr :: HsExpr id -> Bool
 -- Parentheses do display something, but it gives little info and
 -- if we go deeper when we go inside them then we get ugly things
@@ -630,230 +615,9 @@ isQuietHsExpr (HsAppType _ _)    = True
 isQuietHsExpr (OpApp _ _ _)      = True
 isQuietHsExpr _ = False
 
-pprBinds :: (OutputableBndr idL, OutputableBndr idR)
-         => HsLocalBindsLR idL idR -> SDoc
-pprBinds b = pprDeeper (ppr b)
-
------------------------
-ppr_lexpr :: (OutputableBndr id) => LHsExpr id -> SDoc
-ppr_lexpr e = ppr_expr (unLoc e)
-
-ppr_expr :: forall id. (OutputableBndr id) => HsExpr id -> SDoc
-ppr_expr (HsVar (L _ v))  = pprPrefixOcc v
-ppr_expr (HsIPVar v)      = ppr v
-ppr_expr (HsOverLabel l)  = char '#' <> ppr l
-ppr_expr (HsLit lit)      = ppr lit
-ppr_expr (HsOverLit lit)  = ppr lit
-ppr_expr (HsPar e)        = parens (ppr_lexpr e)
-
-ppr_expr (HsCoreAnn _ (StringLiteral _ s) e)
-  = vcat [text "HsCoreAnn" <+> ftext s, ppr_lexpr e]
-
-ppr_expr e@(HsApp {})        = ppr_apps e []
-ppr_expr e@(HsAppType {})    = ppr_apps e []
-
-ppr_expr (OpApp e1 op e2)
-  = case unLoc op of
-      HsVar (L _ v) -> pp_infixly v
-      HsRecFld f    -> pp_infixly f
-      _             -> pp_prefixly
-  where
-    pp_e1 = pprDebugParendExpr e1   -- In debug mode, add parens
-    pp_e2 = pprDebugParendExpr e2   -- to make precedence clear
-
-    pp_prefixly
-      = hang (ppr op) 2 (sep [pp_e1, pp_e2])
-
-    pp_infixly v
-      = sep [pp_e1, sep [pprInfixOcc v, nest 2 pp_e2]]
-
-ppr_expr (NegApp e) = char '-' <+> pprDebugParendExpr e
-
-ppr_expr (SectionL expr op)
-  = case unLoc op of
-      HsVar (L _ v) -> pp_infixly v
-      _             -> pp_prefixly
-  where
-    pp_expr = pprDebugParendExpr expr
-
-    pp_prefixly = hang (hsep [text " \\ x_ ->", ppr op])
-                       4 (hsep [pp_expr, text "x_ )"])
-    pp_infixly v = (sep [pp_expr, pprInfixOcc v])
-
-ppr_expr (SectionR op expr)
-  = case unLoc op of
-      HsVar (L _ v) -> pp_infixly v
-      _             -> pp_prefixly
-  where
-    pp_expr = pprDebugParendExpr expr
-
-    pp_prefixly = hang (hsep [text "( \\ x_ ->", ppr op, text "x_"])
-                       4 (pp_expr <> rparen)
-    pp_infixly v = sep [pprInfixOcc v, pp_expr]
-
-ppr_expr (ExplicitTuple exprs boxity)
-  = tupleParens (boxityTupleSort boxity) (fcat (ppr_tup_args $ map unLoc exprs))
-  where
-    ppr_tup_args []               = []
-    ppr_tup_args (Present e : es) = (ppr_lexpr e <> punc es) : ppr_tup_args es
-    ppr_tup_args (Missing   : es) = punc es : ppr_tup_args es
-
-    punc (Present {} : _) = comma <> space
-    punc (Missing {} : _) = comma
-    punc []               = empty
-
-ppr_expr (HsLam matches)
-  = pprMatches matches
-
-ppr_expr (HsLamCase matches)
-  = sep [ sep [text "\\case {"],
-          nest 2 (pprMatches matches <+> char '}') ]
-
-ppr_expr (HsCase expr matches)
-  = sep [ sep [text "case", nest 4 (ppr expr), ptext (sLit "of {")],
-          nest 2 (pprMatches matches <+> char '}') ]
-
-ppr_expr (HsIf e1 e2 e3)
-  = sep [hsep [text "if", nest 2 (ppr e1), ptext (sLit "then")],
-         nest 4 (ppr e2),
-         text "else",
-         nest 4 (ppr e3)]
-
-ppr_expr (HsMultiIf alts)
-  = sep $ text "if" : map ppr_alt alts
-  where ppr_alt (L _ (GRHS guards expr)) =
-          sep [ vbar <+> interpp'SP guards
-              , text "->" <+> pprDeeper (ppr expr) ]
-
--- special case: let ... in let ...
-ppr_expr (HsLet (L _ binds) expr@(L _ (HsLet _ _)))
-  = sep [hang (text "let") 2 (hsep [pprBinds binds, ptext (sLit "in")]),
-         ppr_lexpr expr]
-
-ppr_expr (HsLet (L _ binds) expr)
-  = sep [hang (text "let") 2 (pprBinds binds),
-         hang (text "in")  2 (ppr expr)]
-
-ppr_expr (HsDo do_or_list_comp (L _ stmts)) = pprDo do_or_list_comp stmts
-
-ppr_expr (ExplicitList exprs)
-  = brackets (pprDeeperList fsep (punctuate comma (map ppr_lexpr exprs)))
-
-ppr_expr (ExplicitPArr exprs)
-  = paBrackets (pprDeeperList fsep (punctuate comma (map ppr_lexpr exprs)))
-
-ppr_expr (RecordCon { rcon_con_name = con_id, rcon_flds = rbinds })
-  = hang (ppr con_id) 2 (ppr rbinds)
-
-ppr_expr (RecordUpd { rupd_expr = L _ aexp, rupd_flds = rbinds })
-  = hang (pprParendExpr aexp) 2 (braces (fsep (punctuate comma (map ppr rbinds))))
-
-ppr_expr (ExprWithTySig expr sig)
-  = hang (nest 2 (ppr_lexpr expr) <+> dcolon)
-         4 (ppr sig)
-
-ppr_expr (ArithSeq info) = brackets (ppr info)
-ppr_expr (PArrSeq  info) = paBrackets (ppr info)
-
-ppr_expr EWildPat       = char '_'
-ppr_expr (ELazyPat e)   = char '~' <> pprParendLExpr e
-ppr_expr (EAsPat v e)   = ppr v <> char '@' <> pprParendLExpr e
-ppr_expr (EViewPat p e) = ppr p <+> text "->" <+> ppr e
-
-ppr_expr (HsSCC _ (StringLiteral _ lbl) expr)
-  = sep [ text "{-# SCC" <+> doubleQuotes (ftext lbl) <+> ptext (sLit "#-}"),
-          pprParendLExpr expr ]
-
-ppr_expr (HsSpliceE s)         = pprSplice s
-ppr_expr (HsBracket b)         = pprHsBracket b
-
-ppr_expr (HsProc pat (L _ (HsCmdTop cmd)))
-  = hsep [text "proc", ppr pat, ptext (sLit "->"), ppr cmd]
-
-ppr_expr (HsStatic e)
-  = hsep [text "static", pprParendLExpr e]
-
-ppr_expr (HsBinTick tickIdTrue tickIdFalse exp)
-  = pprTicks (ppr exp) $
-    hcat [text "bintick<",
-          ppr tickIdTrue,
-          text ",",
-          ppr tickIdFalse,
-          text ">(",
-          ppr exp, text ")"]
-ppr_expr (HsTickPragma _ externalSrcLoc _ exp)
-  = pprTicks (ppr exp) $
-    hcat [text "tickpragma<",
-          pprExternalSrcLoc externalSrcLoc,
-          text ">(",
-          ppr exp,
-          text ")"]
-
-ppr_expr (HsArrApp arrow arg HsFirstOrderApp True)
-  = hsep [ppr_lexpr arrow, larrowt, ppr_lexpr arg]
-ppr_expr (HsArrApp arrow arg HsFirstOrderApp False)
-  = hsep [ppr_lexpr arg, arrowt, ppr_lexpr arrow]
-ppr_expr (HsArrApp arrow arg HsHigherOrderApp True)
-  = hsep [ppr_lexpr arrow, larrowtt, ppr_lexpr arg]
-ppr_expr (HsArrApp arrow arg HsHigherOrderApp False)
-  = hsep [ppr_lexpr arg, arrowtt, ppr_lexpr arrow]
-
-ppr_expr (HsArrForm (L _ (HsVar (L _ v))) (Just _) [arg1, arg2])
-  = sep [pprCmdArg (unLoc arg1), hsep [pprInfixOcc v, pprCmdArg (unLoc arg2)]]
-ppr_expr (HsArrForm op _ args)
-  = hang (text "(|" <+> ppr_lexpr op)
-         4 (sep (map (pprCmdArg.unLoc) args) <+> text "|)")
-ppr_expr (HsRecFld f) = ppr f
-
 -- We must tiresomely make the "id" parameter to the LHsWcType existential
 -- because it's different in the HsAppType case and the HsAppTypeOut case
-data LHsWcTypeX = forall id. (OutputableBndr id) => LHsWcTypeX (LHsWcType id)
-
-ppr_apps :: (OutputableBndr id)
-         => HsExpr id
-         -> [Either (LHsExpr id) LHsWcTypeX]
-         -> SDoc
-ppr_apps (HsApp (L _ fun) arg)        args
-  = ppr_apps fun (Left arg : args)
-ppr_apps (HsAppType (L _ fun) arg)    args
-  = ppr_apps fun (Right (LHsWcTypeX arg) : args)
-ppr_apps fun args = hang (ppr_expr fun) 2 (sep (map pp args))
-  where
-    pp (Left arg)                             = pprParendLExpr arg
-    pp (Right (LHsWcTypeX (HsWC { hswc_body = L _ arg })))
-      = char '@' <> pprParendHsType arg
-
-pprExternalSrcLoc :: (StringLiteral,(Int,Int),(Int,Int)) -> SDoc
-pprExternalSrcLoc (StringLiteral _ src,(n1,n2),(n3,n4))
-  = ppr (src,(n1,n2),(n3,n4))
-
-{-
-HsSyn records exactly where the user put parens, with HsPar.
-So generally speaking we print without adding any parens.
-However, some code is internally generated, and in some places
-parens are absolutely required; so for these places we use
-pprParendLExpr (but don't print double parens of course).
-
-For operator applications we don't add parens, because the operator
-fixities should do the job, except in debug mode (-dppr-debug) so we
-can see the structure of the parse tree.
--}
-
-pprDebugParendExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
-pprDebugParendExpr expr
-  = getPprStyle (\sty ->
-    if debugStyle sty then pprParendLExpr expr
-                      else pprLExpr      expr)
-
-pprParendLExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
-pprParendLExpr (L _ e) = pprParendExpr e
-
-pprParendExpr :: (OutputableBndr id) => HsExpr id -> SDoc
-pprParendExpr expr
-  | hsExprNeedsParens expr = parens (pprExpr expr)
-  | otherwise              = pprExpr expr
-        -- Using pprLExpr makes sure that we go 'deeper'
-        -- I think that is usually (always?) right
+-- data LHsWcTypeX = forall id. (OutputableBndr id) => LHsWcTypeX (LHsWcType id)
 
 hsExprNeedsParens :: HsExpr id -> Bool
 -- True of expressions for which '(e)' and 'e'
@@ -991,19 +755,6 @@ data HsCmdTop id
   = HsCmdTop (LHsCmd id)
 deriving instance (Data id) => Data (HsCmdTop id)
 
-instance (OutputableBndr id) => Outputable (HsCmd id) where
-    ppr cmd = pprCmd cmd
-
------------------------
--- pprCmd and pprLCmd call pprDeeper;
--- the underscore versions do not
-pprLCmd :: (OutputableBndr id) => LHsCmd id -> SDoc
-pprLCmd (L _ c) = pprCmd c
-
-pprCmd :: (OutputableBndr id) => HsCmd id -> SDoc
-pprCmd c | isQuietHsCmd c =            ppr_cmd c
-         | otherwise      = pprDeeper (ppr_cmd c)
-
 isQuietHsCmd :: HsCmd id -> Bool
 -- Parentheses do display something, but it gives little info and
 -- if we go deeper when we go inside them then we get ugly things
@@ -1012,68 +763,6 @@ isQuietHsCmd (HsCmdPar _) = True
 -- applications don't display anything themselves
 isQuietHsCmd (HsCmdApp _ _) = True
 isQuietHsCmd _ = False
-
------------------------
-ppr_lcmd :: (OutputableBndr id) => LHsCmd id -> SDoc
-ppr_lcmd c = ppr_cmd (unLoc c)
-
-ppr_cmd :: forall id. (OutputableBndr id) => HsCmd id -> SDoc
-ppr_cmd (HsCmdPar c) = parens (ppr_lcmd c)
-
-ppr_cmd (HsCmdApp c e)
-  = let (fun, args) = collect_args c [e] in
-    hang (ppr_lcmd fun) 2 (sep (map pprParendLExpr args))
-  where
-    collect_args (L _ (HsCmdApp fun arg)) args = collect_args fun (arg:args)
-    collect_args fun args = (fun, args)
-
-ppr_cmd (HsCmdLam matches)
-  = pprMatches matches
-
-ppr_cmd (HsCmdCase expr matches)
-  = sep [ sep [text "case", nest 4 (ppr expr), ptext (sLit "of {")],
-          nest 2 (pprMatches matches <+> char '}') ]
-
-ppr_cmd (HsCmdIf e ct ce)
-  = sep [hsep [text "if", nest 2 (ppr e), ptext (sLit "then")],
-         nest 4 (ppr ct),
-         text "else",
-         nest 4 (ppr ce)]
-
--- special case: let ... in let ...
-ppr_cmd (HsCmdLet (L _ binds) cmd@(L _ (HsCmdLet _ _)))
-  = sep [hang (text "let") 2 (hsep [pprBinds binds, ptext (sLit "in")]),
-         ppr_lcmd cmd]
-
-ppr_cmd (HsCmdLet (L _ binds) cmd)
-  = sep [hang (text "let") 2 (pprBinds binds),
-         hang (text "in")  2 (ppr cmd)]
-
-ppr_cmd (HsCmdDo (L _ stmts))  = pprDo ArrowExpr stmts
-
-ppr_cmd (HsCmdArrApp arrow arg HsFirstOrderApp True)
-  = hsep [ppr_lexpr arrow, larrowt, ppr_lexpr arg]
-ppr_cmd (HsCmdArrApp arrow arg HsFirstOrderApp False)
-  = hsep [ppr_lexpr arg, arrowt, ppr_lexpr arrow]
-ppr_cmd (HsCmdArrApp arrow arg HsHigherOrderApp True)
-  = hsep [ppr_lexpr arrow, larrowtt, ppr_lexpr arg]
-ppr_cmd (HsCmdArrApp arrow arg HsHigherOrderApp False)
-  = hsep [ppr_lexpr arg, arrowtt, ppr_lexpr arrow]
-
-ppr_cmd (HsCmdArrForm (L _ (HsVar (L _ v))) (Just _) [arg1, arg2])
-  = sep [pprCmdArg (unLoc arg1), hsep [pprInfixOcc v, pprCmdArg (unLoc arg2)]]
-ppr_cmd (HsCmdArrForm op _ args)
-  = hang (text "(|" <> ppr_lexpr op)
-         4 (sep (map (pprCmdArg.unLoc) args) <> text "|)")
-
-pprCmdArg :: (OutputableBndr id) => HsCmdTop id -> SDoc
-pprCmdArg (HsCmdTop cmd@(L _ (HsCmdArrForm _ Nothing [])))
-  = ppr_lcmd cmd
-pprCmdArg (HsCmdTop cmd)
-  = parens (ppr_lcmd cmd)
-
-instance (OutputableBndr id) => Outputable (HsCmdTop id) where
-    ppr = pprCmdArg
 
 {-
 ************************************************************************
@@ -1169,7 +858,6 @@ Example infix function definition requiring individual API Annotations
 
 -}
 
-
 isInfixMatch :: Match id body -> Bool
 isInfixMatch match = case m_ctxt match of
   FunRhs _ Infix -> True
@@ -1218,78 +906,6 @@ type LGRHS id body = Located (GRHS id body)
 data GRHS id body = GRHS [GuardLStmt id] -- Guards
                          body            -- Right hand side
 deriving instance (Data body,Data id) => Data (GRHS id body)
-
--- We know the list must have at least one @Match@ in it.
-
-pprMatches :: (OutputableBndr idR, Outputable body)
-           => MatchGroup idR body -> SDoc
-pprMatches MG { mg_alts = matches }
-    = vcat (map pprMatch (map unLoc (unLoc matches)))
-      -- Don't print the type; it's only a place-holder before typechecking
-
--- Exported to HsBinds, which can't see the defn of HsMatchContext
-pprFunBind :: (OutputableBndr idR, Outputable body)
-           => MatchGroup idR body -> SDoc
-pprFunBind matches = pprMatches matches
-
--- Exported to HsBinds, which can't see the defn of HsMatchContext
-pprPatBind :: forall bndr id body. (OutputableBndr bndr,
-                                    OutputableBndr id, Outputable body)
-           => LPat bndr -> GRHSs id body -> SDoc
-pprPatBind pat (grhss)
- = sep [ppr pat, nest 2 (pprGRHSs (PatBindRhs :: HsMatchContext id) grhss)]
-
-pprMatch :: (OutputableBndr idR, Outputable body) => Match idR body -> SDoc
-pprMatch match
-  = sep [ sep (herald : map (nest 2 . pprParendLPat) other_pats)
-        , nest 2 ppr_maybe_ty
-        , nest 2 (pprGRHSs ctxt (m_grhss match)) ]
-  where
-    ctxt = m_ctxt match
-    (herald, other_pats)
-        = case ctxt of
-            FunRhs (L _ fun) fixity
-                | fixity == Prefix -> (pprPrefixOcc fun, m_pats match)
-                        -- f x y z = e
-                        -- Not pprBndr; the AbsBinds will
-                        -- have printed the signature
-
-                | null pats2 -> (pp_infix, [])
-                        -- x &&& y = e
-
-                | otherwise -> (parens pp_infix, pats2)
-                        -- (x &&& y) z = e
-                where
-                  pp_infix = pprParendLPat pat1 <+> pprInfixOcc fun <+> pprParendLPat pat2
-
-            LambdaExpr -> (char '\\', m_pats match)
-
-            _  -> (ppr pat1, [])        -- No parens around the single pat
-
-    (pat1:pats1) = m_pats match
-    (pat2:pats2) = pats1
-    ppr_maybe_ty = case m_type match of
-                        Just ty -> dcolon <+> ppr ty
-                        Nothing -> empty
-
-
-pprGRHSs :: (OutputableBndr idR, Outputable body)
-         => HsMatchContext idL -> GRHSs idR body -> SDoc
-pprGRHSs ctxt (GRHSs grhss (L _ binds))
-  = vcat (map (pprGRHS ctxt . unLoc) grhss)
- $$ ppUnless (isEmptyLocalBinds binds)
-      (text "where" $$ nest 4 (pprBinds binds))
-
-pprGRHS :: (OutputableBndr idR, Outputable body)
-        => HsMatchContext idL -> GRHS idR body -> SDoc
-pprGRHS ctxt (GRHS [] body)
- =  pp_rhs ctxt body
-
-pprGRHS ctxt (GRHS guards body)
- = sep [vbar <+> interpp'SP guards, pp_rhs ctxt body]
-
-pp_rhs :: Outputable body => HsMatchContext idL -> body -> SDoc
-pp_rhs ctxt rhs = matchSeparator ctxt <+> pprDeeper (ppr rhs)
 
 {-
 ************************************************************************
@@ -1537,85 +1153,6 @@ In any other context than 'MonadComp', the fields for most of these
 'SyntaxExpr's stay bottom.
 -}
 
-instance (OutputableBndr idL) => Outputable (ParStmtBlock idL idR) where
-  ppr (ParStmtBlock stmts _) = interpp'SP stmts
-
-instance (OutputableBndr idL, OutputableBndr idR, Outputable body)
-         => Outputable (StmtLR idL idR body) where
-    ppr stmt = pprStmt stmt
-
-pprStmt :: forall idL idR body . (OutputableBndr idL, OutputableBndr idR,
-                                  Outputable body)
-        => (StmtLR idL idR body) -> SDoc
-pprStmt (LastStmt expr ret_stripped)
-  = ifPprDebug (text "[last]") <+>
-       (if ret_stripped then text "return" else empty) <+>
-       ppr expr
-pprStmt (BindStmt pat expr) = hsep [ppr pat, larrow, ppr expr]
-pprStmt (LetStmt (L _ binds))     = hsep [text "let", pprBinds binds]
-pprStmt (BodyStmt expr)     = ppr expr
-pprStmt (ParStmt stmtss )      = sep (punctuate (text " | ") (map ppr stmtss))
-
-pprStmt (TransStmt { trS_stmts = stmts, trS_by = by, trS_using = using, trS_form = form })
-  = sep $ punctuate comma (map ppr stmts ++ [pprTransStmt by using form])
-
-pprStmt (RecStmt { recS_stmts = segment, recS_rec_ids = rec_ids
-                 , recS_later_ids = later_ids })
-  = text "rec" <+>
-    vcat [ ppr_do_stmts segment
-         , ifPprDebug (vcat [ text "rec_ids=" <> ppr rec_ids
-                            , text "later_ids=" <> ppr later_ids])]
-
-pprTransformStmt :: (OutputableBndr id)
-                 => [id] -> LHsExpr id -> Maybe (LHsExpr id) -> SDoc
-pprTransformStmt bndrs using by
-  = sep [ text "then" <+> ifPprDebug (braces (ppr bndrs))
-        , nest 2 (ppr using)
-        , nest 2 (pprBy by)]
-
-pprTransStmt :: Outputable body => Maybe body -> body -> TransForm -> SDoc
-pprTransStmt by using ThenForm
-  = sep [ text "then", nest 2 (ppr using), nest 2 (pprBy by)]
-pprTransStmt by using GroupForm
-  = sep [ text "then group", nest 2 (pprBy by), nest 2 (ptext (sLit "using") <+> ppr using)]
-
-pprBy :: Outputable body => Maybe body -> SDoc
-pprBy Nothing  = empty
-pprBy (Just e) = text "by" <+> ppr e
-
-pprDo :: (OutputableBndr id, Outputable body)
-      => HsStmtContext any -> [LStmt id body] -> SDoc
-pprDo DoExpr        stmts = text "do"  <+> ppr_do_stmts stmts
-pprDo GhciStmtCtxt  stmts = text "do"  <+> ppr_do_stmts stmts
-pprDo ArrowExpr     stmts = text "do"  <+> ppr_do_stmts stmts
-pprDo MDoExpr       stmts = text "mdo" <+> ppr_do_stmts stmts
-pprDo ListComp      stmts = brackets    $ pprComp stmts
-pprDo PArrComp      stmts = paBrackets  $ pprComp stmts
-pprDo MonadComp     stmts = brackets    $ pprComp stmts
-pprDo _             _     = panic "pprDo" -- PatGuard, ParStmtCxt
-
-ppr_do_stmts :: (OutputableBndr idL, OutputableBndr idR, Outputable body)
-             => [LStmtLR idL idR body] -> SDoc
--- Print a bunch of do stmts, with explicit braces and semicolons,
--- so that we are not vulnerable to layout bugs
-ppr_do_stmts stmts
-  = lbrace <+> pprDeeperList vcat (punctuate semi (map ppr stmts))
-           <+> rbrace
-
-pprComp :: (OutputableBndr id, Outputable body)
-        => [LStmt id body] -> SDoc
-pprComp quals     -- Prints:  body | qual1, ..., qualn
-  | not (null quals)
-  , L _ (LastStmt body _) <- last quals
-  = hang (ppr body <+> vbar) 2 (pprQuals (dropTail 1 quals))
-  | otherwise
-  = pprPanic "pprComp" (pprQuals quals)
-
-pprQuals :: (OutputableBndr id, Outputable body)
-        => [LStmt id body] -> SDoc
--- Show list comprehension qualifiers separated by commas
-pprQuals quals = interpp'SP quals
-
 {-
 ************************************************************************
 *                                                                      *
@@ -1720,35 +1257,6 @@ splices. In contrast, when pretty printing the output of the type checker, we
 sense, although I hate to add another constructor to HsExpr.
 -}
 
-instance (OutputableBndr id) => Outputable (HsSplice id) where
-  ppr s = pprSplice s
-
-pprPendingSplice :: (OutputableBndr id)
-                 => id -> LHsExpr id -> SDoc
-pprPendingSplice n e = angleBrackets (ppr n <> comma <+> ppr e)
-
-pprSplice :: (OutputableBndr id) => HsSplice id -> SDoc
-pprSplice (HsTypedSplice   n e)  = ppr_splice (text "$$") n e
-pprSplice (HsUntypedSplice n e)  = ppr_splice (text "$")  n e
-pprSplice (HsQuasiQuote n q _ s) = ppr_quasi n q s
-
-ppr_quasi :: OutputableBndr id => id -> id -> FastString -> SDoc
-ppr_quasi n quoter quote = ifPprDebug (brackets (ppr n)) <>
-                           char '[' <> ppr quoter <> vbar <>
-                           ppr quote <> text "|]"
-
-ppr_splice :: (OutputableBndr id) => SDoc -> id -> LHsExpr id -> SDoc
-ppr_splice herald n e
-    = herald <> ifPprDebug (brackets (ppr n)) <> eDoc
-    where
-          -- We use pprLExpr to match pprParendLExpr:
-          --     Using pprLExpr makes sure that we go 'deeper'
-          --     I think that is usually (always?) right
-          pp_as_was = pprLExpr e
-          eDoc = case unLoc e of
-                 HsPar _ -> pp_as_was
-                 HsVar _ -> pp_as_was
-                 _ -> parens pp_as_was
 
 data HsBracket id = ExpBr (LHsExpr id)   -- [|  expr  |]
                   | PatBr (LPat id)      -- [p| pat   |]
@@ -1764,27 +1272,6 @@ deriving instance (Data id) => Data (HsBracket id)
 isTypedBracket :: HsBracket id -> Bool
 isTypedBracket (TExpBr {}) = True
 isTypedBracket _           = False
-
-instance (OutputableBndr id) => Outputable (HsBracket id) where
-  ppr = pprHsBracket
-
-
-pprHsBracket :: (OutputableBndr id) => HsBracket id -> SDoc
-pprHsBracket (ExpBr e)   = thBrackets empty (ppr e)
-pprHsBracket (PatBr p)   = thBrackets (char 'p') (ppr p)
-pprHsBracket (DecBrG gp) = thBrackets (char 'd') (ppr gp)
-pprHsBracket (DecBrL ds) = thBrackets (char 'd') (vcat (map ppr ds))
-pprHsBracket (TypBr t)   = thBrackets (char 't') (ppr t)
-pprHsBracket (VarBr True n)  = char '\''         <> ppr n
-pprHsBracket (VarBr False n) = text "''" <> ppr n
-pprHsBracket (TExpBr e)  = thTyBrackets (ppr e)
-
-thBrackets :: SDoc -> SDoc -> SDoc
-thBrackets pp_kind pp_body = char '[' <> pp_kind <> vbar <+>
-                             pp_body <+> text "|]"
-
-thTyBrackets :: SDoc -> SDoc
-thTyBrackets pp_body = text "[||" <+> pp_body <+> ptext (sLit "||]")
 
 {-
 ************************************************************************
@@ -1805,16 +1292,6 @@ data ArithSeqInfo id
                     (LHsExpr id)
 deriving instance (Data id) => Data (ArithSeqInfo id)
 
-instance (OutputableBndr id) => Outputable (ArithSeqInfo id) where
-    ppr (From e1)             = hcat [ppr e1, pp_dotdot]
-    ppr (FromThen e1 e2)      = hcat [ppr e1, comma, space, ppr e2, pp_dotdot]
-    ppr (FromTo e1 e3)        = hcat [ppr e1, pp_dotdot, ppr e3]
-    ppr (FromThenTo e1 e2 e3)
-      = hcat [ppr e1, comma, space, ppr e2, pp_dotdot, ppr e3]
-
-pp_dotdot :: SDoc
-pp_dotdot = text " .. "
-
 {-
 ************************************************************************
 *                                                                      *
@@ -1824,10 +1301,6 @@ pp_dotdot = text " .. "
 -}
 
 data FunctionFixity = Prefix | Infix deriving (Typeable,Data,Eq)
-
-instance Outputable FunctionFixity where
-  ppr Prefix = text "Prefix"
-  ppr Infix  = text "Infix"
 
 -- | Context of a Match
 data HsMatchContext id
@@ -1881,119 +1354,3 @@ isMonadCompExpr MonadComp            = True
 isMonadCompExpr (ParStmtCtxt ctxt)   = isMonadCompExpr ctxt
 isMonadCompExpr (TransStmtCtxt ctxt) = isMonadCompExpr ctxt
 isMonadCompExpr _                    = False
-
-matchSeparator :: HsMatchContext id -> SDoc
-matchSeparator (FunRhs {})  = text "="
-matchSeparator CaseAlt      = text "->"
-matchSeparator IfAlt        = text "->"
-matchSeparator LambdaExpr   = text "->"
-matchSeparator ProcExpr     = text "->"
-matchSeparator PatBindRhs   = text "="
-matchSeparator (StmtCtxt _) = text "<-"
-matchSeparator RecUpd       = panic "unused"
-matchSeparator ThPatSplice  = panic "unused"
-matchSeparator ThPatQuote   = panic "unused"
-matchSeparator PatSyn       = panic "unused"
-
-pprMatchContext :: (Outputable ( id),Outputable id)
-                => HsMatchContext id -> SDoc
-pprMatchContext ctxt
-  | want_an ctxt = text "an" <+> pprMatchContextNoun ctxt
-  | otherwise    = text "a"  <+> pprMatchContextNoun ctxt
-  where
-    want_an (FunRhs {}) = True  -- Use "an" in front
-    want_an ProcExpr    = True
-    want_an _           = False
-
-pprMatchContextNoun :: (Outputable ( id),Outputable id)
-                    => HsMatchContext id -> SDoc
-pprMatchContextNoun (FunRhs (L _ fun) _) = text "equation for"
-                                      <+> quotes (ppr fun)
-pprMatchContextNoun CaseAlt         = text "case alternative"
-pprMatchContextNoun IfAlt           = text "multi-way if alternative"
-pprMatchContextNoun RecUpd          = text "record-update construct"
-pprMatchContextNoun ThPatSplice     = text "Template Haskell pattern splice"
-pprMatchContextNoun ThPatQuote      = text "Template Haskell pattern quotation"
-pprMatchContextNoun PatBindRhs      = text "pattern binding"
-pprMatchContextNoun LambdaExpr      = text "lambda abstraction"
-pprMatchContextNoun ProcExpr        = text "arrow abstraction"
-pprMatchContextNoun (StmtCtxt ctxt) = text "pattern binding in"
-                                      $$ pprStmtContext ctxt
-pprMatchContextNoun PatSyn          = text "pattern synonym declaration"
-
------------------
-pprAStmtContext, pprStmtContext :: (Outputable id,
-                                    Outputable ( id))
-                                => HsStmtContext id -> SDoc
-pprAStmtContext ctxt = article <+> pprStmtContext ctxt
-  where
-    pp_an = text "an"
-    pp_a  = text "a"
-    article = case ctxt of
-                  MDoExpr       -> pp_an
-                  PArrComp      -> pp_an
-                  GhciStmtCtxt  -> pp_an
-                  _             -> pp_a
-
-
------------------
-pprStmtContext GhciStmtCtxt    = text "interactive GHCi command"
-pprStmtContext DoExpr          = text "'do' block"
-pprStmtContext MDoExpr         = text "'mdo' block"
-pprStmtContext ArrowExpr       = text "'do' block in an arrow command"
-pprStmtContext ListComp        = text "list comprehension"
-pprStmtContext MonadComp       = text "monad comprehension"
-pprStmtContext PArrComp        = text "array comprehension"
-pprStmtContext (PatGuard ctxt) = text "pattern guard for" $$ pprMatchContext ctxt
-
--- Drop the inner contexts when reporting errors, else we get
---     Unexpected transform statement
---     in a transformed branch of
---          transformed branch of
---          transformed branch of monad comprehension
-pprStmtContext (ParStmtCtxt c)
-  = pprStmtContext c
-pprStmtContext (TransStmtCtxt c)
-  = pprStmtContext c
-
-
--- Used to generate the string for a *runtime* error message
-matchContextErrString :: Outputable id
-                      => HsMatchContext id -> SDoc
-matchContextErrString (FunRhs (L _ fun) _) = text "function" <+> ppr fun
-matchContextErrString CaseAlt              = text "case"
-matchContextErrString IfAlt                = text "multi-way if"
-matchContextErrString PatBindRhs           = text "pattern binding"
-matchContextErrString RecUpd               = text "record update"
-matchContextErrString LambdaExpr           = text "lambda"
-matchContextErrString ProcExpr             = text "proc"
-matchContextErrString ThPatSplice                = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString ThPatQuote                 = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString PatSyn                     = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString (StmtCtxt (ParStmtCtxt c))   = matchContextErrString (StmtCtxt c)
-matchContextErrString (StmtCtxt (TransStmtCtxt c)) = matchContextErrString (StmtCtxt c)
-matchContextErrString (StmtCtxt (PatGuard _))      = text "pattern guard"
-matchContextErrString (StmtCtxt GhciStmtCtxt)      = text "interactive GHCi command"
-matchContextErrString (StmtCtxt DoExpr)            = text "'do' block"
-matchContextErrString (StmtCtxt ArrowExpr)         = text "'do' block"
-matchContextErrString (StmtCtxt MDoExpr)           = text "'mdo' block"
-matchContextErrString (StmtCtxt ListComp)          = text "list comprehension"
-matchContextErrString (StmtCtxt MonadComp)         = text "monad comprehension"
-matchContextErrString (StmtCtxt PArrComp)          = text "array comprehension"
-
-pprMatchInCtxt :: (OutputableBndr idR,
-                   Outputable ( ( idR)),
-                   Outputable body)
-               => Match idR body -> SDoc
-pprMatchInCtxt match  = hang (text "In" <+> pprMatchContext (m_ctxt match)
-                                        <> colon)
-                             4 (pprMatch match)
-
-pprStmtInCtxt ctxt stmt
-  = hang (text "In a stmt of" <+> pprAStmtContext ctxt <> colon)
-       2 (ppr_stmt stmt)
-  where
-    -- For Group and Transform Stmts, don't print the nested stmts!
-    ppr_stmt (TransStmt { trS_by = by, trS_using = using
-                        , trS_form = form }) = pprTransStmt by using form
-    ppr_stmt stmt = pprStmt stmt

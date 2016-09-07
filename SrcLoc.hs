@@ -13,7 +13,7 @@
 
 -- | This module contains types that relate to the positions of things
 -- in source files, and allow tagging of those things with locations
-module SrcLoc (
+module SrcLoc {- (
         -- * SrcLoc
         RealSrcLoc,             -- Abstract
         SrcLoc(..),
@@ -50,7 +50,6 @@ module SrcLoc (
         srcSpanStart, srcSpanEnd,
         realSrcSpanStart, realSrcSpanEnd,
         srcSpanFileName_maybe,
-        pprUserRealSpan,
 
         -- ** Unsafely deconstructing SrcSpan
         -- These are dubious exports, because they crash on some inputs
@@ -78,10 +77,9 @@ module SrcLoc (
         eqLocated, cmpLocated, combineLocs, addCLoc,
         leftmost_smallest, leftmost_largest, rightmost,
         spans, isSubspanOf, sortLocated
-    ) where
+    ) -}  where
 
 import U.Util
-import U.Outputable
 import U.FastString
 import U.Panic
 
@@ -169,25 +167,6 @@ advanceSrcLoc (SrcLoc f l c) _    = SrcLoc f  l (c + 1)
 sortLocated :: [Located a] -> [Located a]
 sortLocated things = sortBy (comparing getLoc) things
 
-instance Outputable RealSrcLoc where
-    ppr (SrcLoc src_path src_line src_col)
-      = hcat [ pprFastFilePath src_path <> colon
-             , int src_line <> colon
-             , int src_col ]
-
--- I don't know why there is this style-based difference
---        if userStyle sty || debugStyle sty then
---            hcat [ pprFastFilePath src_path, char ':',
---                   int src_line,
---                   char ':', int src_col
---                 ]
---        else
---            hcat [text "{-# LINE ", int src_line, space,
---                  char '\"', pprFastFilePath src_path, text " #-}"]
-
-instance Outputable SrcLoc where
-    ppr (RealSrcLoc l) = ppr l
-    ppr (UnhelpfulLoc s)  = ftext s
 
 instance Data RealSrcSpan where
   -- don't traverse?
@@ -423,59 +402,6 @@ instance Show RealSrcSpan where
     | otherwise
     = "SrcSpanMultiLine " ++ show file ++ " "
                           ++ intercalate " " (map show [sl,sc,el,ec])
-
-
-instance Outputable RealSrcSpan where
-    ppr span = pprUserRealSpan True span
-
--- I don't know why there is this style-based difference
---      = getPprStyle $ \ sty ->
---        if userStyle sty || debugStyle sty then
---           text (showUserRealSpan True span)
---        else
---           hcat [text "{-# LINE ", int (srcSpanStartLine span), space,
---                 char '\"', pprFastFilePath $ srcSpanFile span, text " #-}"]
-
-instance Outputable SrcSpan where
-    ppr span = pprUserSpan True span
-
--- I don't know why there is this style-based difference
---      = getPprStyle $ \ sty ->
---        if userStyle sty || debugStyle sty then
---           pprUserSpan True span
---        else
---           case span of
---           UnhelpfulSpan _ -> panic "Outputable UnhelpfulSpan"
---           RealSrcSpan s -> ppr s
-
-pprUserSpan :: Bool -> SrcSpan -> SDoc
-pprUserSpan _         (UnhelpfulSpan s) = ftext s
-pprUserSpan show_path (RealSrcSpan s)   = pprUserRealSpan show_path s
-
-pprUserRealSpan :: Bool -> RealSrcSpan -> SDoc
-pprUserRealSpan show_path span@(RealSrcSpan' src_path line col _ _)
-  | isPointRealSpan span
-  = hcat [ ppWhen show_path (pprFastFilePath src_path <> colon)
-         , int line <> colon
-         , int col ]
-
-pprUserRealSpan show_path span@(RealSrcSpan' src_path line scol _ ecol)
-  | isOneLineRealSpan span
-  = hcat [ ppWhen show_path (pprFastFilePath src_path <> colon)
-         , int line <> colon
-         , int scol
-         , ppUnless (ecol - scol <= 1) (char '-' <> int (ecol - 1)) ]
-            -- For single-character or point spans, we just
-            -- output the starting column number
-
-pprUserRealSpan show_path (RealSrcSpan' src_path sline scol eline ecol)
-  = hcat [ ppWhen show_path (pprFastFilePath src_path <> colon)
-         , parens (int sline <> comma <> int scol)
-         , char '-'
-         , parens (int eline <> comma <> int ecol') ]
- where
-   ecol' = if ecol == 0 then ecol else ecol - 1
-
 {-
 ************************************************************************
 *                                                                      *
@@ -521,10 +447,6 @@ eqLocated a b = unLoc a == unLoc b
 -- | Tests the ordering of the two located things
 cmpLocated :: Ord a => Located a -> Located a -> Ordering
 cmpLocated a b = unLoc a `compare` unLoc b
-
-instance (Outputable l, Outputable e) => Outputable (GenLocated l e) where
-  ppr (L l e) = ifPprDebug (braces (ppr l))
-             $$ ppr e
 
 {-
 ************************************************************************

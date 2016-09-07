@@ -64,12 +64,10 @@ module U.UniqFM (
         lookupWithDefaultUFM, lookupWithDefaultUFM_Directly,
         nonDetEltsUFM, eltsUFM, nonDetKeysUFM,
         ufmToSet_Directly,
-        nonDetUFMToList, ufmToList, ufmToIntMap,
-        pprUniqFM, pprUFM, pluralUFM
+        nonDetUFMToList, ufmToList, ufmToIntMap
     ) where
 
 import U.Unique           ( Uniquable(..), Unique, getKey )
-import U.Outputable
 
 import qualified Data.IntMap as M
 import qualified Data.IntSet as S
@@ -326,40 +324,3 @@ nonDetUFMToList (UFM m) = map (\(k, v) -> (getUnique k, v)) $ M.toList m
 
 ufmToIntMap :: UniqFM elt -> M.IntMap elt
 ufmToIntMap (UFM m) = m
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Output-ery}
-*                                                                      *
-************************************************************************
--}
-
-instance Outputable a => Outputable (UniqFM a) where
-    ppr ufm = pprUniqFM ppr ufm
-
-pprUniqFM :: (a -> SDoc) -> UniqFM a -> SDoc
-pprUniqFM ppr_elt ufm
-  = brackets $ fsep $ punctuate comma $
-    [ ppr uq <+> text ":->" <+> ppr_elt elt
-    | (uq, elt) <- nonDetUFMToList ufm ]
-  -- It's OK to use nonDetUFMToList here because we only use it for
-  -- pretty-printing.
-
--- | Pretty-print a non-deterministic set.
--- The order of variables is non-deterministic and for pretty-printing that
--- shouldn't be a problem.
--- Having this function helps contain the non-determinism created with
--- nonDetEltsUFM.
-pprUFM :: UniqFM a      -- ^ The things to be pretty printed
-       -> ([a] -> SDoc) -- ^ The pretty printing function to use on the elements
-       -> SDoc          -- ^ 'SDoc' where the things have been pretty
-                        -- printed
-pprUFM ufm pp = pp (nonDetEltsUFM ufm)
-
--- | Determines the pluralisation suffix appropriate for the length of a set
--- in the same way that plural from Outputable does for lists.
-pluralUFM :: UniqFM a -> SDoc
-pluralUFM ufm
-  | sizeUFM ufm == 1 = empty
-  | otherwise = char 's'

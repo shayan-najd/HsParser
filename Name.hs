@@ -33,7 +33,7 @@
 --  * Internal, if they name things in the module being compiled. Some internal
 --    Names are system names, if they are names manufactured by the compiler
 
-module Name (Name,NamedThing(..),
+module Name {- (Name,NamedThing(..),
              nameModule,
              nameUnique,
              setNameUnique,
@@ -57,83 +57,15 @@ module Name (Name,NamedThing(..),
              mkSysTvName,
              mkSystemNameAt,
              BuiltInSyntax (..)
-            ) where {-
-        -- * The main types
-        Name,                                   -- Abstract
-        BuiltInSyntax(..),
-
-        -- ** Creating 'Name's
-        mkSystemName,
-        mkSystemNameAt,
-        mkInternalName,
-        mkClonedInternalName,
-        mkDerivedInternalName,
-        mkSystemVarName,
-        mkSysTvName,
-        mkFCallName,
-        mkExternalName,
-        mkWiredInName,
-
-        -- ** Manipulating and deconstructing 'Name's
-        nameUnique,
-        setNameUnique,
-        nameOccName,
-        nameModule,
-        nameModule_maybe,
-        setNameLoc,
-        tidyNameOcc,
-        localiseName,
-        mkLocalisedOccName,
-
-        nameSrcLoc,
-        nameSrcSpan,
-        pprNameDefnLoc,
-        pprDefinedAt,
-
-        -- ** Predicates on 'Name's
-        isSystemName,
-        isInternalName,
-        isExternalName,
-        isTyVarName,
-        isTyConName,
-        isDataConName,
-        isValName,
-        isVarName,
-        isWiredInName,
-        isBuiltInSyntax,
-        isHoleName,
-        wiredInNameTyThing_maybe,
-        nameIsLocalOrFrom,
-        nameIsHomePackageImport,
-        nameIsFromExternalPackage,
-        stableNameCmp,
-
-        -- * Class 'NamedThing' and overloaded friends
-        NamedThing(..),
-        getSrcLoc,
-        getSrcSpan,
-        getOccString,
-        getOccFS,
-
-        pprInfixName,
-        pprPrefixName,
-        pprModulePrefix,
-        nameStableString,
-
-        -- Re-export the OccName stuff
-        module OccName
-    ) where-}
-
--- import {-# SOURCE #-} TyCoRep( TyThing )
+            ) -} where
 
 import OccName
 import Module
 import SrcLoc
 import U.Unique
 import U.Util
-import U.DynFlags
+import U.Panic (panic)
 import U.FastString
-import U.Outputable
 
 import Data.Data hiding (TyCon)
 
@@ -177,12 +109,6 @@ data NameSort
   | System              -- A system-defined Id or TyVar.  Typically the
                         -- OccName is very uninformative (like 's')
   deriving Show
-
-instance Outputable NameSort where
-  ppr (External _)    = text "external"
-  ppr (WiredIn _ _ _) = text "wired-in"
-  ppr  Internal       = text "internal"
-  ppr  System         = text "system"
 
 -- | BuiltInSyntax is for things like @(:)@, @[]@ and tuples,
 -- which have special syntactic forms.  They aren't in scope
@@ -275,7 +201,7 @@ isHoleName = isHoleModule . nameModule
 -}
 nameModule name =
   nameModule_maybe name `orElse`
-  pprPanic "nameModule" (ppr (n_sort name) <+> ppr name)
+  panic  "error in nameModule"
 
 nameModule_maybe :: Name -> Maybe Module
 nameModule_maybe (Name { n_sort = External mod})    = Just mod
@@ -525,133 +451,6 @@ instance Data Name where
 ************************************************************************
 -}
 
-instance Outputable Name where
-    ppr name = pprName name
-
-instance OutputableBndr Name where
-    pprBndr _ name = pprName name
-    pprInfixOcc  = pprInfixName
-    pprPrefixOcc = pprPrefixName
-
-
-pprName :: Name -> SDoc
-pprName (Name {n_sort = sort, n_uniq = u, n_occ = occ})
-  = getPprStyle $ \ sty ->
-    case sort of
-      WiredIn mod _ builtin   -> pprExternal sty uniq mod occ True  builtin
-      External mod            -> pprExternal sty uniq mod occ False UserSyntax
-      System                  -> pprSystem sty uniq occ
-      Internal                -> pprInternal sty uniq occ
-  where uniq = mkUniqueGrimily u
-
-pprExternal :: PprStyle -> Unique -> Module -> OccName -> Bool -> BuiltInSyntax -> SDoc
-pprExternal sty uniq mod occ is_wired is_builtin
-  | codeStyle sty = ppr mod <> char '_' <> ppr_z_occ_name occ
-        -- In code style, always qualify
-        --  maybe we could print all wired-in things unqualified
-        --       in code style, to reduce symbol table bloat?
-  | debugStyle sty = pp_mod <> ppr_occ_name occ
-                     <> braces (hsep [if is_wired then text "(w)" else empty,
-                                      pprNameSpaceBrief (occNameSpace occ),
-                                      pprUnique uniq])
-  | BuiltInSyntax <- is_builtin = ppr_occ_name occ  -- Never qualify builtin syntax
-  | otherwise                   = pprModulePrefix sty mod occ <> ppr_occ_name occ
-  where
-    pp_mod = sdocWithDynFlags $ \dflags ->
-             if gopt Opt_SuppressModulePrefixes dflags
-             then empty
-             else ppr mod <> dot
-
-pprInternal :: PprStyle -> Unique -> OccName -> SDoc
-pprInternal sty uniq occ
-  | codeStyle sty  = pprUnique uniq
-  | debugStyle sty = ppr_occ_name occ <> braces (hsep [pprNameSpaceBrief (occNameSpace occ),
-                                                       pprUnique uniq])
-  | dumpStyle sty  = ppr_occ_name occ <> ppr_underscore_unique uniq
-                        -- For debug dumps, we're not necessarily dumping
-                        -- tidied code, so we need to print the uniques.
-  | otherwise      = ppr_occ_name occ   -- User style
-
--- Like Internal, except that we only omit the unique in Iface style
-pprSystem :: PprStyle -> Unique -> OccName -> SDoc
-pprSystem sty uniq occ
-  | codeStyle sty  = pprUnique uniq
-  | debugStyle sty = ppr_occ_name occ <> ppr_underscore_unique uniq
-                     <> braces (pprNameSpaceBrief (occNameSpace occ))
-  | otherwise      = ppr_occ_name occ <> ppr_underscore_unique uniq
-                                -- If the tidy phase hasn't run, the OccName
-                                -- is unlikely to be informative (like 's'),
-                                -- so print the unique
-
-
-pprModulePrefix :: PprStyle -> Module -> OccName -> SDoc
--- Print the "M." part of a name, based on whether it's in scope or not
--- See Note [Printing original names] in HscTypes
-pprModulePrefix sty mod occ = sdocWithDynFlags $ \dflags ->
-  if gopt Opt_SuppressModulePrefixes dflags
-  then empty
-  else
-    case qualName sty (moduleName mod) occ of              -- See Outputable.QualifyName:
-      NameQual modname -> ppr modname <> dot       -- Name is in scope
-      NameNotInScope1  -> ppr mod <> dot           -- Not in scope
-      NameNotInScope2  -> ppr (moduleUnitId mod) <> colon     -- Module not in
-                          <> ppr (moduleName mod) <> dot          -- scope either
-      NameUnqual       -> empty                   -- In scope unqualified
-
-ppr_underscore_unique :: Unique -> SDoc
--- Print an underscore separating the name from its unique
--- But suppress it if we aren't printing the uniques anyway
-ppr_underscore_unique uniq
-  = sdocWithDynFlags $ \dflags ->
-    if gopt Opt_SuppressUniques dflags
-    then empty
-    else char '_' <> pprUnique uniq
-
-ppr_occ_name :: OccName -> SDoc
-ppr_occ_name occ = ftext (occNameFS occ)
-        -- Don't use pprOccName; instead, just print the string of the OccName;
-        -- we print the namespace in the debug stuff above
-
--- In code style, we Z-encode the strings.  The results of Z-encoding each FastString are
--- cached behind the scenes in the FastString implementation.
-ppr_z_occ_name :: OccName -> SDoc
-ppr_z_occ_name occ = ztext (zEncodeFS (occNameFS occ))
-{-
--- Prints (if mod information is available) "Defined at <loc>" or
---  "Defined in <mod>" information for a Name.
-pprDefinedAt :: Name -> SDoc
-pprDefinedAt name = text "Defined" <+> pprNameDefnLoc name
-
-pprNameDefnLoc :: Name -> SDoc
--- Prints "at <loc>" or
---     or "in <mod>" depending on what info is available
-pprNameDefnLoc name
-  = case nameSrcLoc name of
-         -- nameSrcLoc rather than nameSrcSpan
-         -- It seems less cluttered to show a location
-         -- rather than a span for the definition point
-       RealSrcLoc s -> text "at" <+> ppr s
-       UnhelpfulLoc s
-         | isInternalName name || isSystemName name
-         -> text "at" <+> ftext s
-         | otherwise
-         -> text "in" <+> quotes (ppr (nameModule name))
-
-
--- | Get a string representation of a 'Name' that's unique and stable
--- across recompilations. Used for deterministic generation of binds for
--- derived instances.
--- eg. "$aeson_70dylHtv1FFGeai1IoxcQr$Data.Aeson.Types.Internal$String"
-nameStableString :: Name -> String
-nameStableString Name{..} =
-  nameSortStableString n_sort ++ "$" ++ occNameString n_occ
-
-nameSortStableString :: NameSort -> String
-nameSortStableString System = "$_sys"
-nameSortStableString Internal = "$_in"
-nameSortStableString (External mod) = moduleStableString mod
-nameSortStableString (WiredIn mod _ _) = moduleStableString mod
--}
 {-
 ************************************************************************
 *                                                                      *
@@ -676,31 +475,3 @@ getSrcSpan          :: NamedThing a => a -> SrcSpan
 getSrcSpan          = nameSrcSpan          . getName
 -- getOccString        = occNameString        . getOccName
 -- getOccFS            = occNameFS            . getOccName
-
-pprInfixName :: (Outputable a, NamedThing a) => a -> SDoc
--- See Outputable.pprPrefixVar, pprInfixVar;
--- add parens or back-quotes as appropriate
-pprInfixName  n = pprInfixVar (isSymOcc (getOccName n)) (ppr n)
-
-pprPrefixName :: NamedThing a => a -> SDoc
-pprPrefixName thing
- | name `hasKey` starKindTyConKey || name `hasKey` unicodeStarKindTyConKey
- = ppr name   -- See Note [Special treatment for kind *]
- | otherwise
- = pprPrefixVar (isSymOcc (nameOccName name)) (ppr name)
- where
-   name = getName thing
-
-{-
-Note [Special treatment for kind *]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Do not put parens around the kind '*'.  Even though it looks like
-an operator, it is really a special case.
-
-This pprPrefixName stuff is really only used when printing HsSyn,
-which has to be polymorphic in the name type, and hence has to go via
-the overloaded function pprPrefixOcc.  It's easier where we know the
-type being pretty printed; eg the pretty-printing code in TyCoRep.
-
-See Trac #7645, which led to this.
--}

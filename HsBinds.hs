@@ -18,22 +18,17 @@ Datatype for: @BindGroup@, @Bind@, @Sig@, @Bind@.
 
 module HsBinds where
 
-import {-# SOURCE #-} HsExpr ( pprExpr, LHsExpr,
-                               MatchGroup, pprFunBind,
-                               GRHSs, pprPatBind )
+import {-# SOURCE #-} HsExpr (LHsExpr, MatchGroup, GRHSs)
 import {-# SOURCE #-} HsPat  ( LPat )
 
 import HsTypes
 import BasicTypes
-import U.Outputable
 import SrcLoc
 import U.Bag
-import U.FastString
 import BooleanFormula (LBooleanFormula)
 
 import Data.Data hiding ( Fixity )
 import Data.List hiding ( foldr )
-import Data.Ord
 import Data.Foldable ( Foldable(..) )
 
 {-
@@ -312,53 +307,6 @@ Specifically,
     it's just an error thunk
 -}
 
-instance (OutputableBndr idL, OutputableBndr idR)
-        => Outputable (HsLocalBindsLR idL idR) where
-  ppr (HsValBinds bs) = ppr bs
-  ppr (HsIPBinds bs)  = ppr bs
-  ppr EmptyLocalBinds = empty
-
-instance (OutputableBndr idL, OutputableBndr idR)
-        => Outputable (HsValBindsLR idL idR) where
-  ppr (ValBindsIn binds sigs)
-   = pprDeclList (pprLHsBindsForUser binds sigs)
-
-pprLHsBinds :: (OutputableBndr idL, OutputableBndr idR)
-            => LHsBindsLR idL idR -> SDoc
-pprLHsBinds binds
-  | isEmptyLHsBinds binds = empty
-  | otherwise = pprDeclList (map ppr (bagToList binds))
-
-pprLHsBindsForUser :: (OutputableBndr idL, OutputableBndr idR,
-                       OutputableBndr id2)
-                   => LHsBindsLR idL idR -> [LSig id2] -> [SDoc]
---  pprLHsBindsForUser is different to pprLHsBinds because
---  a) No braces: 'let' and 'where' include a list of HsBindGroups
---     and we don't want several groups of bindings each
---     with braces around
---  b) Sort by location before printing
---  c) Include signatures
-pprLHsBindsForUser binds sigs
-  = map snd (sort_by_loc decls)
-  where
-
-    decls :: [(SrcSpan, SDoc)]
-    decls = [(loc, ppr sig)  | L loc sig <- sigs] ++
-            [(loc, ppr bind) | L loc bind <- bagToList binds]
-
-    sort_by_loc decls = sortBy (comparing fst) decls
-
-pprDeclList :: [SDoc] -> SDoc   -- Braces with a space
--- Print a bunch of declarations
--- One could choose  { d1; d2; ... }, using 'sep'
--- or      d1
---         d2
---         ..
---    using vcat
--- At the moment we chose the latter
--- Also we do the 'pprDeeperList' thing.
-pprDeclList ds = pprDeeperList vcat ds
-
 ------------
 emptyLocalBinds :: HsLocalBindsLR a b
 emptyLocalBinds = EmptyLocalBinds
@@ -411,53 +359,6 @@ So the desugarer tries to do a better job:
                                       in (fm,gm)
 -}
 
-instance (OutputableBndr idL, OutputableBndr idR)
-         => Outputable (HsBindLR idL idR) where
-    ppr mbind = ppr_monobind mbind
-
-ppr_monobind :: (OutputableBndr idL, OutputableBndr idR)
-             => HsBindLR idL idR -> SDoc
-
-ppr_monobind (PatBind { pat_lhs = pat, pat_rhs = grhss })
-  = pprPatBind pat grhss
-ppr_monobind (FunBind { fun_id = fun,
-                        fun_matches = matches
-                        })
-  = pprFunBind  matches
-ppr_monobind (PatSynBind psb) = ppr psb
-
-
-instance (OutputableBndr idL, OutputableBndr idR)
-          => Outputable (PatSynBind idL idR) where
-  ppr (PSB{ psb_id = (L _ psyn), psb_args = details, psb_def = pat,
-            psb_dir = dir })
-      = ppr_lhs <+> ppr_rhs
-    where
-      ppr_lhs = text "pattern" <+> ppr_details
-      ppr_simple syntax = syntax <+> ppr pat
-
-      ppr_details = case details of
-          InfixPatSyn v1 v2 -> hsep [ppr v1, pprInfixOcc psyn, ppr v2]
-          PrefixPatSyn vs   -> hsep (pprPrefixOcc psyn : map ppr vs)
-          RecordPatSyn vs   ->
-            pprPrefixOcc psyn
-                      <> braces (sep (punctuate comma (map ppr vs)))
-
-      ppr_rhs = case dir of
-          Unidirectional           -> ppr_simple (text "<-")
-          ImplicitBidirectional    -> ppr_simple equals
-          ExplicitBidirectional mg -> ppr_simple (text "<-") <+> ptext (sLit "where") $$
-                                      (nest 2 $ pprFunBind mg)
-
-pprTicks :: SDoc -> SDoc -> SDoc
--- Print stuff about ticks only when -dppr-debug is on, to avoid
--- them appearing in error messages (from the desugarer); see Trac # 3263
--- Also print ticks in dumpStyle, so that -ddump-hpc actually does
--- something useful.
-pprTicks pp_no_debug pp_when_debug
-  = getPprStyle (\ sty -> if debugStyle sty || dumpStyle sty
-                             then pp_when_debug
-                             else pp_no_debug)
 
 {-
 ************************************************************************
@@ -495,16 +396,6 @@ type LIPBind id = Located (IPBind id)
 data IPBind id
   = IPBind (Either (Located HsIPName) id) (LHsExpr id)
 deriving instance (Data name) => Data (IPBind name)
-
-instance (OutputableBndr id) => Outputable (HsIPBinds id) where
-  ppr (IPBinds bs) = pprDeeperList vcat (map ppr bs)
-
-
-instance (OutputableBndr id) => Outputable (IPBind id) where
-  ppr (IPBind lr rhs) = name <+> equals <+> pprExpr (unLoc rhs)
-    where name = case lr of
-                   Left (L _ ip) -> pprBndr LetBind ip
-                   Right     id  -> pprBndr LetBind id
 
 {-
 ************************************************************************
@@ -676,64 +567,11 @@ isMinimalLSig :: LSig name -> Bool
 isMinimalLSig (L _ (MinimalSig {})) = True
 isMinimalLSig _                    = False
 
-hsSigDoc :: Sig name -> SDoc
-hsSigDoc (TypeSig {})           = text "type signature"
-hsSigDoc (PatSynSig {})         = text "pattern synonym signature"
-hsSigDoc (ClassOpSig is_deflt _ _)
- | is_deflt                     = text "default type signature"
- | otherwise                    = text "class method signature"
-hsSigDoc (SpecSig {})           = text "SPECIALISE pragma"
-hsSigDoc (InlineSig _ prag)     = ppr (inlinePragmaSpec prag) <+> text "pragma"
-hsSigDoc (SpecInstSig {})       = text "SPECIALISE instance pragma"
-hsSigDoc (FixSig {})            = text "fixity declaration"
-hsSigDoc (MinimalSig {})        = text "MINIMAL pragma"
-
 {-
 Check if signatures overlap; this is used when checking for duplicate
 signatures. Since some of the signatures contain a list of names, testing for
 equality is not enough -- we have to check if they overlap.
 -}
-
-instance (OutputableBndr name) => Outputable (Sig name) where
-    ppr sig = ppr_sig sig
-
-ppr_sig :: (OutputableBndr name) => Sig name -> SDoc
-ppr_sig (TypeSig vars ty)    = pprVarSig (map unLoc vars) (ppr ty)
-ppr_sig (ClassOpSig is_deflt vars ty)
-  | is_deflt                 = text "default" <+> pprVarSig (map unLoc vars) (ppr ty)
-  | otherwise                = pprVarSig (map unLoc vars) (ppr ty)
-ppr_sig (FixSig fix_sig)     = ppr fix_sig
-ppr_sig (SpecSig var ty inl)
-  = pragBrackets (pprSpec (unLoc var) (interpp'SP ty) inl)
-ppr_sig (InlineSig var inl)       = pragBrackets (ppr inl <+> pprPrefixOcc (unLoc var))
-ppr_sig (SpecInstSig _ ty)
-  = pragBrackets (text "SPECIALIZE instance" <+> ppr ty)
-ppr_sig (MinimalSig _ bf)         = pragBrackets (pprMinimalSig bf)
-ppr_sig (PatSynSig name sig_ty)
-  = text "pattern" <+> pprPrefixOcc (unLoc name) <+> dcolon
-                           <+> ppr sig_ty
-
-instance OutputableBndr name => Outputable (FixitySig name) where
-  ppr (FixitySig names fixity) = sep [ppr fixity, pprops]
-    where
-      pprops = hsep $ punctuate comma (map (pprInfixOcc . unLoc) names)
-
-pragBrackets :: SDoc -> SDoc
-pragBrackets doc = text "{-#" <+> doc <+> ptext (sLit "#-}")
-
-pprVarSig :: (OutputableBndr id) => [id] -> SDoc -> SDoc
-pprVarSig vars pp_ty = sep [pprvars <+> dcolon, nest 2 pp_ty]
-  where
-    pprvars = hsep $ punctuate comma (map pprPrefixOcc vars)
-
-pprSpec :: (OutputableBndr id) => id -> SDoc -> InlinePragma -> SDoc
-pprSpec var pp_ty inl = text "SPECIALIZE" <+> pp_inl <+> pprVarSig [var] pp_ty
-  where
-    pp_inl | isDefaultInlinePragma inl = empty
-           | otherwise = ppr inl
-
-pprMinimalSig :: OutputableBndr name => LBooleanFormula (Located name) -> SDoc
-pprMinimalSig (L _ bf) = text "MINIMAL" <+> ppr (fmap unLoc bf)
 
 {-
 ************************************************************************
@@ -787,9 +625,6 @@ instance Functor RecordPatSynField where
                               , recordPatSynPatVar = hidden })
       = RecordPatSynField { recordPatSynSelectorId = f visible
                           , recordPatSynPatVar = f hidden }
-
-instance Outputable a => Outputable (RecordPatSynField a) where
-    ppr (RecordPatSynField { recordPatSynSelectorId = v }) = ppr v
 
 instance Foldable RecordPatSynField  where
     foldMap f (RecordPatSynField { recordPatSynSelectorId = visible

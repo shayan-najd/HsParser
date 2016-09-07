@@ -6,7 +6,7 @@
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module ForeignCall (
+module ForeignCall {- (
         ForeignCall(..), isSafeForeignCall,
         Safety(..), playSafe, playInterruptible,
 
@@ -16,10 +16,9 @@ module ForeignCall (
         CCallConv(..), defaultCCallConv, ccallConvToInt, ccallConvAttribute,
 
         Header(..), CType(..),
-    ) where
+    ) -} where
 
 import U.FastString
-import U.Outputable
 import Module
 import BasicTypes ( SourceText )
 import U.Panic (panic)
@@ -42,10 +41,6 @@ newtype ForeignCall = CCall CCallSpec
 isSafeForeignCall :: ForeignCall -> Bool
 isSafeForeignCall (CCall (CCallSpec _ _ safe)) = playSafe safe
 
--- We may need more clues to distinguish foreign calls
--- but this simple printer will do for now
-instance Outputable ForeignCall where
-  ppr (CCall cc)  = ppr cc
 
 data Safety
   = PlaySafe            -- Might invoke Haskell GC, or do a call back, or
@@ -65,11 +60,6 @@ data Safety
   deriving ( Eq, Show, Data )
         -- Show used just for Show Lex.Token, I think
   {-! derive: Binary !-}
-
-instance Outputable Safety where
-  ppr PlaySafe = text "safe"
-  ppr PlayInterruptible = text "interruptible"
-  ppr PlayRisky = text "unsafe"
 
 playSafe :: Safety -> Bool
 playSafe PlaySafe = True
@@ -153,13 +143,6 @@ data CCallConv = CCallConv | CApiConv | StdCallConv | PrimCallConv | JavaScriptC
   deriving (Eq, Data)
   {-! derive: Binary !-}
 
-instance Outputable CCallConv where
-  ppr StdCallConv = text "stdcall"
-  ppr CCallConv   = text "ccall"
-  ppr CApiConv    = text "capi"
-  ppr PrimCallConv = text "prim"
-  ppr JavaScriptCallConv = text "javascript"
-
 defaultCCallConv :: CCallConv
 defaultCCallConv = CCallConv
 
@@ -175,17 +158,7 @@ Generate the gcc attribute corresponding to the given
 calling convention (used by PprAbsC):
 -}
 
-ccallConvAttribute :: CCallConv -> SDoc
-ccallConvAttribute StdCallConv       = text "__attribute__((__stdcall__))"
-ccallConvAttribute CCallConv         = empty
-ccallConvAttribute CApiConv          = empty
-ccallConvAttribute (PrimCallConv {}) = panic "ccallConvAttribute PrimCallConv"
-ccallConvAttribute JavaScriptCallConv = panic "ccallConvAttribute JavaScriptCallConv"
-
 type CLabelString = FastString          -- A C label, completely unencoded
-
-pprCLabelString :: CLabelString -> SDoc
-pprCLabelString lbl = ftext lbl
 
 isCLabelString :: CLabelString -> Bool  -- Checks to see if this is a valid C label
 isCLabelString lbl
@@ -195,39 +168,10 @@ isCLabelString lbl
         -- The '.' appears in e.g. "foo.so" in the
         -- module part of a ExtName.  Maybe it should be separate
 
--- Printing into C files:
-
-instance Outputable CExportSpec where
-  ppr (CExportStatic _ str _) = pprCLabelString str
-
-instance Outputable CCallSpec where
-  ppr (CCallSpec fun cconv safety)
-    = hcat [ ifPprDebug callconv, ppr_fun fun ]
-    where
-      callconv = text "{-" <> ppr cconv <> text "-}"
-
-      gc_suf | playSafe safety = text "_GC"
-             | otherwise       = empty
-
-      ppr_fun (StaticTarget _ fn mPkgId isFun)
-        = text (if isFun then "__pkg_ccall"
-                         else "__pkg_ccall_value")
-       <> gc_suf
-       <+> (case mPkgId of
-            Nothing -> empty
-            Just pkgId -> ppr pkgId)
-       <+> pprCLabelString fn
-
-      ppr_fun DynamicTarget
-        = text "__dyn_ccall" <> gc_suf <+> text "\"\""
-
 -- The filename for a C header file
 -- Note [Pragma source text] in BasicTypes
 data Header = Header SourceText FastString
     deriving (Eq, Data)
-
-instance Outputable Header where
-    ppr (Header _ h) = quotes $ ppr h
 
 -- | A C type, used in CAPI FFI calls
 --
@@ -240,9 +184,3 @@ data CType = CType SourceText -- Note [Pragma source text] in BasicTypes
                    (Maybe Header) -- header to include for this type
                    (SourceText,FastString) -- the type itself
     deriving (Eq, Data)
-
-instance Outputable CType where
-    ppr (CType _ mh (_,ct)) = hDoc <+> ftext ct
-        where hDoc = case mh of
-                     Nothing -> empty
-                     Just h -> ppr h

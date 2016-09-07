@@ -24,7 +24,6 @@ module U.Bag (
         anyBagM, filterBagM
     ) where
 
-import U.Outputable
 import U.Util
 
 import Control.Monad
@@ -295,9 +294,6 @@ listToBag vs = ListBag vs
 
 bagToList :: Bag a -> [a]
 bagToList b = foldrBag (:) [] b
-
-instance (Outputable a) => Outputable (Bag a) where
-    ppr bag = braces (pprWithCommas ppr (bagToList bag))
 
 instance Data a => Data (Bag a) where
   gfoldl k z b = z listToBag `k` bagToList b -- traverse abstract type abstractly

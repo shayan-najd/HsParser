@@ -8,8 +8,6 @@
 module HsExpr where
 
 import SrcLoc     ( Located )
-import U.Outputable ( SDoc, Outputable, OutputableBndr )
-import {-# SOURCE #-} HsPat  ( LPat )
 import Data.Data hiding ( Fixity )
 
 type role HsExpr nominal
@@ -29,20 +27,4 @@ instance (Data id) => Data (HsCmd id)
 instance (Data body,Data id) => Data (MatchGroup id body)
 instance (Data body,Data id) => Data (GRHSs id body)
 
-instance (OutputableBndr id) => Outputable (HsExpr id)
-instance (OutputableBndr id) => Outputable (HsCmd id)
-
 type LHsExpr a = Located (HsExpr a)
-
-pprLExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
-
-pprExpr :: (OutputableBndr id) => HsExpr id -> SDoc
-
-pprSplice :: (OutputableBndr id) => HsSplice id -> SDoc
-
-pprPatBind :: (OutputableBndr bndr,
-               OutputableBndr id, Outputable body)
-           => LPat bndr -> GRHSs id body -> SDoc
-
-pprFunBind :: (OutputableBndr idR, Outputable body)
-           => MatchGroup idR body -> SDoc

@@ -93,6 +93,7 @@ import Data.Char
 import Data.List
 import Data.Data       ( dataTypeOf, fromConstr, dataTypeConstrs )
 import Data.Maybe (isNothing,listToMaybe,fromMaybe)
+import OutputableInstances (pprHsContext)
 
 #include "HsVersions.h"
 
