@@ -69,7 +69,6 @@ module FieldLabel {- ( FieldLabelString
                   ) -} where
 
 import OccName
-import Name
 
 import U.FastString
 import Data.Data
@@ -79,7 +78,7 @@ import Data.Data
 type FieldLabelString = FastString
 
 
-type FieldLabel = FieldLbl Name
+-- type FieldLabel = FieldLbl Name
 
 -- | Fields in an algebraic record type
 data FieldLbl a = FieldLabel {

@@ -155,7 +155,7 @@ data TopLevelFlag
 data Boxity
   = Boxed
   | Unboxed
-  deriving( Eq, Data )
+  deriving( Eq, Data,Show )
 
 
 {-

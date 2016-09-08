@@ -40,14 +40,14 @@ module RdrName {- (
 #include "HsVersions.h"
 
 import Module (ModuleName,Module,mkModuleNameFS)
-import Name
+-- import Name
 import U.FastString
 import U.Util
 import OccName(HasOccName(..),OccName(..),NameSpace,
                isTvOcc,demoteOccName,
                mkOccNameFS,mkVarOccFS,isDataOcc,isTcOcc)
 import U.Panic
-
+import BasicTypes
 
 import Data.Data
 
@@ -97,7 +97,7 @@ data RdrName
         -- we want to say \"Use Prelude.map dammit\". One of these
         -- can be created with 'mkOrig'
 
-  | Exact Name
+--  | Exact Name
         -- ^ We know exactly the 'Name'. This is used:
         --
         --  (1) When the parser parses built-in syntax like @[]@
@@ -106,7 +106,25 @@ data RdrName
         --  (2) By Template Haskell, when TH has generated a unique name
         --
         -- Such a 'RdrName' can be created by using 'getRdrName' on a 'Name'
+ | BuiltIn BuiltInNames
   deriving Data
+
+
+data BuiltInNames
+ = UnicodeStarKindTyCon
+ | StarKindTyCon
+ | CTupleTyCon  Int
+ | TupleDataCon Boxity Int
+ | TupleTyCon   Boxity Int
+ | NilDataCon
+ | ConsDataCon
+ | ListTyCon
+ | ParrTyCon
+ | FunTyCon
+ | EqTyCon
+ | EqPrimTyCon
+ | Forall_tv
+ deriving (Data,Show)
 
 {-
 ************************************************************************
@@ -123,7 +141,7 @@ rdrNameOcc :: RdrName -> OccName
 rdrNameOcc (Qual _ occ) = occ
 rdrNameOcc (Unqual occ) = occ
 rdrNameOcc (Orig _ occ) = occ
-rdrNameOcc (Exact name) = nameOccName name
+--rdrNameOcc (Exact name) = nameOccName name
 
 rdrNameSpace :: RdrName -> NameSpace
 rdrNameSpace = occNameSpace . rdrNameOcc
@@ -134,7 +152,7 @@ demoteRdrName :: RdrName -> Maybe RdrName
 demoteRdrName (Unqual occ) = fmap Unqual (demoteOccName occ)
 demoteRdrName (Qual m occ) = fmap (Qual m) (demoteOccName occ)
 demoteRdrName (Orig _ _) = panic "demoteRdrName"
-demoteRdrName (Exact _) = panic "demoteRdrName"
+--demoteRdrName (Exact _) = panic "demoteRdrName"
 
         -- These two are the basic constructors
 mkRdrUnqual :: OccName -> RdrName
@@ -160,20 +178,21 @@ mkVarUnqual n = Unqual (mkVarOccFS n)
 mkQual :: NameSpace -> (FastString, FastString) -> RdrName
 mkQual sp (m, n) = Qual (mkModuleNameFS m) (mkOccNameFS sp n)
 
-getRdrName :: NamedThing thing => thing -> RdrName
-getRdrName name = nameRdrName (getName name)
+-- getRdrName :: NamedThing thing => thing -> RdrName
+-- getRdrName name = nameRdrName (getName name)
 
-nameRdrName :: Name -> RdrName
-nameRdrName name = Exact name
+-- nameRdrName :: Name -> RdrName
+-- nameRdrName name = Exact name
 -- Keep the Name even for Internal names, so that the
 -- unique is still there for debug printing, particularly
 -- of Types (which are converted to IfaceTypes before printing)
 
+{-
 nukeExact :: Name -> RdrName
 nukeExact n
   | isExternalName n = Orig (nameModule n) (nameOccName n)
   | otherwise        = Unqual (nameOccName n)
-
+-}
 isRdrDataCon :: RdrName -> Bool
 isRdrTyVar   :: RdrName -> Bool
 isRdrTc      :: RdrName -> Bool
@@ -207,13 +226,17 @@ isOrig_maybe :: RdrName -> Maybe (Module, OccName)
 isOrig_maybe (Orig m n) = Just (m,n)
 isOrig_maybe _          = Nothing
 
+{-
 isExact :: RdrName -> Bool
 isExact (Exact _) = True
 isExact _         = False
+-}
 
+{-
 isExact_maybe :: RdrName -> Maybe Name
 isExact_maybe (Exact n) = Just n
 isExact_maybe _         = Nothing
+-}
 
 {-
 ************************************************************************
@@ -224,10 +247,10 @@ isExact_maybe _         = Nothing
 -}
 
 instance Eq RdrName where
-    (Exact n1)    == (Exact n2)    = n1==n2
+--    (Exact n1)    == (Exact n2)    = n1==n2
         -- Convert exact to orig
-    (Exact n1)    == r2@(Orig _ _) = nukeExact n1 == r2
-    r1@(Orig _ _) == (Exact n2)    = r1 == nukeExact n2
+--    (Exact n1)    == r2@(Orig _ _) = nukeExact n1 == r2
+--    r1@(Orig _ _) == (Exact n2)    = r1 == nukeExact n2
 
     (Orig m1 o1)  == (Orig m2 o2)  = m1==m2 && o1==o2
     (Qual m1 o1)  == (Qual m2 o2)  = m1==m2 && o1==o2
@@ -248,14 +271,14 @@ instance Ord RdrName where
         --      do { n1 <- newName "foo"; n2 <- newName "foo";
         --           <decl involving n1,n2> }
         --      I think we can do without this conversion
-    compare (Exact n1) (Exact n2) = n1 `compare` n2
-    compare (Exact _)  _          = LT
+--    compare (Exact n1) (Exact n2) = n1 `compare` n2
+--    compare (Exact _)  _          = LT
 
-    compare (Unqual _)   (Exact _)    = GT
+--    compare (Unqual _)   (Exact _)    = GT
     compare (Unqual o1)  (Unqual  o2) = o1 `compare` o2
     compare (Unqual _)   _            = LT
 
-    compare (Qual _ _)   (Exact _)    = GT
+--    compare (Qual _ _)   (Exact _)    = GT
     compare (Qual _ _)   (Unqual _)   = GT
     compare (Qual m1 o1) (Qual m2 o2) = (o1 `compare` o2) `thenCmp` (m1 `compare` m2)
     compare (Qual _ _)   (Orig _ _)   = LT

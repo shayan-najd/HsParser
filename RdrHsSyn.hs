@@ -10,10 +10,8 @@
 module RdrHsSyn
        (ImpExpSubSpec(..),
         parseErrorSDoc,
-        cTupleTyConName,
-        unicodeStarKindTyConName,
-        tupleTyConName,
-        starKindTyConName,
+        cTupleTyCon_RDR,
+        unicodeStarKindTyCon_RDR,
         tupleDataCon_RDR,
         tupleTyCon_RDR,
         unitTyCon_RDR,
@@ -69,7 +67,6 @@ module RdrHsSyn
 
 import HsSyn            -- Lots of it
 import RdrName
-import Name
 import OccName
 import Lexer
 import Lexeme           ( isLexCon )
@@ -97,62 +94,62 @@ import OutputableInstances (pprHsContext)
 
 #include "HsVersions.h"
 
-cTupleTyConName :: Int -> Name
-cTupleTyConName = error "SHAYAN TODO!"
 
-unicodeStarKindTyConName :: Name
-unicodeStarKindTyConName = error "SHAYAN TODO!"
+unicodeStarKindTyCon_RDR :: RdrName
+unicodeStarKindTyCon_RDR = BuiltIn UnicodeStarKindTyCon
 
-tupleTyConName :: Boxity -> Int -> Name
-tupleTyConName = error "SHAYAN TODO!"
+starKindTyCon_RDR :: RdrName
+starKindTyCon_RDR = BuiltIn StarKindTyCon
 
-starKindTyConName :: Name
-starKindTyConName = error "SHAYAN TODO!"
+cTupleTyCon_RDR :: Int -> RdrName
+cTupleTyCon_RDR i = BuiltIn (CTupleTyCon i)
 
 tupleDataCon_RDR ::  Boxity -> Int -> RdrName
-tupleDataCon_RDR = error "SHAYAN TODO!"
+tupleDataCon_RDR b i = BuiltIn (TupleDataCon b i)
 
 tupleTyCon_RDR :: Boxity -> Int -> RdrName
-tupleTyCon_RDR b i = getRdrName (tupleTyConName b i)
+tupleTyCon_RDR b i = BuiltIn (TupleTyCon b i)
 
 unitTyCon_RDR :: RdrName
-unitTyCon_RDR = error "SHAYAN TODO!"
-
-consDataCon_RDR :: RdrName
-consDataCon_RDR = error "SHAYAN TODO!"
-
-parrTyCon_RDR :: RdrName
-parrTyCon_RDR = error "SHAYAN TODO!"
-
-listTyCon_RDR :: RdrName
-listTyCon_RDR = error "SHAYAN TODO!"
+unitTyCon_RDR = BuiltIn (TupleTyCon Boxed 0)
 
 unboxedUnitTyCon_RDR :: RdrName
-unboxedUnitTyCon_RDR = error "SHAYAN TODO!"
-
-funTyCon_RDR :: RdrName
-funTyCon_RDR = error "SHAYAN TODO!"
-
-eqTyCon_RDR :: RdrName
-eqTyCon_RDR = error "SHAYAN TODO!"
-
-eqPrimTyCon_RDR :: RdrName
-eqPrimTyCon_RDR = error "SHAYAN TODO!"
+unboxedUnitTyCon_RDR = BuiltIn (TupleTyCon Unboxed 0)
 
 unitDataCon_RDR :: RdrName
-unitDataCon_RDR = error "SHAYAN TODO!"
+unitDataCon_RDR = BuiltIn (TupleDataCon Boxed 0)
 
 unboxedUnitDataCon_RDR :: RdrName
-unboxedUnitDataCon_RDR = error "SHAYAN TODO!"
+unboxedUnitDataCon_RDR = BuiltIn (TupleDataCon Unboxed 0)
+
+consDataCon_RDR :: RdrName
+consDataCon_RDR = BuiltIn ConsDataCon
+
+parrTyCon_RDR :: RdrName
+parrTyCon_RDR = BuiltIn ParrTyCon
+
+listTyCon_RDR :: RdrName
+listTyCon_RDR = BuiltIn ListTyCon
+
+
+funTyCon_RDR :: RdrName
+funTyCon_RDR = BuiltIn FunTyCon
+
+eqTyCon_RDR :: RdrName
+eqTyCon_RDR = BuiltIn EqTyCon
+
+eqPrimTyCon_RDR :: RdrName
+eqPrimTyCon_RDR = BuiltIn EqPrimTyCon
+
 
 nilDataCon_RDR :: RdrName
-nilDataCon_RDR = error "SHAYAN TODO!"
+nilDataCon_RDR = BuiltIn NilDataCon
 
 forall_tv_RDR :: RdrName
-forall_tv_RDR = error "SHAYAN TODO!"
+forall_tv_RDR = BuiltIn Forall_tv
 
-setWiredInNameSpace :: Name -> NameSpace -> Maybe RdrName
-setWiredInNameSpace n ns = error "TODO: SHAYAN"
+-- setWiredInNameSpace :: Name -> NameSpace -> Maybe RdrName
+-- setWiredInNameSpace n ns = error "TODO: SHAYAN"
 
 allNameStrings :: [String]
 -- Infinite list of a,b,c...z, aa, ab, ac, ... etc
@@ -621,6 +618,7 @@ setRdrNameSpace :: RdrName -> NameSpace -> RdrName
 setRdrNameSpace (Unqual occ) ns = Unqual (setOccNameSpace ns occ)
 setRdrNameSpace (Qual m occ) ns = Qual m (setOccNameSpace ns occ)
 setRdrNameSpace (Orig m occ) ns = Orig m (setOccNameSpace ns occ)
+{-
 setRdrNameSpace (Exact n)    ns
   | Just rdr <- setWiredInNameSpace n ns
   = rdr
@@ -631,7 +629,7 @@ setRdrNameSpace (Exact n)    ns
   = Exact (mkSystemNameAt (nameUnique n) occ (nameSrcSpan n))
   where
     occ = setOccNameSpace ns (nameOccName n)
-
+-}
 {-
 setWiredInNameSpace :: TyThing -> NameSpace -> RdrName
 setWiredInNameSpace (ATyCon tc) ns
@@ -793,16 +791,16 @@ checkTyClHdr is_cls ty
 
     go _ (HsAppsTy [L _ (HsAppInfix (L loc star))]) [] ann
       | occNameFS (rdrNameOcc star) == fsLit "*"
-      = return (L loc (nameRdrName starKindTyConName), [], ann)
+      = return (L loc starKindTyCon_RDR, [], ann)
       | occNameFS (rdrNameOcc star) == fsLit "★"
-      = return (L loc (nameRdrName unicodeStarKindTyConName), [], ann)
+      = return (L loc unicodeStarKindTyCon_RDR, [], ann)
 
     go l (HsTupleTy HsBoxedOrConstraintTuple ts) [] ann
-      = return (L l (nameRdrName tup_name), ts, ann)
+      = return (L l tup_name, ts, ann)
       where
         arity = length ts
-        tup_name | is_cls    = cTupleTyConName arity
-                 | otherwise = tupleTyConName Boxed arity
+        tup_name | is_cls    = cTupleTyCon_RDR arity
+                 | otherwise = tupleTyCon_RDR Boxed arity
 
     go l _  _  _
       = parseErrorSDoc l (text "Malformed head of type or class declaration:"
@@ -1512,4 +1510,4 @@ mkImpExpSubSpec xs =
 -- Misc utils
 
 parseErrorSDoc :: SrcSpan -> SDoc -> P a
-parseErrorSDoc span s = failSpanMsgP span s
+parseErrorSDoc sp s = failSpanMsgP sp s

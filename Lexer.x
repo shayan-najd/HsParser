@@ -108,7 +108,7 @@ import U.Util             ( readRational )
 
 -- compiler/main
 import U.ErrUtils
-import U.DynFlags
+import U.DynFlags hiding (UnicodeSyntax)
 
 -- compiler/basicTypes
 import SrcLoc

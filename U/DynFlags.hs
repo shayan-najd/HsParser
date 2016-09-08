@@ -12,7 +12,10 @@ module U.DynFlags
              warningFlags,
              thisPackage),
    defaultDynFlag,
+   Extension(..),
    xopt,
+   xopt_set,
+   xopt_unset,
    GeneralFlag(..),
    gopt,
    gopt_set,
@@ -56,6 +59,17 @@ defaultDynFlag =  DynFlags {
 -- | Test whether a 'LangExt.Extension' is set
 xopt :: Extension -> DynFlags -> Bool
 xopt f dflags = fromEnum f `IntSet.member` extensionFlags dflags
+
+-- | Set a 'GeneralFlag'
+xopt_set :: DynFlags -> Extension -> DynFlags
+xopt_set dfs f = dfs{ extensionFlags = IntSet.insert (fromEnum f)
+                      (extensionFlags dfs) }
+
+-- | Unset a 'GeneralFlag'
+xopt_unset :: DynFlags -> Extension -> DynFlags
+xopt_unset dfs f = dfs{ extensionFlags = IntSet.delete (fromEnum f)
+                        (extensionFlags dfs) }
+
 
 -- | Enumerates the simple on-or-off dynamic flags
 data GeneralFlag

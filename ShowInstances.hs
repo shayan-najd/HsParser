@@ -26,7 +26,6 @@ deriving instance Show HsTyLit
 deriving instance Show HsTupleSort
 deriving instance Show HsSrcBang
 deriving instance Show HsLit
-deriving instance Show Boxity
 deriving instance Show StringLiteral
 deriving instance Show HsArrAppType
 deriving instance Show OverLitVal

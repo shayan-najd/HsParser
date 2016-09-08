@@ -7,17 +7,18 @@ import SrcLoc
 import U.FastString
 import U.StringBuffer
 import ShowInstances ()
-import RdrName
-import HsExpr
+import OutputableInstances ()
+import U.Outputable
 
-pExp :: String -> LHsExpr RdrName
+pExp :: String -> String
 pExp = runParser defaultDynFlag
 
-
-runParser :: DynFlags -> String -> LHsExpr RdrName
+runParser :: DynFlags -> String -> String
 -- LHsExpr RdrName
-runParser flags str = let POk _ r = unP parseExpression parseState
-                      in  r
+runParser flags str = case unP parseExpression parseState of
+                        POk     _ r -> show (unLoc r)
+                        PFailed s e -> "Error at " ++ show s ++ ":" ++
+                                       showSDoc flags e
   where
     filename = "<interactive>"
     location = mkRealSrcLoc (mkFastString filename) 1 1

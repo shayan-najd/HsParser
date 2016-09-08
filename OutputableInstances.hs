@@ -13,7 +13,6 @@ import HsDoc
 import HsImpExp
 import HsSyn
 import RdrName
-import Name
 import OccName
 import ForeignCall
 import FieldLabel
@@ -2060,10 +2059,50 @@ instance (Outputable l, Outputable e) => Outputable (GenLocated l e) where
 --------------------------------------------------------------------------------
 
 instance Outputable RdrName where
-    ppr (Exact name)   = ppr name
+--    ppr (Exact name)   = ppr name
     ppr (Unqual occ)   = ppr occ
     ppr (Qual mod occ) = ppr mod <> dot <> ppr occ
     ppr (Orig mod occ) = getPprStyle (\sty -> pprModulePrefix sty mod occ <> ppr occ)
+    ppr (BuiltIn n)    = ppr n
+
+-- SHAYAN HACK: the following can be wrong!
+instance Outputable BuiltInNames where
+ ppr UnicodeStarKindTyCon = text "★"
+ ppr StarKindTyCon        = text "*"
+ ppr (TupleDataCon b i)   = case b of
+                             Boxed   -> text (mkBoxedTupleStr i)
+                             Unboxed -> text (mkUnboxedTupleStr i)
+ ppr (CTupleTyCon  i)     = text (mkConstraintTupleStr i)
+ ppr (TupleTyCon   b i)   = case b of
+                             Boxed   -> text (mkBoxedTupleStr i)
+                             Unboxed -> text (mkUnboxedTupleStr i)
+ ppr NilDataCon           = text "[]"
+ ppr ConsDataCon          = text ":"
+ ppr ListTyCon            = text "[]"
+ ppr ParrTyCon            = text "[::]"
+ ppr FunTyCon             = text "->"
+ ppr EqTyCon              = text "~"
+ ppr EqPrimTyCon          = text "#~"
+ ppr Forall_tv            = text "forall"
+
+mkBoxedTupleStr :: Arity -> String
+mkBoxedTupleStr 0  = "()"
+mkBoxedTupleStr 1  = "Unit"   -- See Note [One-tuples]
+mkBoxedTupleStr ar = '(' : commas ar ++ ")"
+
+mkUnboxedTupleStr :: Arity -> String
+mkUnboxedTupleStr 0  = "(##)"
+mkUnboxedTupleStr 1  = "Unit#"  -- See Note [One-tuples]
+mkUnboxedTupleStr ar = "(#" ++ commas ar ++ "#)"
+
+mkConstraintTupleStr :: Arity -> String
+mkConstraintTupleStr 0  = "(%%)"
+mkConstraintTupleStr 1  = "Unit%"   -- See Note [One-tuples]
+mkConstraintTupleStr ar = "(%" ++ commas ar ++ "%)"
+
+commas :: Arity -> String
+commas ar = take (ar-1) (repeat ',')
+
 
 instance OutputableBndr RdrName where
     pprBndr _ n
@@ -2072,7 +2111,7 @@ instance OutputableBndr RdrName where
 
     pprInfixOcc  rdr = pprInfixVar  (isSymOcc (rdrNameOcc rdr)) (ppr rdr)
     pprPrefixOcc rdr
-      | Just name <- isExact_maybe rdr = pprPrefixName name
+--      | Just name <- isExact_maybe rdr = pprPrefixName name
              -- pprPrefixName has some special cases, so
              -- we delegate to them rather than reproduce them
       | otherwise = pprPrefixVar (isSymOcc (rdrNameOcc rdr)) (ppr rdr)
@@ -2080,50 +2119,6 @@ instance OutputableBndr RdrName where
 
 -- Name
 --------------------------------------------------------------------------------
-
-instance Outputable NameSort where
-  ppr (External _)    = text "external"
-  ppr (WiredIn _ _ _) = text "wired-in"
-  ppr  Internal       = text "internal"
-  ppr  System         = text "system"
-
-
-instance Outputable Name where
-    ppr name = pprName name
-
-instance OutputableBndr Name where
-    pprBndr _ name = pprName name
-    pprInfixOcc  = pprInfixName
-    pprPrefixOcc = pprPrefixName
-
-
-pprName :: Name -> SDoc
-pprName (Name {n_sort = sort, n_uniq = u, n_occ = occ})
-  = getPprStyle $ \ sty ->
-    case sort of
-      WiredIn mod _ builtin   -> pprExternal sty uniq mod occ True  builtin
-      External mod            -> pprExternal sty uniq mod occ False UserSyntax
-      System                  -> pprSystem sty uniq occ
-      Internal                -> pprInternal sty uniq occ
-  where uniq = mkUniqueGrimily u
-
-pprExternal :: PprStyle -> Unique -> Module -> OccName -> Bool -> BuiltInSyntax -> SDoc
-pprExternal sty uniq mod occ is_wired is_builtin
-  | codeStyle sty = ppr mod <> char '_' <> ppr_z_occ_name occ
-        -- In code style, always qualify
-        --  maybe we could print all wired-in things unqualified
-        --       in code style, to reduce symbol table bloat?
-  | debugStyle sty = pp_mod <> ppr_occ_name occ
-                     <> braces (hsep [if is_wired then text "(w)" else empty,
-                                      pprNameSpaceBrief (occNameSpace occ),
-                                      pprUnique uniq])
-  | BuiltInSyntax <- is_builtin = ppr_occ_name occ  -- Never qualify builtin syntax
-  | otherwise                   = pprModulePrefix sty mod occ <> ppr_occ_name occ
-  where
-    pp_mod = sdocWithDynFlags $ \dflags ->
-             if gopt Opt_SuppressModulePrefixes dflags
-             then empty
-             else ppr mod <> dot
 
 pprInternal :: PprStyle -> Unique -> OccName -> SDoc
 pprInternal sty uniq occ
@@ -2216,19 +2211,6 @@ nameSortStableString (External mod) = moduleStableString mod
 nameSortStableString (WiredIn mod _ _) = moduleStableString mod
 -}
 
-pprInfixName :: (Outputable a, NamedThing a) => a -> SDoc
--- See Outputable.pprPrefixVar, pprInfixVar;
--- add parens or back-quotes as appropriate
-pprInfixName  n = pprInfixVar (isSymOcc (getOccName n)) (ppr n)
-
-pprPrefixName :: NamedThing a => a -> SDoc
-pprPrefixName thing
- | name `hasKey` starKindTyConKey || name `hasKey` unicodeStarKindTyConKey
- = ppr name   -- See Note [Special treatment for kind *]
- | otherwise
- = pprPrefixVar (isSymOcc (nameOccName name)) (ppr name)
- where
-   name = getName thing
 
 
 -- Module
