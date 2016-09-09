@@ -85,6 +85,6 @@ data IE name
   | IEGroup             Int HsDocString  -- ^ Doc section heading
   | IEDoc               HsDocString      -- ^ Some documentation
   | IEDocNamed          String           -- ^ Reference to named doc
-  deriving (Eq, Data)
+  deriving ({- Eq, -} Data)
 
 data IEWildcard = NoIEWildcard | IEWildcard Int deriving (Eq, Data)

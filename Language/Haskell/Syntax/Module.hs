@@ -17,7 +17,7 @@ module Language.Haskell.Syntax.Module ( Module(..)
                                       , ModuleName(..)
                                       )  where
 
-import U.Unique
+--import U.Unique
 import Language.Haskell.Utility.FastString
 import Language.Haskell.Utility.Util
 import Data.Data
@@ -104,7 +104,7 @@ import Data.Data
 newtype ModuleName
   = ModuleName {moduleNameFS :: FastString}
   deriving Show
-
+{-
 instance Uniquable ModuleName where
   getUnique (ModuleName nm) = getUnique nm
 
@@ -116,7 +116,7 @@ instance Eq ModuleName where
 -- a lexicographical ordering.
 instance Ord ModuleName where
   nm1 `compare` nm2 = getUnique nm1 `compare` getUnique nm2
-
+-}
 instance Data ModuleName where
   -- don't traverse?
   toConstr _   = abstractConstr "ModuleName"
@@ -136,11 +136,11 @@ data Module = Module {
    moduleUnitId :: !UnitId,  -- pkg-1.0
    moduleName   :: !ModuleName  -- A.B.C
   }
-  deriving (Eq, Ord,Show)
-
+  deriving ({- Eq,  Ord, -} Show)
+{-
 instance Uniquable Module where
   getUnique (Module p n) = getUnique (unitIdFS p `appendFS` moduleNameFS n)
-
+-}
 instance Data Module where
   -- don't traverse?
   toConstr _   = abstractConstr "Module"
@@ -161,7 +161,7 @@ instance Data Module where
 -- the hex representation and hash-cons those strings.
 newtype UnitId = PId {unitIdFS :: FastString} deriving (Show,Eq)
     -- here to avoid module loops with PackageConfig
-
+{-
 instance Uniquable UnitId where
  getUnique pid = getUnique (unitIdFS pid)
 
@@ -169,7 +169,7 @@ instance Uniquable UnitId where
 -- ordering.
 instance Ord UnitId where
   nm1 `compare` nm2 = getUnique nm1 `compare` getUnique nm2
-
+-}
 instance Data UnitId where
   -- don't traverse?
   toConstr _   = abstractConstr "UnitId"
