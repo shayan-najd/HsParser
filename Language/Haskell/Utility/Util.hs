@@ -4,7 +4,7 @@
 
 -- | Highly random utility functions
 --
-module U.Util (abstractConstr,
+module Language.Haskell.Utility.Util (abstractConstr,
                snocView,
                thenCmp,
                isSingleton,
@@ -24,9 +24,7 @@ module U.Util (abstractConstr,
                mapAccumLM,
                anyM) where
 
-#include "HsVersions.h"
-
-import U.Panic
+-- import U.Panic
 import Control.Monad
 import Data.Data
 import Data.List        hiding (group)
@@ -47,6 +45,7 @@ import GHC.Exts (Constraint)
 type HasCallStack = (() :: Constraint)
 #endif
 
+panic = error "SHAYAN HACK!"
 
 infixr 9 `thenCmp`
 

@@ -18,105 +18,82 @@
 --
 -- Definitions for: @SynDecl@ and @ConDecl@, @ClassDecl@,
 -- @InstDecl@, @DefaultDecl@ and @ForeignDecl@.
-module HsDecls {- (
-  Role, fsFromRole,
-  FunDep,pprFundeps,pprFunDep,
-  -- * Toplevel declarations
-  HsDecl(..), LHsDecl, HsDataDefn(..), HsDeriving,
-
-  -- ** Class or type declarations
-  TyClDecl(..), LTyClDecl,
-  TyClGroup(..), mkTyClGroup, emptyTyClGroup,
-  tyClGroupTyClDecls, tyClGroupInstDecls, tyClGroupRoleDecls,
-  isClassDecl, isDataDecl, isSynDecl, tcdName,
-  isFamilyDecl, isTypeFamilyDecl, isDataFamilyDecl,
-  isOpenTypeFamilyInfo, isClosedTypeFamilyInfo,
-  tyFamInstDeclName, tyFamInstDeclLName,
-  countTyClDecls, pprTyClDeclFlavour,
-  tyClDeclLName, tyClDeclTyVars,
-  famDeclHasCusk,
-  FamilyDecl(..), LFamilyDecl,
-
-  -- ** Instance declarations
-  InstDecl(..), LInstDecl, NewOrData(..), FamilyInfo(..),
-  TyFamInstDecl(..), LTyFamInstDecl, instDeclDataFamInsts,
-  DataFamInstDecl(..), LDataFamInstDecl, pprDataFamInstFlavour,
-  TyFamEqn(..), TyFamInstEqn, LTyFamInstEqn, TyFamDefltEqn, LTyFamDefltEqn,
-  HsTyPats,
-  LClsInstDecl, ClsInstDecl(..),
-
-  -- ** Standalone deriving declarations
-  DerivDecl(..), LDerivDecl,
-  -- ** @RULE@ declarations
-  LRuleDecls,RuleDecls(..),RuleDecl(..), LRuleDecl, RuleBndr(..),LRuleBndr,
-  collectRuleBndrSigTys,
-  flattenRuleDecls, pprFullRuleName,
-  -- ** @VECTORISE@ declarations
-  VectDecl(..), LVectDecl,
-  lvectInstDecl,
-  -- ** @default@ declarations
-  DefaultDecl(..), LDefaultDecl,
-  -- ** Template haskell declaration splice
-  SpliceExplicitFlag(..),
-  SpliceDecl(..), LSpliceDecl,
-  -- ** Foreign function interface declarations
-  ForeignDecl(..), LForeignDecl, ForeignImport(..), ForeignExport(..),
-  CImportSpec(..),
-  -- ** Data-constructor declarations
-  ConDecl(..), LConDecl,
-  HsConDeclDetails, hsConDeclArgTys,
-  getConNames,
-  getConDetails,
-  gadtDeclDetails,
-  -- ** Document comments
-  DocDecl(..), LDocDecl, docDeclDoc,
-  -- ** Deprecations
-  WarnDecl(..),  LWarnDecl,
-  WarnDecls(..), LWarnDecls,
-  -- ** Annotations
-  AnnDecl(..), LAnnDecl,
-  AnnProvenance(..), annProvenanceName_maybe,
-  -- ** Role annotations
-  RoleAnnotDecl(..), LRoleAnnotDecl, roleAnnotDeclName,
-  -- ** Injective type families
-  FamilyResultSig(..), LFamilyResultSig, InjectivityAnn(..), LInjectivityAnn,
-  resultVariableName,
-
-  -- * Grouping
-  HsGroup(..),  emptyRdrGroup, appendGroups, hsGroupInstDecls
-
-    ) -} where
+module Language.Haskell.Syntax.HsDecls ( LHsDecl
+               , LConDecl
+               , LTyFamInstEqn
+               , LTyClDecl
+               , LInstDecl
+               , LTyFamInstDecl
+               , LRoleAnnotDecl
+               , LFamilyDecl
+               , LDataFamInstDecl
+               , LDocDecl
+               , LInjectivityAnn
+               , LWarnDecl
+               , LRuleBndr
+               , LRuleDecl
+               , LDerivDecl
+               , LFamilyResultSig
+               , Role(..)
+               , FunDep(..)
+               , SpliceDecl(..)
+               , FamilyResultSig(..)
+               , LTyFamDefltEqn(..)
+               , HsTyPats(..)
+               , TyClDecl(..)
+               , TyClGroup(..)
+               , FamilyDecl(..)
+               , FamilyInfo(..)
+               , HsDataDefn(..)
+               , NewOrData(..)
+               , DataFamInstDecl(..)
+               , TyFamInstEqn(..)
+               , TyFamInstDecl(..)
+               , RoleAnnotDecl(..)
+               , RuleDecl(..)
+               , ForeignDecl(..)
+               , DefaultDecl(..)
+               , DerivDecl(..)
+               , ClsInstDecl(..)
+               , InstDecl(..)
+               , AnnProvenance(..)
+               , ForeignExport(..)
+               , ForeignImport(..)
+               , RuleDecls(..)
+               , RuleBndr(..)
+               , WarnDecls(..)
+               , WarnDecl(..)
+               , HsDecl(..)
+               , AnnDecl(..)
+               , ConDecl(..)
+               , VectDecl(..)
+               , DocDecl(..)
+               , HsGroup(..)
+               , InjectivityAnn(..)
+               , TyFamEqn(..)
+               , CImportSpec(..)
+               , HsDeriving(..)
+               , HsConDeclDetails(..)
+               , SpliceExplicitFlag(..)
+               )where
 
 -- friends:
-import {-# SOURCE #-}   HsExpr( LHsExpr, HsExpr, HsSplice)
+import {-# SOURCE #-} Language.Haskell.Syntax.HsExpr( LHsExpr, HsExpr, HsSplice)
         -- Because Expr imports Decls via HsBracket
 
-import HsBinds
-import HsTypes
-import HsDoc
-import BasicTypes
-import ForeignCall
+import Language.Haskell.Syntax.HsBinds
+import Language.Haskell.Syntax.HsTypes
+import Language.Haskell.Syntax.HsDoc
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.ForeignCall
 
 -- others:
-import SrcLoc
+import Language.Haskell.Syntax.SrcLoc
 
-import U.Util (orElse)
-import U.FastString
 import Data.Data        hiding (TyCon,Fixity)
-
-count :: (a -> Bool) -> [a] -> Int
-count _ [] = 0
-count p (x:xs) | p x       = 1 + count p xs
-               | otherwise = count p xs
-
 
 data Role = Nominal | Representational | Phantom
           deriving (Data,Show)
-
-fsFromRole :: Role -> FastString
-fsFromRole Nominal          = fsLit "nominal"
-fsFromRole Representational = fsLit "representational"
-fsFromRole Phantom          = fsLit "phantom"
 
 type FunDep a = ([a],[a])
 
@@ -198,63 +175,6 @@ data HsGroup id
   }
 deriving instance (Data id) => Data (HsGroup id)
 
-emptyGroup, emptyRdrGroup :: HsGroup a
-emptyRdrGroup = emptyGroup { hs_valds = emptyValBindsIn }
-
-
-hsGroupInstDecls :: HsGroup id -> [LInstDecl id]
-hsGroupInstDecls = (=<<) group_instds . hs_tyclds
-
-emptyGroup = HsGroup { hs_tyclds = [],
-                       hs_derivds = [],
-                       hs_fixds = [], hs_defds = [], hs_annds = [],
-                       hs_fords = [], hs_warnds = [], hs_ruleds = [], hs_vects = [],
-                       hs_valds = error "emptyGroup hs_valds: Can't happen",
-                       hs_splcds = [],
-                       hs_docs = [] }
-
-appendGroups :: HsGroup a -> HsGroup a -> HsGroup a
-appendGroups
-    HsGroup {
-        hs_valds  = val_groups1,
-        hs_splcds = spliceds1,
-        hs_tyclds = tyclds1,
-        hs_derivds = derivds1,
-        hs_fixds  = fixds1,
-        hs_defds  = defds1,
-        hs_annds  = annds1,
-        hs_fords  = fords1,
-        hs_warnds = warnds1,
-        hs_ruleds = rulds1,
-        hs_vects = vects1,
-  hs_docs   = docs1 }
-    HsGroup {
-        hs_valds  = val_groups2,
-        hs_splcds = spliceds2,
-        hs_tyclds = tyclds2,
-        hs_derivds = derivds2,
-        hs_fixds  = fixds2,
-        hs_defds  = defds2,
-        hs_annds  = annds2,
-        hs_fords  = fords2,
-        hs_warnds = warnds2,
-        hs_ruleds = rulds2,
-        hs_vects  = vects2,
-        hs_docs   = docs2 }
-  =
-    HsGroup {
-        hs_valds  = val_groups1 `plusHsValBinds` val_groups2,
-        hs_splcds = spliceds1 ++ spliceds2,
-        hs_tyclds = tyclds1 ++ tyclds2,
-        hs_derivds = derivds1 ++ derivds2,
-        hs_fixds  = fixds1 ++ fixds2,
-        hs_annds  = annds1 ++ annds2,
-        hs_defds  = defds1 ++ defds2,
-        hs_fords  = fords1 ++ fords2,
-        hs_warnds = warnds1 ++ warnds2,
-        hs_ruleds = rulds1 ++ rulds2,
-        hs_vects  = vects1 ++ vects2,
-        hs_docs   = docs1  ++ docs2 }
 
 data SpliceExplicitFlag = ExplicitSplice | -- <=> $(f x y)
                           ImplicitSplice   -- <=> f x y,  i.e. a naked top level expression
@@ -477,91 +397,6 @@ data TyClDecl name
 
 deriving instance (Data id) => Data (TyClDecl id)
 
-
--- Simple classifiers for TyClDecl
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
--- | @True@ <=> argument is a @data@\/@newtype@
--- declaration.
-isDataDecl :: TyClDecl name -> Bool
-isDataDecl (DataDecl {}) = True
-isDataDecl _other        = False
-
--- | type or type instance declaration
-isSynDecl :: TyClDecl name -> Bool
-isSynDecl (SynDecl {})   = True
-isSynDecl _other        = False
-
--- | type class
-isClassDecl :: TyClDecl name -> Bool
-isClassDecl (ClassDecl {}) = True
-isClassDecl _              = False
-
--- | type/data family declaration
-isFamilyDecl :: TyClDecl name -> Bool
-isFamilyDecl (FamDecl {})  = True
-isFamilyDecl _other        = False
-
--- | type family declaration
-isTypeFamilyDecl :: TyClDecl name -> Bool
-isTypeFamilyDecl (FamDecl (FamilyDecl { fdInfo = info })) = case info of
-  OpenTypeFamily      -> True
-  ClosedTypeFamily {} -> True
-  _                   -> False
-isTypeFamilyDecl _ = False
-
--- | open type family info
-isOpenTypeFamilyInfo :: FamilyInfo name -> Bool
-isOpenTypeFamilyInfo OpenTypeFamily = True
-isOpenTypeFamilyInfo _              = False
-
--- | closed type family info
-isClosedTypeFamilyInfo :: FamilyInfo name -> Bool
-isClosedTypeFamilyInfo (ClosedTypeFamily {}) = True
-isClosedTypeFamilyInfo _                     = False
-
--- | data family declaration
-isDataFamilyDecl :: TyClDecl name -> Bool
-isDataFamilyDecl (FamDecl (FamilyDecl { fdInfo = DataFamily })) = True
-isDataFamilyDecl _other      = False
-
--- Dealing with names
-
-tyFamInstDeclName :: TyFamInstDecl name -> name
-tyFamInstDeclName = unLoc . tyFamInstDeclLName
-
-tyFamInstDeclLName :: TyFamInstDecl name -> Located name
-tyFamInstDeclLName (TyFamInstDecl { tfid_eqn =
-                     (L _ (TyFamEqn { tfe_tycon = ln })) })
-  = ln
-
-tyClDeclLName :: TyClDecl name -> Located name
-tyClDeclLName (FamDecl { tcdFam = FamilyDecl { fdLName = ln } }) = ln
-tyClDeclLName decl = tcdLName decl
-
-tcdName :: TyClDecl name -> name
-tcdName = unLoc . tyClDeclLName
-
-tyClDeclTyVars :: TyClDecl name -> LHsQTyVars name
-tyClDeclTyVars (FamDecl { tcdFam = FamilyDecl { fdTyVars = tvs } }) = tvs
-tyClDeclTyVars d = tcdTyVars d
-
-countTyClDecls :: [TyClDecl name] -> (Int, Int, Int, Int, Int)
-        -- class, synonym decls, data, newtype, family decls
-countTyClDecls decls
- = (count isClassDecl    decls,
-    count isSynDecl      decls,  -- excluding...
-    count isDataTy       decls,  -- ...family...
-    count isNewTy        decls,  -- ...instances
-    count isFamilyDecl   decls)
- where
-   isDataTy DataDecl{ tcdDataDefn = HsDataDefn { dd_ND = DataType } } = True
-   isDataTy _                                                       = False
-
-   isNewTy DataDecl{ tcdDataDefn = HsDataDefn { dd_ND = NewType } } = True
-   isNewTy _                                                      = False
-
-
 {- Note [Complete user-supplied kind signatures]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We kind-check declarations differently if they have a complete, user-supplied
@@ -630,26 +465,6 @@ data TyClGroup name  -- See Note [TyClGroups and dependency analysis]
               , group_roles  :: [LRoleAnnotDecl name]
               , group_instds :: [LInstDecl name] }
 deriving instance (Data id) => Data (TyClGroup id)
-
-emptyTyClGroup :: TyClGroup name
-emptyTyClGroup = TyClGroup [] [] []
-
-tyClGroupTyClDecls :: [TyClGroup name] -> [LTyClDecl name]
-tyClGroupTyClDecls = concatMap group_tyclds
-
-tyClGroupInstDecls :: [TyClGroup name] -> [LInstDecl name]
-tyClGroupInstDecls = concatMap group_instds
-
-tyClGroupRoleDecls :: [TyClGroup name] -> [LRoleAnnotDecl name]
-tyClGroupRoleDecls = concatMap group_roles
-
-mkTyClGroup :: [LTyClDecl name] -> [LInstDecl name] -> TyClGroup name
-mkTyClGroup decls instds = TyClGroup
-  { group_tyclds = decls
-  , group_roles = []
-  , group_instds = instds
-  }
-
 
 
 {- *********************************************************************
@@ -789,28 +604,6 @@ data FamilyInfo name
   | ClosedTypeFamily (Maybe [LTyFamInstEqn name])
 deriving instance (Data name) => Data (FamilyInfo name)
 
--- | Does this family declaration have a complete, user-supplied kind signature?
-famDeclHasCusk :: Maybe Bool
-                   -- ^ if associated, does the enclosing class have a CUSK?
-               -> FamilyDecl name -> Bool
-famDeclHasCusk _ (FamilyDecl { fdInfo      = ClosedTypeFamily _
-                             , fdTyVars    = tyvars
-                             , fdResultSig = L _ resultSig })
-  = hsTvbAllKinded tyvars && hasReturnKindSignature resultSig
-famDeclHasCusk mb_class_cusk _ = mb_class_cusk `orElse` True
-        -- all un-associated open families have CUSKs!
-
--- | Does this family declaration have user-supplied return kind signature?
-hasReturnKindSignature :: FamilyResultSig a -> Bool
-hasReturnKindSignature NoSig                          = False
-hasReturnKindSignature (TyVarSig (L _ (UserTyVar _))) = False
-hasReturnKindSignature _                              = True
-
--- | Maybe return name of the result type variable
-resultVariableName :: FamilyResultSig a -> Maybe a
-resultVariableName (TyVarSig sig) = Just $ hsLTyVarName sig
-resultVariableName _              = Nothing
-
 
 {- *********************************************************************
 *                                                                      *
@@ -936,37 +729,6 @@ deriving instance (Data name) => Data (ConDecl name)
 type HsConDeclDetails name
    = HsConDetails (LBangType name) (Located [LConDeclField name])
 
-getConNames :: ConDecl name -> [Located name]
-getConNames ConDeclH98  {con_name  = name}  = [name]
-getConNames ConDeclGADT {con_names = names} = names
-
--- don't call with RdrNames, because it can't deal with HsAppsTy
-getConDetails :: ConDecl name -> HsConDeclDetails name
-getConDetails ConDeclH98  {con_details  = details} = details
-getConDetails ConDeclGADT {con_type     = ty     } = details
-  where
-    (details,_,_,_) = gadtDeclDetails ty
-
--- don't call with RdrNames, because it can't deal with HsAppsTy
-gadtDeclDetails :: LHsSigType name
-                -> ( HsConDeclDetails name
-                   , LHsType name
-                   , LHsContext name
-                   , [LHsTyVarBndr name] )
-gadtDeclDetails HsIB {hsib_body = lbody_ty} = (details,res_ty,cxt,tvs)
-  where
-    (tvs, cxt, tau) = splitLHsSigmaTy lbody_ty
-    (details, res_ty)           -- See Note [Sorting out the result type]
-      = case tau of
-          L _ (HsFunTy (L l (HsRecTy flds)) res_ty')
-                  -> (RecCon (L l flds), res_ty')
-          _other  -> (PrefixCon [], tau)
-
-hsConDeclArgTys :: HsConDeclDetails name -> [LBangType name]
-hsConDeclArgTys (PrefixCon tys)    = tys
-hsConDeclArgTys (InfixCon ty1 ty2) = [ty1,ty2]
-hsConDeclArgTys (RecCon flds)      = map (cd_fld_type . unLoc) (unLoc flds)
-
 
 {-
 ************************************************************************
@@ -1087,7 +849,6 @@ deriving instance (Data name) => Data (DataFamInstDecl name)
 
 ----------------- Class instances -------------
 
-type LClsInstDecl name = Located (ClsInstDecl name)
 data ClsInstDecl name
   = ClsInstDecl
       { cid_poly_ty :: LHsSigType name    -- Context => Class Instance-type
@@ -1125,15 +886,6 @@ data InstDecl name  -- Both class and family instances
 deriving instance (Data id) => Data (InstDecl id)
 
 -- Extract the declarations of associated data types from an instance
-
-instDeclDataFamInsts :: [LInstDecl name] -> [DataFamInstDecl name]
-instDeclDataFamInsts inst_decls
-  = concatMap do_one inst_decls
-  where
-    do_one (L _ (ClsInstD { cid_inst = ClsInstDecl { cid_datafam_insts = fam_insts } }))
-      = map unLoc fam_insts
-    do_one (L _ (DataFamInstD { dfid_inst = fam_inst }))      = [fam_inst]
-    do_one (L _ (TyFamInstD {}))                              = []
 
 {-
 ************************************************************************
@@ -1305,9 +1057,6 @@ data RuleDecl name
         -- For details on above see note [Api annotations] in ApiAnnotation
 deriving instance (Data name) => Data (RuleDecl name)
 
-flattenRuleDecls :: [LRuleDecls name] -> [LRuleDecl name]
-flattenRuleDecls decls = concatMap (rds_rules . unLoc) decls
-
 type LRuleBndr name = Located (RuleBndr name)
 data RuleBndr name
   = RuleBndr (Located name)
@@ -1318,9 +1067,6 @@ data RuleBndr name
 
         -- For details on above see note [Api annotations] in ApiAnnotation
 deriving instance (Data name) => Data (RuleBndr name)
-
-collectRuleBndrSigTys :: [RuleBndr name] -> [LHsSigWcType name]
-collectRuleBndrSigTys bndrs = [ty | RuleBndrSig _ ty <- bndrs]
 {-
 ************************************************************************
 *                                                                      *
@@ -1376,11 +1122,6 @@ data VectDecl name
   | HsVectInstIn                -- pre type-checking (always SCALAR)  !!!FIXME: should be superfluous now
       (LHsSigType name)
 deriving instance (Data name) => Data (VectDecl name)
-
-
-lvectInstDecl :: LVectDecl name -> Bool
-lvectInstDecl (L _ (HsVectInstIn _))  = True
-lvectInstDecl _                       = False
 
 {-
 ************************************************************************
@@ -1452,11 +1193,6 @@ data AnnProvenance name = ValueAnnProvenance (Located name)
 deriving instance Foldable    AnnProvenance
 deriving instance Traversable AnnProvenance
 
-annProvenanceName_maybe :: AnnProvenance name -> Maybe name
-annProvenanceName_maybe (ValueAnnProvenance (L _ name)) = Just name
-annProvenanceName_maybe (TypeAnnProvenance (L _ name))  = Just name
-annProvenanceName_maybe ModuleAnnProvenance       = Nothing
-
 {-
 ************************************************************************
 *                                                                      *
@@ -1477,6 +1213,3 @@ data RoleAnnotDecl name
 
       -- For details on above see note [Api annotations] in ApiAnnotation
   deriving Data
-
-roleAnnotDeclName :: RoleAnnotDecl name -> name
-roleAnnotDeclName (RoleAnnotDecl (L _ name) _) = name

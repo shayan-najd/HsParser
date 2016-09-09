@@ -114,15 +114,15 @@ module U.Outputable (SDoc,
                      rparen,
                      lparen) where
 
-import {-# SOURCE #-}   U.DynFlags( DynFlags,defaultDynFlag,
-                                    pprUserLength, pprCols,
-                                    useUnicode, useUnicodeSyntax)
-import {-# SOURCE #-}   Module(ModuleName)
-import {-# SOURCE #-}   OccName( OccName )
+import U.DynFlags( DynFlags,defaultDynFlag,
+                   pprUserLength, pprCols,
+                   useUnicode, useUnicodeSyntax)
+import Language.Haskell.Syntax.Module(ModuleName)
+import OccName( OccName )
 
-import U.FastString
+import Language.Haskell.Utility.FastString
 import qualified U.Pretty
-import U.Util
+import Language.Haskell.Utility.Util
 import U.Pretty           ( Doc, Mode(..) )
 import U.Panic
 import GHC.LanguageExtensions.Type (Extension)

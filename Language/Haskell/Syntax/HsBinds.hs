@@ -16,16 +16,35 @@ Datatype for: @BindGroup@, @Bind@, @Sig@, @Bind@.
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE BangPatterns #-}
 
-module HsBinds where
+module Language.Haskell.Syntax.HsBinds  ( LSig
+               , LFixitySig
+               , LHsBinds
+               , LHsBind
+               , LHsBindsLR
+               , LIPBind
+               , Sig(..)
+               , FixitySig(..)
+               , HsValBinds(..)
+               , IPBind(..)
+               , HsIPBinds(..)
+               , HsBind(..)
+               , HsBindLR(..)
+               , RecordPatSynField(..)
+               , HsLocalBinds(..)
+               , HsLocalBindsLR(..)
+               , HsValBindsLR (..)
+               , HsPatSynDetails(..)
+               , HsPatSynDir(..)
+               , PatSynBind(..)) where
 
-import {-# SOURCE #-} HsExpr (LHsExpr, MatchGroup, GRHSs)
-import {-# SOURCE #-} HsPat  ( LPat )
+import {-# SOURCE #-} Language.Haskell.Syntax.HsExpr (LHsExpr, MatchGroup, GRHSs)
+import {-# SOURCE #-} Language.Haskell.Syntax.HsPat  ( LPat )
 
-import HsTypes
-import BasicTypes
-import SrcLoc
-import U.Bag
-import BooleanFormula (LBooleanFormula)
+import Language.Haskell.Syntax.HsTypes
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Utility.Bag
+import Language.Haskell.Syntax.BooleanFormula (LBooleanFormula)
 
 import Data.Data hiding ( Fixity )
 import Data.List hiding ( foldr )
@@ -306,33 +325,6 @@ Specifically,
   * Before renaming, and after typechecking, the field is unused;
     it's just an error thunk
 -}
-
-------------
-emptyLocalBinds :: HsLocalBindsLR a b
-emptyLocalBinds = EmptyLocalBinds
-
-isEmptyLocalBinds :: HsLocalBindsLR a b -> Bool
-isEmptyLocalBinds (HsValBinds ds) = isEmptyValBinds ds
-isEmptyLocalBinds (HsIPBinds ds)  = isEmptyIPBinds ds
-isEmptyLocalBinds EmptyLocalBinds = True
-
-isEmptyValBinds :: HsValBindsLR a b -> Bool
-isEmptyValBinds (ValBindsIn ds sigs)  = isEmptyLHsBinds ds && null sigs
-
-emptyValBindsIn :: HsValBindsLR a b
-emptyValBindsIn  = ValBindsIn emptyBag []
-
-emptyLHsBinds :: LHsBindsLR idL idR
-emptyLHsBinds = emptyBag
-
-isEmptyLHsBinds :: LHsBindsLR idL idR -> Bool
-isEmptyLHsBinds = isEmptyBag
-
-------------
-plusHsValBinds :: HsValBinds a -> HsValBinds a -> HsValBinds a
-plusHsValBinds (ValBindsIn ds1 sigs1) (ValBindsIn ds2 sigs2)
-  = ValBindsIn (ds1 `unionBags` ds2) (sigs1 ++ sigs2)
-
 {-
 What AbsBinds means
 ~~~~~~~~~~~~~~~~~~~
@@ -373,9 +365,6 @@ data HsIPBinds id
         [LIPBind id]
 
 deriving instance (Data id) => Data (HsIPBinds id)
-
-isEmptyIPBinds :: HsIPBinds id -> Bool
-isEmptyIPBinds (IPBinds is) = null is
 
 type LIPBind id = Located (IPBind id)
 -- ^ May have 'ApiAnnotation.AnnKeywordId' : 'ApiAnnotation.AnnSemi' when in a
@@ -533,39 +522,6 @@ deriving instance (Data name) => Data (Sig name)
 type LFixitySig name = Located (FixitySig name)
 data FixitySig name = FixitySig [Located name] Fixity
   deriving Data
-
-
-isFixityLSig :: LSig name -> Bool
-isFixityLSig (L _ (FixSig {})) = True
-isFixityLSig _                 = False
-
-isTypeLSig :: LSig name -> Bool  -- Type signatures
-isTypeLSig (L _(TypeSig {}))    = True
-isTypeLSig (L _(ClassOpSig {})) = True
-isTypeLSig _                    = False
-
-isSpecLSig :: LSig name -> Bool
-isSpecLSig (L _(SpecSig {})) = True
-isSpecLSig _                 = False
-
-isSpecInstLSig :: LSig name -> Bool
-isSpecInstLSig (L _ (SpecInstSig {})) = True
-isSpecInstLSig _                      = False
-
-isPragLSig :: LSig name -> Bool
--- Identifies pragmas
-isPragLSig (L _ (SpecSig {}))   = True
-isPragLSig (L _ (InlineSig {})) = True
-isPragLSig _                    = False
-
-isInlineLSig :: LSig name -> Bool
--- Identifies inline pragmas
-isInlineLSig (L _ (InlineSig {})) = True
-isInlineLSig _                    = False
-
-isMinimalLSig :: LSig name -> Bool
-isMinimalLSig (L _ (MinimalSig {})) = True
-isMinimalLSig _                    = False
 
 {-
 Check if signatures overlap; this is used when checking for duplicate

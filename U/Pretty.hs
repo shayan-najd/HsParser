@@ -203,7 +203,7 @@ module U.Pretty (
   ) where
 
 import U.BufWrite
-import U.FastString
+import Language.Haskell.Utility.FastString
 import U.Panic
 import System.IO
 import Prelude hiding (error)

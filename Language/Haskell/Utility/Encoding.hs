@@ -11,7 +11,7 @@
 --
 -- -----------------------------------------------------------------------------
 
-module U.Encoding (
+module Language.Haskell.Utility.Encoding (
         -- * UTF-8
         utf8DecodeChar#,
         utf8PrevChar,

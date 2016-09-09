@@ -6,24 +6,20 @@
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module ForeignCall {- (
-        ForeignCall(..), isSafeForeignCall,
-        Safety(..), playSafe, playInterruptible,
+module Language.Haskell.Syntax.ForeignCall  ( CExportSpec(..)
+                                            , CLabelString(..)
+                                            , CType(..)
+                                            , Header(..)
+                                            , CCallTarget(..)
+                                            , CCallSpec(..)
+                                            , ForeignCall(..)
+                                            , CCallConv(..)
+                                            , Safety(..)) where
 
-        CExportSpec(..), CLabelString, isCLabelString, pprCLabelString,
-        CCallSpec(..),
-        CCallTarget(..), isDynamicTarget,
-        CCallConv(..), defaultCCallConv, ccallConvToInt, ccallConvAttribute,
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Syntax.Module
+import Language.Haskell.Syntax.BasicTypes ( SourceText )
 
-        Header(..), CType(..),
-    ) -} where
-
-import U.FastString
-import Module
-import BasicTypes ( SourceText )
-import U.Panic (panic)
-
-import Data.Char
 import Data.Data
 
 {-
@@ -37,10 +33,6 @@ import Data.Data
 newtype ForeignCall = CCall CCallSpec
   deriving Eq
   {-! derive: Binary !-}
-
-isSafeForeignCall :: ForeignCall -> Bool
-isSafeForeignCall (CCall (CCallSpec _ _ safe)) = playSafe safe
-
 
 data Safety
   = PlaySafe            -- Might invoke Haskell GC, or do a call back, or
@@ -60,15 +52,6 @@ data Safety
   deriving ( Eq, Show, Data )
         -- Show used just for Show Lex.Token, I think
   {-! derive: Binary !-}
-
-playSafe :: Safety -> Bool
-playSafe PlaySafe = True
-playSafe PlayInterruptible = True
-playSafe PlayRisky = False
-
-playInterruptible :: Safety -> Bool
-playInterruptible PlayInterruptible = True
-playInterruptible _ = False
 
 {-
 ************************************************************************
@@ -121,11 +104,6 @@ data CCallTarget
 
   deriving( Eq, Data )
   {-! derive: Binary !-}
-
-isDynamicTarget :: CCallTarget -> Bool
-isDynamicTarget DynamicTarget = True
-isDynamicTarget _             = False
-
 {-
 Stuff to do with calling convention:
 
@@ -143,43 +121,14 @@ data CCallConv = CCallConv | CApiConv | StdCallConv | PrimCallConv | JavaScriptC
   deriving (Eq, Data)
   {-! derive: Binary !-}
 
-defaultCCallConv :: CCallConv
-defaultCCallConv = CCallConv
-
-ccallConvToInt :: CCallConv -> Int
-ccallConvToInt StdCallConv = 0
-ccallConvToInt CCallConv   = 1
-ccallConvToInt CApiConv    = panic "ccallConvToInt CApiConv"
-ccallConvToInt (PrimCallConv {}) = panic "ccallConvToInt PrimCallConv"
-ccallConvToInt JavaScriptCallConv = panic "ccallConvToInt JavaScriptCallConv"
-
-{-
-Generate the gcc attribute corresponding to the given
-calling convention (used by PprAbsC):
--}
-
 type CLabelString = FastString          -- A C label, completely unencoded
-
-isCLabelString :: CLabelString -> Bool  -- Checks to see if this is a valid C label
-isCLabelString lbl
-  = all ok (unpackFS lbl)
-  where
-    ok c = isAlphaNum c || c == '_' || c == '.'
-        -- The '.' appears in e.g. "foo.so" in the
-        -- module part of a ExtName.  Maybe it should be separate
 
 -- The filename for a C header file
 -- Note [Pragma source text] in BasicTypes
 data Header = Header SourceText FastString
     deriving (Eq, Data)
 
--- | A C type, used in CAPI FFI calls
---
---  - 'ApiAnnotation.AnnKeywordId' : 'ApiAnnotation.AnnOpen' @'{-\# CTYPE'@,
---        'ApiAnnotation.AnnHeader','ApiAnnotation.AnnVal',
---        'ApiAnnotation.AnnClose' @'\#-}'@,
 
--- For details on above see note [Api annotations] in ApiAnnotation
 data CType = CType SourceText -- Note [Pragma source text] in BasicTypes
                    (Maybe Header) -- header to include for this type
                    (SourceText,FastString) -- the type itself

@@ -27,7 +27,7 @@ module Lexeme (
 
   ) where
 
-import U.FastString
+import Language.Haskell.Utility.FastString
 
 import Data.Char
 import qualified Data.Set as Set

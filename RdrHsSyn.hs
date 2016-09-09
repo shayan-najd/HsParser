@@ -62,25 +62,35 @@ module RdrHsSyn
         mkTypeImpExp,
         mkImpExpSubSpec,
         cvTopDecls,
-        mkModuleImpExp
+        mkModuleImpExp,
+        mkQual,
+        mkUnqual,
+        mkUntypedSplice,
+        mkHsSpliceNE,
+        mkHsSpliceTE,
+        mkHsSpliceE,
+        mkHsSpliceTy,
+        mkHsQuasiQuote
        ) where
 
-import HsSyn            -- Lots of it
+
+import Language.Haskell.Syntax.HsSyn            -- Lots of it
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.ForeignCall
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Syntax.Module(ModuleName(..))
 import RdrName
 import OccName
 import Lexer
 import Lexeme           ( isLexCon )
-import ForeignCall
-import SrcLoc
 import ApiAnnotation
 
-import BasicTypes
 import U.OrdList          ( OrdList, fromOL )
-import U.Bag              ( emptyBag, consBag )
+import Language.Haskell.Utility.Bag              ( emptyBag, consBag )
 import U.Outputable
-import U.FastString
-import U.Util
-import U.Panic (panic, assertPanic)
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Utility.Util
+import U.Panic (panic)
 
 import qualified GHC.LanguageExtensions.Type as LangExt
 
@@ -90,10 +100,7 @@ import Data.Char
 import Data.List
 import Data.Data       ( dataTypeOf, fromConstr, dataTypeConstrs )
 import Data.Maybe (isNothing,listToMaybe,fromMaybe)
-import OutputableInstances (pprHsContext)
-
-#include "HsVersions.h"
-
+import OutputableInstances (pprHsContext,fsFromRole)
 
 unicodeStarKindTyCon_RDR :: RdrName
 unicodeStarKindTyCon_RDR = BuiltIn UnicodeStarKindTyCon
@@ -262,7 +269,7 @@ mkTyFamInstEqn :: LHsType RdrName
 mkTyFamInstEqn lhs rhs
   = do { (tc, tparams, ann) <- checkTyClHdr False lhs
        ; return (TyFamEqn { tfe_tycon = tc
-                          , tfe_pats  = mkHsImplicitBndrs tparams
+                          , tfe_pats  = HsIB tparams
                           , tfe_rhs   = rhs },
                  ann) }
 
@@ -280,7 +287,7 @@ mkDataFamInst loc new_or_data cType (L _ (mcxt, tycl_hdr)) ksig data_cons maybe_
        ; defn <- mkDataDefn new_or_data cType mcxt ksig data_cons maybe_deriv
        ; return (L loc (DataFamInstD (
                   DataFamInstDecl { dfid_tycon = tc
-                                  , dfid_pats = mkHsImplicitBndrs tparams
+                                  , dfid_pats = HsIB tparams
                                   , dfid_defn = defn }))) }
 
 mkTyFamInst :: SrcSpan
@@ -382,7 +389,7 @@ cvTopDecls decls = go (fromOL decls)
 cvBindGroup :: OrdList (LHsDecl RdrName) -> P (HsValBinds RdrName)
 cvBindGroup binding
   = do { (mbs, sigs, fam_ds, tfam_insts, dfam_insts, _) <- cvBindsAndSigs binding
-       ; ASSERT( null fam_ds && null tfam_insts && null dfam_insts)
+       ; -- ASSERT( null fam_ds && null tfam_insts && null dfam_insts)
          return $ ValBindsIn mbs sigs }
 
 cvBindsAndSigs :: OrdList (LHsDecl RdrName)
@@ -586,7 +593,7 @@ mkConDeclH98 :: Located RdrName -> Maybe [LHsTyVarBndr RdrName]
 
 mkConDeclH98 name mb_forall cxt details
   = ConDeclH98 { con_name     = name
-               , con_qvars    = fmap mkHsQTvs mb_forall
+               , con_qvars    = fmap HsQTvs mb_forall
                , con_cxt      = Just cxt
                              -- AZ: when can cxt be Nothing?
                              --          remembering that () is a valid context.
@@ -721,7 +728,7 @@ checkTyVars :: SDoc -> SDoc -> Located RdrName -> [LHsType RdrName]
 -- Convert.hs
 checkTyVars pp_what equals_or_where tc tparms
   = do { tvs <- mapM chk tparms
-       ; return (mkHsQTvs tvs) }
+       ; return (HsQTvs tvs) }
   where
 
     chk (L _ (HsParTy ty)) = chk ty
@@ -806,6 +813,46 @@ checkTyClHdr is_cls ty
       = parseErrorSDoc l (text "Malformed head of type or class declaration:"
                           <+> ppr ty)
 
+isRdrTyVar   :: RdrName -> Bool
+isRdrTyVar   rn = isTvOcc   (rdrNameOcc rn)
+
+isRdrTc      :: RdrName -> Bool
+isRdrTc      rn = isTcOcc   (rdrNameOcc rn)
+
+-- | Retrieves the head of an HsAppsTy, if this can be done unambiguously,
+-- without consulting fixities.
+getAppsTyHead_maybe :: [LHsAppType name] -> Maybe (LHsType name, [LHsType name])
+getAppsTyHead_maybe tys = case splitHsAppsTy tys of
+  ([app1:apps], []) ->  -- no symbols, some normal types
+    Just (mkHsAppTys app1 apps, [])
+  ([app1l:appsl, app1r:appsr], [L loc op]) ->  -- one operator
+    Just (L loc (HsTyVar (L loc op)), [mkHsAppTys app1l appsl, mkHsAppTys app1r appsr])
+  _ -> -- can't figure it out
+    Nothing
+
+-- | Splits a [HsAppType name] (the payload of an HsAppsTy) into regions of prefix
+-- types (normal types) and infix operators.
+-- If @splitHsAppsTy tys = (non_syms, syms)@, then @tys@ starts with the first
+-- element of @non_syms@ followed by the first element of @syms@ followed by
+-- the next element of @non_syms@, etc. It is guaranteed that the non_syms list
+-- has one more element than the syms list.
+splitHsAppsTy :: [LHsAppType name] -> ([[LHsType name]], [Located name])
+splitHsAppsTy = go [] [] []
+  where
+    go acc acc_non acc_sym [] = (reverse (reverse acc : acc_non), reverse acc_sym)
+    go acc acc_non acc_sym (L _ (HsAppPrefix ty) : rest)
+      = go (ty : acc) acc_non acc_sym rest
+    go acc acc_non acc_sym (L _ (HsAppInfix op) : rest)
+      = go [] (reverse acc : acc_non) (op : acc_sym) rest
+
+
+mkHsAppTy :: LHsType name -> LHsType name -> LHsType name
+mkHsAppTy t1 t2 = addCLoc t1 t2 (HsAppTy t1 t2)
+
+mkHsAppTys :: LHsType name -> [LHsType name] -> LHsType name
+mkHsAppTys = foldl mkHsAppTy
+
+
 checkContext :: LHsType RdrName -> P ([AddAnn],LHsContext RdrName)
 checkContext (L l orig_t)
   = check [] (L l orig_t)
@@ -839,6 +886,9 @@ checkPatterns msg es = mapM (checkPattern msg) es
 
 checkLPat :: SDoc -> LHsExpr RdrName -> P (LPat RdrName)
 checkLPat msg e@(L l _) = checkPat msg l e []
+
+isRdrDataCon :: RdrName -> Bool
+isRdrDataCon rn = isDataOcc (rdrNameOcc rn)
 
 checkPat :: SDoc -> SrcSpan -> LHsExpr RdrName -> [LPat RdrName]
          -> P (LPat RdrName)
@@ -925,6 +975,15 @@ checkAPat msg loc e0 = do
                -> return (SplicePat s)
    _           -> patFail msg loc e0
 
+
+tupArgPresent :: LHsTupArg id -> Bool
+tupArgPresent (L _ (Present {})) = True
+tupArgPresent (L _ (Missing {})) = False
+
+isTypedSplice :: HsSplice id -> Bool
+isTypedSplice (HsTypedSplice {}) = True
+isTypedSplice _                  = False   -- Quasi-quotes are untyped splices
+
 plus_RDR, bang_RDR:: RdrName
 plus_RDR = mkUnqual varName (fsLit "+") -- Hack
 bang_RDR = mkUnqual varName (fsLit "!") -- Hack
@@ -1001,6 +1060,10 @@ checkPatBind :: SDoc
 checkPatBind msg lhs (L _ (_,grhss))
   = do  { lhs <- checkPattern msg lhs
         ; return ([],PatBind lhs grhss) }
+
+isUnqual :: RdrName -> Bool
+isUnqual (Unqual _) = True
+isUnqual _          = False
 
 checkValSigLhs :: LHsExpr RdrName -> P (Located RdrName)
 checkValSigLhs (L _ (HsVar lrdr@(L _ v)))
@@ -1278,6 +1341,9 @@ checkPrecP (L l (src,i))
  | otherwise
     = parseErrorSDoc l (text ("Precedence out of range: " ++ show i))
 
+maxPrecedence :: Int
+maxPrecedence = 9
+
 mkRecConstrOrUpdate
         :: LHsExpr RdrName
         -> SrcSpan
@@ -1475,6 +1541,9 @@ mkModuleImpExp n@(L l name) subs =
                    else empty)
         else return $ name
 
+rdrNameSpace :: RdrName -> NameSpace
+rdrNameSpace = occNameSpace . rdrNameOcc
+
 mkTypeImpExp :: Located RdrName   -- TcCls or Var name space
              -> P (Located RdrName)
 mkTypeImpExp name =
@@ -1511,3 +1580,36 @@ mkImpExpSubSpec xs =
 
 parseErrorSDoc :: SrcSpan -> SDoc -> P a
 parseErrorSDoc sp s = failSpanMsgP sp s
+
+---------------
+        -- These two are used when parsing source files
+        -- They do encode the module and occurrence names
+mkUnqual :: NameSpace -> FastString -> RdrName
+mkUnqual sp n = Unqual (mkOccNameFS sp n)
+
+-- | Make a qualified 'RdrName' in the given namespace and where the 'ModuleName' and
+-- the 'OccName' are taken from the first and second elements of the tuple respectively
+mkQual :: NameSpace -> (FastString, FastString) -> RdrName
+mkQual sp (m, n) = Qual (ModuleName m) (mkOccNameFS sp n)
+
+unqualSplice :: RdrName
+unqualSplice = Unqual (mkVarOccFS (fsLit "splice"))
+
+mkUntypedSplice :: LHsExpr RdrName -> HsSplice RdrName
+mkUntypedSplice e = HsUntypedSplice unqualSplice e
+
+mkHsSpliceE :: LHsExpr RdrName -> HsExpr RdrName
+mkHsSpliceE e = HsSpliceE (mkUntypedSplice e)
+
+mkHsSpliceTE :: LHsExpr RdrName -> HsExpr RdrName
+mkHsSpliceTE e = HsSpliceE (HsTypedSplice unqualSplice e)
+
+mkHsSpliceNE :: LHsExpr RdrName -> HsExpr RdrName
+mkHsSpliceNE e = HsSpliceE (HsNativSplice unqualSplice e)
+
+mkHsSpliceTy :: LHsExpr RdrName -> HsType RdrName
+mkHsSpliceTy e = HsSpliceTy (HsUntypedSplice unqualSplice e)
+
+mkHsQuasiQuote :: RdrName -> SrcSpan -> FastString -> HsSplice RdrName
+mkHsQuasiQuote quoter span quote
+  = HsQuasiQuote unqualSplice quoter span quote

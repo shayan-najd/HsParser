@@ -25,9 +25,8 @@ module U.DynFlags
    safeImportsOn,
    useUnicodeSyntax) where
 
-#include "HsVersions.h"
-
-import Module (UnitId,stringToUnitId)
+import Language.Haskell.Utility.FastString(mkFastString)
+import Language.Haskell.Syntax.Module (UnitId(..))
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import GHC.LanguageExtensions.Type
@@ -51,7 +50,7 @@ defaultDynFlag =  DynFlags {
   extensionFlags = IntSet.fromList [5,8,10,22,40,67,77,88,90],
   warningFlags   = IntSet.fromList [0,8,9,10,12,16,27,28,37,38,
                                     39,41,42,48,49,50,51,52,56,61],
-  thisPackage    = stringToUnitId "main",
+  thisPackage    = PId (mkFastString "main"),
   generalFlags   = IntSet.fromList [34,36,43,47,52,55,59,60,64,81,82,
                                     83,84,87,88,89,98,101,103,104,116],
   safeHaskell    = Sf_None}

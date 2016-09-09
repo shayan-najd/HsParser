@@ -10,3 +10,13 @@ rm ./U/*.hi-boot
 rm ./U/*.o
 rm ./U/*.o-boot
 rm ./U/*~
+rm ./Language/Haskell/Syntax/*.hi
+rm ./Language/Haskell/Syntax/*.hi-boot
+rm ./Language/Haskell/Syntax/*.o
+rm ./Language/Haskell/Syntax/*.o-boot
+rm ./Language/Haskell/Syntax/*~
+rm ./Language/Haskell/Utility/*.hi
+rm ./Language/Haskell/Utility/*.hi-boot
+rm ./Language/Haskell/Utility/*.o
+rm ./Language/Haskell/Utility/*.o-boot
+rm ./Language/Haskell/Utility/*~

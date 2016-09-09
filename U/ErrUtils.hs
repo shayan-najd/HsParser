@@ -14,11 +14,9 @@ module U.ErrUtils (MsgDoc,
                    makeIntoWarning,
                    emptyMessages
                    ) where
-#include "HsVersions.h"
-
-import U.Bag
+import Language.Haskell.Utility.Bag
 import U.Outputable
-import SrcLoc
+import Language.Haskell.Syntax.SrcLoc
 import U.DynFlags
 
 

@@ -36,22 +36,21 @@ import Control.Monad    ( mplus )
 import Control.Applicative ((<$))
 
 -- compiler/hsSyn
-import HsSyn
+import Language.Haskell.Syntax.HsSyn
 
 -- compiler/utils
 import U.OrdList
-import BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..), mkTrue )
-import U.FastString
-import U.Util           ( orElse )
+import Language.Haskell.Syntax.BooleanFormula   ( BooleanFormula(..), LBooleanFormula(..))
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Utility.Util           ( orElse,looksLikePackageName )
 import U.Outputable
 
 -- compiler/basicTypes
 import RdrName
 import OccName          ( varName, dataName, tcClsName, tvName )
-import SrcLoc
-import Module           (ModuleName,mkModuleNameFS)
-import BasicTypes
-
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Syntax.Module           (ModuleName(..))
+import Language.Haskell.Syntax.BasicTypes
 
 -- compiler/parser
 import RdrHsSyn
@@ -60,10 +59,9 @@ import HaddockUtils
 import ApiAnnotation
 
 -- compiler/prelude
-import ForeignCall
+import Language.Haskell.Syntax.ForeignCall
 
 -- compiler/utils
-import U.Util             ( looksLikePackageName )
 import Prelude
 
 import qualified GHC.LanguageExtensions.Type as LangExt
@@ -888,7 +886,7 @@ inst_decl :: { LInstDecl RdrName }
                                      , cid_tyfam_insts = ats
                                      , cid_overlap_mode = $2
                                      , cid_datafam_insts = adts }
-             ; ams (L (comb3 $1 (hsSigType $3) $4) (ClsInstD { cid_inst = cid }))
+             ; ams (L (comb3 $1 (hsib_body $3) $4) (ClsInstD { cid_inst = cid }))
                    (mj AnnInstance $1 : (fst $ unLoc $4)) } }
 
            -- type instance declarations
@@ -1109,7 +1107,7 @@ stand_alone_deriving :: { LDerivDecl RdrName }
   : 'deriving' 'instance' overlap_pragma inst_type
                          {% do { let { err = text "in the stand-alone deriving instance"
                                              <> colon <+> quotes (ppr $4) }
-                               ; ams (sLL $1 (hsSigType $>) (DerivDecl $4 $3))
+                               ; ams (sLL $1 (hsib_body $>) (DerivDecl $4 $3))
                                      [mj AnnDeriving $1, mj AnnInstance $2] } }
 
 -----------------------------------------------------------------------------
@@ -1318,7 +1316,7 @@ wherebinds :: { Located ([AddAnn],Located (HsLocalBinds RdrName)) }
                                                 -- No type declarations
         : 'where' binds                 { sLL $1 $> (mj AnnWhere $1 : (fst $ unLoc $2)
                                              ,snd $ unLoc $2) }
-        | {- empty -}                   { noLoc ([],noLoc emptyLocalBinds) }
+        | {- empty -}                   { noLoc ([],noLoc EmptyLocalBinds) }
 
 
 -----------------------------------------------------------------------------
@@ -2659,13 +2657,13 @@ fbinds1 :: { ([AddAnn],([LHsRecField RdrName (LHsExpr RdrName)], Bool)) }
         | '..'                          { ([mj AnnDotdot $1],([],   True)) }
 
 fbind   :: { LHsRecField RdrName (LHsExpr RdrName) }
-        : qvar '=' texp {% ams  (sLL $1 $> $ HsRecField (sL1 $1 $ mkFieldOcc $1) (Just $3))
+        : qvar '=' texp {% ams  (sLL $1 $> $ HsRecField (sL1 $1 $ FieldOcc $1) (Just $3))
                                 [mj AnnEqual $2] }
                         -- RHS is a 'texp', allowing view patterns (Trac #6038)
                         -- and, incidentally, sections.  Eg
                         -- f (R { x = show -> s }) = ...
 
-        | qvar          { sLL $1 $> $ HsRecField (sL1 $1 $ mkFieldOcc $1) Nothing }
+        | qvar          { sLL $1 $> $ HsRecField (sL1 $1 $ FieldOcc $1) Nothing }
                         -- In the punning case, use a place-holder
                         -- The renamer fills in the final value
 
@@ -3069,9 +3067,9 @@ close :: { () }
 -- Miscellaneous (mostly renamings)
 
 modid   :: { Located ModuleName }
-        : CONID                 { sL1 $1 $ mkModuleNameFS (getCONID $1) }
+        : CONID                 { sL1 $1 $ ModuleName (getCONID $1) }
         | QCONID                { sL1 $1 $ let (mod,c) = getQCONID $1 in
-                                  mkModuleNameFS
+                                 ModuleName
                                    (mkFastString
                                      (unpackFS mod ++ '.':unpackFS c))
                                 }

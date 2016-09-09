@@ -17,63 +17,45 @@ HsTypes: Abstract syntax: user-defined types
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE CPP #-}
 
-module HsTypes {- (
-        HsType(..), LHsType, HsKind, LHsKind,
-        HsTyVarBndr(..), LHsTyVarBndr,
-        LHsQTyVars(..),
-        HsImplicitBndrs(..),
-        HsWildCardBndrs(..),
-        LHsSigType, LHsSigWcType, LHsWcType,
-        HsTupleSort(..),
-        HsContext, LHsContext,
-        HsTyLit(..),
-        HsIPName(..), hsIPNameFS,
-        HsAppType(..),LHsAppType,
+module Language.Haskell.Syntax.HsTypes
+              ( LHsSigType
+              , LHsSigWcType
+              , LHsType
+              , LHsWcType
+              , LBangType
+              , LHsTyVarBndr
+              , LHsQTyVars(..)
+              , LHsKind
+              , LHsContext
+              , LConDeclField
+              , LHsAppType
+              , HsImplicitBndrs(..)
+              , HsType(..)
+              , HsIPName(..)
+              , FieldOcc(..)
+              , AmbiguousFieldOcc(..)
+              , HsConDetails(..)
+              , ConDeclField(..)
+              , HsContext(..)
+              , TyPrec(..)
+              , SrcUnpackedness(..)
+              , SrcStrictness(..)
+              , HsImplBang(..)
+              , HsSrcBang(..)
+              , HsTyLit(..)
+              , HsTyVarBndr(..)
+              , HsWildCardBndrs(..)
+              , HsWildCardInfo(..)
+              , HsAppType(..)
+              , HsTupleSort(..)
+              ) where
 
-        LBangType, BangType,
-        HsSrcBang(..), HsImplBang(..),
-        SrcStrictness(..), SrcUnpackedness(..),
-        getBangType, getBangStrictness,
+import {-# SOURCE #-} Language.Haskell.Syntax.HsExpr ( HsSplice)
 
-        ConDeclField(..), LConDeclField, pprConDeclFields,
-
-        HsConDetails(..),
-
-        FieldOcc(..), LFieldOcc, mkFieldOcc,
-        AmbiguousFieldOcc(..), mkAmbiguousFieldOcc,
-        rdrNameAmbiguousFieldOcc,
-        unambiguousFieldOcc, ambiguousFieldOcc,
-
-        HsWildCardInfo(..), mkAnonWildCardTy,
-       sameWildCard,
-
-        mkHsImplicitBndrs, mkHsWildCardBndrs, hsImplicitBody,
-        mkEmptyImplicitBndrs, mkEmptyWildCardBndrs,
-        mkHsQTvs, hsQTvExplicit, emptyLHsQTvs, isEmptyLHsQTvs,
-        isHsKindedTyVar, hsTvbAllKinded,
-        dropWildCards,
-        hsTyVarName, hsLTyVarLocNames,
-        hsLTyVarName, hsLTyVarLocName, hsExplicitLTyVarNames,
-        getLHsInstDeclHead, getLHsInstDeclClass_maybe,
-        splitLHsPatSynTy,
-        splitLHsForAllTy, splitLHsQualTy, splitLHsSigmaTy,
-        splitHsAppsTy,
-        splitHsAppTys, getAppsTyHead_maybe, hsTyGetAppHead_maybe,
-        mkHsOpTy, mkHsAppTy, mkHsAppTys,
-        ignoreParens, hsSigType, hsSigWcType,
-        hsLTyVarBndrToType, hsLTyVarBndrsToTypes,
-
-        -- Printing
-        pprParendHsType, pprHsForAll, pprHsForAllTvs, pprHsForAllExtra,
-        pprHsContext, pprHsContextNoArrow, pprHsContextMaybe
-    ) -} where
-
-import {-# SOURCE #-} HsExpr ( HsSplice)
-
-import HsDoc
-import BasicTypes
-import SrcLoc
-import U.FastString
+import Language.Haskell.Syntax.HsDoc
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Utility.FastString
 
 import Data.Data hiding ( Fixity )
 #if __GLASGOW_HASKELL > 710
@@ -124,14 +106,6 @@ data TyPrec   -- See Note [Prededence in types]
 
 type LBangType name = Located (BangType name)
 type BangType name  = HsType name       -- Bangs are in the HsType data type
-
-getBangType :: LHsType a -> LHsType a
-getBangType (L _ (HsBangTy _ ty)) = ty
-getBangType ty                    = ty
-
-getBangStrictness :: LHsType a -> HsSrcBang
-getBangStrictness (L _ (HsBangTy s _)) = s
-getBangStrictness _ = (HsSrcBang Nothing NoSrcUnpack NoSrcStrict)
 
 {-
 ************************************************************************
@@ -267,20 +241,6 @@ data LHsQTyVars name   -- See Note [HsType binders]
 
 deriving instance (Data name) => Data (LHsQTyVars name)
 
-mkHsQTvs :: [LHsTyVarBndr id] -> LHsQTyVars id
-mkHsQTvs tvs = HsQTvs { hsq_explicit = tvs
-                      }
-
-hsQTvExplicit :: LHsQTyVars name -> [LHsTyVarBndr name]
-hsQTvExplicit = hsq_explicit
-
-emptyLHsQTvs :: LHsQTyVars id
-emptyLHsQTvs = HsQTvs []
-
-isEmptyLHsQTvs :: LHsQTyVars id -> Bool
-isEmptyLHsQTvs (HsQTvs []) = True
-isEmptyLHsQTvs _           = False
-
 ------------------------------------------------
 --            HsImplicitBndrs
 -- Used to quantify the binders of a type in cases
@@ -320,18 +280,6 @@ type LHsSigWcType name = HsImplicitBndrs name (LHsWcType name)  -- Both
 
 -- See Note [Representing type signatures]
 
-hsImplicitBody :: HsImplicitBndrs name thing -> thing
-hsImplicitBody (HsIB { hsib_body = body }) = body
-
-hsSigType :: LHsSigType name -> LHsType name
-hsSigType = hsImplicitBody
-
-hsSigWcType :: LHsSigWcType name -> LHsType name
-hsSigWcType sig_ty = hswc_body (hsib_body sig_ty)
-
-dropWildCards :: LHsSigWcType name -> LHsSigType name
--- Drop the wildcard part of a LHsSigWcType
-dropWildCards sig_ty = sig_ty { hsib_body = hsSigWcType sig_ty }
 
 {- Note [Representing type signatures]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -353,33 +301,12 @@ The implicit kind variable 'k' is bound by the HsIB;
 the explictly forall'd tyvar 'a' is bounnd by the HsForAllTy
 -}
 
-mkHsImplicitBndrs :: thing -> HsImplicitBndrs id thing
-mkHsImplicitBndrs x = HsIB { hsib_body = x }
 
-mkHsWildCardBndrs :: thing -> HsWildCardBndrs id thing
-mkHsWildCardBndrs x = HsWC { hswc_body = x
-                           , hswc_ctx  = Nothing }
-
--- Add empty binders.  This is a bit suspicious; what if
--- the wrapped thing had free type variables?
-mkEmptyImplicitBndrs :: thing -> HsImplicitBndrs id thing
-mkEmptyImplicitBndrs x = HsIB { hsib_body = x
-                              }
-
-mkEmptyWildCardBndrs :: thing -> HsWildCardBndrs id thing
-mkEmptyWildCardBndrs x = HsWC { hswc_body = x
-                              , hswc_ctx  = Nothing }
-
---------------------------------------------------
 -- | These names are used early on to store the names of implicit
 -- parameters.  They completely disappear after type-checking.
 newtype HsIPName = HsIPName FastString
   deriving( Eq, Data )
 
-hsIPNameFS :: HsIPName -> FastString
-hsIPNameFS (HsIPName n) = n
-
---------------------------------------------------
 data HsTyVarBndr name
   = UserTyVar        -- no explicit kinding
          (Located name)
@@ -393,15 +320,6 @@ data HsTyVarBndr name
 
         -- For details on above see note [Api annotations] in ApiAnnotation
 deriving instance (Data name) => Data (HsTyVarBndr name)
-
--- | Does this 'HsTyVarBndr' come with an explicit kind annotation?
-isHsKindedTyVar :: HsTyVarBndr name -> Bool
-isHsKindedTyVar (UserTyVar {})   = False
-isHsKindedTyVar (KindedTyVar {}) = True
-
--- | Do all type variables in this 'LHsQTyVars' come with kind annotations?
-hsTvbAllKinded :: LHsQTyVars name -> Bool
-hsTvbAllKinded = all (isHsKindedTyVar . unLoc) . hsQTvExplicit
 
 data HsType name
   = HsForAllTy   -- See Note [HsType binders]
@@ -701,7 +619,6 @@ data ConDeclField name  -- Record fields have Haddoc docs on them
       -- For details on above see note [Api annotations] in ApiAnnotation
 deriving instance (Data name) => Data (ConDeclField name)
 
-
 -- HsConDetails is used for patterns/expressions *and* for data type
 -- declarations
 data HsConDetails arg rec
@@ -709,218 +626,6 @@ data HsConDetails arg rec
   | RecCon    rec               -- C { x = p1, y = p2 }
   | InfixCon  arg arg           -- p1 `C` p2
   deriving Data
-
-{-
-Note [ConDeclField names]
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A ConDeclField contains a list of field occurrences: these always
-include the field label as the user wrote it.  After the renamer, it
-will additionally contain the identity of the selector function in the
-second component.
-
-Due to DuplicateRecordFields, the OccName of the selector function
-may have been mangled, which is why we keep the original field label
-separately.  For example, when DuplicateRecordFields is enabled
-
-    data T = MkT { x :: Int }
-
-gives
-
-    ConDeclField { cd_fld_names = [L _ (FieldOcc "x" $sel:x:MkT)], ... }.
--}
-
------------------------
--- A valid type must have a for-all at the top of the type, or of the fn arg
--- types
-
-
-{- Note [Scoping of named wildcards]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Consider
-  f :: _a -> _a
-  f x = let g :: _a -> _a
-            g = ...
-        in ...
-
-Currently, for better or worse, the "_a" variables are all the same. So
-although there is no explicit forall, the "_a" scopes over the definition.
-I don't know if this is a good idea, but there it is.
--}
-
----------------------
-hsTyVarName :: HsTyVarBndr name -> name
-hsTyVarName (UserTyVar (L _ n))     = n
-hsTyVarName (KindedTyVar (L _ n) _) = n
-
-hsLTyVarName :: LHsTyVarBndr name -> name
-hsLTyVarName = hsTyVarName . unLoc
-
-hsExplicitLTyVarNames :: LHsQTyVars name -> [name]
--- Explicit variables only
-hsExplicitLTyVarNames qtvs = map hsLTyVarName (hsQTvExplicit qtvs)
-
-hsLTyVarLocName :: LHsTyVarBndr name -> Located name
-hsLTyVarLocName = fmap hsTyVarName
-
-hsLTyVarLocNames :: LHsQTyVars name -> [Located name]
-hsLTyVarLocNames qtvs = map hsLTyVarLocName (hsQTvExplicit qtvs)
-
--- | Convert a LHsTyVarBndr to an equivalent LHsType.
-hsLTyVarBndrToType :: LHsTyVarBndr name -> LHsType name
-hsLTyVarBndrToType = fmap cvt
-  where cvt (UserTyVar n)                     = HsTyVar n
-        cvt (KindedTyVar (L name_loc n) kind)
-                   = HsKindSig (L name_loc (HsTyVar (L name_loc n))) kind
-
--- | Convert a LHsTyVarBndrs to a list of types.
--- Works on *type* variable only, no kind vars.
-hsLTyVarBndrsToTypes :: LHsQTyVars name -> [LHsType name]
-hsLTyVarBndrsToTypes (HsQTvs { hsq_explicit = tvbs }) = map hsLTyVarBndrToType tvbs
-
--- Two wild cards are the same when they have the same location
-sameWildCard :: Located (HsWildCardInfo name)
-             -> Located (HsWildCardInfo name) -> Bool
-sameWildCard (L l1 (AnonWildCard))   (L l2 (AnonWildCard))   = l1 == l2
-
-ignoreParens :: LHsType name -> LHsType name
-ignoreParens (L _ (HsParTy ty))                      = ignoreParens ty
-ignoreParens (L _ (HsAppsTy [L _ (HsAppPrefix ty)])) = ignoreParens ty
-ignoreParens ty                                      = ty
-
-{-
-************************************************************************
-*                                                                      *
-                Building types
-*                                                                      *
-************************************************************************
--}
-
-mkAnonWildCardTy :: HsType id
-mkAnonWildCardTy = HsWildCardTy (AnonWildCard)
-
-mkHsOpTy :: LHsType name -> Located name -> LHsType name -> HsType name
-mkHsOpTy ty1 op ty2 = HsOpTy ty1 op ty2
-
-mkHsAppTy :: LHsType name -> LHsType name -> LHsType name
-mkHsAppTy t1 t2 = addCLoc t1 t2 (HsAppTy t1 t2)
-
-mkHsAppTys :: LHsType name -> [LHsType name] -> LHsType name
-mkHsAppTys = foldl mkHsAppTy
-
-
-{-
-************************************************************************
-*                                                                      *
-                Decomposing HsTypes
-*                                                                      *
-************************************************************************
--}
-
----------------------------------
--- splitHsFunType decomposes a type (t1 -> t2 ... -> tn)
--- Breaks up any parens in the result type:
---      splitHsFunType (a -> (b -> c)) = ([a,b], c)
--- Also deals with (->) t1 t2; that is why it only works on LHsType Name
---   (see Trac #9096)
-
---------------------------------
--- | Retrieves the head of an HsAppsTy, if this can be done unambiguously,
--- without consulting fixities.
-getAppsTyHead_maybe :: [LHsAppType name] -> Maybe (LHsType name, [LHsType name])
-getAppsTyHead_maybe tys = case splitHsAppsTy tys of
-  ([app1:apps], []) ->  -- no symbols, some normal types
-    Just (mkHsAppTys app1 apps, [])
-  ([app1l:appsl, app1r:appsr], [L loc op]) ->  -- one operator
-    Just (L loc (HsTyVar (L loc op)), [mkHsAppTys app1l appsl, mkHsAppTys app1r appsr])
-  _ -> -- can't figure it out
-    Nothing
-
--- | Splits a [HsAppType name] (the payload of an HsAppsTy) into regions of prefix
--- types (normal types) and infix operators.
--- If @splitHsAppsTy tys = (non_syms, syms)@, then @tys@ starts with the first
--- element of @non_syms@ followed by the first element of @syms@ followed by
--- the next element of @non_syms@, etc. It is guaranteed that the non_syms list
--- has one more element than the syms list.
-splitHsAppsTy :: [LHsAppType name] -> ([[LHsType name]], [Located name])
-splitHsAppsTy = go [] [] []
-  where
-    go acc acc_non acc_sym [] = (reverse (reverse acc : acc_non), reverse acc_sym)
-    go acc acc_non acc_sym (L _ (HsAppPrefix ty) : rest)
-      = go (ty : acc) acc_non acc_sym rest
-    go acc acc_non acc_sym (L _ (HsAppInfix op) : rest)
-      = go [] (reverse acc : acc_non) (op : acc_sym) rest
-
--- Retrieve the name of the "head" of a nested type application
--- somewhat like splitHsAppTys, but a little more thorough
--- used to examine the result of a GADT-like datacon, so it doesn't handle
--- *all* cases (like lists, tuples, (~), etc.)
-hsTyGetAppHead_maybe :: LHsType name -> Maybe (Located name, [LHsType name])
-hsTyGetAppHead_maybe = go []
-  where
-    go tys (L _ (HsTyVar ln))           = Just (ln, tys)
-    go tys (L _ (HsAppsTy apps))
-      | Just (head, args) <- getAppsTyHead_maybe apps
-                                         = go (args ++ tys) head
-    go tys (L _ (HsAppTy l r))           = go (r : tys) l
-    go tys (L _ (HsOpTy l (L loc n) r))  = Just (L loc n, l : r : tys)
-    go tys (L _ (HsParTy t))             = go tys t
-    go tys (L _ (HsKindSig t _))         = go tys t
-    go _   _                             = Nothing
-
-splitHsAppTys :: LHsType id -> [LHsType id] -> (LHsType id, [LHsType id])
-  -- no need to worry about HsAppsTy here
-splitHsAppTys (L _ (HsAppTy f a)) as = splitHsAppTys f (a:as)
-splitHsAppTys (L _ (HsParTy f))   as = splitHsAppTys f as
-splitHsAppTys f                   as = (f,as)
-
---------------------------------
-splitLHsPatSynTy :: LHsType name
-                 -> ( [LHsTyVarBndr name]    -- universals
-                    , LHsContext name        -- required constraints
-                    , [LHsTyVarBndr name]    -- existentials
-                    , LHsContext name        -- provided constraints
-                    , LHsType name)          -- body type
-splitLHsPatSynTy ty = (univs, reqs, exis, provs, ty4)
-  where
-    (univs, ty1) = splitLHsForAllTy ty
-    (reqs,  ty2) = splitLHsQualTy ty1
-    (exis,  ty3) = splitLHsForAllTy ty2
-    (provs, ty4) = splitLHsQualTy ty3
-
-splitLHsSigmaTy :: LHsType name -> ([LHsTyVarBndr name], LHsContext name, LHsType name)
-splitLHsSigmaTy ty
-  | (tvs, ty1)  <- splitLHsForAllTy ty
-  , (ctxt, ty2) <- splitLHsQualTy ty1
-  = (tvs, ctxt, ty2)
-
-splitLHsForAllTy :: LHsType name -> ([LHsTyVarBndr name], LHsType name)
-splitLHsForAllTy (L _ (HsForAllTy { hst_bndrs = tvs, hst_body = body })) = (tvs, body)
-splitLHsForAllTy body                                                    = ([], body)
-
-splitLHsQualTy :: LHsType name -> (LHsContext name, LHsType name)
-splitLHsQualTy (L _ (HsQualTy { hst_ctxt = ctxt, hst_body = body })) = (ctxt,     body)
-splitLHsQualTy body                                                  = (noLoc [], body)
-
-getLHsInstDeclHead :: LHsSigType name -> LHsType name
-getLHsInstDeclHead inst_ty
-  | (_tvs, _cxt, body_ty) <- splitLHsSigmaTy (hsSigType inst_ty)
-  = body_ty
-
-getLHsInstDeclClass_maybe :: LHsSigType name -> Maybe (Located name)
--- Works on (HsSigType RdrName)
-getLHsInstDeclClass_maybe inst_ty
-  = do { let head_ty = getLHsInstDeclHead inst_ty
-       ; (cls, _) <- hsTyGetAppHead_maybe head_ty
-       ; return cls }
-
-{-
-************************************************************************
-*                                                                      *
-                FieldOcc
-*                                                                      *
-************************************************************************
--}
 
 type LFieldOcc name = Located (FieldOcc name)
 
@@ -930,10 +635,6 @@ type LFieldOcc name = Located (FieldOcc name)
 data FieldOcc name = FieldOcc {rdrNameFieldOcc ::Located name
                               }
                      deriving (Eq,Ord,Data)
-
-mkFieldOcc :: Located id -> FieldOcc id
-mkFieldOcc rdr = FieldOcc rdr
-
 
 -- | Represents an *occurrence* of a field that is potentially
 -- ambiguous after the renamer, with the ambiguity resolved by the
@@ -949,17 +650,3 @@ data AmbiguousFieldOcc name
   = Unambiguous (Located name)
   | Ambiguous   (Located name)
 deriving instance Data name => Data (AmbiguousFieldOcc name)
-
-mkAmbiguousFieldOcc :: Located id -> AmbiguousFieldOcc id
-mkAmbiguousFieldOcc rdr = Unambiguous rdr
-
-rdrNameAmbiguousFieldOcc :: AmbiguousFieldOcc name -> name
-rdrNameAmbiguousFieldOcc (Unambiguous (L _ rdr)) = rdr
-rdrNameAmbiguousFieldOcc (Ambiguous   (L _ rdr)) = rdr
-
-unambiguousFieldOcc :: AmbiguousFieldOcc id -> FieldOcc id
-unambiguousFieldOcc (Unambiguous rdr) = FieldOcc rdr
-unambiguousFieldOcc (Ambiguous   rdr) = FieldOcc rdr
-
-ambiguousFieldOcc :: FieldOcc name -> AmbiguousFieldOcc name
-ambiguousFieldOcc (FieldOcc rdr) = Unambiguous rdr

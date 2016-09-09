@@ -29,9 +29,7 @@ module U.Unique (Unique,
                  mkPreludeTyConUnique,
                  mkUniqueGrimily) where
 
-#include "HsVersions.h"
-
-import U.FastString
+import Language.Haskell.Utility.FastString
 
 -- just for implementing a fast [0,61) -> Char function
 import GHC.Exts (indexCharOffAddr#, Char(..), Int(..))

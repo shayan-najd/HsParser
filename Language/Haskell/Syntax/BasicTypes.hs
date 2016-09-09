@@ -16,46 +16,34 @@ types that
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module BasicTypes {- (
-   Boxity(..),
-   Arity,
-   FunctionOrData(..),
-   FractionalLit(..),
-   SourceText,
-   tupleParens,
-   Fixity(..),
-   FixityDirection(..),
-   TupleSort(..),
-   Activation(..),
-   InlinePragma(..),
-   RuleMatchInfo(..),
-   InlineSpec(..),
-   RecFlag(..),
-   OverlapMode(..),
-   OverlapFlag(..),
-   WarningTxt(..),
-   StringLiteral(..),
-   inlinePragmaSpec,
-   isDefaultInlinePragma,
-   boxityTupleSort,
-   TopLevelFlag(..),
-   RuleName(..),
-   Origin(..),
-   maxPrecedence
-   ) -} where
+module Language.Haskell.Syntax.BasicTypes ( CompilerPhase(..),
+                                            Boxity(..),
+                                            Arity,
+                                            FunctionOrData(..),
+                                            FractionalLit(..),
+                                            SourceText,
+                                            Fixity(..),
+                                            FixityDirection(..),
+                                            TupleSort(..),
+                                            Activation(..),
+                                            InlinePragma(..),
+                                            RuleMatchInfo(..),
+                                            InlineSpec(..),
+                                            RecFlag(..),
+                                            OverlapMode(..),
+                                            OverlapFlag(..),
+                                            WarningTxt(..),
+                                            StringLiteral(..),
+                                            TopLevelFlag(..),
+                                            RuleName(..),
+                                            Origin(..),
+                                            OccInfo(..)
+                                          ) where
 
-import U.FastString
-import SrcLoc (Located)
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Syntax.SrcLoc (Located)
 import Data.Data hiding (Fixity)
 import Data.Function (on)
-
-{-
-************************************************************************
-*                                                                      *
-\subsection[Arity]{Arity}
-*                                                                      *
-************************************************************************
--}
 
 -- | The number of value arguments that can be applied to a value before it does
 -- "real work". So:
@@ -63,20 +51,6 @@ import Data.Function (on)
 --  \x -> fib x has arity 1
 -- See also Note [Definition of arity] in CoreArity
 type Arity = Int
-
--- | The number of represented arguments that can be applied to a value before it does
--- "real work". So:
---  fib 100                    has representation arity 0
---  \x -> fib x                has representation arity 1
---  \(# x, y #) -> fib (x + y) has representation arity 2
-
-{-
-************************************************************************
-*                                                                      *
-\subsection[FunctionOrData]{FunctionOrData}
-*                                                                      *
-************************************************************************
--}
 
 data FunctionOrData = IsFunction | IsData
     deriving (Eq, Ord, Data)
@@ -97,25 +71,8 @@ data WarningTxt = WarningTxt (Located SourceText)
                                 [Located StringLiteral]
     deriving (Eq, Data)
 
-{-
-************************************************************************
-*                                                                      *
-                Rules
-*                                                                      *
-************************************************************************
--}
-
 type RuleName = FastString
 
-{-
-************************************************************************
-*                                                                      *
-\subsection[Fixity]{Fixity info}
-*                                                                      *
-************************************************************************
--}
-
-------------------------
 data Fixity = Fixity SourceText Int FixityDirection
   -- Note [Pragma source text]
   deriving Data
@@ -123,73 +80,25 @@ data Fixity = Fixity SourceText Int FixityDirection
 instance Eq Fixity where -- Used to determine if two fixities conflict
   (Fixity _ p1 dir1) == (Fixity _ p2 dir2) = p1==p2 && dir1 == dir2
 
-------------------------
 data FixityDirection = InfixL | InfixR | InfixN
                      deriving (Eq, Data)
-
-------------------------
-maxPrecedence :: Int
-maxPrecedence = 9
-
-{-
-************************************************************************
-*                                                                      *
-\subsection[Top-level/local]{Top-level/not-top level flag}
-*                                                                      *
-************************************************************************
--}
 
 data TopLevelFlag
   = TopLevel
   | NotTopLevel
-
-
-{-
-************************************************************************
-*                                                                      *
-                Boxity flag
-*                                                                      *
-************************************************************************
--}
 
 data Boxity
   = Boxed
   | Unboxed
   deriving( Eq, Data,Show )
 
-
-{-
-************************************************************************
-*                                                                      *
-                Recursive/Non-Recursive flag
-*                                                                      *
-************************************************************************
--}
-
 data RecFlag = Recursive
              | NonRecursive
              deriving( Eq, Data )
 
-{-
-************************************************************************
-*                                                                      *
-                Code origin
-*                                                                      *
-************************************************************************
--}
-
 data Origin = FromSource
             | Generated
             deriving( Eq, Data )
-
-
-{-
-************************************************************************
-*                                                                      *
-                Instance overlap flag
-*                                                                      *
-************************************************************************
--}
 
 -- | The semantics allowed for overlapping instances for a particular
 -- instance. See Note [Safe Haskell isSafeOverlap] (in `InstEnv.hs`) for a
@@ -265,37 +174,11 @@ data OverlapMode  -- See Note [Rules for instance lookup] in InstEnv
 
   deriving (Eq, Data)
 
-
-{-
-************************************************************************
-*                                                                      *
-                Tuples
-*                                                                      *
-************************************************************************
--}
-
 data TupleSort
   = BoxedTuple
   | UnboxedTuple
   | ConstraintTuple
   deriving( Eq, Data )
-
-boxityTupleSort :: Boxity -> TupleSort
-boxityTupleSort Boxed   = BoxedTuple
-boxityTupleSort Unboxed = UnboxedTuple
-
-{-
-************************************************************************
-*                                                                      *
-\subsection{Occurrence information}
-*                                                                      *
-************************************************************************
-
-This data type is used exclusively by the simplifier, but it appears in a
-SubstResult, which is currently defined in VarEnv, which is pretty near
-the base of the module hierarchy.  So it seemed simpler to put the
-defn of OccInfo here, safely at the bottom
--}
 
 -- | Identifier occurrence information
 data OccInfo
@@ -520,33 +403,6 @@ The main effects of CONLIKE are:
     - The rule matcher consults this field.  See
       Note [Expanding variables] in Rules.hs.
 -}
-
-
-isFunLike :: RuleMatchInfo -> Bool
-isFunLike FunLike = True
-isFunLike _            = False
-
-isEmptyInlineSpec :: InlineSpec -> Bool
-isEmptyInlineSpec EmptyInlineSpec = True
-isEmptyInlineSpec _               = False
-
-inlinePragmaSpec :: InlinePragma -> InlineSpec
-inlinePragmaSpec = inl_inline
-
--- A DFun has an always-active inline activation so that
--- exprIsConApp_maybe can "see" its unfolding
--- (However, its actual Unfolding is a DFunUnfolding, which is
---  never inlined other than via exprIsConApp_maybe.)
-isDefaultInlinePragma :: InlinePragma -> Bool
-isDefaultInlinePragma (InlinePragma { inl_act = activation
-                                    , inl_rule = match_info
-                                    , inl_inline = inline })
-  = isEmptyInlineSpec inline && isAlwaysActive activation && isFunLike match_info
-
-
-isAlwaysActive :: Activation -> Bool
-isAlwaysActive AlwaysActive = True
-isAlwaysActive _            = False
 
 data FractionalLit
   = FL { fl_text :: String         -- How the value was written in the source

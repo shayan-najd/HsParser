@@ -5,8 +5,8 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE RoleAnnotations #-}
 
-module HsPat where
-import SrcLoc( Located )
+module Language.Haskell.Syntax.HsPat where
+import Language.Haskell.Syntax.SrcLoc( Located )
 
 import Data.Data hiding (Fixity)
 

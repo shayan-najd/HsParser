@@ -5,9 +5,9 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE RoleAnnotations #-}
 
-module HsExpr where
+module Language.Haskell.Syntax.HsExpr where
 
-import SrcLoc     ( Located )
+import Language.Haskell.Syntax.SrcLoc     ( Located )
 import Data.Data hiding ( Fixity )
 
 type role HsExpr nominal

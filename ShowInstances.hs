@@ -1,18 +1,13 @@
 {-# LANGUAGE StandaloneDeriving,
              FlexibleInstances #-}
 
-module ShowInstances where
+module ShowInstances () where
 
-import HsLit
-import HsExpr
-import HsPat
-import HsTypes
-import HsDecls
-import SrcLoc
-import HsBinds
-import BasicTypes
-import BooleanFormula
-import ForeignCall
+import Language.Haskell.Syntax.HsSyn
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.BooleanFormula
+import Language.Haskell.Syntax.ForeignCall
 import RdrName
 
 deriving instance Show RdrName

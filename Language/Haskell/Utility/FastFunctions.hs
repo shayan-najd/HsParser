@@ -4,11 +4,9 @@
 
 {-# LANGUAGE CPP, MagicHash, UnboxedTuples #-}
 
-module U.FastFunctions (
+module Language.Haskell.Utility.FastFunctions (
     inlinePerformIO,
   ) where
-
-#include "HsVersions.h"
 
 import GHC.Exts
 import GHC.IO   (IO(..))

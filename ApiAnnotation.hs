@@ -14,8 +14,8 @@ module ApiAnnotation {- (
   ) -} where
 
 import RdrName
--- import U.Outputable
-import SrcLoc
+import Language.Haskell.Syntax.SrcLoc
+
 import qualified Data.Map as Map
 import Data.Data
 

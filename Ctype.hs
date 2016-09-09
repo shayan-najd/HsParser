@@ -14,8 +14,6 @@ module Ctype
         , hexDigit, octDecDigit
         ) where
 
-#include "HsVersions.h"
-
 import Data.Int         ( Int32 )
 import Data.Bits        ( Bits((.&.)) )
 import Data.Char        ( ord, chr )

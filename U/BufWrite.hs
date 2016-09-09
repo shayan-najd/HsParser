@@ -23,7 +23,7 @@ module U.BufWrite (
         bFlush,
   ) where
 
-import U.FastString
+import Language.Haskell.Utility.FastString
 import U.FastMutInt
 
 import Control.Monad    ( when )

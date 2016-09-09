@@ -1,31 +1,24 @@
 {-# LANGUAGE ScopedTypeVariables, ExplicitForAll #-}
-module OutputableInstances where
+module OutputableInstances (pprHsContext,fsFromRole) where
 
 import U.Outputable
 
-import HsLit
-import HsExpr
-import HsPat
-import HsTypes
-import HsDecls
-import HsBinds
-import HsDoc
-import HsImpExp
-import HsSyn
+import Language.Haskell.Syntax.HsSyn
+import Language.Haskell.Syntax.ForeignCall
+import Language.Haskell.Syntax.FieldLabel
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.BooleanFormula
+import Language.Haskell.Syntax.SrcLoc
+
 import RdrName
 import OccName
-import ForeignCall
-import FieldLabel
 import ApiAnnotation
-import BasicTypes
-import BooleanFormula
-import SrcLoc
-import Module
+import Language.Haskell.Syntax.Module
 
-import U.FastString
+import Language.Haskell.Utility.FastString
 import U.Panic
-import U.Util
-import U.Bag
+import Language.Haskell.Utility.Util
+import Language.Haskell.Utility.Bag
 import U.Unique
 import U.UniqFM
 import U.DynFlags
@@ -150,6 +143,11 @@ instance Outputable InlinePragma where
       pp_info | isFunLike info = empty
               | otherwise      = ppr info
 
+isFunLike :: RuleMatchInfo -> Bool
+isFunLike FunLike = True
+isFunLike _            = False
+
+
 instance Outputable FractionalLit where
   ppr = text . fl_text
 
@@ -177,17 +175,6 @@ pprBooleanFormula pprVar = pprBooleanFormula' pprVar pprAnd pprOr
   where
   pprAnd p = cparen (p > 3) . fsep . punctuate comma
   pprOr  p = cparen (p > 2) . fsep . intersperse vbar
-
--- Pretty print human in readable format, "either `a' or `b' or (`c', `d' and `e')"?
-pprBooleanFormulaNice :: Outputable a => BooleanFormula a -> SDoc
-pprBooleanFormulaNice = pprBooleanFormula' pprVar pprAnd pprOr 0
-  where
-  pprVar _ = quotes . ppr
-  pprAnd p = cparen (p > 1) . pprAnd'
-  pprAnd' [] = empty
-  pprAnd' [x,y] = x <+> text "and" <+> y
-  pprAnd' xs@(_:_) = fsep (punctuate comma (init xs)) <> text ", and" <+> last xs
-  pprOr p xs = cparen (p > 1) $ text "either" <+> sep (intersperse (text "or") xs)
 
 instance Outputable a => Outputable (BooleanFormula a) where
   pprPrec = pprBooleanFormula pprPrec
@@ -222,13 +209,6 @@ instance Outputable CCallConv where
 pprCLabelString :: CLabelString -> SDoc
 pprCLabelString lbl = ftext lbl
 
--- Printing into C files:
-ccallConvAttribute :: CCallConv -> SDoc
-ccallConvAttribute StdCallConv       = text "__attribute__((__stdcall__))"
-ccallConvAttribute CCallConv         = empty
-ccallConvAttribute CApiConv          = empty
-ccallConvAttribute (PrimCallConv {}) = panic "ccallConvAttribute PrimCallConv"
-ccallConvAttribute JavaScriptCallConv = panic "ccallConvAttribute JavaScriptCallConv"
 
 instance Outputable CExportSpec where
   ppr (CExportStatic _ str _) = pprCLabelString str
@@ -253,6 +233,11 @@ instance Outputable CCallSpec where
 
       ppr_fun DynamicTarget
         = text "__dyn_ccall" <> gc_suf <+> text "\"\""
+
+playSafe :: Safety -> Bool
+playSafe PlaySafe = True
+playSafe PlayInterruptible = True
+playSafe PlayRisky = False
 
 instance Outputable Header where
     ppr (Header _ h) = quotes $ ppr h
@@ -280,31 +265,13 @@ instance Outputable HsLit where
 
 -- in debug mode, print the expression that it's resolved to, too
 instance (OutputableBndr id) => Outputable (HsOverLit id) where
-  ppr (OverLit {ol_val=val, ol_witness=witness})
-        = ppr val <+> (ifPprDebug (parens (pprExpr witness)))
+  ppr (OverLit {ol_val=val})
+        = ppr val
 
 instance Outputable OverLitVal where
   ppr (HsIntegral _ i)   = integer i
   ppr (HsFractional f)   = ppr f
   ppr (HsIsString _ s)   = pprHsString s
-
--- | pmPprHsLit pretty prints literals and is used when pretty printing pattern
--- match warnings. All are printed the same (i.e., without hashes if they are
--- primitive and not wrapped in constructors if they are boxed). This happens
--- mainly for too reasons:
---  * We do not want to expose their internal representation
---  * The warnings become too messy
-pmPprHsLit :: HsLit -> SDoc
-pmPprHsLit (HsChar _ c)       = pprHsChar c
-pmPprHsLit (HsCharPrim _ c)   = pprHsChar c
-pmPprHsLit (HsString _ s)     = pprHsString s
-pmPprHsLit (HsStringPrim _ s) = pprHsBytes s
-pmPprHsLit (HsIntPrim _ i)    = integer i
-pmPprHsLit (HsWordPrim _ w)   = integer w
-pmPprHsLit (HsInt64Prim _ i)  = integer i
-pmPprHsLit (HsWord64Prim _ w) = integer w
-pmPprHsLit (HsFloatPrim f)    = ppr f
-pmPprHsLit (HsDoublePrim d)   = ppr d
 
 -- HsTypes
 -------------------------------------------------------------------------------
@@ -362,9 +329,6 @@ pprHsForAllTvs qtvs
 
 pprHsContext :: (OutputableBndr name) => HsContext name -> SDoc
 pprHsContext = maybe empty (<+> darrow) . pprHsContextMaybe
-
-pprHsContextNoArrow :: (OutputableBndr name) => HsContext name -> SDoc
-pprHsContextNoArrow = fromMaybe empty . pprHsContextMaybe
 
 pprHsContextMaybe :: (OutputableBndr name) => HsContext name -> Maybe SDoc
 pprHsContextMaybe []         = Nothing
@@ -548,6 +512,11 @@ instance OutputableBndr name => OutputableBndr (AmbiguousFieldOcc name) where
   pprInfixOcc  = pprInfixOcc . rdrNameAmbiguousFieldOcc
   pprPrefixOcc = pprPrefixOcc . rdrNameAmbiguousFieldOcc
 
+rdrNameAmbiguousFieldOcc :: AmbiguousFieldOcc name -> name
+rdrNameAmbiguousFieldOcc (Unambiguous (L _ rdr)) = rdr
+rdrNameAmbiguousFieldOcc (Ambiguous   (L _ rdr)) = rdr
+
+
 -- HsBinds
 -------------------------------------------------------------------------------
 
@@ -562,11 +531,6 @@ instance (OutputableBndr idL, OutputableBndr idR)
   ppr (ValBindsIn binds sigs)
    = pprDeclList (pprLHsBindsForUser binds sigs)
 
-pprLHsBinds :: (OutputableBndr idL, OutputableBndr idR)
-            => LHsBindsLR idL idR -> SDoc
-pprLHsBinds binds
-  | isEmptyLHsBinds binds = empty
-  | otherwise = pprDeclList (map ppr (bagToList binds))
 
 pprLHsBindsForUser :: (OutputableBndr idL, OutputableBndr idR,
                        OutputableBndr id2)
@@ -695,23 +659,29 @@ pprSpec var pp_ty inl = text "SPECIALIZE" <+> pp_inl <+> pprVarSig [var] pp_ty
     pp_inl | isDefaultInlinePragma inl = empty
            | otherwise = ppr inl
 
+-- A DFun has an always-active inline activation so that
+-- exprIsConApp_maybe can "see" its unfolding
+-- (However, its actual Unfolding is a DFunUnfolding, which is
+--  never inlined other than via exprIsConApp_maybe.)
+isDefaultInlinePragma :: InlinePragma -> Bool
+isDefaultInlinePragma (InlinePragma { inl_act = activation
+                                    , inl_rule = match_info
+                                    , inl_inline = inline })
+  = isEmptyInlineSpec inline && isAlwaysActive activation && isFunLike match_info
+
+isAlwaysActive :: Activation -> Bool
+isAlwaysActive AlwaysActive = True
+isAlwaysActive _            = False
+
+isEmptyInlineSpec :: InlineSpec -> Bool
+isEmptyInlineSpec EmptyInlineSpec = True
+isEmptyInlineSpec _               = False
+
 pprMinimalSig :: OutputableBndr name => LBooleanFormula (Located name) -> SDoc
 pprMinimalSig (L _ bf) = text "MINIMAL" <+> ppr (fmap unLoc bf)
 
 instance Outputable a => Outputable (RecordPatSynField a) where
     ppr (RecordPatSynField { recordPatSynSelectorId = v }) = ppr v
-
-hsSigDoc :: Sig name -> SDoc
-hsSigDoc (TypeSig {})           = text "type signature"
-hsSigDoc (PatSynSig {})         = text "pattern synonym signature"
-hsSigDoc (ClassOpSig is_deflt _ _)
- | is_deflt                     = text "default type signature"
- | otherwise                    = text "class method signature"
-hsSigDoc (SpecSig {})           = text "SPECIALISE pragma"
-hsSigDoc (InlineSig _ prag)     = ppr (inlinePragmaSpec prag) <+> text "pragma"
-hsSigDoc (SpecInstSig {})       = text "SPECIALISE instance pragma"
-hsSigDoc (FixSig {})            = text "fixity declaration"
-hsSigDoc (MinimalSig {})        = text "MINIMAL pragma"
 
 
 -- HsPat
@@ -745,6 +715,28 @@ pprParendPat p = sdocWithDynFlags $ \ dflags ->
       -- But otherwise the CoPat is discarded, so it
       -- is the pattern inside that matters.  Sigh.
 
+hsPatNeedsParens :: Pat a -> Bool
+hsPatNeedsParens (NPlusKPat {})      = True
+hsPatNeedsParens (SplicePat {})      = False
+hsPatNeedsParens (ConPatIn _ ds)     = conPatNeedsParens ds
+hsPatNeedsParens (SigPatIn {})       = True
+hsPatNeedsParens (ViewPat {})        = True
+hsPatNeedsParens (WildPat {})        = False
+hsPatNeedsParens (VarPat {})         = False
+hsPatNeedsParens (LazyPat {})        = False
+hsPatNeedsParens (BangPat {})        = False
+hsPatNeedsParens (ParPat {})         = False
+hsPatNeedsParens (AsPat {})          = False
+hsPatNeedsParens (TuplePat {})       = False
+hsPatNeedsParens (ListPat {})        = False
+hsPatNeedsParens (PArrPat {})        = False
+hsPatNeedsParens (LitPat {})         = False
+
+conPatNeedsParens :: HsConDetails a b -> Bool
+conPatNeedsParens (PrefixCon args) = not (null args)
+conPatNeedsParens (InfixCon {})    = True
+conPatNeedsParens (RecCon {})      = True
+
 pprPat :: (OutputableBndr name) => Pat name -> SDoc
 pprPat (VarPat (L _ var))     = pprPatBndr var
 pprPat (WildPat)              = char '_'
@@ -761,6 +753,10 @@ pprPat (ListPat pats)         = brackets (interpp'SP pats)
 pprPat (PArrPat pats)         = paBrackets (interpp'SP pats)
 pprPat (TuplePat pats bx)     = tupleParens (boxityTupleSort bx) (pprWithCommas ppr pats)
 pprPat (ConPatIn con details) = pprUserCon (unLoc con) details
+
+boxityTupleSort :: Boxity -> TupleSort
+boxityTupleSort Boxed   = BoxedTuple
+boxityTupleSort Unboxed = UnboxedTuple
 
 pprUserCon :: (OutputableBndr con, OutputableBndr id)
            => con -> HsConPatDetails id -> SDoc
@@ -794,6 +790,11 @@ instance (Outputable id, Outputable arg)
 
 instance Outputable Role where
   ppr = ftext . fsFromRole
+
+fsFromRole :: Role -> FastString
+fsFromRole Nominal          = fsLit "nominal"
+fsFromRole Representational = fsLit "representational"
+fsFromRole Phantom          = fsLit "phantom"
 
 pprFundeps :: Outputable a => [FunDep a] -> SDoc
 pprFundeps []  = empty
@@ -852,6 +853,13 @@ instance (OutputableBndr name) => Outputable (HsGroup name) where
           vcat_mb gap (Nothing : ds) = vcat_mb gap ds
           vcat_mb gap (Just d  : ds) = gap $$ d $$ vcat_mb blankLine ds
 
+tyClGroupTyClDecls :: [TyClGroup name] -> [LTyClDecl name]
+tyClGroupTyClDecls = concatMap group_tyclds
+
+tyClGroupInstDecls :: [TyClGroup name] -> [LInstDecl name]
+tyClGroupInstDecls = concatMap group_instds
+
+
 instance (OutputableBndr name) => Outputable (SpliceDecl name) where
    ppr (SpliceDecl (L _ e) _) = pprSplice e
 
@@ -900,14 +908,6 @@ pp_vanilla_decl_head :: (OutputableBndr name)
    -> SDoc
 pp_vanilla_decl_head thing tyvars context
  = hsep [pprHsContext context, pprPrefixOcc (unLoc thing), ppr tyvars]
-
-pprTyClDeclFlavour :: TyClDecl a -> SDoc
-pprTyClDeclFlavour (ClassDecl {})   = text "class"
-pprTyClDeclFlavour (SynDecl {})     = text "type"
-pprTyClDeclFlavour (FamDecl { tcdFam = FamilyDecl { fdInfo = info }})
-  = pprFlavour info <+> text "family"
-pprTyClDeclFlavour (DataDecl { tcdDataDefn = HsDataDefn { dd_ND = nd } })
-  = ppr nd
 
 instance (OutputableBndr name) => Outputable (FamilyDecl name) where
   ppr = pprFamilyDecl TopLevel
@@ -1051,9 +1051,6 @@ pprDataFamInstDecl top_lvl (DataFamInstDecl { dfid_tycon = tycon
   where
     pp_hdr ctxt = ppr_instance_keyword top_lvl <+> pp_fam_inst_lhs tycon pats ctxt
 
-pprDataFamInstFlavour :: DataFamInstDecl name -> SDoc
-pprDataFamInstFlavour (DataFamInstDecl { dfid_defn = (HsDataDefn { dd_ND = nd }) })
-  = ppr nd
 
 pp_fam_inst_lhs :: (OutputableBndr name)
    => Located name
@@ -1122,7 +1119,7 @@ instance Outputable ForeignImport where
     where
       pp_hdr = case mHeader of
                Nothing -> empty
-               Just (ForeignCall.Header _ header) -> ftext header
+               Just (Language.Haskell.Syntax.ForeignCall.Header _ header) -> ftext header
 
       pprCEntity (CLabel lbl) =
         text "static" <+> pp_hdr <+> char '&' <> ppr lbl
@@ -1184,12 +1181,6 @@ instance (OutputableBndr name) => Outputable (VectDecl name) where
 instance Outputable DocDecl where
   ppr _ = text "<document comment>"
 
-docDeclDoc :: DocDecl -> HsDocString
-docDeclDoc (DocCommentNext d) = d
-docDeclDoc (DocCommentPrev d) = d
-docDeclDoc (DocCommentNamed _ d) = d
-docDeclDoc (DocGroup _ d) = d
-
 instance OutputableBndr name => Outputable (WarnDecls name) where
     ppr (Warnings _ decls) = ppr decls
 
@@ -1228,6 +1219,29 @@ instance (OutputableBndr id) => Outputable (HsExpr id) where
 -- the underscore versions do not
 pprLExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
 pprLExpr (L _ e) = pprExpr e
+
+isAtomicHsExpr :: HsExpr id -> Bool
+-- True of a single token
+isAtomicHsExpr (HsVar {})        = True
+isAtomicHsExpr (HsLit {})        = True
+isAtomicHsExpr (HsOverLit {})    = True
+isAtomicHsExpr (HsIPVar {})      = True
+isAtomicHsExpr (HsOverLabel {})  = True
+isAtomicHsExpr (HsPar e)         = isAtomicHsExpr (unLoc e)
+isAtomicHsExpr (HsRecFld{})      = True
+isAtomicHsExpr _                 = False
+
+isQuietHsExpr :: HsExpr id -> Bool
+-- Parentheses do display something, but it gives little info and
+-- if we go deeper when we go inside them then we get ugly things
+-- like (...)
+isQuietHsExpr (HsPar _)          = True
+-- applications don't display anything themselves
+isQuietHsExpr (HsApp _ _)        = True
+isQuietHsExpr (HsAppType _ _)    = True
+isQuietHsExpr (OpApp _ _ _)      = True
+isQuietHsExpr _ = False
+
 
 pprExpr :: (OutputableBndr id) => HsExpr id -> SDoc
 pprExpr e | isAtomicHsExpr e || isQuietHsExpr e =            ppr_expr e
@@ -1448,6 +1462,44 @@ pprDebugParendExpr expr
 pprParendLExpr :: (OutputableBndr id) => LHsExpr id -> SDoc
 pprParendLExpr (L _ e) = pprParendExpr e
 
+hsExprNeedsParens :: HsExpr id -> Bool
+-- True of expressions for which '(e)' and 'e'
+-- mean the same thing
+hsExprNeedsParens (ArithSeq {})       = False
+hsExprNeedsParens (PArrSeq {})        = False
+hsExprNeedsParens (HsLit {})          = False
+hsExprNeedsParens (HsOverLit {})      = False
+hsExprNeedsParens (HsVar {})          = False
+hsExprNeedsParens (HsIPVar {})        = False
+hsExprNeedsParens (HsOverLabel {})    = False
+hsExprNeedsParens (ExplicitTuple {})  = False
+hsExprNeedsParens (ExplicitList {})   = False
+hsExprNeedsParens (ExplicitPArr {})   = False
+hsExprNeedsParens (HsPar {})          = False
+hsExprNeedsParens (HsBracket {})      = False
+hsExprNeedsParens (HsDo sc _)
+       | isListCompExpr sc            = False
+hsExprNeedsParens (HsRecFld{})        = False
+hsExprNeedsParens _ = True
+
+isListCompExpr :: HsStmtContext id -> Bool
+-- Uses syntax [ e | quals ]
+isListCompExpr ListComp          = True
+isListCompExpr PArrComp          = True
+isListCompExpr MonadComp         = True
+isListCompExpr (ParStmtCtxt c)   = isListCompExpr c
+isListCompExpr (TransStmtCtxt c) = isListCompExpr c
+isListCompExpr _                 = False
+
+isQuietHsCmd :: HsCmd id -> Bool
+-- Parentheses do display something, but it gives little info and
+-- if we go deeper when we go inside them then we get ugly things
+-- like (...)
+isQuietHsCmd (HsCmdPar _) = True
+-- applications don't display anything themselves
+isQuietHsCmd (HsCmdApp _ _) = True
+isQuietHsCmd _ = False
+
 pprParendExpr :: (OutputableBndr id) => HsExpr id -> SDoc
 pprParendExpr expr
   | hsExprNeedsParens expr = parens (pprExpr expr)
@@ -1457,12 +1509,6 @@ pprParendExpr expr
 
 instance (OutputableBndr id) => Outputable (HsCmd id) where
     ppr cmd = pprCmd cmd
-
------------------------
--- pprCmd and pprLCmd call pprDeeper;
--- the underscore versions do not
-pprLCmd :: (OutputableBndr id) => LHsCmd id -> SDoc
-pprLCmd (L _ c) = pprCmd c
 
 pprCmd :: (OutputableBndr id) => HsCmd id -> SDoc
 pprCmd c | isQuietHsCmd c =            ppr_cmd c
@@ -1591,6 +1637,20 @@ pprGRHSs ctxt (GRHSs grhss (L _ binds))
  $$ ppUnless (isEmptyLocalBinds binds)
       (text "where" $$ nest 4 (pprBinds binds))
 
+isEmptyLocalBinds :: HsLocalBindsLR a b -> Bool
+isEmptyLocalBinds (HsValBinds ds) = isEmptyValBinds ds
+isEmptyLocalBinds (HsIPBinds ds)  = isEmptyIPBinds ds
+isEmptyLocalBinds EmptyLocalBinds = True
+
+isEmptyIPBinds :: HsIPBinds id -> Bool
+isEmptyIPBinds (IPBinds is) = null is
+
+isEmptyValBinds :: HsValBindsLR a b -> Bool
+isEmptyValBinds (ValBindsIn ds sigs)  = isEmptyLHsBinds ds && null sigs
+
+isEmptyLHsBinds :: LHsBindsLR idL idR -> Bool
+isEmptyLHsBinds = isEmptyBag
+
 pprGRHS :: (OutputableBndr idR, Outputable body)
         => HsMatchContext idL -> GRHS idR body -> SDoc
 pprGRHS ctxt (GRHS [] body)
@@ -1631,12 +1691,6 @@ pprStmt (RecStmt { recS_stmts = segment, recS_rec_ids = rec_ids
          , ifPprDebug (vcat [ text "rec_ids=" <> ppr rec_ids
                             , text "later_ids=" <> ppr later_ids])]
 
-pprTransformStmt :: (OutputableBndr id)
-                 => [id] -> LHsExpr id -> Maybe (LHsExpr id) -> SDoc
-pprTransformStmt bndrs using by
-  = sep [ text "then" <+> ifPprDebug (braces (ppr bndrs))
-        , nest 2 (ppr using)
-        , nest 2 (pprBy by)]
 
 pprTransStmt :: Outputable body => Maybe body -> body -> TransForm -> SDoc
 pprTransStmt by using ThenForm
@@ -1683,10 +1737,6 @@ pprQuals quals = interpp'SP quals
 
 instance (OutputableBndr id) => Outputable (HsSplice id) where
   ppr s = pprSplice s
-
-pprPendingSplice :: (OutputableBndr id)
-                 => id -> LHsExpr id -> SDoc
-pprPendingSplice n e = angleBrackets (ppr n <> comma <+> ppr e)
 
 pprSplice :: (OutputableBndr id) => HsSplice id -> SDoc
 pprSplice (HsTypedSplice   n e)  = ppr_splice (text "$$") n e
@@ -1747,67 +1797,6 @@ instance Outputable FunctionFixity where
   ppr Prefix = text "Prefix"
   ppr Infix  = text "Infix"
 
-pprMatchContext :: (Outputable ( id),Outputable id)
-                => HsMatchContext id -> SDoc
-pprMatchContext ctxt
-  | want_an ctxt = text "an" <+> pprMatchContextNoun ctxt
-  | otherwise    = text "a"  <+> pprMatchContextNoun ctxt
-  where
-    want_an (FunRhs {}) = True  -- Use "an" in front
-    want_an ProcExpr    = True
-    want_an _           = False
-
-pprMatchContextNoun :: (Outputable ( id),Outputable id)
-                    => HsMatchContext id -> SDoc
-pprMatchContextNoun (FunRhs (L _ fun) _) = text "equation for"
-                                      <+> quotes (ppr fun)
-pprMatchContextNoun CaseAlt         = text "case alternative"
-pprMatchContextNoun IfAlt           = text "multi-way if alternative"
-pprMatchContextNoun RecUpd          = text "record-update construct"
-pprMatchContextNoun ThPatSplice     = text "Template Haskell pattern splice"
-pprMatchContextNoun ThPatQuote      = text "Template Haskell pattern quotation"
-pprMatchContextNoun PatBindRhs      = text "pattern binding"
-pprMatchContextNoun LambdaExpr      = text "lambda abstraction"
-pprMatchContextNoun ProcExpr        = text "arrow abstraction"
-pprMatchContextNoun (StmtCtxt ctxt) = text "pattern binding in"
-                                      $$ pprStmtContext ctxt
-pprMatchContextNoun PatSyn          = text "pattern synonym declaration"
-
------------------
-pprAStmtContext, pprStmtContext :: (Outputable id,
-                                    Outputable ( id))
-                                => HsStmtContext id -> SDoc
-pprAStmtContext ctxt = article <+> pprStmtContext ctxt
-  where
-    pp_an = text "an"
-    pp_a  = text "a"
-    article = case ctxt of
-                  MDoExpr       -> pp_an
-                  PArrComp      -> pp_an
-                  GhciStmtCtxt  -> pp_an
-                  _             -> pp_a
-
-
------------------
-pprStmtContext GhciStmtCtxt    = text "interactive GHCi command"
-pprStmtContext DoExpr          = text "'do' block"
-pprStmtContext MDoExpr         = text "'mdo' block"
-pprStmtContext ArrowExpr       = text "'do' block in an arrow command"
-pprStmtContext ListComp        = text "list comprehension"
-pprStmtContext MonadComp       = text "monad comprehension"
-pprStmtContext PArrComp        = text "array comprehension"
-pprStmtContext (PatGuard ctxt) = text "pattern guard for" $$ pprMatchContext ctxt
-
--- Drop the inner contexts when reporting errors, else we get
---     Unexpected transform statement
---     in a transformed branch of
---          transformed branch of
---          transformed branch of monad comprehension
-pprStmtContext (ParStmtCtxt c)
-  = pprStmtContext c
-pprStmtContext (TransStmtCtxt c)
-  = pprStmtContext c
-
 
 matchSeparator :: HsMatchContext id -> SDoc
 matchSeparator (FunRhs {})  = text "="
@@ -1821,48 +1810,6 @@ matchSeparator RecUpd       = panic "unused"
 matchSeparator ThPatSplice  = panic "unused"
 matchSeparator ThPatQuote   = panic "unused"
 matchSeparator PatSyn       = panic "unused"
-
--- Used to generate the string for a *runtime* error message
-matchContextErrString :: Outputable id
-                      => HsMatchContext id -> SDoc
-matchContextErrString (FunRhs (L _ fun) _) = text "function" <+> ppr fun
-matchContextErrString CaseAlt              = text "case"
-matchContextErrString IfAlt                = text "multi-way if"
-matchContextErrString PatBindRhs           = text "pattern binding"
-matchContextErrString RecUpd               = text "record update"
-matchContextErrString LambdaExpr           = text "lambda"
-matchContextErrString ProcExpr             = text "proc"
-matchContextErrString ThPatSplice                = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString ThPatQuote                 = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString PatSyn                     = panic "matchContextErrString"  -- Not used at runtime
-matchContextErrString (StmtCtxt (ParStmtCtxt c))   = matchContextErrString (StmtCtxt c)
-matchContextErrString (StmtCtxt (TransStmtCtxt c)) = matchContextErrString (StmtCtxt c)
-matchContextErrString (StmtCtxt (PatGuard _))      = text "pattern guard"
-matchContextErrString (StmtCtxt GhciStmtCtxt)      = text "interactive GHCi command"
-matchContextErrString (StmtCtxt DoExpr)            = text "'do' block"
-matchContextErrString (StmtCtxt ArrowExpr)         = text "'do' block"
-matchContextErrString (StmtCtxt MDoExpr)           = text "'mdo' block"
-matchContextErrString (StmtCtxt ListComp)          = text "list comprehension"
-matchContextErrString (StmtCtxt MonadComp)         = text "monad comprehension"
-matchContextErrString (StmtCtxt PArrComp)          = text "array comprehension"
-
-pprMatchInCtxt :: (OutputableBndr idR,
-                   Outputable ( ( idR)),
-                   Outputable body)
-               => Match idR body -> SDoc
-pprMatchInCtxt match  = hang (text "In" <+> pprMatchContext (m_ctxt match)
-                                        <> colon)
-                             4 (pprMatch match)
-
-pprStmtInCtxt ctxt stmt
-  = hang (text "In a stmt of" <+> pprAStmtContext ctxt <> colon)
-       2 (ppr_stmt stmt)
-  where
-    -- For Group and Transform Stmts, don't print the nested stmts!
-    ppr_stmt (TransStmt { trS_by = by, trS_using = using
-                        , trS_form = form }) = pprTransStmt by using form
-    ppr_stmt stmt = pprStmt stmt
-
 
 -- HsDoc
 --------------------------------------------------------------------------------
@@ -2120,28 +2067,6 @@ instance OutputableBndr RdrName where
 -- Name
 --------------------------------------------------------------------------------
 
-pprInternal :: PprStyle -> Unique -> OccName -> SDoc
-pprInternal sty uniq occ
-  | codeStyle sty  = pprUnique uniq
-  | debugStyle sty = ppr_occ_name occ <> braces (hsep [pprNameSpaceBrief (occNameSpace occ),
-                                                       pprUnique uniq])
-  | dumpStyle sty  = ppr_occ_name occ <> ppr_underscore_unique uniq
-                        -- For debug dumps, we're not necessarily dumping
-                        -- tidied code, so we need to print the uniques.
-  | otherwise      = ppr_occ_name occ   -- User style
-
--- Like Internal, except that we only omit the unique in Iface style
-pprSystem :: PprStyle -> Unique -> OccName -> SDoc
-pprSystem sty uniq occ
-  | codeStyle sty  = pprUnique uniq
-  | debugStyle sty = ppr_occ_name occ <> ppr_underscore_unique uniq
-                     <> braces (pprNameSpaceBrief (occNameSpace occ))
-  | otherwise      = ppr_occ_name occ <> ppr_underscore_unique uniq
-                                -- If the tidy phase hasn't run, the OccName
-                                -- is unlikely to be informative (like 's'),
-                                -- so print the unique
-
-
 pprModulePrefix :: PprStyle -> Module -> OccName -> SDoc
 -- Print the "M." part of a name, based on whether it's in scope or not
 -- See Note [Printing original names] in HscTypes
@@ -2155,63 +2080,6 @@ pprModulePrefix sty mod occ = sdocWithDynFlags $ \dflags ->
       NameNotInScope2  -> ppr (moduleUnitId mod) <> colon     -- Module not in
                           <> ppr (moduleName mod) <> dot          -- scope either
       NameUnqual       -> empty                   -- In scope unqualified
-
-ppr_underscore_unique :: Unique -> SDoc
--- Print an underscore separating the name from its unique
--- But suppress it if we aren't printing the uniques anyway
-ppr_underscore_unique uniq
-  = sdocWithDynFlags $ \dflags ->
-    if gopt Opt_SuppressUniques dflags
-    then empty
-    else char '_' <> pprUnique uniq
-
-ppr_occ_name :: OccName -> SDoc
-ppr_occ_name occ = ftext (occNameFS occ)
-        -- Don't use pprOccName; instead, just print the string of the OccName;
-        -- we print the namespace in the debug stuff above
-
--- In code style, we Z-encode the strings.  The results of Z-encoding each FastString are
--- cached behind the scenes in the FastString implementation.
-ppr_z_occ_name :: OccName -> SDoc
-ppr_z_occ_name occ = ztext (zEncodeFS (occNameFS occ))
-{-
--- Prints (if mod information is available) "Defined at <loc>" or
---  "Defined in <mod>" information for a Name.
-pprDefinedAt :: Name -> SDoc
-pprDefinedAt name = text "Defined" <+> pprNameDefnLoc name
-
-pprNameDefnLoc :: Name -> SDoc
--- Prints "at <loc>" or
---     or "in <mod>" depending on what info is available
-pprNameDefnLoc name
-  = case nameSrcLoc name of
-         -- nameSrcLoc rather than nameSrcSpan
-         -- It seems less cluttered to show a location
-         -- rather than a span for the definition point
-       RealSrcLoc s -> text "at" <+> ppr s
-       UnhelpfulLoc s
-         | isInternalName name || isSystemName name
-         -> text "at" <+> ftext s
-         | otherwise
-         -> text "in" <+> quotes (ppr (nameModule name))
-
-
--- | Get a string representation of a 'Name' that's unique and stable
--- across recompilations. Used for deterministic generation of binds for
--- derived instances.
--- eg. "$aeson_70dylHtv1FFGeai1IoxcQr$Data.Aeson.Types.Internal$String"
-nameStableString :: Name -> String
-nameStableString Name{..} =
-  nameSortStableString n_sort ++ "$" ++ occNameString n_occ
-
-nameSortStableString :: NameSort -> String
-nameSortStableString System = "$_sys"
-nameSortStableString Internal = "$_in"
-nameSortStableString (External mod) = moduleStableString mod
-nameSortStableString (WiredIn mod _ _) = moduleStableString mod
--}
-
-
 
 -- Module
 --------------------------------------------------------------------------------
@@ -2246,6 +2114,9 @@ pprPackagePrefix p mod = getPprStyle doc
                 -- be qualified with package names
        | otherwise = empty
 
+mainUnitId :: UnitId
+mainUnitId = PId (fsLit "main")
+
 instance Outputable UnitId where
    ppr pk = ftext (unitIdFS pk)
 
@@ -2277,24 +2148,6 @@ pprUniqFM ppr_elt ufm
     | (uq, elt) <- nonDetUFMToList ufm ]
   -- It's OK to use nonDetUFMToList here because we only use it for
   -- pretty-printing.
-
--- | Pretty-print a non-deterministic set.
--- The order of variables is non-deterministic and for pretty-printing that
--- shouldn't be a problem.
--- Having this function helps contain the non-determinism created with
--- nonDetEltsUFM.
-pprUFM :: UniqFM a      -- ^ The things to be pretty printed
-       -> ([a] -> SDoc) -- ^ The pretty printing function to use on the elements
-       -> SDoc          -- ^ 'SDoc' where the things have been pretty
-                        -- printed
-pprUFM ufm pp = pp (nonDetEltsUFM ufm)
-
--- | Determines the pluralisation suffix appropriate for the length of a set
--- in the same way that plural from Outputable does for lists.
-pluralUFM :: UniqFM a -> SDoc
-pluralUFM ufm
-  | sizeUFM ufm == 1 = empty
-  | otherwise = char 's'
 
 -- OrdList
 --------------------------------------------------------------------------------

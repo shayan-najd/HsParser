@@ -24,7 +24,7 @@
 --   * Turn into 'Outputable.SDoc' with 'Outputable.ptext'
 --
 -- Use 'LitString' unless you want the facilities of 'FastString'.
-module U.FastString
+module Language.Haskell.Utility.FastString
        (
         -- * ByteString
         fastStringToByteString,
@@ -90,12 +90,10 @@ module U.FastString
         lengthLS
        ) where
 
-#include "HsVersions.h"
-
-import U.Encoding
-import U.FastFunctions
-import U.Panic
-import U.Util
+import Language.Haskell.Utility.Encoding
+import Language.Haskell.Utility.FastFunctions
+-- import U.Panic
+-- import U.Util
 
 import Control.Monad
 import Data.ByteString (ByteString)
@@ -126,6 +124,7 @@ import GHC.Base         ( unpackCString# )
 #define hASH_TBL_SIZE          4091
 #define hASH_TBL_SIZE_UNBOXED  4091#
 
+panic = error -- SHAYAN HACK!
 
 fastStringToByteString :: FastString -> ByteString
 fastStringToByteString f = fs_bs f
@@ -204,6 +203,12 @@ instance Data FastString where
   toConstr _   = abstractConstr "FastString"
   gunfold _ _  = error "gunfold"
   dataTypeOf _ = mkNoRepType "FastString"
+
+abstractConstr :: String -> Constr
+abstractConstr n = mkConstr (abstractDataType n) ("{abstract:"++n++"}") [] Prefix
+
+abstractDataType :: String -> DataType
+abstractDataType n = mkDataType n [abstractConstr n]
 
 cmpFS :: FastString -> FastString -> Ordering
 cmpFS f1@(FastString u1 _ _ _) f2@(FastString u2 _ _ _) =

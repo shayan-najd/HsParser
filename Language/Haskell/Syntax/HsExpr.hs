@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -fwarn-unused-imports #-}
-
 {-
 (c) The University of Glasgow 2006
 (c) The GRASP/AQUA Project, Glasgow University, 1992-1998
@@ -15,48 +13,51 @@
 {-# LANGUAGE DeriveFunctor #-}
 
 -- | Abstract Haskell syntax for expressions.
-module HsExpr {- (SrcLoc,
+module Language.Haskell.Syntax.HsExpr
+             (SrcLoc,
               LHsExpr,
               LGRHS,
               LMatch,
+              LStmt,
+              LHsCmd,
+              LHsTupArg,
+              LHsCmdTop,
+              LStmtLR,
+              CmdLStmt,
+              ParStmtBlock(..),
+              HsArrAppType(..),
+              HsCmdTop(..),
               HsExpr(..),
               GRHS(..),
               GRHSs(..),
-              noExpr,
               HsTupArg(..),
               HsSplice(..),
               MatchGroup(..),
+              Match(..),
               HsCmd(..),
-              SyntaxExpr(..),
               HsStmtContext (..),
               ExprLStmt,
               StmtLR(..),
-              LStmtLR(..),
               TransForm(..),
               ArithSeqInfo(..),
-              PendingRnSplice (..),
-
-              tupArgPresent,
-              noSyntaxExpr,
-              pprLExpr,
-              pprExpr,
-              pprSplice,
-              pprPatBind,
-              pprFunBind) -} where
-
-#include "HsVersions.h"
+              HsMatchContext (..),
+              FunctionFixity(..),
+              HsBracket(..),
+              CmdStmt(..),
+              Stmt(..),
+              HsRecordBinds(..),
+              ExprStmt(..)) where
 
 -- friends:
-import HsDecls
-import HsPat
-import HsLit
-import HsTypes
-import HsBinds
+import Language.Haskell.Syntax.HsDecls
+import Language.Haskell.Syntax.HsPat
+import Language.Haskell.Syntax.HsLit
+import Language.Haskell.Syntax.HsTypes
+import Language.Haskell.Syntax.HsBinds
 
-import BasicTypes
-import U.FastString
-import SrcLoc
-import U.Panic (panic)
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Syntax.SrcLoc
 
 -- libraries:
 import Data.Data hiding (Fixity(..))
@@ -72,121 +73,6 @@ import Data.Data hiding (Fixity(..))
 -- * Expressions proper
 
 type LHsExpr id = Located (HsExpr id)
-  -- ^ May have 'ApiAnnotation.AnnKeywordId' : 'ApiAnnotation.AnnComma' when
-  --   in a list
-
-  -- For details on above see note [Api annotations] in ApiAnnotation
-
--- | This is used for rebindable-syntax pieces that are too polymorphic
--- for tcSyntaxOp (trS_fmap and the mzip in ParStmt)
-noExpr :: HsExpr id
-noExpr = HsLit (HsString "" (fsLit "noExpr"))
-
-{-
-Note [CmdSyntaxtable]
-~~~~~~~~~~~~~~~~~~~~~
-Used only for arrow-syntax stuff (HsCmdTop), the CmdSyntaxTable keeps
-track of the methods needed for a Cmd.
-
-* Before the renamer, this list is an empty list
-
-* After the renamer, it takes the form @[(std_name, HsVar actual_name)]@
-  For example, for the 'arr' method
-   * normal case:            (GHC.Control.Arrow.arr, HsVar GHC.Control.Arrow.arr)
-   * with rebindable syntax: (GHC.Control.Arrow.arr, arr_22)
-             where @arr_22@ is whatever 'arr' is in scope
-
-* After the type checker, it takes the form [(std_name, <expression>)]
-  where <expression> is the evidence for the method.  This evidence is
-  instantiated with the class, but is still polymorphic in everything
-  else.  For example, in the case of 'arr', the evidence has type
-         forall b c. (b->c) -> a b c
-  where 'a' is the ambient type of the arrow.  This polymorphism is
-  important because the desugarer uses the same evidence at multiple
-  different types.
-
-This is Less Cool than what we normally do for rebindable syntax, which is to
-make fully-instantiated piece of evidence at every use site.  The Cmd way
-is Less Cool because
-  * The renamer has to predict which methods are needed.
-    See the tedious RnExpr.methodNamesCmd.
-
-  * The desugarer has to know the polymorphic type of the instantiated
-    method. This is checked by Inst.tcSyntaxName, but is less flexible
-    than the rest of rebindable syntax, where the type is less
-    pre-ordained.  (And this flexibility is useful; for example we can
-    typecheck do-notation with (>>=) :: m1 a -> (a -> m2 b) -> m2 b.)
--}
-
-{-
-Note [OutOfScope and GlobalRdrEnv]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To understand why we bundle a GlobalRdrEnv with an out-of-scope variable,
-consider the following module:
-
-    module A where
-
-    foo :: ()
-    foo = bar
-
-    bat :: [Double]
-    bat = [1.2, 3.4]
-
-    $(return [])
-
-    bar = ()
-    bad = False
-
-When A is compiled, the renamer determines that `bar` is not in scope in the
-declaration of `foo` (since `bar` is declared in the following inter-splice
-group).  Once it has finished typechecking the entire module, the typechecker
-then generates the associated error message, which specifies both the type of
-`bar` and a list of possible in-scope alternatives:
-
-    A.hs:6:7: error:
-        • Variable not in scope: bar :: ()
-        • ‘bar’ (line 13) is not in scope before the splice on line 11
-          Perhaps you meant ‘bat’ (line 9)
-
-When it calls RnEnv.unknownNameSuggestions to identify these alternatives, the
-typechecker must provide a GlobalRdrEnv.  If it provided the current one, which
-contains top-level declarations for the entire module, the error message would
-incorrectly suggest the out-of-scope `bar` and `bad` as possible alternatives
-for `bar` (see Trac #11680).  Instead, the typechecker must use the same
-GlobalRdrEnv the renamer used when it determined that `bar` is out-of-scope.
-
-To obtain this GlobalRdrEnv, can the typechecker simply use the out-of-scope
-`bar`'s location to either reconstruct it (from the current GlobalRdrEnv) or to
-look it up in some global store?  Unfortunately, no.  The problem is that
-location information is not always sufficient for this task.  This is most
-apparent when dealing with the TH function addTopDecls, which adds its
-declarations to the FOLLOWING inter-splice group.  Consider these declarations:
-
-    ex9 = cat               -- cat is NOT in scope here
-
-    $(do -------------------------------------------------------------
-        ds <- [d| f = cab   -- cat and cap are both in scope here
-                  cat = ()
-                |]
-        addTopDecls ds
-        [d| g = cab         -- only cap is in scope here
-            cap = True
-          |])
-
-    ex10 = cat              -- cat is NOT in scope here
-
-    $(return []) -----------------------------------------------------
-
-    ex11 = cat              -- cat is in scope
-
-Here, both occurrences of `cab` are out-of-scope, and so the typechecker needs
-the GlobalRdrEnvs which were used when they were renamed.  These GlobalRdrEnvs
-are different (`cat` is present only in the GlobalRdrEnv for f's `cab'), but the
-locations of the two `cab`s are the same (they are both created in the same
-splice).  Thus, we must include some additional information with each `cab` to
-allow the typechecker to obtain the correct GlobalRdrEnv.  Clearly, the simplest
-information to use is the GlobalRdrEnv itself.
--}
 
 -- | A Haskell expression.
 data HsExpr id
@@ -534,123 +420,6 @@ data HsTupArg id
   | Missing
 deriving instance (Data id) => Data (HsTupArg id)
 
-tupArgPresent :: LHsTupArg id -> Bool
-tupArgPresent (L _ (Present {})) = True
-tupArgPresent (L _ (Missing {})) = False
-
-{-
-Note [Parens in HsSyn]
-~~~~~~~~~~~~~~~~~~~~~~
-HsPar (and ParPat in patterns, HsParTy in types) is used as follows
-
-  * Generally HsPar is optional; the pretty printer adds parens where
-    necessary.  Eg (HsApp f (HsApp g x)) is fine, and prints 'f (g x)'
-
-  * HsPars are pretty printed as '( .. )' regardless of whether
-    or not they are strictly necssary
-
-  * HsPars are respected when rearranging operator fixities.
-    So   a * (b + c)  means what it says (where the parens are an HsPar)
-
-Note [Sections in HsSyn]
-~~~~~~~~~~~~~~~~~~~~~~~~
-Sections should always appear wrapped in an HsPar, thus
-         HsPar (SectionR ...)
-The parser parses sections in a wider variety of situations
-(See Note [Parsing sections]), but the renamer checks for those
-parens.  This invariant makes pretty-printing easier; we don't need
-a special case for adding the parens round sections.
-
-Note [Rebindable if]
-~~~~~~~~~~~~~~~~~~~~
-The rebindable syntax for 'if' is a bit special, because when
-rebindable syntax is *off* we do not want to treat
-   (if c then t else e)
-as if it was an application (ifThenElse c t e).  Why not?
-Because we allow an 'if' to return *unboxed* results, thus
-  if blah then 3# else 4#
-whereas that would not be possible using a all to a polymorphic function
-(because you can't call a polymorphic function at an unboxed type).
-
-So we use Nothing to mean "use the old built-in typing rule".
-
-Note [Record Update HsWrapper]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-There is a wrapper in RecordUpd which is used for the *required*
-constraints for pattern synonyms. This wrapper is created in the
-typechecking and is then directly used in the desugaring without
-modification.
-
-For example, if we have the record pattern synonym P,
-  pattern P :: (Show a) => a -> Maybe a
-  pattern P{x} = Just x
-
-  foo = (Just True) { x = False }
-then `foo` desugars to something like
-  foo = case Just True of
-          P x -> P False
-hence we need to provide the correct dictionaries to P's matcher on
-the RHS so that we can build the expression.
-
-Note [Located RdrNames]
-~~~~~~~~~~~~~~~~~~~~~~~
-A number of syntax elements have seemingly redundant locations attached to them.
-This is deliberate, to allow transformations making use of the API Annotations
-to easily correlate a Located Name in the RenamedSource with a Located RdrName
-in the ParsedSource.
-
-There are unfortunately enough differences between the ParsedSource and the
-RenamedSource that the API Annotations cannot be used directly with
-RenamedSource, so this allows a simple mapping to be used based on the location.
--}
-
-isQuietHsExpr :: HsExpr id -> Bool
--- Parentheses do display something, but it gives little info and
--- if we go deeper when we go inside them then we get ugly things
--- like (...)
-isQuietHsExpr (HsPar _)          = True
--- applications don't display anything themselves
-isQuietHsExpr (HsApp _ _)        = True
-isQuietHsExpr (HsAppType _ _)    = True
-isQuietHsExpr (OpApp _ _ _)      = True
-isQuietHsExpr _ = False
-
--- We must tiresomely make the "id" parameter to the LHsWcType existential
--- because it's different in the HsAppType case and the HsAppTypeOut case
--- data LHsWcTypeX = forall id. (OutputableBndr id) => LHsWcTypeX (LHsWcType id)
-
-hsExprNeedsParens :: HsExpr id -> Bool
--- True of expressions for which '(e)' and 'e'
--- mean the same thing
-hsExprNeedsParens (ArithSeq {})       = False
-hsExprNeedsParens (PArrSeq {})        = False
-hsExprNeedsParens (HsLit {})          = False
-hsExprNeedsParens (HsOverLit {})      = False
-hsExprNeedsParens (HsVar {})          = False
-hsExprNeedsParens (HsIPVar {})        = False
-hsExprNeedsParens (HsOverLabel {})    = False
-hsExprNeedsParens (ExplicitTuple {})  = False
-hsExprNeedsParens (ExplicitList {})   = False
-hsExprNeedsParens (ExplicitPArr {})   = False
-hsExprNeedsParens (HsPar {})          = False
-hsExprNeedsParens (HsBracket {})      = False
-hsExprNeedsParens (HsDo sc _)
-       | isListCompExpr sc            = False
-hsExprNeedsParens (HsRecFld{})        = False
-hsExprNeedsParens _ = True
-
-
-isAtomicHsExpr :: HsExpr id -> Bool
--- True of a single token
-isAtomicHsExpr (HsVar {})        = True
-isAtomicHsExpr (HsLit {})        = True
-isAtomicHsExpr (HsOverLit {})    = True
-isAtomicHsExpr (HsIPVar {})      = True
-isAtomicHsExpr (HsOverLabel {})  = True
-isAtomicHsExpr (HsPar e)         = isAtomicHsExpr (unLoc e)
-isAtomicHsExpr (HsRecFld{})      = True
-isAtomicHsExpr _                 = False
-
 {-
 ************************************************************************
 *                                                                      *
@@ -755,15 +524,6 @@ data HsCmdTop id
   = HsCmdTop (LHsCmd id)
 deriving instance (Data id) => Data (HsCmdTop id)
 
-isQuietHsCmd :: HsCmd id -> Bool
--- Parentheses do display something, but it gives little info and
--- if we go deeper when we go inside them then we get ugly things
--- like (...)
-isQuietHsCmd (HsCmdPar _) = True
--- applications don't display anything themselves
-isQuietHsCmd (HsCmdApp _ _) = True
-isQuietHsCmd _ = False
-
 {-
 ************************************************************************
 *                                                                      *
@@ -822,76 +582,6 @@ data Match id body
   }
 deriving instance (Data body,Data id) => Data (Match id body)
 
-{-
-Note [m_ctxt in Match]
-~~~~~~~~~~~~~~~~~~~~~~
-
-A Match can occur in a number of contexts, such as a FunBind, HsCase, HsLam and
-so on.
-
-In order to simplify tooling processing and pretty print output, the provenance
-is captured in an HsMatchContext.
-
-This is particularly important for the API Annotations for a multi-equation
-FunBind.
-
-The parser initially creates a FunBind with a single Match in it for
-every function definition it sees.
-
-These are then grouped together by getMonoBind into a single FunBind,
-where all the Matches are combined.
-
-In the process, all the original FunBind fun_id's bar one are
-discarded, including the locations.
-
-This causes a problem for source to source conversions via API
-Annotations, so the original fun_ids and infix flags are preserved in
-the Match, when it originates from a FunBind.
-
-Example infix function definition requiring individual API Annotations
-
-    (&&&  ) [] [] =  []
-    xs    &&&   [] =  xs
-    (  &&&  ) [] ys =  ys
-
-
-
--}
-
-isInfixMatch :: Match id body -> Bool
-isInfixMatch match = case m_ctxt match of
-  FunRhs _ Infix -> True
-  _              -> False
-
-isEmptyMatchGroup :: MatchGroup id body -> Bool
-isEmptyMatchGroup (MG { mg_alts = ms }) = null $ unLoc ms
-
--- | Is there only one RHS in this list of matches?
-isSingletonMatchGroup :: [LMatch id body] -> Bool
-isSingletonMatchGroup matches
-  | [L _ match] <- matches
-  , Match { m_grhss = GRHSs { grhssGRHSs = [_] } } <- match
-  = True
-  | otherwise
-  = False
-
-matchGroupArity :: MatchGroup id body -> Arity
--- Precondition: MatchGroup is non-empty
--- This is called before type checking, when mg_arg_tys is not set
-matchGroupArity (MG { mg_alts = alts })
-  | L _ (alt1:_) <- alts = length (hsLMatchPats alt1)
-  | otherwise        = panic "matchGroupArity"
-
-hsLMatchPats :: LMatch id body -> [LPat id]
-hsLMatchPats (L _ (Match _ pats _ _)) = pats
-
--- | GRHSs are used both for pattern bindings and for Matches
---
---  - 'ApiAnnotation.AnnKeywordId' : 'ApiAnnotation.AnnVbar',
---        'ApiAnnotation.AnnEqual','ApiAnnotation.AnnWhere',
---        'ApiAnnotation.AnnOpen','ApiAnnotation.AnnClose'
---        'ApiAnnotation.AnnRarrow','ApiAnnotation.AnnSemi'
-
 -- For details on above see note [Api annotations] in ApiAnnotation
 data GRHSs id body
   = GRHSs {
@@ -926,9 +616,6 @@ type ExprLStmt  id = LStmt id (LHsExpr id)
 type ExprStmt   id = Stmt  id (LHsExpr id)
 
 type GuardLStmt id = LStmt id (LHsExpr id)
-type GuardStmt  id = Stmt  id (LHsExpr id)
-type GhciLStmt  id = LStmt id (LHsExpr id)
-type GhciStmt   id = Stmt  id (LHsExpr id)
 
 -- The SyntaxExprs in here are used *only* for do-notation and monad
 -- comprehensions, which have rebindable syntax. Otherwise they are unused.
@@ -1182,10 +869,6 @@ data HsSplice id
 
 deriving instance (Data id) => Data (HsSplice id)
 
-isTypedSplice :: HsSplice id -> Bool
-isTypedSplice (HsTypedSplice {}) = True
-isTypedSplice _                  = False   -- Quasi-quotes are untyped splices
-
 data UntypedSpliceFlavour
   = UntypedExpSplice
   | UntypedPatSplice
@@ -1269,10 +952,6 @@ data HsBracket id = ExpBr (LHsExpr id)   -- [|  expr  |]
                   | NativBr (LHsExpr id)  -- [n|  expr  |]
 deriving instance (Data id) => Data (HsBracket id)
 
-isTypedBracket :: HsBracket id -> Bool
-isTypedBracket (TExpBr {}) = True
-isTypedBracket _           = False
-
 {-
 ************************************************************************
 *                                                                      *
@@ -1339,18 +1018,3 @@ data HsStmtContext id
   | TransStmtCtxt (HsStmtContext id) -- ^A branch of a transform stmt
   deriving Functor
 deriving instance (Data id) => Data (HsStmtContext id)
-
-isListCompExpr :: HsStmtContext id -> Bool
--- Uses syntax [ e | quals ]
-isListCompExpr ListComp          = True
-isListCompExpr PArrComp          = True
-isListCompExpr MonadComp         = True
-isListCompExpr (ParStmtCtxt c)   = isListCompExpr c
-isListCompExpr (TransStmtCtxt c) = isListCompExpr c
-isListCompExpr _                 = False
-
-isMonadCompExpr :: HsStmtContext id -> Bool
-isMonadCompExpr MonadComp            = True
-isMonadCompExpr (ParStmtCtxt ctxt)   = isMonadCompExpr ctxt
-isMonadCompExpr (TransStmtCtxt ctxt) = isMonadCompExpr ctxt
-isMonadCompExpr _                    = False

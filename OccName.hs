@@ -21,15 +21,12 @@
 --
 -- * 'Var.Var': see "Var#name_types"
 
-module OccName {-
-               (OccName,
-                HasOccName(occName),
-                NameSpace,
+module OccName (OccName(..),
+                HasOccName(..),
+                NameSpace(..),
                 isSymOcc,
-                occNameFS,
                 mkOccNameFS,
                 isDataOcc,
-                occNameSpace,
                 tvName,
                 mkVarOccFS,
                 demoteOccName,
@@ -42,90 +39,11 @@ module OccName {-
                 isVarNameSpace,
                 srcDataName,
                 dataName,
-                isTcOcc) -} where {-
-        -- * The 'NameSpace' type
-        NameSpace, -- Abstract
+                isTcOcc) where
 
-        nameSpacesRelated,
-
-        -- ** Construction
-        -- $real_vs_source_data_constructors
-        tcName, clsName, tcClsName, dataName, varName,
-        tvName, srcDataName,
-
-        -- ** Pretty Printing
-        pprNameSpace, pprNonVarNameSpace, pprNameSpaceBrief,
-
-        -- * The 'OccName' type
-        OccName,        -- Abstract, instance of Outputable
-        pprOccName,
-
-        -- ** Construction
-        mkOccName, mkOccNameFS,
-        mkVarOcc, mkVarOccFS,
-        mkDataOcc, mkDataOccFS,
-        mkTyVarOcc, mkTyVarOccFS,
-        mkTcOcc, mkTcOccFS,
-        mkClsOcc, mkClsOccFS,
-        mkDFunOcc,
-        setOccNameSpace,
-        demoteOccName,
-        HasOccName(..),
-
-        -- ** Derived 'OccName's
-        isDerivedOccName,
-        mkDataConWrapperOcc, mkWorkerOcc,
-        mkMatcherOcc, mkBuilderOcc,
-        mkDefaultMethodOcc,
-        mkNewTyCoOcc, mkClassOpAuxOcc,
-        mkCon2TagOcc, mkTag2ConOcc, mkMaxTagOcc,
-        mkClassDataConOcc, mkDictOcc, mkIPOcc,
-        mkSpecOcc, mkForeignExportOcc, mkRepEqOcc,
-        mkGenR, mkGen1R,
-        mkDataTOcc, mkDataCOcc, mkDataConWorkerOcc,
-        mkSuperDictSelOcc, mkSuperDictAuxOcc,
-        mkLocalOcc, mkMethodOcc, mkInstTyTcOcc,
-        mkInstTyCoOcc, mkEqPredCoOcc,
-        mkVectOcc, mkVectTyConOcc, mkVectDataConOcc, mkVectIsoOcc,
-        mkPDataTyConOcc,  mkPDataDataConOcc,
-        mkPDatasTyConOcc, mkPDatasDataConOcc,
-        mkPReprTyConOcc,
-        mkPADFunOcc,
-        mkRecFldSelOcc,
-        mkTyConRepOcc,
-
-        -- ** Deconstruction
-        occNameFS, occNameString, occNameSpace,
-
-        isVarOcc, isTvOcc, isTcOcc, isDataOcc, isDataSymOcc, isSymOcc, isValOcc,
-        parenSymOcc, startsWithUnderscore,
-
-        isTcClsNameSpace, isTvNameSpace, isDataConNameSpace, isVarNameSpace, isValNameSpace,
-
-        -- * The 'OccEnv' type
-        OccEnv, emptyOccEnv, unitOccEnv, extendOccEnv, mapOccEnv,
-        lookupOccEnv, mkOccEnv, mkOccEnv_C, extendOccEnvList, elemOccEnv,
-        occEnvElts, foldOccEnv, plusOccEnv, plusOccEnv_C, extendOccEnv_C,
-        extendOccEnv_Acc, filterOccEnv, delListFromOccEnv, delFromOccEnv,
-        alterOccEnv, pprOccEnv,
-
-        -- * The 'OccSet' type
-        OccSet, emptyOccSet, unitOccSet, mkOccSet, extendOccSet,
-        extendOccSetList,
-        unionOccSets, unionManyOccSets, minusOccSet, elemOccSet,
-        isEmptyOccSet, intersectOccSet, intersectsOccSet,
-        filterOccSet,
-
-        -- * Tidying up
-        TidyOccEnv, emptyTidyOccEnv, tidyOccName, initTidyOccEnv,
-
-        -- FsEnv
-        FastStringEnv, emptyFsEnv, lookupFsEnv, extendFsEnv, mkFsEnv
-    ) where -}
-
-import U.Util
+import Language.Haskell.Utility.Util
 import U.Unique
-import U.FastString
+import Language.Haskell.Utility.FastString
 import Lexeme
 import Data.Data
 

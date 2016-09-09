@@ -14,13 +14,12 @@
                                       -- in module PlaceHolder
 {-# LANGUAGE ConstraintKinds #-}
 
-module HsLit where
+module Language.Haskell.Syntax.HsLit ( HsLit(..)
+             , HsOverLit(..)
+             , OverLitVal(..)) where
 
-#include "HsVersions.h"
-
-import {-# SOURCE #-} HsExpr( HsExpr)
-import BasicTypes ( FractionalLit(..),SourceText )
-import U.FastString
+import Language.Haskell.Syntax.BasicTypes ( FractionalLit(..),SourceText )
+import Language.Haskell.Utility.FastString
 
 import Data.ByteString (ByteString)
 import Data.Data hiding ( Fixity )
@@ -60,8 +59,7 @@ instance Eq HsLit where
 
 data HsOverLit id       -- An overloaded literal
   = OverLit {
-        ol_val :: OverLitVal,
-        ol_witness :: HsExpr id }
+        ol_val :: OverLitVal }
 deriving instance (Data id) => Data (HsOverLit id)
 
 -- Note [Literal source text] in BasicTypes for SourceText fields in

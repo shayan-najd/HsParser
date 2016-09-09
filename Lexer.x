@@ -99,22 +99,24 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 
 -- compiler/utils
-import U.Bag
+import Language.Haskell.Utility.Bag
 import U.Outputable
 import U.StringBuffer
-import U.FastString
+import Language.Haskell.Utility.FastString
 import U.UniqFM
-import U.Util             ( readRational )
+import Language.Haskell.Utility.Util
+       ( readRational )
 
 -- compiler/main
 import U.ErrUtils
 import U.DynFlags hiding (UnicodeSyntax)
 
 -- compiler/basicTypes
-import SrcLoc
-import Module
-import BasicTypes     ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
-                        SourceText )
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Syntax.Module
+import Language.Haskell.Syntax.BasicTypes
+             ( InlineSpec(..), RuleMatchInfo(..), FractionalLit(..),
+               SourceText )
 
 -- compiler/parser
 import Ctype

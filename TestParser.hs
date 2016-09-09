@@ -3,8 +3,8 @@ module TestParser where
 import Parser
 import U.DynFlags
 import Lexer
-import SrcLoc
-import U.FastString
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Utility.FastString
 import U.StringBuffer
 import ShowInstances ()
 import OutputableInstances ()

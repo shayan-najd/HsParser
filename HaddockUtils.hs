@@ -1,8 +1,8 @@
 
 module HaddockUtils where
 
-import HsSyn
-import SrcLoc
+import Language.Haskell.Syntax.HsSyn
+import Language.Haskell.Syntax.SrcLoc
 
 import Control.Monad
 

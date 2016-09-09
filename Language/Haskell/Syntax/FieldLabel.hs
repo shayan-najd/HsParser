@@ -62,43 +62,16 @@ Of course, datatypes with no constructors cannot have any fields.
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE StandaloneDeriving #-}
 
-module FieldLabel {- ( FieldLabelString
-                  , FieldLbl(..)
-                  , FieldLabel
-                  , mkFieldLabelOccs
-                  ) -} where
+module Language.Haskell.Syntax.FieldLabel (FieldLbl(..)) where
 
-import OccName
-
-import U.FastString
+import Language.Haskell.Utility.FastString
 import Data.Data
-
--- | Field labels are just represented as strings;
--- they are not necessarily unique (even within a module)
-type FieldLabelString = FastString
-
-
--- type FieldLabel = FieldLbl Name
 
 -- | Fields in an algebraic record type
 data FieldLbl a = FieldLabel {
-      flLabel        :: FieldLabelString, -- ^ User-visible label of the field
-      flIsOverloaded :: Bool,             -- ^ Was DuplicateRecordFields on
-                                          --   in the defining module for this datatype?
-      flSelector     :: a                 -- ^ Record selector function
+      flLabel        :: FastString, -- ^ User-visible label of the field
+      flIsOverloaded :: Bool,       -- ^ Was DuplicateRecordFields on
+                                    --   in the defining module for this datatype?
+      flSelector     :: a           -- ^ Record selector function
     }
-  deriving (Eq, Functor, Foldable, Traversable)
-deriving instance Data a => Data (FieldLbl a)
-
--- | Record selector OccNames are built from the underlying field name
--- and the name of the first data constructor of the type, to support
--- duplicate record field names.
--- See Note [Why selector names include data constructors].
-mkFieldLabelOccs :: FieldLabelString -> OccName -> Bool -> FieldLbl OccName
-mkFieldLabelOccs lbl dc is_overloaded
-  = FieldLabel { flLabel = lbl, flIsOverloaded = is_overloaded
-               , flSelector = sel_occ }
-  where
-    str     = ":" ++ unpackFS lbl ++ ":" ++ occNameString dc
-    sel_occ | is_overloaded = mkRecFldSelOcc str
-            | otherwise     = mkVarOccFS lbl
+  deriving (Eq, Functor, Foldable, Traversable, Data)

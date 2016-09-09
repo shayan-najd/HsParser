@@ -12,59 +12,52 @@ which deal with the instantiated versions are located elsewhere:
    Name                 rename/RnHsSyn
    Id                   typecheck/TcHsSyn
 -}
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeFamilies #-}
-module HsUtils(mkChunkified,
-               chunkify,
-               mkMatchGroup,
-               mkLHsSigWcType,
-               mkNPlusKPat,
-               mkUntypedSplice,
-               mkClassOpSigs,
-               mkHsOpApp,
-               mkHsIntegral,
-               mkHsIsString,
-               mkHsDo,
-               mkLHsSigType,
-               mkHsFractional,
-               mkBindStmt,
-               mkBodyStmt,
-               mkPatSynBind,
-               unguardedRHS,
-               mkRecStmt,
-               mkHsComp,
-               mkGroupByUsingStmt,
-               mkGroupUsingStmt,
-               mkTransformByStmt,
-               missingTupArg,
-               mkTransformStmt,
-               mkHsSpliceNE,
-               mkHsSpliceTE,
-               mkHsSpliceE,
-               mkHsSpliceTy,
-               mkHsQuasiQuote,
-               unguardedGRHSs,
-               mkHsIf) where
+module Language.Haskell.Syntax.HsUtils ( mkChunkified
+                , mkAnonWildCardTy
+                , mkHsWildCardBndrs
+                , chunkify
+                , mkMatchGroup
+                , mkLHsSigWcType
+                , mkNPlusKPat
+                , mkClassOpSigs
+                , mkHsOpApp
+                , mkHsIntegral
+                , mkHsIsString
+                , mkHsDo
+                , mkLHsSigType
+                , mkHsFractional
+                , mkBindStmt
+                , mkBodyStmt
+                , mkPatSynBind
+                , unguardedRHS
+                , mkRecStmt
+                , mkHsComp
+                , mkGroupByUsingStmt
+                , mkGroupUsingStmt
+                , mkTransformByStmt
+                , missingTupArg
+                , mkTransformStmt
+                , unguardedGRHSs
+                , mkHsIf
+                , mkFalse
+                , mkTrue) where
 
-#include "HsVersions.h"
 
-import HsBinds
-import HsExpr
-import HsPat
-import HsTypes
-import HsLit
+import Language.Haskell.Syntax.HsBinds
+import Language.Haskell.Syntax.HsExpr
+import Language.Haskell.Syntax.HsPat
+import Language.Haskell.Syntax.HsTypes
+import Language.Haskell.Syntax.HsLit
+import Language.Haskell.Syntax.BooleanFormula
 
-import RdrName
-import OccName (mkVarOccFS)
-import BasicTypes
-import SrcLoc
-import U.FastString
-import U.Panic (panic)
+import Language.Haskell.Syntax.BasicTypes
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Utility.FastString
+-- import U.Panic (panic)
 
 mAX_TUPLE_SIZE = 62
 
+panic = error -- SHAYAN HACK!
 {-
 ************************************************************************
 *                                                                      *
@@ -80,13 +73,13 @@ just attach noSrcSpan to everything.
 
 unguardedGRHSs :: Located (body id) -> GRHSs id (Located (body id))
 unguardedGRHSs rhs@(L loc _)
-  = GRHSs (unguardedRHS loc rhs) (noLoc emptyLocalBinds)
+  = GRHSs (unguardedRHS loc rhs) (noLoc EmptyLocalBinds)
 
 unguardedRHS :: SrcSpan -> Located (body id) -> [LGRHS id (Located (body id))]
 unguardedRHS loc rhs = [L loc (GRHS [] rhs)]
 
-mkMatchGroup :: Origin -> [LMatch RdrName (Located (body RdrName))]
-             -> MatchGroup RdrName (Located (body RdrName))
+mkMatchGroup :: Origin -> [LMatch id (Located (body id))]
+             -> MatchGroup id (Located (body id))
 mkMatchGroup origin matches = MG { mg_alts = mkLocatedList matches
                                  , mg_origin = origin }
 
@@ -99,28 +92,28 @@ mkLocatedList ms = L (combineLocs (head ms) (last ms)) ms
 -- These are the bits of syntax that contain rebindable names
 -- See RnEnv.lookupSyntaxName
 
-mkHsIntegral   :: String -> Integer -> HsOverLit RdrName
-mkHsFractional :: FractionalLit -> HsOverLit RdrName
-mkHsIsString   :: String -> FastString -> HsOverLit RdrName
-mkHsDo         :: HsStmtContext RdrName -> [ExprLStmt RdrName] -> HsExpr RdrName
-mkHsComp       :: HsStmtContext RdrName -> [ExprLStmt RdrName] -> LHsExpr RdrName
-               -> HsExpr RdrName
+mkHsIntegral   :: String -> Integer -> HsOverLit id
+mkHsFractional :: FractionalLit -> HsOverLit id
+mkHsIsString   :: String -> FastString -> HsOverLit id
+mkHsDo         :: HsStmtContext id -> [ExprLStmt id] -> HsExpr id
+mkHsComp       :: HsStmtContext id -> [ExprLStmt id] -> LHsExpr id
+               -> HsExpr id
 
-mkNPlusKPat :: Located RdrName -> Located (HsOverLit RdrName) -> Pat RdrName
+mkNPlusKPat :: Located id -> Located (HsOverLit id) -> Pat id
 
 mkLastStmt :: Located (bodyR idR) -> StmtLR idL idR (Located (bodyR idR))
-mkBodyStmt :: Located (bodyR RdrName)
-           -> StmtLR idL RdrName (Located (bodyR RdrName))
+mkBodyStmt :: Located (bodyR id)
+           -> StmtLR idL id (Located (bodyR id))
 mkBindStmt :: LPat idL -> Located (bodyR idR)
            -> StmtLR idL idR (Located (bodyR idR))
 
-emptyRecStmt     :: StmtLR idL  RdrName bodyR
-mkRecStmt    :: [LStmtLR idL RdrName bodyR] -> StmtLR idL RdrName bodyR
+emptyRecStmt     :: StmtLR idL  id bodyR
+mkRecStmt    :: [LStmtLR idL id bodyR] -> StmtLR idL id bodyR
 
 
-mkHsIntegral src i  = OverLit (HsIntegral   src i) noExpr
-mkHsFractional   f  = OverLit (HsFractional     f) noExpr
-mkHsIsString src s  = OverLit (HsIsString   src s) noExpr
+mkHsIntegral src i  = OverLit (HsIntegral   src i)
+mkHsFractional   f  = OverLit (HsFractional     f)
+mkHsIsString src s  = OverLit (HsIsString   src s)
 
 mkHsDo ctxt stmts = HsDo ctxt (mkLocatedList stmts)
 mkHsComp ctxt stmts expr = mkHsDo ctxt (stmts ++ [last_stmt])
@@ -147,8 +140,10 @@ mkGroupByUsingStmt ::
 
 emptyTransStmt :: StmtLR idL idR (LHsExpr idR)
 emptyTransStmt = TransStmt { trS_form = panic "emptyTransStmt: form"
-                           , trS_stmts = [], trS_bndrs = []
-                           , trS_by = Nothing, trS_using = noLoc noExpr
+                           , trS_stmts = []
+                           , trS_bndrs = []
+                           , trS_by = Nothing
+                           , trS_using = panic "no Using"
                            }
 mkTransformStmt    ss u   = emptyTransStmt { trS_form = ThenForm,  trS_stmts = ss, trS_using = u }
 mkTransformByStmt  ss u b = emptyTransStmt { trS_form = ThenForm,  trS_stmts = ss, trS_using = u, trS_by = Just b }
@@ -159,7 +154,7 @@ mkLastStmt body     = LastStmt body False
 mkBodyStmt body     = BodyStmt body
 mkBindStmt pat body = BindStmt pat body
 
-emptyRecStmt' :: forall idL idR body. StmtLR idL idR body
+emptyRecStmt' :: StmtLR idL idR body
 emptyRecStmt' =
    RecStmt
      { recS_stmts = [], recS_later_ids = []
@@ -174,36 +169,12 @@ mkRecStmt stmts  = emptyRecStmt { recS_stmts = stmts }
 mkHsOpApp :: LHsExpr id -> id -> LHsExpr id -> HsExpr id
 mkHsOpApp e1 op e2 = OpApp e1 (noLoc (HsVar (noLoc op))) e2
 
-unqualSplice :: RdrName
-unqualSplice = mkRdrUnqual (mkVarOccFS (fsLit "splice"))
-
-mkUntypedSplice :: LHsExpr RdrName -> HsSplice RdrName
-mkUntypedSplice e = HsUntypedSplice unqualSplice e
-
-mkHsSpliceE :: LHsExpr RdrName -> HsExpr RdrName
-mkHsSpliceE e = HsSpliceE (mkUntypedSplice e)
-
-mkHsSpliceTE :: LHsExpr RdrName -> HsExpr RdrName
-mkHsSpliceTE e = HsSpliceE (HsTypedSplice unqualSplice e)
-
-mkHsSpliceNE :: LHsExpr RdrName -> HsExpr RdrName
-mkHsSpliceNE e = HsSpliceE (HsNativSplice unqualSplice e)
-
-mkHsSpliceTy :: LHsExpr RdrName -> HsType RdrName
-mkHsSpliceTy e = HsSpliceTy (HsUntypedSplice unqualSplice e)
-
-mkHsQuasiQuote :: RdrName -> SrcSpan -> FastString -> HsSplice RdrName
-mkHsQuasiQuote quoter span quote = HsQuasiQuote unqualSplice quoter span quote
-
-
-
-
 {-
 Tuples.  All these functions are *pre-typechecker* because they lack
 types on the tuple.
 -}
 
-missingTupArg :: HsTupArg RdrName
+missingTupArg :: HsTupArg id
 missingTupArg = Missing
 
 
@@ -237,9 +208,6 @@ mkChunkified small_tuple as = mk_big_tuple (chunkify as)
     mk_big_tuple as_s = mk_big_tuple (chunkify (map small_tuple as_s))
 
 chunkify :: [a] -> [[a]]
--- ^ Split a list into lists that are small enough to have a corresponding
--- tuple arity. The sub-lists of the result all have length <= 'mAX_TUPLE_SIZE'
--- But there may be more than 'mAX_TUPLE_SIZE' sub-lists
 chunkify xs
   | n_xs <= mAX_TUPLE_SIZE = [xs]
   | otherwise              = split xs
@@ -255,13 +223,13 @@ chunkify xs
 *                                                                      *
 ********************************************************************* -}
 
-mkLHsSigType :: LHsType RdrName -> LHsSigType RdrName
-mkLHsSigType ty = mkHsImplicitBndrs ty
+mkLHsSigType :: LHsType id -> LHsSigType id
+mkLHsSigType ty = HsIB ty
 
-mkLHsSigWcType :: LHsType RdrName -> LHsSigWcType RdrName
-mkLHsSigWcType ty = mkHsImplicitBndrs (mkHsWildCardBndrs ty)
+mkLHsSigWcType :: LHsType id -> LHsSigWcType id
+mkLHsSigWcType ty = HsIB (mkHsWildCardBndrs ty)
 
-mkClassOpSigs :: [LSig RdrName] -> [LSig RdrName]
+mkClassOpSigs :: [LSig id] -> [LSig id]
 -- Convert TypeSig to ClassOpSig
 -- The former is what is parsed, but the latter is
 -- what we need in class/instance declarations
@@ -271,8 +239,8 @@ mkClassOpSigs sigs
     fiddle (L loc (TypeSig nms ty)) = L loc (ClassOpSig False nms (dropWildCards ty))
     fiddle sig                      = sig
 
-mkPatSynBind :: Located RdrName -> HsPatSynDetails (Located RdrName)
-             -> LPat RdrName -> HsPatSynDir RdrName -> HsBind RdrName
+mkPatSynBind :: Located id -> HsPatSynDetails (Located id)
+             -> LPat id -> HsPatSynDir id -> HsBind id
 mkPatSynBind name details lpat dir = PatSynBind psb
   where
     psb = PSB{ psb_id = name
@@ -280,3 +248,21 @@ mkPatSynBind name details lpat dir = PatSynBind psb
              , psb_def = lpat
              , psb_dir = dir
              }
+
+mkAnonWildCardTy :: HsType id
+mkAnonWildCardTy = HsWildCardTy AnonWildCard
+
+mkHsWildCardBndrs :: thing -> HsWildCardBndrs id thing
+mkHsWildCardBndrs x = HsWC { hswc_body = x
+                           , hswc_ctx  = Nothing }
+
+dropWildCards :: LHsSigWcType name -> LHsSigType name
+-- Drop the wildcard part of a LHsSogWcType
+dropWildCards sig_ty = sig_ty { hsib_body = hsSogWcType sig_ty }
+
+hsSogWcType :: LHsSigWcType name -> LHsType name
+hsSogWcType = hswc_body . hsib_body
+
+mkFalse, mkTrue :: BooleanFormula a
+mkFalse = Or []
+mkTrue = And []

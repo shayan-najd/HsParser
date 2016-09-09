@@ -8,7 +8,7 @@ Bag: an unordered collection with duplicates
 
 {-# LANGUAGE ScopedTypeVariables, CPP #-}
 
-module U.Bag (
+module Language.Haskell.Utility.Bag (
         Bag, -- abstract type
 
         emptyBag, unitBag, unionBags, unionManyBags,
@@ -24,7 +24,7 @@ module U.Bag (
         anyBagM, filterBagM
     ) where
 
-import U.Util
+import Language.Haskell.Utility.Util
 
 import Control.Monad
 import Data.Data

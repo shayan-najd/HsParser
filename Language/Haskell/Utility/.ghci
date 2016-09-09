@@ -1,0 +1,3 @@
+:set -fobject-code
+:set -fwarn-unused-imports
+:set -fwarn-unused-binds

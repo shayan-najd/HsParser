@@ -1,4 +1,4 @@
--- (c) The University of Glasgow, 1992-2006
+-- (c) The Language.Haskell.Utility.iversity of Glasgow, 1992-2006
 
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE StandaloneDeriving #-}
@@ -9,84 +9,48 @@
 {-# OPTIONS_GHC -fno-omit-interface-pragmas #-}
    -- Workaround for Trac #5252 crashes the bootstrap compiler without -O
    -- When the earliest compiler we want to boostrap with is
-   -- GHC 7.2, we can make RealSrcLoc properly abstract
+   -- GHC 7.2, we can make RealSocLoc properly abstract
 
 -- | This module contains types that relate to the positions of things
 -- in source files, and allow tagging of those things with locations
-module SrcLoc {- (
-        -- * SrcLoc
-        RealSrcLoc,             -- Abstract
-        SrcLoc(..),
+module Language.Haskell.Syntax.SrcLoc ( SrcLoc(..)
+                                      , SrcSpan(..)
+                                      , Located
+                                      , GenLocated(..)
+                                      , RealLocated(..)
+                                      , RealSrcLoc(..)
+                                      , RealSrcSpan(..)
+                                      , noLoc
+                                      , combineLocs
+                                      , getLoc
+                                      , unLoc
+                                      , mkSrcSpan
+                                      , mkSrcLoc
+                                      , mkRealSrcSpan
+                                      , mkRealSrcLoc
+                                      , noSrcSpan
+                                      , srcSpanEnd
+                                      , isSubspanOf
+                                      , isPointRealSpan
+                                      , isOneLineRealSpan
+                                      , srcSpanStart
+                                      , advanceSrcLoc
+                                      , realSrcSpanStart
+                                      , srcSpanStartLine
+                                      , srcSpanEndLine
+                                      , srcLocCol
+                                      , srcSpanStartCol
+                                      , srcSpanEndCol
+                                      , combineSrcSpans
+                                      , addCLoc
+                                      , srcSpanFirstCharacter
+                                      , srcLocFile) where
 
-        -- ** Constructing SrcLoc
-        mkSrcLoc, mkRealSrcLoc, mkGeneralSrcLoc,
-
-        noSrcLoc,               -- "I'm sorry, I haven't a clue"
-        generatedSrcLoc,        -- Code generated within the compiler
-        interactiveSrcLoc,      -- Code from an interactive session
-
-        advanceSrcLoc,
-
-        -- ** Unsafely deconstructing SrcLoc
-        -- These are dubious exports, because they crash on some inputs
-        srcLocFile,             -- return the file name part
-        srcLocLine,             -- return the line part
-        srcLocCol,              -- return the column part
-
-        -- * SrcSpan
-        RealSrcSpan,            -- Abstract
-        SrcSpan(..),
-
-        -- ** Constructing SrcSpan
-        mkGeneralSrcSpan, mkSrcSpan, mkRealSrcSpan,
-        noSrcSpan,
-        wiredInSrcSpan,         -- Something wired into the compiler
-        interactiveSrcSpan,
-        srcLocSpan, realSrcLocSpan,
-        combineSrcSpans,
-        srcSpanFirstCharacter,
-
-        -- ** Deconstructing SrcSpan
-        srcSpanStart, srcSpanEnd,
-        realSrcSpanStart, realSrcSpanEnd,
-        srcSpanFileName_maybe,
-
-        -- ** Unsafely deconstructing SrcSpan
-        -- These are dubious exports, because they crash on some inputs
-        srcSpanFile,
-        srcSpanStartLine, srcSpanEndLine,
-        srcSpanStartCol, srcSpanEndCol,
-
-        -- ** Predicates on SrcSpan
-        isGoodSrcSpan, isOneLineSpan,
-        containsSpan,
-
-        -- * Located
-        Located,
-        RealLocated,
-        GenLocated(..),
-
-        -- ** Constructing Located
-        noLoc,
-        mkGeneralLocated,
-
-        -- ** Deconstructing Located
-        getLoc, unLoc,
-
-        -- ** Combining and comparing Located values
-        eqLocated, cmpLocated, combineLocs, addCLoc,
-        leftmost_smallest, leftmost_largest, rightmost,
-        spans, isSubspanOf, sortLocated
-    ) -}  where
-
-import U.Util
-import U.FastString
-import U.Panic
+import Language.Haskell.Utility.FastString
 
 import Data.Bits
 import Data.Data
 import Data.List
-import Data.Ord
 
 {-
 ************************************************************************
@@ -102,12 +66,12 @@ this is the obvious stuff:
 -- | Represents a single point within a file
 data RealSrcLoc
   = SrcLoc      FastString              -- A precise location (file name)
-                {-# UNPACK #-} !Int     -- line number, begins at 1
-                {-# UNPACK #-} !Int     -- column number, begins at 1
+                {-# Language.Haskell.Utility.PACK #-} !Int     -- line number, begins at 1
+                {-# Language.Haskell.Utility.PACK #-} !Int     -- column number, begins at 1
   deriving (Eq, Ord)
 
 data SrcLoc
-  = RealSrcLoc {-# UNPACK #-}!RealSrcLoc
+  = RealSrcLoc {-# Language.Haskell.Utility.PACK #-}!RealSrcLoc
   | UnhelpfulLoc FastString     -- Just a general indication
   deriving (Eq, Ord, Show)
 
@@ -124,16 +88,6 @@ mkSrcLoc x line col = RealSrcLoc (mkRealSrcLoc x line col)
 
 mkRealSrcLoc :: FastString -> Int -> Int -> RealSrcLoc
 mkRealSrcLoc x line col = SrcLoc x line col
-
--- | Built-in "bad" 'SrcLoc' values for particular locations
-noSrcLoc, generatedSrcLoc, interactiveSrcLoc :: SrcLoc
-noSrcLoc          = UnhelpfulLoc (fsLit "<no location info>")
-generatedSrcLoc   = UnhelpfulLoc (fsLit "<compiler-generated code>")
-interactiveSrcLoc = UnhelpfulLoc (fsLit "<interactive>")
-
--- | Creates a "bad" 'SrcLoc' that has no detailed information about its location
-mkGeneralSrcLoc :: FastString -> SrcLoc
-mkGeneralSrcLoc = UnhelpfulLoc
 
 -- | Gives the filename of the 'RealSrcLoc'
 srcLocFile :: RealSrcLoc -> FastString
@@ -164,9 +118,12 @@ advanceSrcLoc (SrcLoc f l c) _    = SrcLoc f  l (c + 1)
 ************************************************************************
 -}
 
-sortLocated :: [Located a] -> [Located a]
-sortLocated things = sortBy (comparing getLoc) things
 
+abstractConstr :: String -> Constr
+abstractConstr n = mkConstr (abstractDataType n) ("{abstract:"++n++"}") [] Prefix
+
+abstractDataType :: String -> DataType
+abstractDataType n = mkDataType n [abstractConstr n]
 
 instance Data RealSrcSpan where
   -- don't traverse?
@@ -201,10 +158,10 @@ span of (1,1)-(1,1) is zero characters long.
 data RealSrcSpan
   = RealSrcSpan'
         { srcSpanFile     :: !FastString,
-          srcSpanSLine    :: {-# UNPACK #-} !Int,
-          srcSpanSCol     :: {-# UNPACK #-} !Int,
-          srcSpanELine    :: {-# UNPACK #-} !Int,
-          srcSpanECol     :: {-# UNPACK #-} !Int
+          srcSpanSoine    :: {-# Language.Haskell.Utility.PACK #-} !Int,
+          srcSpanSool     :: {-# Language.Haskell.Utility.PACK #-} !Int,
+          srcSpanELine    :: {-# Language.Haskell.Utility.PACK #-} !Int,
+          srcSpanECol     :: {-# Language.Haskell.Utility.PACK #-} !Int
         }
   deriving Eq
 
@@ -219,22 +176,8 @@ data SrcSpan =
                            -- derive Show for Token
 
 -- | Built-in "bad" 'SrcSpan's for common sources of location uncertainty
-noSrcSpan, wiredInSrcSpan, interactiveSrcSpan :: SrcSpan
+noSrcSpan :: SrcSpan
 noSrcSpan          = UnhelpfulSpan (fsLit "<no location info>")
-wiredInSrcSpan     = UnhelpfulSpan (fsLit "<wired into compiler>")
-interactiveSrcSpan = UnhelpfulSpan (fsLit "<interactive>")
-
--- | Create a "bad" 'SrcSpan' that has not location information
-mkGeneralSrcSpan :: FastString -> SrcSpan
-mkGeneralSrcSpan = UnhelpfulSpan
-
--- | Create a 'SrcSpan' corresponding to a single point
-srcLocSpan :: SrcLoc -> SrcSpan
-srcLocSpan (UnhelpfulLoc str) = UnhelpfulSpan str
-srcLocSpan (RealSrcLoc l) = RealSrcSpan (realSrcLocSpan l)
-
-realSrcLocSpan :: RealSrcLoc -> RealSrcSpan
-realSrcLocSpan (SrcLoc file line col) = RealSrcSpan' file line col line col
 
 -- | Create a 'SrcSpan' between two points in a file
 mkRealSrcSpan :: RealSrcLoc -> RealSrcLoc -> RealSrcSpan
@@ -290,39 +233,11 @@ srcSpanFirstCharacter (RealSrcSpan span) = RealSrcSpan $ mkRealSrcSpan loc1 loc2
   where
     loc1@(SrcLoc f l c) = realSrcSpanStart span
     loc2 = SrcLoc f l (c+1)
-{-
-************************************************************************
-*                                                                      *
-\subsection[SrcSpan-predicates]{Predicates}
-*                                                                      *
-************************************************************************
--}
-
--- | Test if a 'SrcSpan' is "good", i.e. has precise location information
-isGoodSrcSpan :: SrcSpan -> Bool
-isGoodSrcSpan (RealSrcSpan _) = True
-isGoodSrcSpan (UnhelpfulSpan _) = False
-
-isOneLineSpan :: SrcSpan -> Bool
--- ^ True if the span is known to straddle only one line.
--- For "bad" 'SrcSpan', it returns False
-isOneLineSpan (RealSrcSpan s) = srcSpanStartLine s == srcSpanEndLine s
-isOneLineSpan (UnhelpfulSpan _) = False
-
--- | Tests whether the first span "contains" the other span, meaning
--- that it covers at least as much source code. True where spans are equal.
-containsSpan :: RealSrcSpan -> RealSrcSpan -> Bool
-containsSpan s1 s2
-  = srcSpanFile s1 == srcSpanFile s2
-    && (srcSpanStartLine s1, srcSpanStartCol s1)
-       <= (srcSpanStartLine s2, srcSpanStartCol s2)
-    && (srcSpanEndLine s1, srcSpanEndCol s1)
-       >= (srcSpanEndLine s2, srcSpanEndCol s2)
 
 {-
 %************************************************************************
 %*                                                                      *
-\subsection[SrcSpan-unsafe-access-fns]{Unsafe access functions}
+\subsection[SrcSpan-unsafe-access-fns]{Language.Haskell.Utility.safe access functions}
 *                                                                      *
 ************************************************************************
 -}
@@ -332,9 +247,9 @@ srcSpanEndLine :: RealSrcSpan -> Int
 srcSpanStartCol :: RealSrcSpan -> Int
 srcSpanEndCol :: RealSrcSpan -> Int
 
-srcSpanStartLine RealSrcSpan'{ srcSpanSLine=l } = l
+srcSpanStartLine RealSrcSpan'{ srcSpanSoine=l } = l
 srcSpanEndLine RealSrcSpan'{ srcSpanELine=l } = l
-srcSpanStartCol RealSrcSpan'{ srcSpanSCol=l } = l
+srcSpanStartCol RealSrcSpan'{ srcSpanSool=l } = l
 srcSpanEndCol RealSrcSpan'{ srcSpanECol=c } = c
 
 {-
@@ -385,6 +300,12 @@ instance Ord RealSrcSpan where
      (realSrcSpanStart a `compare` realSrcSpanStart b) `thenCmp`
      (realSrcSpanEnd   a `compare` realSrcSpanEnd   b)
 
+infixr 9 `thenCmp`
+thenCmp :: Ordering -> Ordering -> Ordering
+{-# INLINE thenCmp #-}
+thenCmp EQ       ordering = ordering
+thenCmp ordering _        = ordering
+
 instance Show RealSrcLoc where
   show (SrcLoc filename row col)
       = "SrcLoc " ++ show filename ++ " " ++ show row ++ " " ++ show col
@@ -426,9 +347,6 @@ getLoc (L l _) = l
 noLoc :: e -> Located e
 noLoc e = L noSrcSpan e
 
-mkGeneralLocated :: String -> e -> Located e
-mkGeneralLocated s e = L (mkGeneralSrcSpan (fsLit s)) e
-
 combineLocs :: Located a -> Located b -> SrcSpan
 combineLocs a b = combineSrcSpans (getLoc a) (getLoc b)
 
@@ -438,37 +356,15 @@ addCLoc a b c = L (combineSrcSpans (getLoc a) (getLoc b)) c
 
 -- not clear whether to add a general Eq instance, but this is useful sometimes:
 
--- | Tests whether the two located things are equal
-eqLocated :: Eq a => Located a -> Located a -> Bool
-eqLocated a b = unLoc a == unLoc b
-
 -- not clear whether to add a general Ord instance, but this is useful sometimes:
-
--- | Tests the ordering of the two located things
-cmpLocated :: Ord a => Located a -> Located a -> Ordering
-cmpLocated a b = unLoc a `compare` unLoc b
 
 {-
 ************************************************************************
 *                                                                      *
-\subsection{Ordering SrcSpans for InteractiveUI}
+\subsection{Ordering SrcSpans for InteractiveLanguage.Haskell.Utility.}
 *                                                                      *
 ************************************************************************
 -}
-
--- | Alternative strategies for ordering 'SrcSpan's
-leftmost_smallest, leftmost_largest, rightmost :: SrcSpan -> SrcSpan -> Ordering
-rightmost            = flip compare
-leftmost_smallest    = compare
-leftmost_largest a b = (srcSpanStart a `compare` srcSpanStart b)
-                                `thenCmp`
-                       (srcSpanEnd b `compare` srcSpanEnd a)
-
--- | Determines whether a span encloses a given line and column index
-spans :: SrcSpan -> (Int, Int) -> Bool
-spans (UnhelpfulSpan _) _ = panic "spans UnhelpfulSpan"
-spans (RealSrcSpan span) (l,c) = realSrcSpanStart span <= loc && loc <= realSrcSpanEnd span
-   where loc = mkRealSrcLoc (srcSpanFile span) l c
 
 -- | Determines whether a span is enclosed by another one
 isSubspanOf :: SrcSpan -- ^ The span that may be enclosed by the other

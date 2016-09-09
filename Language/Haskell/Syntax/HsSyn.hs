@@ -16,36 +16,36 @@ therefore, is almost nothing but re-exporting.
                                       -- in module PlaceHolder
 {-# LANGUAGE ConstraintKinds #-}
 
-module HsSyn (
-        module HsBinds,
-        module HsDecls,
-        module HsExpr,
-        module HsImpExp,
-        module HsLit,
-        module HsPat,
-        module HsTypes,
-        module HsUtils,
-        module HsDoc,
+module Language.Haskell.Syntax.HsSyn (
+        module Language.Haskell.Syntax.HsBinds,
+        module Language.Haskell.Syntax.HsDecls,
+        module Language.Haskell.Syntax.HsExpr,
+        module Language.Haskell.Syntax.HsImpExp,
+        module Language.Haskell.Syntax.HsLit,
+        module Language.Haskell.Syntax.HsPat,
+        module Language.Haskell.Syntax.HsTypes,
+        module Language.Haskell.Syntax.HsUtils,
+        module Language.Haskell.Syntax.HsDoc,
         Fixity,
         IsBootInterface,
         HsModule(..)
 ) where
 
 -- friends:
-import HsDecls
-import HsBinds
-import HsExpr
-import HsImpExp
-import HsLit
-import HsPat
-import HsTypes
-import BasicTypes       ( Fixity, WarningTxt )
-import HsUtils
-import HsDoc
+import Language.Haskell.Syntax.HsDecls
+import Language.Haskell.Syntax.HsBinds
+import Language.Haskell.Syntax.HsExpr
+import Language.Haskell.Syntax.HsImpExp
+import Language.Haskell.Syntax.HsLit
+import Language.Haskell.Syntax.HsPat
+import Language.Haskell.Syntax.HsTypes
+import Language.Haskell.Syntax.BasicTypes       ( Fixity, WarningTxt )
+import Language.Haskell.Syntax.HsUtils
+import Language.Haskell.Syntax.HsDoc
 
 -- others:
-import SrcLoc
-import Module           ( ModuleName )
+import Language.Haskell.Syntax.SrcLoc
+import Language.Haskell.Syntax.Module           ( ModuleName )
 
 -- libraries:
 import Data.Data hiding ( Fixity )

@@ -41,15 +41,10 @@ module U.StringBuffer
         parseUnsignedInteger,
        ) where
 
-#include "HsVersions.h"
+import Language.Haskell.Utility.Encoding
+import Language.Haskell.Utility.FastString
+import Language.Haskell.Utility.FastFunctions
 
-import U.Encoding
-import U.FastString
-import U.FastFunctions
-import U.Util
-import U.Panic (assertPanic)
-
-import Data.Maybe
 import Control.Exception
 import System.IO
 import System.IO.Unsafe         ( unsafePerformIO )
@@ -128,7 +123,7 @@ skipBOM h size offset =
   if size > 0 && offset == 0
     then do
       -- Validate assumption that handle is in binary mode.
-      ASSERTM( hGetEncoding h >>= return . isNothing )
+--      ASSERTM( hGetEncoding h >>= return . isNothing )
       -- Temporarily select utf8 encoding with error ignoring,
       -- to make `hLookAhead` and `hGetChar` return full Unicode characters.
       bracket_ (hSetEncoding h safeEncoding) (hSetBinaryMode h True) $ do
