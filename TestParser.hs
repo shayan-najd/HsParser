@@ -12,9 +12,9 @@ import U.Outputable
 
 pExp :: String -> String
 pExp = runParser defaultDynFlag
+       -- (xopt_set defaultDynFlag TemplateHaskell)
 
 runParser :: DynFlags -> String -> String
--- LHsExpr RdrName
 runParser flags str = case unP parseExpression parseState of
                         POk     _ r -> show (unLoc r)
                         PFailed s e -> "Error at " ++ show s ++ ":" ++

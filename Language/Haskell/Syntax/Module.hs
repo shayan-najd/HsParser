@@ -103,7 +103,7 @@ import Data.Data
 -- | A ModuleName is essentially a simple string, e.g. @Data.List@.
 newtype ModuleName
   = ModuleName {moduleNameFS :: FastString}
-  deriving Show
+  deriving (Eq,Show)
 {-
 instance Uniquable ModuleName where
   getUnique (ModuleName nm) = getUnique nm
@@ -136,7 +136,7 @@ data Module = Module {
    moduleUnitId :: !UnitId,  -- pkg-1.0
    moduleName   :: !ModuleName  -- A.B.C
   }
-  deriving ({- Eq,  Ord, -} Show)
+  deriving ( Eq , Show)
 {-
 instance Uniquable Module where
   getUnique (Module p n) = getUnique (unitIdFS p `appendFS` moduleNameFS n)
