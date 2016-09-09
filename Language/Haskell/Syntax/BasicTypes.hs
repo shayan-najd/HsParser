@@ -16,28 +16,28 @@ types that
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Language.Haskell.Syntax.BasicTypes ( CompilerPhase(..),
-                                            Boxity(..),
-                                            Arity,
-                                            FunctionOrData(..),
-                                            FractionalLit(..),
-                                            SourceText,
-                                            Fixity(..),
-                                            FixityDirection(..),
-                                            TupleSort(..),
-                                            Activation(..),
-                                            InlinePragma(..),
-                                            RuleMatchInfo(..),
-                                            InlineSpec(..),
-                                            RecFlag(..),
-                                            OverlapMode(..),
-                                            OverlapFlag(..),
-                                            WarningTxt(..),
-                                            StringLiteral(..),
-                                            TopLevelFlag(..),
-                                            RuleName(..),
-                                            Origin(..),
-                                            OccInfo(..)
+module Language.Haskell.Syntax.BasicTypes ( CompilerPhase(..)
+                                          , Boxity(..)
+                                          , Arity
+                                          , FunctionOrData(..)
+                                          , FractionalLit(..)
+                                          , SourceText
+                                          , Fixity(..)
+                                          , FixityDirection(..)
+                                          , TupleSort(..)
+                                          , Activation(..)
+                                          , InlinePragma(..)
+                                          , RuleMatchInfo(..)
+                                          , InlineSpec(..)
+                                          , RecFlag(..)
+                                          , OverlapMode(..)
+                                          , OverlapFlag(..)
+                                          , WarningTxt(..)
+                                          , StringLiteral(..)
+                                          , TopLevelFlag(..)
+                                          , RuleName(..)
+                                          , Origin(..)
+                                          , OccInfo(..)
                                           ) where
 
 import Language.Haskell.Utility.FastString
